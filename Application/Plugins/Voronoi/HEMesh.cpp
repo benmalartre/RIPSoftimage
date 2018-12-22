@@ -159,7 +159,6 @@ void HEMesh::SetHEData(CVector3Array& vertices, CLongArray& polys)
 //go through all the halfedges and find matching pairs
 void HEMesh::PairHalfEdges(std::vector<HEHalfEdge*>& edges)
 {
-	LOG("PAIR HALF EDGE");
 	HEUniqueEdgeMap openEdges;
 	HEUniqueEdgeMapIt it;
 
@@ -190,8 +189,6 @@ void HEMesh::PairHalfEdges(std::vector<HEHalfEdge*>& edges)
 			}
 		}
 	}
-
-	LOG("NUM OPEN EDGES : " + CString(openEdges.size()));
 }
 
 void HEMesh::GetUniqueEdges()
@@ -327,13 +324,8 @@ void HEMesh::SplitMesh( HEPlane& P, CVector3& center)
 							vertexLookUp[v->m_id] = newVertices.size() - 1;
 							vid++;
 						}
-						else
-						{
-							if (vertexLookUp[v->m_id] >= newVertices.size())LOG("CRASH : " + CString(vertexLookUp[v->m_id]));
-							nv = newVertices[vertexLookUp[v->m_id]];
-						}
-						
-						
+						else nv = newVertices[vertexLookUp[v->m_id]];
+							
 						HEHalfEdge* newHalfEdge = new HEHalfEdge();
 						faceEdges.push_back(newHalfEdge);
 						newHalfEdge->m_vert = nv;
