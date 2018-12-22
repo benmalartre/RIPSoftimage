@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="KrHC Strand fCurve" tasks="Kristinka HairC/Modifiers" author="Anto Matkovic" url="http://www.matkovic.com/anto" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="9284013">
+	<definition>
+		<nodes>
+			<node type="RescaleNode" index="0">
+				<param name="value" type="4" value="0.000000"></param>
+				<param name="sourcestart" type="4" value="0.000000"></param>
+				<param name="sourceend" type="4" value="1.000000"></param>
+				<param name="targetstart" type="4" value="0.000000"></param>
+				<param name="targetend" type="4" value="1.000000"></param>
+				<param name="clamp" type="11" value="true"></param>
+				<portdef name="value" type="4" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="sourcestart" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="sourceend" type="4" structure="1" group="0" instance="0" port="2"></portdef>
+				<portdef name="targetstart" type="4" structure="1" group="0" instance="0" port="3"></portdef>
+				<portdef name="targetend" type="4" structure="1" group="0" instance="0" port="4"></portdef>
+				<portdef name="clamp" type="1" structure="1" group="0" instance="0" port="5"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-334</prop>
+					<prop name="posy">162</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetArrayMaximumNode" index="1">
+				<param name="array" type="4" value="0.000000"></param>
+				<portdef name="array" type="4" structure="2" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-903</prop>
+					<prop name="posy">254</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="8">
+				<param name="reference" type="31" value="Self.StrandRatio"></param>
+				<param_ext name="reference" type="31" value="Self.StrandRatio"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1139</prop>
+					<prop name="posy">169</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="RescaleNode" index="9">
+				<param name="value" type="4" value="0.000000"></param>
+				<param name="sourcestart" type="4" value="0.000000"></param>
+				<param name="sourceend" type="4" value="6.000000"></param>
+				<param name="targetstart" type="4" value="0.000000"></param>
+				<param name="targetend" type="4" value="1.000000"></param>
+				<param name="clamp" type="11" value="true"></param>
+				<portdef name="value" type="4" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="sourcestart" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="sourceend" type="4" structure="1" group="0" instance="0" port="2"></portdef>
+				<portdef name="targetstart" type="4" structure="1" group="0" instance="0" port="3"></portdef>
+				<portdef name="targetend" type="4" structure="1" group="0" instance="0" port="4"></portdef>
+				<portdef name="clamp" type="1" structure="1" group="0" instance="0" port="5"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-630</prop>
+					<prop name="posy">184</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="FCurveNode" index="10">
+				<param name="profile" type="buffer">2 20 1 0 -1.79769E+308 1.79769E+308 3 0
+0 0.000000 0.000000 0.333333 0.000000 -0.333333 0.000000 8196 3
+0 1.000000 1.000000 0.333333 0.000000 -0.333333 0.000000 8196 3
+</param>
+				<param name="in" type="4" value="0.000000"></param>
+				<portdef name="in" type="4" structure="2" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-494</prop>
+					<prop name="posy">214</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="result" username="Result" basename="Result" portlabel="Result" exposetype="single"> </port>
+			<port index="0" portname="targetend" username="Target_End" basename="Target End" portlabel="Target End" exposetype="single"> </port>
+			<port index="0" portname="targetstart" username="Target_Start" basename="Target Start" portlabel="Target Start" exposetype="single"> </port>
+			<port index="10" portname="profile" username="Profile" basename="Profile" portlabel="Profile" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="8" from_port="value" to_node="9" to_port="value"> </cnx>
+			<cnx from_node="8" from_port="value" to_node="1" to_port="array"> </cnx>
+			<cnx from_node="10" from_port="out" to_node="0" to_port="value"> </cnx>
+			<cnx from_node="9" from_port="result" to_node="10" to_port="in"> </cnx>
+			<cnx from_node="1" from_port="max" to_node="9" to_port="sourceend"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Profile"> </item>
+			<item type="input" name="Target_Start" min="0" max="1"> </item>
+			<item type="input" name="Target_End" min="0" max="1"> </item>
+			<item type="output" name="Result"> </item>
+		</layout>
+	</definition>
+</xsi_file>

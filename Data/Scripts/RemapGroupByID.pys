@@ -1,0 +1,33 @@
+from Globals import *
+import Utils2 as uti
+
+grp = xsi.Selection(0)
+model = grp.Model
+name = grp.Name
+
+members = grp.Members;
+name = grp.Name
+guides = [];
+for m in members:
+	guides.append(m)
+	print m 
+	
+print "------------------------"
+#guides.sort()
+IDs = []
+for g in guides:
+	id = XSIUtils.DataRepository.GetIdentifier( g, constants.siObjectIdentifier )
+	IDs.append((id,g))
+	print str(id)+","+g.Name
+	
+IDs.sort()
+#sorted(IDs)
+print "------------------------"
+n = []
+for s in IDs:
+	n.append(s[1])
+	print  s[1]
+xsi.DeleteObj(grp)
+uti.GroupSetup(model,n,name)
+
+	

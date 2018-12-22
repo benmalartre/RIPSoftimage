@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="Controller Position To Scalar" category="bbpp" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="2541994">
+	<definition>
+		<nodes>
+			<node type="MultiplyNode" index="0">
+				<param name="value1" type="4" value="1.000000"></param>
+				<param name="value2" type="4" value="1.000000"></param>
+				<portdef name="value1" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value2" type="4" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">19</prop>
+					<prop name="posy">-21</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="RescaleNode" index="1">
+				<param name="value" type="4" value="0.000000"></param>
+				<param name="sourcestart" type="4" value="0.000000"></param>
+				<param name="sourceend" type="4" value="1.000000"></param>
+				<param name="targetstart" type="4" value="0.000000"></param>
+				<param name="targetend" type="4" value="1.000000"></param>
+				<param name="clamp" type="11" value="false"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="sourcestart" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="sourceend" type="4" structure="1" group="0" instance="0" port="2"></portdef>
+				<portdef name="targetstart" type="4" structure="1" group="0" instance="0" port="3"></portdef>
+				<portdef name="targetend" type="4" structure="1" group="0" instance="0" port="4"></portdef>
+				<portdef name="clamp" type="1" structure="1" group="0" instance="0" port="5"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-131</prop>
+					<prop name="posy">-33</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="2">
+				<portdef name="in" type="8192" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">-530</prop>
+					<prop name="posy">20</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="3">
+				<param name="reference" type="31" value=".kine.local.posx"></param>
+				<param_ext name="reference" type="31" value=".kine.local.posx"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-323</prop>
+					<prop name="posy">-67</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="4">
+				<param name="reference" type="31" value=".kine.local.posy"></param>
+				<param_ext name="reference" type="31" value=".kine.local.posy"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-329</prop>
+					<prop name="posy">105</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="RescaleNode" index="5">
+				<param name="value" type="4" value="0.000000"></param>
+				<param name="sourcestart" type="4" value="0.000000"></param>
+				<param name="sourceend" type="4" value="1.000000"></param>
+				<param name="targetstart" type="4" value="0.000000"></param>
+				<param name="targetend" type="4" value="1.000000"></param>
+				<param name="clamp" type="11" value="true"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="sourcestart" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="sourceend" type="4" structure="1" group="0" instance="0" port="2"></portdef>
+				<portdef name="targetstart" type="4" structure="1" group="0" instance="0" port="3"></portdef>
+				<portdef name="targetend" type="4" structure="1" group="0" instance="0" port="4"></portdef>
+				<portdef name="clamp" type="1" structure="1" group="0" instance="0" port="5"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-127</prop>
+					<prop name="posy">118</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="result" username="result" basename="result" portlabel="result" exposetype="single"> </port>
+			<port index="1" portname="sourcestart" username="XStart" basename="XStart" portlabel="XStart" exposetype="single"> </port>
+			<port index="1" portname="sourceend" username="XEnd" basename="XEnd" portlabel="XEnd" exposetype="single"> </port>
+			<port index="2" portname="in" username="Controller_Name" basename="Controller Name" portlabel="Controller Name" exposetype="single"> </port>
+			<port index="5" portname="sourcestart" username="YStart" basename="YStart" portlabel="YStart" exposetype="single"> </port>
+			<port index="5" portname="sourceend" username="YEnd" basename="YEnd" portlabel="YEnd" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="3" from_port="value" to_node="1" to_port="value"> </cnx>
+			<cnx from_node="2" from_port="out" to_node="3" to_port="inname"> </cnx>
+			<cnx from_node="2" from_port="out" to_node="4" to_port="inname"> </cnx>
+			<cnx from_node="1" from_port="result" to_node="0" to_port="value1"> </cnx>
+			<cnx from_node="5" from_port="result" to_node="0" to_port="value2"> </cnx>
+			<cnx from_node="4" from_port="value" to_node="5" to_port="value"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Controller_Name"> </item>
+			<item type="input" name="XStart"> </item>
+			<item type="input" name="XEnd"> </item>
+			<item type="input" name="YStart"> </item>
+			<item type="input" name="YEnd"> </item>
+			<item type="output" name="result"> </item>
+		</layout>
+	</definition>
+</xsi_file>

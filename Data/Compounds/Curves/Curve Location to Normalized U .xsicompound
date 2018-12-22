@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="Curve Location to Normalized U " category="Curves" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="6732954">
+	<definition>
+		<nodes>
+			<node type="Curve Location to Curve Distance" version="1.0" index="0">
+				<param name="Steps" type="3" value="19"></param>
+				<portdef name="Location" type="2048" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Curve" type="1024" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Steps" type="2" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2451</prop>
+					<prop name="posy">1148</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="1">
+				<param name="reference" type="31" value=""></param>
+				<param_ext name="reference" type="31" value=""></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1948</prop>
+					<prop name="posy">1187</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Set Data" version="1.0" index="2">
+				<param name="Reference" type="31" value="Self.NormailzedUValue"></param>
+				<param name="Value" type="4" value="0.000000"></param>
+				<param_ext name="Reference" type="31" value="Self.NormailzedUValue"></param_ext>
+				<portdef name="Value" type="4" structure="1" group="2" instance="0" port="0" groupname="Value"></portdef>
+				<portdef name="In_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2537</prop>
+					<prop name="posy">1332</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ExecuteNode" index="4">
+				<portdef name="port1" type="4096" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="port2" type="4096" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2801</prop>
+					<prop name="posy">1163</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="6">
+				<param name="reference" type="31" value="Self.CurveLocationDistance"></param>
+				<param_ext name="reference" type="31" value="Self.CurveLocationDistance"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2076</prop>
+					<prop name="posy">1245</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="DivideByScalarNode" index="7">
+				<param name="value" type="4" value="0.000000"></param>
+				<param name="divideby" type="4" value="1.000000"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="divideby" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2363</prop>
+					<prop name="posy">1335</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="8">
+				<param name="reference" type="31" value=".CurveLength"></param>
+				<param_ext name="reference" type="31" value=".CurveLength"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2155</prop>
+					<prop name="posy">1357</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="Location" username="Location" basename="Location" portlabel="Location" exposetype="single"> </port>
+			<port index="0" portname="Steps" username="Steps" basename="Steps" portlabel="Steps" exposetype="single"> </port>
+			<port index="1" portname="inname" username="Curve_Name" basename="Curve Name" portlabel="Curve Name" exposetype="single"> </port>
+			<port index="4" portname="execute" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="0" from_port="Execute" to_node="4" to_port="port1"> </cnx>
+			<cnx from_node="2" from_port="Execute" to_node="4" to_port="port2"> </cnx>
+			<cnx from_node="1" from_port="value" to_node="0" to_port="Curve"> </cnx>
+			<cnx from_node="1" from_port="outname" to_node="8" to_port="inname"> </cnx>
+			<cnx from_node="6" from_port="value" to_node="7" to_port="value"> </cnx>
+			<cnx from_node="8" from_port="value" to_node="7" to_port="divideby"> </cnx>
+			<cnx from_node="7" from_port="result" to_node="2" to_port="Value"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Curve_Name"> </item>
+			<item type="input" name="Steps"> </item>
+			<item type="input" name="Location"> </item>
+			<item type="output" name="Execute"> </item>
+		</layout>
+	</definition>
+</xsi_file>

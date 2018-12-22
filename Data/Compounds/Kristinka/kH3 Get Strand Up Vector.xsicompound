@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="kH3 Get Strand Up Vector" category="" tasks="k Hair3/Utilities" author="" url="" formatversion="1.4" compoundversion="1.0" versiontag="" backgroundcolor="10002042">
+	<description><![CDATA[]]></description>
+	<definition>
+		<nodes>
+			<node type="GetDataNode" index="0">
+				<param name="reference" type="31" value="Self.kH_StrandUpVector"></param>
+				<param_ext name="reference" type="31" value="Self.kH_StrandUpVector"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-30</prop>
+					<prop name="posy">385</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="value" username="Value" basename="Value" portlabel="Value" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+		</connections>
+		<layout>
+			<item type="output" name="Value"> </item>
+		</layout>
+	</definition>
+</xsi_file>

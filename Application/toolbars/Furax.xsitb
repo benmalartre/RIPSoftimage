@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<xsi_file type="Shelf" xsi_version="11.0.525.0" syntax_version="1.0">
+   <shelf_view name="Furax" clsid="{FCA0B0F4-1556-4049-8DB9-A4C659F45170}">
+      <properties>
+         <showtabs>false</showtabs>
+      </properties>
+      <definition maxinstances="10000" acceptfocus="true" private="false" defaultsize="0,100,200,300" cmdmap="{00000000-0000-0000-0000-000000000000}" supportedtypes="6" category=""></definition>
+      <tabs layout="top" active="DS Toolbar">
+         <tab label="DS Toolbar" type="toolbar">
+            <properties id="{F4DC0BDD-C472-4AB9-9B90-086420C7FC55}" name="" display_preset_as_small="False" display_as_text_only="False"></properties>
+            <item type="scriptbutton" label="SetupEmitter" userwidth="100" scriptengine="XSI.SIPython.1" tooltip="">
+               <scripttext>&lt;![CDATA[Application.FuraxSetupEmitter()]]&gt;</scripttext>
+            </item>
+            <item type="scriptbutton" label="SetupCage" userwidth="100" scriptengine="XSI.SIPython.1" tooltip="">
+               <scripttext>&lt;![CDATA[Application.FuraxSetupCage()]]&gt;</scripttext>
+            </item>
+            <item type="scriptbutton" label="CreateGuide" userwidth="100" scriptengine="XSI.SIPython.1" tooltip="">
+               <scripttext>&lt;![CDATA[Application.FuraxCreateGuide()]]&gt;</scripttext>
+            </item>
+            <item type="scriptbutton" label="CreateRender" userwidth="100" scriptengine="XSI.SIPython.1" tooltip="">
+               <scripttext>&lt;![CDATA[Application.FuraxCreateRender()]]&gt;</scripttext>
+            </item>
+         </tab>
+      </tabs>
+   </shelf_view>
+</xsi_file>

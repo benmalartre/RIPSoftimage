@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="Get 2D Array Size" category="Array2d" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="6732954">
+	<definition>
+		<nodes>
+			<node type="GetDataNode" index="0">
+				<param name="reference" type="31" value="Self.2darrayids"></param>
+				<param_ext name="reference" type="31" value="Self.2darrayids"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-137</prop>
+					<prop name="posy">-269</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetArraySizeNode" index="1">
+				<param name="array" type="3" value="0"></param>
+				<portdef name="array" type="2" structure="2" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">133</prop>
+					<prop name="posy">-284</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="inname" username="Array_Indices_Name" basename="Array Indices Name" portlabel="Array Indices Name" exposetype="single"> </port>
+			<port index="0" portname="reference" username="Array_Indices_Reference" basename="Array Indices Reference" portlabel="Array Indices Reference" exposetype="single"> </port>
+			<port index="1" portname="size" username="Size" basename="Size" portlabel="Size" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="0" from_port="value" to_node="1" to_port="array"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Array_Indices_Name"> </item>
+			<item type="input" name="Array_Indices_Reference"> </item>
+			<item type="output" name="Size"> </item>
+		</layout>
+	</definition>
+</xsi_file>

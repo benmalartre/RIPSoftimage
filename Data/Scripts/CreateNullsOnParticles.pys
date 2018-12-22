@@ -1,0 +1,17 @@
+import win32com.client
+from win32com.client import constants
+
+from Globals import *
+from Utils2 import *
+
+xsi = Application
+root = xsi.ActiveSCeneRoot.AddNull("Envelope_Root")
+cloud = xsi.Selection(0)
+
+geom = cloud.ActivePrimitive.Geometry
+cnt = geom.Points.Count
+
+for i in range(cnt):
+	n = AddNull(root,2,0.1,"Envelope1",1,.2,.5)
+	op = xsi.bApplyICEKinematics(cloud,n)
+	op.Parameters("ParticleID").Value = i

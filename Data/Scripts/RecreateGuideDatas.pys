@@ -1,0 +1,37 @@
+from Globals import *
+import Utils2 as uti
+import ICETree as tre
+
+def replaceFirstTwoChar(str,rep):
+	return rep[0:2]+str[2:]
+	
+def AddDatas(crv):
+	prop = crv.Properties("RigElement")
+
+	cls = uti.CreateAlwaysCompleteCluster(crv,constants.siVertexCluster,"ElementData")
+	uti.GetWeightMap(crv,"WidthMap",0.5,-100.0,100.0,cls)
+	uti.GetWeightMap(crv,"DepthMap",0.5,-100.0,100.0,cls)
+	uti.GetWeightMap(crv,"CollideMap",0.5,0.0,1.0,cls)
+	uti.GetWeightMap(crv,"StickMap",0.5,0.0,1.0,cls)
+	offsetshape = cls.AddProperty("SimpleDeformShape",0,"Offset")
+	
+
+def RemoveDatas(crv):
+	cls = crv.ActivePrimitive.Geometry.Clusters("ElementData")
+	if(cls):
+		xsi.DeleteObj(cls)
+
+sel = xsi.Selection
+
+if sel.Count:
+	model = sel(0).Model
+	crvs = []
+	for s in sel:
+		if s.Type == "crvlist" and not s.Name.find("_Crv")==-1:
+			crvs.append(s)
+			
+	for c in crvs:
+		RemoveDatas(c)
+		AddDatas(c)
+		
+#

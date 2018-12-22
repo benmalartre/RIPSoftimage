@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="kH3 Follow NURBS Lite" category="" tasks="k Hair3/Form" author="Anto Matkovic" url="http://www.matkovic.com/anto" formatversion="1.4" compoundversion="2.0" versiontag="" constructionmode="Current" backgroundcolor="8689840">
+	<description><![CDATA[]]></description>
+	<definition>
+		<nodes>
+			<node type="PassThroughNode" index="0">
+				<param name="in" type="4" value="0.095000"></param>
+				<portdef name="in" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">425</prop>
+					<prop name="posy">-674</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="1">
+				<param name="in" type="4" value="0.000000"></param>
+				<portdef name="in" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">413</prop>
+					<prop name="posy">-278</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="2">
+				<param name="in" type="4" value="1.000000"></param>
+				<portdef name="in" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">410</prop>
+					<prop name="posy">-430</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="3">
+				<param name="in" type="4" value="0.150000"></param>
+				<portdef name="in" type="4" structure="2" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">413</prop>
+					<prop name="posy">-356</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="4">
+				<param name="in" type="11" value="false"></param>
+				<portdef name="in" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">414</prop>
+					<prop name="posy">-192</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ExecuteNode" index="5">
+				<portdef name="port1" type="4096" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1168</prop>
+					<prop name="posy">-227</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="6">
+				<param name="in" type="4" value="0.000000"></param>
+				<portdef name="in" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">424</prop>
+					<prop name="posy">-596</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IfNode" index="7">
+				<param name="condition" type="11" value="true"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="4096" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="iffalse" type="4096" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1524</prop>
+					<prop name="posy">-333</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="8">
+				<param name="in" type="4" value="0.200000"></param>
+				<portdef name="in" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">416</prop>
+					<prop name="posy">199</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="9">
+				<param name="in" type="4" value="0.000000"></param>
+				<portdef name="in" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">418</prop>
+					<prop name="posy">-104</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="10">
+				<param name="in" type="4" value="0.300000"></param>
+				<portdef name="in" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">416</prop>
+					<prop name="posy">-515</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="kH3 Follow NURBS Core" version="2.0" index="11">
+				<param name="Blend_End" type="4" value="0.648000"></param>
+				<param name="Blend_Type" type="4" value="0.000000"></param>
+				<param name="AB_End" type="4" value="0.400000"></param>
+				<param name="Length" type="4" value="1.000000"></param>
+				<param name="Push" type="4" value="0.103000"></param>
+				<param name="Shift" type="4" value="0.000000"></param>
+				<param name="Negative_Push" type="11" value="false"></param>
+				<param name="X_Min" type="4" value="0.002000"></param>
+				<param name="X_Max" type="4" value="1.000000"></param>
+				<param name="Y_Min" type="4" value="0.002000"></param>
+				<param name="Y_Max" type="4" value="0.998000"></param>
+				<param name="Cuttof_Dist" type="4" value="0.000000"></param>
+				<portdef name="Cuttof_Dist" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Y_Max" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Negative_Push" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Blend_Type" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Shift" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="NURBS_Surface" type="1024" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Y_Min" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Blend_End" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="X_Min" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Push" type="4" structure="2" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="X_Max" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Length" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="AB_End" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">892</prop>
+					<prop name="posy">-270</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="12">
+				<param name="in" type="4" value="0.990000"></param>
+				<portdef name="in" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">416</prop>
+					<prop name="posy">119</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="13">
+				<param name="in" type="4" value="0.010000"></param>
+				<portdef name="in" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">416</prop>
+					<prop name="posy">48</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="14">
+				<param name="in" type="4" value="1.000000"></param>
+				<portdef name="in" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">415</prop>
+					<prop name="posy">-29</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="15">
+				<param name="reference" type="31" value="Self.kH_FNActive"></param>
+				<param_ext name="reference" type="31" value="Self.kH_FNActive"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1494</prop>
+					<prop name="posy">-188</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="in" username="Blend_End" basename="Blend End" portlabel="Blend End" exposetype="single"> </port>
+			<port index="1" portname="in" username="Shift" basename="Shift" portlabel="Shift" exposetype="single"> </port>
+			<port index="2" portname="in" username="Length" basename="Length" portlabel="Length" exposetype="single"> </port>
+			<port index="3" portname="in" username="Push" basename="Push" portlabel="Push" exposetype="single"> </port>
+			<port index="4" portname="in" username="Negative_Push" basename="Negative Push" portlabel="Negative Push" exposetype="single"> </port>
+			<port index="6" portname="in" username="Blend_Type" basename="Blend Type" portlabel="Blend Type" exposetype="single"> </port>
+			<port index="7" portname="result" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+			<port index="7" portname="condition" username="Enable" basename="Enable" portlabel="Enable" exposetype="single"> </port>
+			<port index="8" portname="in" username="Cuttof_Dist" basename="Cuttof Dist" portlabel="Cuttof Dist" exposetype="single"> </port>
+			<port index="9" portname="in" username="X_Min" basename="X Min" portlabel="X Min" exposetype="single"> </port>
+			<port index="10" portname="in" username="AB_End" basename="AB End" portlabel="AB End" exposetype="single"> </port>
+			<port index="11" portname="NURBS_Surface" username="NURBS_Surface" basename="NURBS Surface" portlabel="NURBS Surface" exposetype="use_node"> </port>
+			<port index="12" portname="in" username="Y_Max" basename="Y Max" portlabel="Y Max" exposetype="single"> </port>
+			<port index="13" portname="in" username="Y_Min" basename="Y Min" portlabel="Y Min" exposetype="single"> </port>
+			<port index="14" portname="in" username="X_Max" basename="X Max" portlabel="X Max" exposetype="single"> </port>
+			<port index="15" portname="value" username="Is_Active" basename="Is Active" portlabel="Is Active" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="11" from_port="Execute" to_node="5" to_port="port1"> </cnx>
+			<cnx from_node="12" from_port="out" to_node="11" to_port="Y_Max"> </cnx>
+			<cnx from_node="13" from_port="out" to_node="11" to_port="Y_Min"> </cnx>
+			<cnx from_node="14" from_port="out" to_node="11" to_port="X_Max"> </cnx>
+			<cnx from_node="0" from_port="out" to_node="11" to_port="Blend_End"> </cnx>
+			<cnx from_node="9" from_port="out" to_node="11" to_port="X_Min"> </cnx>
+			<cnx from_node="1" from_port="out" to_node="11" to_port="Shift"> </cnx>
+			<cnx from_node="8" from_port="out" to_node="11" to_port="Cuttof_Dist"> </cnx>
+			<cnx from_node="3" from_port="out" to_node="11" to_port="Push"> </cnx>
+			<cnx from_node="6" from_port="out" to_node="11" to_port="Blend_Type"> </cnx>
+			<cnx from_node="2" from_port="out" to_node="11" to_port="Length"> </cnx>
+			<cnx from_node="5" from_port="execute" to_node="7" to_port="iftrue"> </cnx>
+			<cnx from_node="10" from_port="out" to_node="11" to_port="AB_End"> </cnx>
+			<cnx from_node="4" from_port="out" to_node="11" to_port="Negative_Push"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Enable" min="0" max="0"> </item>
+			<group type="input" name="Length X">
+				<item type="input" name="Blend_End" min="0" max="1"> </item>
+				<item type="input" name="Blend_Type" min="0" max="1"> </item>
+				<item type="input" name="Length" min="0" max="1"> </item>
+				<item type="input" name="AB_End" min="0" max="1"> </item>
+			</group>
+			<group type="input" name="Normals Z">
+				<item type="input" name="Negative_Push"> </item>
+				<item type="input" name="Push" min="0" max="0.3"> </item>
+				<item type="input" name="Shift" min="0" max="1"> </item>
+			</group>
+			<group type="input" name="Limits">
+				<item type="input" name="X_Min" min="0" max="0.1"> </item>
+				<item type="input" name="X_Max" min="0" max="1"> </item>
+				<item type="input" name="Y_Min" min="0" max="1"> </item>
+				<item type="input" name="Y_Max" min="0" max="1"> </item>
+				<item type="input" name="Cuttof_Dist" min="0" max="2"> </item>
+			</group>
+			<item type="input" name="NURBS_Surface" min="0" max="0"> </item>
+			<item type="output" name="Execute" min="0" max="0"> </item>
+			<item type="output" name="Is_Active" min="0" max="0"> </item>
+		</layout>
+	</definition>
+</xsi_file>

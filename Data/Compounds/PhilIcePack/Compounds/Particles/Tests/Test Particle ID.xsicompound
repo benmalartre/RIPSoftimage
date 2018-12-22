@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="Test Particle ID" tasks="Particles/Conditionals" author="Softimage" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="5546441">
+	<description><![CDATA[This command uses the particle's age value as a trigger for an effect. Plug its Result output into a Trigger port on a State compound.]]></description>
+	<definition>
+		<nodes>
+			<node type="Get Point ID" version="1.0" index="0">
+				<param name="In_Name_Reference" type="31" value="Self"></param>
+				<param_ext name="In_Name_Reference" type="31" value="Self"></param_ext>
+				<portdef name="In_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-194</prop>
+					<prop name="posy">185</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="CompareNode" index="1">
+				<param name="type" type="3" value="0"></param>
+				<param name="epsilon" type="5" value="0.000000"></param>
+				<param name="first" type="3" value="0"></param>
+				<param name="second" type="3" value="0"></param>
+				<portdef name="first" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="2" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">72</prop>
+					<prop name="posy">197</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="3">
+				<param name="in" type="3" value="0"></param>
+				<portdef name="in" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">-199</prop>
+					<prop name="posy">275</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="1" portname="type" username="Type" basename="Type" portlabel="Type" exposetype="single">
+				<description><![CDATA[Defines the condition for the Test Number Particles value to be triggered: Equal To; Not Equal To; Less Than; Less than or Equal to; Greater Than; or Greater Than or Equal To.]]></description>
+			</port>
+			<port index="1" portname="epsilon" username="Epsilon" basename="Epsilon" portlabel="Epsilon" exposetype="single">
+				<description><![CDATA[Widens the range of acceptable values by a small amount so as to reduce rounding errors.]]></description>
+			</port>
+			<port index="1" portname="result" username="Result" basename="Result" portlabel="Result" exposetype="single"> </port>
+			<port index="3" portname="in" username="Test_ID" basename="Test ID" portlabel="Test ID" exposetype="single">
+				<description><![CDATA[The particle's age in seconds to use as a trigger. This value cannot exceed what is set for the particle in its Set Particle Age Limit compound.]]></description>
+			</port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="0" from_port="Point_ID" to_node="1" to_port="first"> </cnx>
+			<cnx from_node="3" from_port="out" to_node="1" to_port="second"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Test_ID"> </item>
+			<item type="input" name="Type"> </item>
+			<item type="input" name="Epsilon"> </item>
+			<item type="output" name="Result"> </item>
+		</layout>
+	</definition>
+</xsi_file>

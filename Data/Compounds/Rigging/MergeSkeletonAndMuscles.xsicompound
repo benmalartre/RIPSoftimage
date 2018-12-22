@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsi_file type="CompoundNode" name="MergeSkeletonAndMuscles" category="Rigging" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="6732954">
+	<definition>
+		<nodes>
+			<node type="GetDataNode" index="0">
+				<param name="reference" type="31" value="__PerPoint_MuscleID"></param>
+				<param_ext name="reference" type="31" value="__PerPoint_MuscleID"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1031</prop>
+					<prop name="posy">-211</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="SelectInArrayNode" index="3">
+				<param name="index" type="3" value="0"></param>
+				<param name="array.array_00" type="4" value="1.000000"></param>
+				<param name="array.array_01" type="4" value="0.000000"></param>
+				<param name="array.array_02" type="4" value="0.000000"></param>
+				<param name="array.array_03" type="4" value="0.000000"></param>
+				<param name="array.array_10" type="4" value="0.000000"></param>
+				<param name="array.array_11" type="4" value="1.000000"></param>
+				<param name="array.array_12" type="4" value="0.000000"></param>
+				<param name="array.array_13" type="4" value="0.000000"></param>
+				<param name="array.array_20" type="4" value="0.000000"></param>
+				<param name="array.array_21" type="4" value="0.000000"></param>
+				<param name="array.array_22" type="4" value="1.000000"></param>
+				<param name="array.array_23" type="4" value="0.000000"></param>
+				<param name="array.array_30" type="4" value="0.000000"></param>
+				<param name="array.array_31" type="4" value="0.000000"></param>
+				<param name="array.array_32" type="4" value="0.000000"></param>
+				<param name="array.array_33" type="4" value="1.000000"></param>
+				<portdef name="index" type="2" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="array" type="256" structure="2" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-406</prop>
+					<prop name="posy">267</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="SRTToMatrixNode" index="6">
+				<param name="scaling.scaling_x" type="4" value="1.000000"></param>
+				<param name="scaling.scaling_y" type="4" value="1.000000"></param>
+				<param name="scaling.scaling_z" type="4" value="1.000000"></param>
+				<param name="rotation.rotation_x" type="4" value="1.000000"></param>
+				<param name="rotation.rotation_y" type="4" value="0.000000"></param>
+				<param name="rotation.rotation_z" type="4" value="0.000000"></param>
+				<param name="rotation.rotation_angle" type="4" value="0.000000"></param>
+				<param name="translation.translation_x" type="4" value="0.000000"></param>
+				<param name="translation.translation_y" type="4" value="0.000000"></param>
+				<param name="translation.translation_z" type="4" value="0.000000"></param>
+				<portdef name="scaling" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="rotation" type="16384" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="translation" type="16" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-661</prop>
+					<prop name="posy">-80</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="FindInArrayNode" index="8">
+				<param name="value" type="3" value="0"></param>
+				<param name="array" type="3" value="0"></param>
+				<param name="epsilon" type="4" value="0.000000"></param>
+				<portdef name="value" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="array" type="2" structure="2" group="0" instance="0" port="1"></portdef>
+				<portdef name="epsilon" type="4" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-687</prop>
+					<prop name="posy">400</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="MergeTopoNode" index="9">
+				<portdef name="topo1" type="524288" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="topo2" type="524288" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">65</prop>
+					<prop name="posy">145</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="10">
+				<param name="reference" type="31" value="Self.TmpTopo"></param>
+				<param_ext name="reference" type="31" value="Self.TmpTopo"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-365</prop>
+					<prop name="posy">-2</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="11">
+				<param name="reference" type="31" value="Self.MuscleIterator"></param>
+				<param_ext name="reference" type="31" value="Self.MuscleIterator"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1049</prop>
+					<prop name="posy">258</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="12">
+				<param name="reference" type="31" value="Self.MusclePoints"></param>
+				<param_ext name="reference" type="31" value="Self.MusclePoints"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-683</prop>
+					<prop name="posy">222</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="13">
+				<param name="reference" type="31" value="Self.TmpTopo"></param>
+				<param_ext name="reference" type="31" value="Self.TmpTopo"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">75</prop>
+					<prop name="posy">396</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="14">
+				<param name="reference" type="31" value="Self.MuscleIDArray"></param>
+				<param_ext name="reference" type="31" value="Self.MuscleIDArray"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-960</prop>
+					<prop name="posy">487</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="18">
+				<param name="reference" type="31" value="PointPosition"></param>
+				<param_ext name="reference" type="31" value="PointPosition"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-858</prop>
+					<prop name="posy">25</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="19">
+				<param name="reference" type="31" value="Orientation"></param>
+				<param_ext name="reference" type="31" value="Orientation"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-841</prop>
+					<prop name="posy">159</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="20">
+				<param name="reference" type="31" value="Scale"></param>
+				<param_ext name="reference" type="31" value="Scale"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-840</prop>
+					<prop name="posy">-95</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="21">
+				<param name="reference" type="31" value="__NbMuscles"></param>
+				<param_ext name="reference" type="31" value="__NbMuscles"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-972</prop>
+					<prop name="posy">375</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Set Topology" version="1.0" index="22">
+				<param name="Reference" type="31" value="Self"></param>
+				<param_ext name="Reference" type="31" value="Self"></param_ext>
+				<portdef name="Topology" type="524288" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="In_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">510</prop>
+					<prop name="posy">375</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="BuildArrayFromSetNode" index="23">
+				<param name="value.value_00" type="4" value="1.000000"></param>
+				<param name="value.value_01" type="4" value="0.000000"></param>
+				<param name="value.value_02" type="4" value="0.000000"></param>
+				<param name="value.value_03" type="4" value="0.000000"></param>
+				<param name="value.value_10" type="4" value="0.000000"></param>
+				<param name="value.value_11" type="4" value="1.000000"></param>
+				<param name="value.value_12" type="4" value="0.000000"></param>
+				<param name="value.value_13" type="4" value="0.000000"></param>
+				<param name="value.value_20" type="4" value="0.000000"></param>
+				<param name="value.value_21" type="4" value="0.000000"></param>
+				<param name="value.value_22" type="4" value="1.000000"></param>
+				<param name="value.value_23" type="4" value="0.000000"></param>
+				<param name="value.value_30" type="4" value="0.000000"></param>
+				<param name="value.value_31" type="4" value="0.000000"></param>
+				<param name="value.value_32" type="4" value="0.000000"></param>
+				<param name="value.value_33" type="4" value="1.000000"></param>
+				<portdef name="value" type="256" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-484</prop>
+					<prop name="posy">-131</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Set Data" version="1.0" index="24">
+				<param name="Reference" type="31" value="Self.MusclePoints"></param>
+				<param name="Reference1" type="31" value="Self.MuscleIDArray"></param>
+				<param name="Value.Value_00" type="4" value="1.000000"></param>
+				<param name="Value.Value_01" type="4" value="0.000000"></param>
+				<param name="Value.Value_02" type="4" value="0.000000"></param>
+				<param name="Value.Value_03" type="4" value="0.000000"></param>
+				<param name="Value.Value_10" type="4" value="0.000000"></param>
+				<param name="Value.Value_11" type="4" value="1.000000"></param>
+				<param name="Value.Value_12" type="4" value="0.000000"></param>
+				<param name="Value.Value_13" type="4" value="0.000000"></param>
+				<param name="Value.Value_20" type="4" value="0.000000"></param>
+				<param name="Value.Value_21" type="4" value="0.000000"></param>
+				<param name="Value.Value_22" type="4" value="1.000000"></param>
+				<param name="Value.Value_23" type="4" value="0.000000"></param>
+				<param name="Value.Value_30" type="4" value="0.000000"></param>
+				<param name="Value.Value_31" type="4" value="0.000000"></param>
+				<param name="Value.Value_32" type="4" value="0.000000"></param>
+				<param name="Value.Value_33" type="4" value="1.000000"></param>
+				<param name="Value1" type="3" value="0"></param>
+				<param_ext name="Reference" type="31" value="Self.MusclePoints"></param_ext>
+				<param_ext name="Reference1" type="31" value="Self.MuscleIDArray"></param_ext>
+				<portdef name="Value" type="256" structure="2" group="2" instance="0" port="0" groupname="Value"></portdef>
+				<portdef name="Value1" type="2" structure="2" group="2" instance="1" port="0" groupname="Value"></portdef>
+				<portdef name="In_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-209</prop>
+					<prop name="posy">-226</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Repeat with Counter" version="1.0" index="25">
+				<param name="Reference" type="31" value=""></param>
+				<param name="Num_Iterations" type="3" value="0"></param>
+				<param_ext name="Reference" type="31" value=""></param_ext>
+				<portdef name="In_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Num_Iterations" type="2" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Execute_Each_Iteration" type="4096" structure="1" group="2" instance="0" port="0" groupname="Execute Each Iteration"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">452</prop>
+					<prop name="posy">130</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Set Data" version="1.0" index="26">
+				<param name="Reference" type="31" value=""></param>
+				<param_ext name="Reference" type="31" value=""></param_ext>
+				<portdef name="Value" type="524288" structure="1" group="2" instance="0" port="0" groupname="Value"></portdef>
+				<portdef name="In_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">267</prop>
+					<prop name="posy">90</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="bExtrudeWithCap" version="1.0" index="28">
+				<param name="Points.Points_00" type="4" value="1.000000"></param>
+				<param name="Points.Points_01" type="4" value="0.000000"></param>
+				<param name="Points.Points_02" type="4" value="0.000000"></param>
+				<param name="Points.Points_03" type="4" value="0.000000"></param>
+				<param name="Points.Points_10" type="4" value="0.000000"></param>
+				<param name="Points.Points_11" type="4" value="1.000000"></param>
+				<param name="Points.Points_12" type="4" value="0.000000"></param>
+				<param name="Points.Points_13" type="4" value="0.000000"></param>
+				<param name="Points.Points_20" type="4" value="0.000000"></param>
+				<param name="Points.Points_21" type="4" value="0.000000"></param>
+				<param name="Points.Points_22" type="4" value="1.000000"></param>
+				<param name="Points.Points_23" type="4" value="0.000000"></param>
+				<param name="Points.Points_30" type="4" value="0.000000"></param>
+				<param name="Points.Points_31" type="4" value="0.000000"></param>
+				<param name="Points.Points_32" type="4" value="0.000000"></param>
+				<param name="Points.Points_33" type="4" value="1.000000"></param>
+				<param name="Input_Position.Input_Position_x" type="4" value="0.000000"></param>
+				<param name="Input_Position.Input_Position_y" type="4" value="0.000000"></param>
+				<param name="Input_Position.Input_Position_z" type="4" value="0.000000"></param>
+				<param name="Closed" type="11" value="true"></param>
+				<param name="CapStart" type="11" value="false"></param>
+				<param name="CapEnd" type="11" value="false"></param>
+				<param name="CapSpike" type="4" value="0.500000"></param>
+				<portdef name="CapEnd" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="CapStart" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Input_Position" type="16" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="CapSpike" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Points" type="256" structure="2" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Closed" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Section" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-152</prop>
+					<prop name="posy">177</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="BuildArrayFromSetNode" index="29">
+				<param name="value" type="3" value="0"></param>
+				<portdef name="value" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-748</prop>
+					<prop name="posy">-211</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ExecuteNode" index="31">
+				<portdef name="port1" type="4096" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="port2" type="4096" structure="1" group="0" instance="1" port="0"></portdef>
+				<portdef name="port3" type="4096" structure="1" group="0" instance="2" port="0"></portdef>
+				<portdef name="port4" type="4096" structure="1" group="0" instance="3" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1240</prop>
+					<prop name="posy">19</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="32">
+				<portdef name="in" type="8192" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1218</prop>
+					<prop name="posy">-54</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="28" portname="Section" username="Section" basename="Section" portlabel="Section" exposetype="single"> </port>
+			<port index="31" portname="execute" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+			<port index="32" portname="in" username="Muscles" basename="Muscles" portlabel="Muscles" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="22" from_port="Execute" to_node="31" to_port="port4"> </cnx>
+			<cnx from_node="24" from_port="Execute" to_node="31" to_port="port2"> </cnx>
+			<cnx from_node="25" from_port="Execute" to_node="31" to_port="port3"> </cnx>
+			<cnx from_node="26" from_port="Execute" to_node="25" to_port="Execute_Each_Iteration"> </cnx>
+			<cnx from_node="23" from_port="array" to_node="24" to_port="Value"> </cnx>
+			<cnx from_node="29" from_port="array" to_node="24" to_port="Value1"> </cnx>
+			<cnx from_node="28" from_port="Result" to_node="9" to_port="topo2"> </cnx>
+			<cnx from_node="3" from_port="value" to_node="28" to_port="Points"> </cnx>
+			<cnx from_node="8" from_port="indexarray" to_node="3" to_port="index"> </cnx>
+			<cnx from_node="32" from_port="out" to_node="20" to_port="inname"> </cnx>
+			<cnx from_node="32" from_port="out" to_node="19" to_port="inname"> </cnx>
+			<cnx from_node="32" from_port="out" to_node="18" to_port="inname"> </cnx>
+			<cnx from_node="32" from_port="out" to_node="0" to_port="inname"> </cnx>
+			<cnx from_node="32" from_port="out" to_node="21" to_port="inname"> </cnx>
+			<cnx from_node="9" from_port="result" to_node="26" to_port="Value"> </cnx>
+			<cnx from_node="0" from_port="value" to_node="29" to_port="value"> </cnx>
+			<cnx from_node="10" from_port="value" to_node="9" to_port="topo1"> </cnx>
+			<cnx from_node="10" from_port="outname" to_node="26" to_port="In_Name"> </cnx>
+			<cnx from_node="11" from_port="outname" to_node="25" to_port="In_Name"> </cnx>
+			<cnx from_node="11" from_port="value" to_node="8" to_port="value"> </cnx>
+			<cnx from_node="12" from_port="value" to_node="3" to_port="array"> </cnx>
+			<cnx from_node="13" from_port="value" to_node="22" to_port="Topology"> </cnx>
+			<cnx from_node="14" from_port="value" to_node="8" to_port="array"> </cnx>
+			<cnx from_node="18" from_port="value" to_node="6" to_port="translation"> </cnx>
+			<cnx from_node="19" from_port="value" to_node="6" to_port="rotation"> </cnx>
+			<cnx from_node="20" from_port="value" to_node="6" to_port="scaling"> </cnx>
+			<cnx from_node="21" from_port="value" to_node="25" to_port="Num_Iterations"> </cnx>
+			<cnx from_node="6" from_port="matrix" to_node="23" to_port="value"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Muscles"> </item>
+			<item type="input" name="Section"> </item>
+			<item type="output" name="Execute"> </item>
+		</layout>
+	</definition>
+</xsi_file>

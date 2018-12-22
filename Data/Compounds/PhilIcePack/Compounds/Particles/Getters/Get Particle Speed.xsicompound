@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="Get Particle Speed" tasks="Particles/Getters" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="12228200">
+	<description><![CDATA[This compound gets the particle's current velocity data as defined by its PointVelocity attribute. You can output the Velocity Vector and Speed data.]]></description>
+	<definition>
+		<nodes>
+			<node type="GetDataNode" index="0">
+				<param name="reference" type="31" value="Self.PointVelocity"></param>
+				<param_ext name="reference" type="31" value="Self.PointVelocity"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-345</prop>
+					<prop name="posy">255</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="LengthNode" index="1">
+				<param name="vector.vector_x" type="4" value="0.000000"></param>
+				<param name="vector.vector_y" type="4" value="0.000000"></param>
+				<param name="vector.vector_z" type="4" value="0.000000"></param>
+				<portdef name="vector" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-99</prop>
+					<prop name="posy">282</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="reference" username="Reference" basename="Reference" portlabel="Reference" exposetype="single">
+				<description><![CDATA[The particle's PointVelocity attribute. Click the Explorer button to open up an explorer and select a different particle attribute.]]></description>
+			</port>
+			<port index="1" portname="result" username="Speed" basename="Speed" portlabel="Speed" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="0" from_port="value" to_node="1" to_port="vector"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Reference"> </item>
+			<item type="output" name="Speed"> </item>
+		</layout>
+	</definition>
+</xsi_file>

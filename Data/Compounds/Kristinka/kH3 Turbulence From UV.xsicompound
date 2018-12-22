@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="kH3 Turbulence From UV" category="" tasks="k Hair3/Utilities" author="Anto Matkovic" url="http://www.matkovic.com/anto" formatversion="1.4" compoundversion="1.0" versiontag="" constructionmode="Current" backgroundcolor="10002042">
+	<description><![CDATA[]]></description>
+	<definition>
+		<nodes>
+			<node type="GetDataNode" index="0">
+				<param name="reference" type="31" value="Self.kH_PointUV"></param>
+				<param_ext name="reference" type="31" value="Self.kH_PointUV"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-715</prop>
+					<prop name="posy">-70</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IntegerNode" index="1">
+				<param name="value" type="3" value="11258"></param>
+				<portdef name="value" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-267</prop>
+					<prop name="posy">-169</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="RescaleNode" index="2">
+				<param name="value" type="4" value="0.000000"></param>
+				<param name="sourcestart" type="4" value="-1.000000"></param>
+				<param name="sourceend" type="4" value="1.000000"></param>
+				<param name="targetstart" type="4" value="-0.050000"></param>
+				<param name="targetend" type="4" value="0.050000"></param>
+				<param name="clamp" type="11" value="true"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="sourcestart" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="sourceend" type="4" structure="1" group="0" instance="0" port="2"></portdef>
+				<portdef name="targetstart" type="4" structure="1" group="0" instance="0" port="3"></portdef>
+				<portdef name="targetend" type="4" structure="1" group="0" instance="0" port="4"></portdef>
+				<portdef name="clamp" type="1" structure="1" group="0" instance="0" port="5"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">245</prop>
+					<prop name="posy">-24</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="3">
+				<param name="reference" type="31" value="Self.kH_EmitPointUV"></param>
+				<param_ext name="reference" type="31" value="Self.kH_EmitPointUV"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-747</prop>
+					<prop name="posy">-190</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ScalarTo2DVectorNode" index="4">
+				<param name="x" type="4" value="1.000000"></param>
+				<param name="y" type="4" value="1.000000"></param>
+				<portdef name="x" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="y" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-506</prop>
+					<prop name="posy">24</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ScalarNode" index="5">
+				<param name="value" type="4" value="46.698002"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-761</prop>
+					<prop name="posy">119</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="TurbulenceNode" index="6">
+				<param name="noisetype" type="3" value="1"></param>
+				<param name="seed" type="3" value="12345"></param>
+				<param name="timevarying" type="11" value="false"></param>
+				<param name="position.position_x" type="4" value="0.000000"></param>
+				<param name="position.position_y" type="4" value="0.000000"></param>
+				<param name="timefrequency" type="4" value="0.300000"></param>
+				<param name="spacefrequency.spacefrequency_x" type="4" value="1.000000"></param>
+				<param name="spacefrequency.spacefrequency_y" type="4" value="1.000000"></param>
+				<param name="complexity" type="3" value="1"></param>
+				<portdef name="seed" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="timevarying" type="1" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="position" type="8" structure="1" group="0" instance="0" port="2"></portdef>
+				<portdef name="timefrequency" type="4" structure="1" group="0" instance="0" port="3"></portdef>
+				<portdef name="spacefrequency" type="8" structure="1" group="0" instance="0" port="4"></portdef>
+				<portdef name="complexity" type="2" structure="1" group="0" instance="0" port="5"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-32</prop>
+					<prop name="posy">-10</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ScalarNode" index="7">
+				<param name="value" type="4" value="0.010000"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-767</prop>
+					<prop name="posy">188</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="MaximumNode" index="8">
+				<param name="value1" type="4" value="0.000000"></param>
+				<param name="value2" type="4" value="0.000000"></param>
+				<portdef name="value1" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value2" type="4" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-667</prop>
+					<prop name="posy">128</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="MultiplyNode" index="9">
+				<param name="value1.value1_x" type="4" value="1.000000"></param>
+				<param name="value1.value1_y" type="4" value="1.000000"></param>
+				<param name="value2.value2_x" type="4" value="1.000000"></param>
+				<param name="value2.value2_y" type="4" value="1.000000"></param>
+				<portdef name="value1" type="8" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value2" type="8" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-262</prop>
+					<prop name="posy">-7</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ScalarTo2DVectorNode" index="10">
+				<param name="x" type="4" value="0.000000"></param>
+				<param name="y" type="4" value="0.000000"></param>
+				<portdef name="x" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="y" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-448</prop>
+					<prop name="posy">114</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="SelectCaseNode" index="11">
+				<param name="condition" type="3" value="1"></param>
+				<param name="case0.case0_x" type="4" value="0.000000"></param>
+				<param name="case0.case0_y" type="4" value="0.000000"></param>
+				<param name="case1.case1_x" type="4" value="0.000000"></param>
+				<param name="case1.case1_y" type="4" value="0.000000"></param>
+				<param name="default.default_x" type="4" value="0.000000"></param>
+				<param name="default.default_y" type="4" value="0.000000"></param>
+				<portdef name="condition" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="case0" type="8" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="case1" type="8" structure="1" group="1" instance="1" port="0"></portdef>
+				<portdef name="default" type="8" structure="1" group="2" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-437</prop>
+					<prop name="posy">-186</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="1" portname="value" username="Seed" basename="Seed" portlabel="Seed" exposetype="single"> </port>
+			<port index="2" portname="result" username="Result" basename="Result" portlabel="Result" exposetype="single"> </port>
+			<port index="2" portname="targetstart" username="Target_Start" basename="Target Start" portlabel="Target Start" exposetype="single"> </port>
+			<port index="2" portname="targetend" username="Target_End" basename="Target End" portlabel="Target End" exposetype="single"> </port>
+			<port index="4" portname="x" username="X_Multiply" basename="X Multiply" portlabel="X Multiply" exposetype="single"> </port>
+			<port index="4" portname="y" username="Y_Multiply" basename="Y Multiply" portlabel="Y Multiply" exposetype="single"> </port>
+			<port index="5" portname="value" username="Frequency" basename="Frequency" portlabel="Frequency" exposetype="single"> </port>
+			<port index="6" portname="complexity" username="Complexity" basename="Complexity" portlabel="Complexity" exposetype="single"> </port>
+			<port index="6" portname="noisetype" username="Noise_Type" basename="Noise Type" portlabel="Noise Type" exposetype="single"> </port>
+			<port index="11" portname="condition" username="UV" basename="UV" portlabel="UV" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="3" from_port="value" to_node="11" to_port="case0"> </cnx>
+			<cnx from_node="0" from_port="value" to_node="11" to_port="case1"> </cnx>
+			<cnx from_node="10" from_port="vector" to_node="6" to_port="spacefrequency"> </cnx>
+			<cnx from_node="1" from_port="result" to_node="6" to_port="seed"> </cnx>
+			<cnx from_node="4" from_port="vector" to_node="9" to_port="value2"> </cnx>
+			<cnx from_node="5" from_port="result" to_node="8" to_port="value1"> </cnx>
+			<cnx from_node="7" from_port="result" to_node="8" to_port="value2"> </cnx>
+			<cnx from_node="8" from_port="max" to_node="10" to_port="x"> </cnx>
+			<cnx from_node="8" from_port="max" to_node="10" to_port="y"> </cnx>
+			<cnx from_node="9" from_port="result" to_node="6" to_port="position"> </cnx>
+			<cnx from_node="6" from_port="result" to_node="2" to_port="value"> </cnx>
+			<cnx from_node="11" from_port="result" to_node="9" to_port="value1"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Target_Start" min="0" max="1"> </item>
+			<item type="input" name="Target_End" min="0" max="1"> </item>
+			<item type="input" name="Frequency" min="0" max="50"> </item>
+			<item type="input" name="X_Multiply" min="0" max="2"> </item>
+			<item type="input" name="Y_Multiply" min="0" max="2"> </item>
+			<item type="input" name="Noise_Type"> </item>
+			<item type="input" name="Complexity"> </item>
+			<item type="input" name="Seed" min="0" max="0"> </item>
+			<item type="input" name="UV" min="0" max="0">
+				<enum value="0"><![CDATA[Emit Location]]></enum>
+				<enum value="1"><![CDATA[Form Node]]></enum>
+			</item>
+			<item type="output" name="Result"> </item>
+		</layout>
+	</definition>
+</xsi_file>

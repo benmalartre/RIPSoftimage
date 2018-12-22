@@ -1,0 +1,43 @@
+
+from Globals import *
+import Utils2 as uti
+reload(uti)
+import ICETree as tree
+
+def MakeEnvelopedMesh(mesh):
+	dup = uti.GetMeshDuplicate(mesh)
+	maps = ["RaycastMap","SearchMap","SmoothWeightMap","MuscleMap"]
+	for m in maps:
+		uti.CopyWeightMap(mesh,dup,m)
+
+	model = mesh.Model
+	env_grp = model.Groups("Envelope")
+	dup.Name = mesh.name+"_Enveloped"
+	if not env_grp:
+		xsi.LogMessage("[Make Enveloped Mesh] ERROR : No Skeleton Point Cloud in model "+model.Name)
+		xsi.LogMessage("[Make Enveloped Mesh] ERROR : No Envelope Group in model "+model.Name,constants.siError)
+		return
+		'''
+		skeleton = model.FindChild("ICE_Skeleton",constants.siPointCloudType)
+		if not skeleton:
+			xsi.LogMessage("[Make Enveloped Mesh] ERROR : No Skeleton Point Cloud in model "+model.Name)
+		'''
+	else:
+		xsi.ApplyFlexEnv(dup.FullName+";"+env_grp.Members.GetAsText(), "", 2)
+		env = dup.ActivePrimitive.ConstructionHistory.Filter("envelopop")(0)
+		env.Mute = True
+		
+		init = tree.CreateICETree(dup,"GetWeights",0)
+		node = xsi.AddICECompoundNode("TransferWeightsFromICESkeleton", str(init))
+		xsi.ConnectICENodes(str(init)+".port1",str(node)+".Execute")
+		xsi.SetValue(str(node)+".Reference",tree.ReplaceModelNameByThisModel(mesh,model))
+		#Application.AddICECompoundNode("TransferWeightsFromICESkeleton", "Rory_Rig.Head_Rory_lvl2_Enveloped.polymsh.Transfert_Weights_From_ICE_Skeleton")
+		#Application.ConnectICENodes("Rory_Rig.Head_Rory_lvl2_Enveloped.polymsh.Transfert_Weights_From_ICE_Skeleton.port1", "Rory_Rig.Head_Rory_lvl2_Enveloped.polymsh.Transfert_Weights_From_ICE_Skeleton.TransferWeightsFromICESkeleton.Execute")
+
+		deform = tree.CreateICETree(dup,"EnvelopeParticles",2)
+		node = xsi.AddICECompoundNode("ICE Envelope Skeleton", str(deform))
+		xsi.ConnectICENodes(str(deform)+".port1",str(node)+".Execute")
+	
+mesh = xsi.Selection(0)
+MakeEnvelopedMesh(mesh)
+

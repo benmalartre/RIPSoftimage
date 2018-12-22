@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="WrinkleBase" category="" tasks="Deformation/Effects" author="" url="" formatversion="1.4" compoundversion="1.0" versiontag="" backgroundcolor="3576575">
+	<description><![CDATA[]]></description>
+	<definition>
+		<nodes>
+			<node type="Get Edges" version="1.0" index="0">
+				<datablob category="ui_infos">
+					<prop name="posx">23</prop>
+					<prop name="posy">73</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="LengthNode" index="1">
+				<param name="vector.vector_x" type="4" value="0.000000"></param>
+				<param name="vector.vector_y" type="4" value="0.000000"></param>
+				<param name="vector.vector_z" type="4" value="0.000000"></param>
+				<portdef name="vector" type="16" structure="2" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">150</prop>
+					<prop name="posy">69</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Set Data" version="1.0" index="2">
+				<param name="Reference" type="31" value="Self.BaseLength"></param>
+				<param name="Value" type="4" value="0.000000"></param>
+				<param_ext name="Reference" type="31" value="Self.BaseLength"></param_ext>
+				<portdef name="In_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Value" type="4" structure="2" group="2" instance="0" port="0" groupname="Value"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">259</prop>
+					<prop name="posy">69</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="2" portname="Execute" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="0" from_port="Edge_Vectors" to_node="1" to_port="vector"> </cnx>
+			<cnx from_node="1" from_port="result" to_node="2" to_port="Value"> </cnx>
+		</connections>
+		<layout>
+			<item type="output" name="Execute"> </item>
+		</layout>
+	</definition>
+</xsi_file>

@@ -1,0 +1,704 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsi_file type="CompoundNode" name="Furax_Dynamics" category="Furax" author="benmalartre" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="4238268">
+	<description><![CDATA[Super!!]]></description>
+	<definition>
+		<nodes>
+			<node type="CacheOnFileNode" index="0">
+				<param name="templatepath" type="3" value="0"></param>
+				<param name="alternativepath" type="31" value="[project path]/Simulation/[scene]/[model]/[object]/"></param>
+				<param name="filemode" type="3" value="2"></param>
+				<param name="secondpath" type="3" value="0"></param>
+				<param name="VersionString" type="31" value="Take1"></param>
+				<param name="attributelist" type="31" value="PointPosition"></param>
+				<param name="FilePath" type="8" value="[project path]/Simulation/[scene]/[model]/[object]/"></param>
+				<param name="ResolvedFilePath" type="8" value="F:\Works\Projects\Hair_RnD\Simulation\Jorge_029_bis\jorge_hair\hair_mesh\hair_mesh_Take1_#.icecache"></param>
+				<param name="FileName" type="8" value="[object]_[version]_[frame]"></param>
+				<param name="FileType" type="3" value="0"></param>
+				<param name="ResolvedSecondFilePath" type="8" value="F:\Works\Projects\Hair_RnD\Simulation\jorge_hair\hair_mesh\hair_mesh_Take1_#.icecache"></param>
+				<param name="FileTypeString" type="8" value=".icecache"></param>
+				<param name="mute" type="11" value="false"></param>
+				<param name="frame" type="4" value="1.000000"></param>
+				<param name="normalize" type="11" value="true"></param>
+				<param name="blend" type="4" value="1.000000"></param>
+				<param name="overlay" type="11" value="false"></param>
+				<param name="append" type="11" value="false"></param>
+				<param name="filefullname.filefullname_string" type="8" value=""></param>
+				<param name="filefullname.filefullname_uimode" type="8" value=""></param>
+				<param name="filefullname.filefullname_filepathseq" type="8" value=""></param>
+				<param name="filefullname.filefullname_filename" type="8" value=""></param>
+				<param name="cachingmode" type="3" value="0"></param>
+				<param name="subframemode" type="11" value="false"></param>
+				<param_ext name="templatepath" type="3" value="0"></param_ext>
+				<portdef name="mute" type="1" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<portdef name="frame" type="4" structure="1" group="4" instance="0" port="0"></portdef>
+				<portdef name="normalize" type="1" structure="1" group="4" instance="0" port="1"></portdef>
+				<portdef name="blend" type="4" structure="1" group="4" instance="0" port="2"></portdef>
+				<portdef name="overlay" type="1" structure="1" group="4" instance="0" port="3"></portdef>
+				<portdef name="append" type="1" structure="1" group="4" instance="0" port="4"></portdef>
+				<portdef name="filefullname" type="131072" structure="1" group="4" instance="0" port="5"></portdef>
+				<portdef name="cachingmode" type="2" structure="1" group="4" instance="0" port="6"></portdef>
+				<portdef name="subframemode" type="1" structure="1" group="4" instance="0" port="7"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">643</prop>
+					<prop name="posy">1310</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="1">
+				<param name="reference" type="31" value=""></param>
+				<param_ext name="reference" type="31" value=""></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-553</prop>
+					<prop name="posy">-100</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="2">
+				<param name="reference" type="31" value="this.cls.RootVertices"></param>
+				<param_ext name="reference" type="31" value="this.cls.RootVertices"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-225</prop>
+					<prop name="posy">55</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IfNode" index="3">
+				<param name="condition" type="11" value="false"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="65536" structure="1" group="0" instance="0" port="1" supportedblob="3"></portdef>
+				<portdef name="iffalse" type="65536" structure="1" group="0" instance="0" port="2" supportedblob="3"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">214</prop>
+					<prop name="posy">325</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="LinearInterpolateNode" index="4">
+				<param name="first.first_x" type="4" value="0.000000"></param>
+				<param name="first.first_y" type="4" value="0.000000"></param>
+				<param name="first.first_z" type="4" value="0.000000"></param>
+				<param name="second.second_x" type="4" value="0.000000"></param>
+				<param name="second.second_y" type="4" value="0.000000"></param>
+				<param name="second.second_z" type="4" value="0.000000"></param>
+				<param name="blend" type="4" value="0.000000"></param>
+				<param name="clamp" type="11" value="false"></param>
+				<portdef name="first" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="16" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="blend" type="4" structure="1" group="0" instance="0" port="2"></portdef>
+				<portdef name="clamp" type="1" structure="1" group="0" instance="0" port="3"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">148</prop>
+					<prop name="posy">800</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="MultiplyNode" index="5">
+				<param name="value1" type="4" value="1.000000"></param>
+				<param name="value2" type="4" value="1.000000"></param>
+				<portdef name="value1" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value2" type="4" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-31</prop>
+					<prop name="posy">970</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="6">
+				<param name="in" type="4" value="1.000000"></param>
+				<portdef name="in" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">-863</prop>
+					<prop name="posy">560</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="SwitchContextNode" index="7">
+				<param name="value.value_x" type="4" value="0.000000"></param>
+				<param name="value.value_y" type="4" value="0.000000"></param>
+				<param name="value.value_z" type="4" value="0.000000"></param>
+				<portdef name="value" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-83</prop>
+					<prop name="posy">739</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Syflex Cloth" version="1.0" index="8">
+				<param name="First_Frame" type="4" value="90.000000"></param>
+				<param name="Precision" type="4" value="0.001000"></param>
+				<param name="Mass" type="4" value="1.000000"></param>
+				<param name="Stiffness" type="4" value="3.000000"></param>
+				<param name="Damping" type="4" value="0.003000"></param>
+				<param name="Shear" type="4" value="0.010000"></param>
+				<param name="Bend" type="4" value="0.001000"></param>
+				<param name="Gravity.Gravity_x" type="4" value="0.000000"></param>
+				<param name="Gravity.Gravity_y" type="4" value="-0.100000"></param>
+				<param name="Gravity.Gravity_z" type="4" value="0.000000"></param>
+				<param name="Damp_Global" type="4" value="0.001000"></param>
+				<portdef name="First_Frame" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Precision" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Mass" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Force" type="65536" structure="1" group="2" instance="0" port="0" supportedblob="3" groupname="Force"></portdef>
+				<portdef name="Force1" type="65536" structure="1" group="2" instance="1" port="0" supportedblob="3" groupname="Force"></portdef>
+				<portdef name="Force2" type="65536" structure="1" group="2" instance="2" port="0" supportedblob="3" groupname="Force"></portdef>
+				<portdef name="Force3" type="65536" structure="1" group="2" instance="3" port="0" supportedblob="3" groupname="Force"></portdef>
+				<portdef name="Force4" type="65536" structure="1" group="2" instance="4" port="0" supportedblob="3" groupname="Force"></portdef>
+				<portdef name="Stiffness" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Damping" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Shear" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Bend" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Gravity" type="16" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Damp_Global" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">419</prop>
+					<prop name="posy">-124</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Syflex Collide Mesh" version="1.0" index="9">
+				<param name="Envelope_Ext" type="4" value="0.050000"></param>
+				<param name="Envelope_Int" type="4" value="-0.050000"></param>
+				<param name="Friction" type="4" value="0.200000"></param>
+				<param name="Damp" type="4" value="0.100000"></param>
+				<param name="Sticky" type="4" value="0.000000"></param>
+				<param name="Priority" type="4" value="0.000000"></param>
+				<portdef name="Envelope_Ext" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Envelope_Int" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Friction" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Damp" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Sticky" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Priority" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Geometry" type="1024" structure="1" group="2" instance="0" port="0" groupname="Geometry"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-18</prop>
+					<prop name="posy">-102</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Syflex Pin" version="1.0" index="10">
+				<param name="Distance" type="4" value="0.000000"></param>
+				<param name="Stiff" type="4" value="1.000000"></param>
+				<param name="Damp" type="4" value="0.100000"></param>
+				<portdef name="Object" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Distance" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Stiff" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Damp" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Point_Cluster" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">40</prop>
+					<prop name="posy">82</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Syflex Wind" version="1.0" index="11">
+				<param name="Direction.Direction_x" type="4" value="0.000000"></param>
+				<param name="Direction.Direction_y" type="4" value="0.000000"></param>
+				<param name="Direction.Direction_z" type="4" value="0.000000"></param>
+				<param name="Perturb.Perturb_x" type="4" value="0.000000"></param>
+				<param name="Perturb.Perturb_y" type="4" value="0.000000"></param>
+				<param name="Perturb.Perturb_z" type="4" value="0.000000"></param>
+				<param name="Intensity" type="4" value="0.000000"></param>
+				<param name="Time_Freq" type="4" value="200.000000"></param>
+				<param name="One_Side" type="11" value="false"></param>
+				<portdef name="Direction" type="16" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Perturb" type="16" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Intensity" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Time_Freq" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="One_Side" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">27</prop>
+					<prop name="posy">230</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Set Data" version="1.0" index="12">
+				<param name="Reference" type="31" value="Self.PointPosition"></param>
+				<param name="Value.Value_x" type="4" value="0.000000"></param>
+				<param name="Value.Value_y" type="4" value="0.000000"></param>
+				<param name="Value.Value_z" type="4" value="0.000000"></param>
+				<param_ext name="Reference" type="31" value="Self.PointPosition"></param_ext>
+				<portdef name="In_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Value" type="16" structure="1" group="2" instance="0" port="0" groupname="Value"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">345</prop>
+					<prop name="posy">767</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Syflex Collide Self" version="1.0" index="13">
+				<param name="Envelope" type="4" value="0.010000"></param>
+				<param name="Side" type="3" value="0"></param>
+				<param name="Friction" type="4" value="0.150000"></param>
+				<param name="Damp" type="4" value="0.000000"></param>
+				<portdef name="Envelope" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Side" type="2" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Friction" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Damp" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-42</prop>
+					<prop name="posy">412</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="14">
+				<portdef name="in" type="8192" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-746</prop>
+					<prop name="posy">392</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ExecuteNode" index="15">
+				<portdef name="port1" type="4096" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="port2" type="4096" structure="1" group="0" instance="1" port="0"></portdef>
+				<portdef name="port3" type="4096" structure="1" group="0" instance="2" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1077</prop>
+					<prop name="posy">1031</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="CurrentFrameNode" index="16">
+				<param name="globaltime" type="11" value="true"></param>
+				<portdef name="globaltime" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-75</prop>
+					<prop name="posy">-634</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="17">
+				<param name="reference" type="31" value="Self.PointPosition"></param>
+				<param_ext name="reference" type="31" value="Self.PointPosition"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-304</prop>
+					<prop name="posy">798</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="18">
+				<param name="reference" type="31" value="this.cls.WeightMapCls.DynamicsMap.Weights"></param>
+				<param_ext name="reference" type="31" value="this.cls.WeightMapCls.DynamicsMap.Weights"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-618</prop>
+					<prop name="posy">1072</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="19">
+				<param name="in" type="4" value="1.000000"></param>
+				<portdef name="in" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">-499</prop>
+					<prop name="posy">-592</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="CompareNode" index="20">
+				<param name="type" type="3" value="2"></param>
+				<param name="epsilon" type="5" value="0.001000"></param>
+				<param name="first" type="4" value="0.000000"></param>
+				<param name="second" type="4" value="0.000000"></param>
+				<portdef name="first" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">179</prop>
+					<prop name="posy">-638</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Set Data" version="1.0" index="21">
+				<param name="Reference" type="31" value="Self.PointPosition"></param>
+				<param name="Value.Value_x" type="4" value="0.000000"></param>
+				<param name="Value.Value_y" type="4" value="0.000000"></param>
+				<param name="Value.Value_z" type="4" value="0.000000"></param>
+				<param_ext name="Reference" type="31" value="Self.PointPosition"></param_ext>
+				<portdef name="In_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Value" type="16" structure="1" group="2" instance="0" port="0" groupname="Value"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">844</prop>
+					<prop name="posy">-304</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IfNode" index="22">
+				<param name="condition" type="11" value="false"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="4096" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="iffalse" type="4096" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1685</prop>
+					<prop name="posy">-291</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="CombineLogicNode" index="23">
+				<param name="type" type="3" value="1"></param>
+				<param name="value1" type="11" value="false"></param>
+				<param name="value2" type="11" value="false"></param>
+				<portdef name="value1" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value2" type="1" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">654</prop>
+					<prop name="posy">-646</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="NotNode" index="24">
+				<param name="value" type="11" value="false"></param>
+				<portdef name="value" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">382</prop>
+					<prop name="posy">-423</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="25">
+				<param name="in" type="11" value="true"></param>
+				<portdef name="in" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">151</prop>
+					<prop name="posy">-386</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="CacheOnFileNode" index="26">
+				<param name="templatepath" type="3" value="0"></param>
+				<param name="alternativepath" type="31" value="[project path]/Simulation/[scene]/[model]/[object]/"></param>
+				<param name="filemode" type="3" value="1"></param>
+				<param name="secondpath" type="3" value="0"></param>
+				<param name="VersionString" type="31" value="Take1"></param>
+				<param name="attributelist" type="31" value="PointPosition"></param>
+				<param name="FilePath" type="8" value="[project path]/Simulation/[scene]/[model]/[object]/"></param>
+				<param name="ResolvedFilePath" type="8" value="F:\Works\Projects\Hair_RnD\Simulation\Jorge_029_bis\jorge_hair\hair_mesh\hair_mesh_Take1_#.icecache"></param>
+				<param name="FileName" type="8" value="[object]_[version]_[frame]"></param>
+				<param name="FileType" type="3" value="0"></param>
+				<param name="ResolvedSecondFilePath" type="8" value="F:\Works\Projects\Hair_RnD\Simulation\jorge_hair\hair_mesh\hair_mesh_Take1_#.icecache"></param>
+				<param name="FileTypeString" type="8" value=".icecache"></param>
+				<param name="mute" type="11" value="false"></param>
+				<param name="frame" type="4" value="1.000000"></param>
+				<param name="normalize" type="11" value="true"></param>
+				<param name="blend" type="4" value="1.000000"></param>
+				<param name="overlay" type="11" value="false"></param>
+				<param name="append" type="11" value="false"></param>
+				<param name="filefullname.filefullname_string" type="8" value=""></param>
+				<param name="filefullname.filefullname_uimode" type="8" value=""></param>
+				<param name="filefullname.filefullname_filepathseq" type="8" value=""></param>
+				<param name="filefullname.filefullname_filename" type="8" value=""></param>
+				<param name="cachingmode" type="3" value="0"></param>
+				<param name="subframemode" type="11" value="false"></param>
+				<param_ext name="templatepath" type="3" value="0"></param_ext>
+				<portdef name="mute" type="1" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<portdef name="frame" type="4" structure="1" group="4" instance="0" port="0"></portdef>
+				<portdef name="normalize" type="1" structure="1" group="4" instance="0" port="1"></portdef>
+				<portdef name="blend" type="4" structure="1" group="4" instance="0" port="2"></portdef>
+				<portdef name="overlay" type="1" structure="1" group="4" instance="0" port="3"></portdef>
+				<portdef name="append" type="1" structure="1" group="4" instance="0" port="4"></portdef>
+				<portdef name="filefullname" type="131072" structure="1" group="4" instance="0" port="5"></portdef>
+				<portdef name="cachingmode" type="2" structure="1" group="4" instance="0" port="6"></portdef>
+				<portdef name="subframemode" type="1" structure="1" group="4" instance="0" port="7"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">634</prop>
+					<prop name="posy">1100</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="27">
+				<param name="reference" type="31" value="PointPosition"></param>
+				<param_ext name="reference" type="31" value="PointPosition"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-356</prop>
+					<prop name="posy">669</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="28">
+				<param name="in" type="3" value="0"></param>
+				<portdef name="in" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">-6</prop>
+					<prop name="posy">1154</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="CompareNode" index="29">
+				<param name="type" type="3" value="0"></param>
+				<param name="epsilon" type="5" value="0.001000"></param>
+				<param name="first" type="3" value="0"></param>
+				<param name="second" type="3" value="1"></param>
+				<portdef name="first" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="2" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">731</prop>
+					<prop name="posy">957</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="CompareNode" index="30">
+				<param name="type" type="3" value="0"></param>
+				<param name="epsilon" type="5" value="0.001000"></param>
+				<param name="first" type="3" value="0"></param>
+				<param name="second" type="3" value="2"></param>
+				<portdef name="first" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="2" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">922</prop>
+					<prop name="posy">1159</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="CurrentFrameNode" index="31">
+				<param name="globaltime" type="11" value="true"></param>
+				<portdef name="globaltime" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">334</prop>
+					<prop name="posy">1263</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IfNode" index="32">
+				<param name="condition" type="11" value="true"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="4096" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="iffalse" type="4096" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">917</prop>
+					<prop name="posy">1038</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IfNode" index="33">
+				<param name="condition" type="11" value="true"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="4096" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="iffalse" type="4096" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1242</prop>
+					<prop name="posy">1226</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Syflex Mimic" version="1.0" index="35">
+				<param name="Distance" type="4" value="0.001000"></param>
+				<param name="Stiff" type="4" value="0.001000"></param>
+				<param name="Damp" type="4" value="0.001000"></param>
+				<portdef name="Object" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Distance" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Stiff" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Damp" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Point_Cluster" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">16</prop>
+					<prop name="posy">527</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IfNode" index="36">
+				<param name="condition" type="11" value="true"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="65536" structure="1" group="0" instance="0" port="1" supportedblob="3"></portdef>
+				<portdef name="iffalse" type="65536" structure="1" group="0" instance="0" port="2" supportedblob="3"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">202</prop>
+					<prop name="posy">523</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="38">
+				<param name="reference" type="31" value="this.cls.AllVertices"></param>
+				<param_ext name="reference" type="31" value="this.cls.AllVertices"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-231</prop>
+					<prop name="posy">526</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ELIHairWindControl" version="1.0" index="39">
+				<param name="Wind_On" type="11" value="true"></param>
+				<param name="Turb_On" type="11" value="false"></param>
+				<param name="Time_frequency" type="4" value="200.000000"></param>
+				<param name="Demutliplyer" type="4" value="0.010000"></param>
+				<portdef name="Time_frequency" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Demutliplyer" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Wind_Object" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Turbulence_Object" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Wind_On" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Turb_On" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-276</prop>
+					<prop name="posy">215</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="1" portname="inname" username="Collider_Name" basename="Collider Name" portlabel="Collider Name" exposetype="single"> </port>
+			<port index="3" portname="condition" username="Self_Collide" basename="Self Collide" portlabel="Self Collide" exposetype="single"> </port>
+			<port index="6" portname="in" username="Dynamics_Blend" basename="Dynamics Blend" portlabel="Dynamics Blend" exposetype="single"> </port>
+			<port index="8" portname="Precision" username="Precision" basename="Precision" portlabel="Precision" exposetype="single"> </port>
+			<port index="8" portname="Mass" username="Mass" basename="Mass" portlabel="Mass" exposetype="single"> </port>
+			<port index="8" portname="Stiffness" username="Stiffness" basename="Stiffness" portlabel="Stiffness" exposetype="single"> </port>
+			<port index="8" portname="Damping" username="Damping" basename="Damping" portlabel="Damping" exposetype="single"> </port>
+			<port index="8" portname="Shear" username="Shear" basename="Shear" portlabel="Shear" exposetype="single"> </port>
+			<port index="8" portname="Bend" username="Bend" basename="Bend" portlabel="Bend" exposetype="single"> </port>
+			<port index="8" portname="Gravity" username="Gravity" basename="Gravity" portlabel="Gravity" exposetype="single"> </port>
+			<port index="8" portname="Damp_Global" username="Damp_Global" basename="Damp Global" portlabel="Damp Global" exposetype="single"> </port>
+			<port index="9" portname="Envelope_Ext" username="Collider_Ext" basename="Collider Ext" portlabel="Collider Ext" exposetype="single"> </port>
+			<port index="9" portname="Envelope_Int" username="Collider_Int" basename="Collider Int" portlabel="Collider Int" exposetype="single"> </port>
+			<port index="9" portname="Friction" username="Collider_Friction" basename="Collider Friction" portlabel="Collider Friction" exposetype="single"> </port>
+			<port index="9" portname="Damp" username="Collider_Damp" basename="Collider Damp" portlabel="Collider Damp" exposetype="single"> </port>
+			<port index="9" portname="Sticky" username="ColliderSticky" basename="ColliderSticky" portlabel="ColliderSticky" exposetype="single"> </port>
+			<port index="13" portname="Envelope" username="Self_Collide_Distance" basename="Self Collide Distance" portlabel="Self Collide Distance" exposetype="single"> </port>
+			<port index="13" portname="Friction" username="Self_Collide_Friction" basename="Self Collide Friction" portlabel="Self Collide Friction" exposetype="single"> </port>
+			<port index="13" portname="Damp" username="Self_Collide_Damp" basename="Self Collide Damp" portlabel="Self Collide Damp" exposetype="single"> </port>
+			<port index="14" portname="in" username="Target_Name" basename="Target Name" portlabel="Target Name" exposetype="single"> </port>
+			<port index="19" portname="in" username="First_Frame" basename="First Frame" portlabel="First Frame" exposetype="single"> </port>
+			<port index="22" portname="result" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+			<port index="25" portname="in" username="Active" basename="Active" portlabel="Active" exposetype="single"> </port>
+			<port index="28" portname="in" username="Cache_Mode" basename="Cache Mode" portlabel="Cache Mode" exposetype="single"> </port>
+			<port index="35" portname="Distance" username="Mimic_Distance" basename="Mimic Distance" portlabel="Mimic Distance" exposetype="single"> </port>
+			<port index="35" portname="Stiff" username="Mimic_Stiff" basename="Mimic Stiff" portlabel="Mimic Stiff" exposetype="single"> </port>
+			<port index="35" portname="Damp" username="Mimic_Damp" basename="Mimic Damp" portlabel="Mimic Damp" exposetype="single"> </port>
+			<port index="36" portname="condition" username="Use_Mimic" basename="Use Mimic" portlabel="Use Mimic" exposetype="single"> </port>
+			<port index="39" portname="Wind_Object" username="Wind_Object" basename="Wind Object" portlabel="Wind Object" exposetype="single"> </port>
+			<port index="39" portname="Turbulence_Object" username="Turbulence_Object" basename="Turbulence Object" portlabel="Turbulence Object" exposetype="single"> </port>
+			<port index="39" portname="Wind_On" username="Use_Wind" basename="Use Wind" portlabel="Use Wind" exposetype="single"> </port>
+			<port index="39" portname="Turb_On" username="Use_Wind_Turbulence" basename="Use Wind Turbulence" portlabel="Use Wind Turbulence" exposetype="single"> </port>
+			<port index="39" portname="Time_frequency" username="Wind_Frequency" basename="Wind Frequency" portlabel="Wind Frequency" exposetype="single"> </port>
+			<port index="39" portname="Demutliplyer" username="Wind_Multiplier" basename="Wind Multiplier" portlabel="Wind Multiplier" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="4" from_port="result" to_node="12" to_port="Value"> </cnx>
+			<cnx from_node="6" from_port="out" to_node="5" to_port="value2"> </cnx>
+			<cnx from_node="7" from_port="result" to_node="4" to_port="first"> </cnx>
+			<cnx from_node="7" from_port="result" to_node="21" to_port="Value"> </cnx>
+			<cnx from_node="5" from_port="result" to_node="4" to_port="blend"> </cnx>
+			<cnx from_node="14" from_port="out" to_node="27" to_port="inname"> </cnx>
+			<cnx from_node="14" from_port="out" to_node="10" to_port="Object"> </cnx>
+			<cnx from_node="14" from_port="out" to_node="35" to_port="Object"> </cnx>
+			<cnx from_node="15" from_port="execute" to_node="33" to_port="iffalse"> </cnx>
+			<cnx from_node="16" from_port="frame" to_node="20" to_port="first"> </cnx>
+			<cnx from_node="19" from_port="out" to_node="8" to_port="First_Frame"> </cnx>
+			<cnx from_node="19" from_port="out" to_node="20" to_port="second"> </cnx>
+			<cnx from_node="20" from_port="result" to_node="23" to_port="value1"> </cnx>
+			<cnx from_node="23" from_port="result" to_node="22" to_port="condition"> </cnx>
+			<cnx from_node="24" from_port="result" to_node="23" to_port="value2"> </cnx>
+			<cnx from_node="25" from_port="out" to_node="24" to_port="value"> </cnx>
+			<cnx from_node="28" from_port="out" to_node="29" to_port="first"> </cnx>
+			<cnx from_node="28" from_port="out" to_node="30" to_port="first"> </cnx>
+			<cnx from_node="29" from_port="result" to_node="32" to_port="condition"> </cnx>
+			<cnx from_node="30" from_port="result" to_node="33" to_port="condition"> </cnx>
+			<cnx from_node="31" from_port="frame" to_node="26" to_port="frame"> </cnx>
+			<cnx from_node="31" from_port="frame" to_node="0" to_port="frame"> </cnx>
+			<cnx from_node="27" from_port="value" to_node="7" to_port="value"> </cnx>
+			<cnx from_node="2" from_port="outname" to_node="10" to_port="Point_Cluster"> </cnx>
+			<cnx from_node="17" from_port="value" to_node="4" to_port="second"> </cnx>
+			<cnx from_node="18" from_port="value" to_node="5" to_port="value1"> </cnx>
+			<cnx from_node="1" from_port="value" to_node="9" to_port="Geometry"> </cnx>
+			<cnx from_node="38" from_port="outname" to_node="35" to_port="Point_Cluster"> </cnx>
+			<cnx from_node="10" from_port="Force" to_node="8" to_port="Force1"> </cnx>
+			<cnx from_node="11" from_port="Force" to_node="8" to_port="Force2"> </cnx>
+			<cnx from_node="8" from_port="Value" to_node="15" to_port="port1"> </cnx>
+			<cnx from_node="9" from_port="Force" to_node="8" to_port="Force"> </cnx>
+			<cnx from_node="12" from_port="Execute" to_node="15" to_port="port2"> </cnx>
+			<cnx from_node="13" from_port="Force" to_node="3" to_port="iftrue"> </cnx>
+			<cnx from_node="3" from_port="result" to_node="8" to_port="Force3"> </cnx>
+			<cnx from_node="36" from_port="result" to_node="8" to_port="Force4"> </cnx>
+			<cnx from_node="33" from_port="result" to_node="22" to_port="iffalse"> </cnx>
+			<cnx from_node="32" from_port="result" to_node="15" to_port="port3"> </cnx>
+			<cnx from_node="39" from_port="direction" to_node="11" to_port="Direction"> </cnx>
+			<cnx from_node="39" from_port="perturb" to_node="11" to_port="Perturb"> </cnx>
+			<cnx from_node="39" from_port="intensity" to_node="11" to_port="Intensity"> </cnx>
+			<cnx from_node="39" from_port="time_frequecy" to_node="11" to_port="Time_Freq"> </cnx>
+			<cnx from_node="21" from_port="Execute" to_node="22" to_port="iftrue"> </cnx>
+			<cnx from_node="35" from_port="Force" to_node="36" to_port="iftrue"> </cnx>
+			<cnx from_node="26" from_port="execute" to_node="32" to_port="iftrue"> </cnx>
+			<cnx from_node="0" from_port="execute" to_node="33" to_port="iftrue"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Active"> </item>
+			<item type="input" name="Target_Name"> </item>
+			<group type="input" name="Cloth">
+				<item type="input" name="First_Frame"> </item>
+				<item type="input" name="Precision"> </item>
+				<item type="input" name="Mass"> </item>
+				<item type="input" name="Stiffness"> </item>
+				<item type="input" name="Damping"> </item>
+				<item type="input" name="Shear"> </item>
+				<item type="input" name="Bend"> </item>
+				<item type="input" name="Gravity"> </item>
+				<item type="input" name="Damp_Global"> </item>
+			</group>
+			<group type="input" name="Collide">
+				<item type="input" name="Collider_Name"> </item>
+				<item type="input" name="Collider_Ext"> </item>
+				<item type="input" name="Collider_Int"> </item>
+				<item type="input" name="Collider_Friction"> </item>
+				<item type="input" name="Collider_Damp"> </item>
+				<item type="input" name="ColliderSticky"> </item>
+			</group>
+			<group type="input" name="Wind">
+				<item type="input" name="Wind_Object"> </item>
+				<item type="input" name="Turbulence_Object"> </item>
+				<item type="input" name="Use_Wind"> </item>
+				<item type="input" name="Use_Wind_Turbulence"> </item>
+				<item type="input" name="Wind_Frequency"> </item>
+				<item type="input" name="Wind_Multiplier"> </item>
+			</group>
+			<group type="input" name="Self Collide">
+				<item type="input" name="Self_Collide"> </item>
+				<item type="input" name="Self_Collide_Distance"> </item>
+				<item type="input" name="Self_Collide_Friction"> </item>
+				<item type="input" name="Self_Collide_Damp"> </item>
+			</group>
+			<group type="input" name="Blend">
+				<item type="input" name="Dynamics_Blend" min="0" max="1"> </item>
+			</group>
+			<group type="input" name="Caching">
+				<item type="input" name="Cache_Mode" min="0" max="2">
+					<enum value="0"><![CDATA[Do Nothing]]></enum>
+					<enum value="1"><![CDATA[Write Cache]]></enum>
+					<enum value="2"><![CDATA[Read Cache]]></enum>
+				</item>
+			</group>
+			<item type="input" name="Use_Mimic"> </item>
+			<item type="input" name="Mimic_Distance"> </item>
+			<item type="input" name="Mimic_Stiff"> </item>
+			<item type="input" name="Mimic_Damp"> </item>
+			<item type="output" name="Execute"> </item>
+		</layout>
+		<blob_dictionary>
+			<dict_entry index="3" color="16744512">
+				<typename><![CDATA[syForce]]></typename>
+				<displayname><![CDATA[syForce]]></displayname>
+				<description><![CDATA[syForce]]></description>
+			</dict_entry>
+		</blob_dictionary>
+	</definition>
+</xsi_file>

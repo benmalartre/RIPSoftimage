@@ -1,0 +1,30 @@
+from Globals import *
+import Utils2 as uti
+
+model = xsi.Selection(0)
+children = model.children
+
+starts = []
+for c in children:
+	if c.Name.find("_Start")>-1:
+		starts.append(c)
+	
+startgrp = model.AddGroup()
+startgrp.Name = "Muscle_Start"	
+startdepthgrp = model.AddGroup()
+startdepthgrp.Name = "Muscle_StartDepth"	
+endgrp = model.AddGroup()
+endgrp.Name = "Muscle_End"	
+enddepthgrp = model.AddGroup()
+enddepthgrp.Name = "Muscle_EndDepth"	
+for s in starts:
+	startgrp.AddMember(s)
+	sdn = s.name.replace("_Start","_StartDepth")
+	sd = model.FindChild(sdn)
+	startdepthgrp.AddMember(sd)
+	edn = s.name.replace("_Start","_EndDepth")
+	ed = model.FindChild(edn)
+	enddepthgrp.AddMember(ed)
+	en = s.name.replace("_Start","_End")
+	e = model.FindChild(en)
+	endgrp.AddMember(e)

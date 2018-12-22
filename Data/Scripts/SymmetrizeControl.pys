@@ -1,0 +1,30 @@
+from Globals import *
+import Utils2 as uti
+
+coll = XSIFactory.CreateActiveXObject("XSI.Collection")
+for s in xsi.Selection:
+	coll.Add(s)
+	
+model =coll(0).Model
+dups = xsi.Duplicate(coll)
+anim_grp = model.Groups("Anim_Ctrl")
+fk_grp = model.Groups("FK_Rig")
+id = 0
+for c in coll:
+	name = c.Name.replace("L_","R_")
+	dups(id).Name = name
+	uti.SimpleSymmetry(dups(id),c,0)
+	parent = c.Parent3DObject
+	symparentname = parent.Name.replace("L_","R_")
+	symparent = model.FindChild(symparentname)
+	if not symparent:
+		symparent = parent
+	
+	symparent.AddChild(dups(id))
+	anim_grp.AddMember(dups(id))	
+	fk_grp.AddMember(dups(id))
+	xsi.SetNeutralPose(dups(id))
+	id = id+1
+
+
+uti.AddStaticKinematicState(dups)

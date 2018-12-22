@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="XZ Grid To Curve" category="bbpp" formatversion="1.4" compoundversion="1.0">
+	<definition>
+		<nodes>
+			<node type="UVToLocationNode" index="0">
+				<param name="reference" type="31" value=""></param>
+				<param name="useprojection" type="11" value="false"></param>
+				<param name="uv" type="4" value="0.000000"></param>
+				<param name="curveorfaceindex" type="3" value="0"></param>
+				<param_ext name="reference" type="31" value=""></param_ext>
+				<portdef name="geometry" type="1024" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<portdef name="uv" type="4" structure="1" group="4" instance="0" port="0"></portdef>
+				<portdef name="curveorfaceindex" type="2" structure="1" group="5" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-57</prop>
+					<prop name="posy">2</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ScalarTo3DVectorNode" index="1">
+				<param name="x" type="4" value="0.000000"></param>
+				<param name="y" type="4" value="0.000000"></param>
+				<param name="z" type="4" value="0.000000"></param>
+				<portdef name="x" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="y" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="z" type="4" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-548</prop>
+					<prop name="posy">351</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="AddNode" index="2">
+				<param name="value1.value1_x" type="4" value="0.000000"></param>
+				<param name="value1.value1_y" type="4" value="0.000000"></param>
+				<param name="value1.value1_z" type="4" value="0.000000"></param>
+				<param name="value2.value2_x" type="4" value="0.000000"></param>
+				<param name="value2.value2_y" type="4" value="0.000000"></param>
+				<param name="value2.value2_z" type="4" value="0.000000"></param>
+				<portdef name="value1" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value2" type="16" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">586</prop>
+					<prop name="posy">45</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="3DVectorToScalarNode" index="3">
+				<param name="vector.vector_x" type="4" value="0.000000"></param>
+				<param name="vector.vector_y" type="4" value="0.000000"></param>
+				<param name="vector.vector_z" type="4" value="0.000000"></param>
+				<portdef name="vector" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1003</prop>
+					<prop name="posy">255</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="4">
+				<param name="reference" type="31" value="Self.PointPosition"></param>
+				<param_ext name="reference" type="31" value="Self.PointPosition"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1207</prop>
+					<prop name="posy">266</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetMaximumInSetNode" index="5">
+				<param name="value" type="4" value="0.000000"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-765</prop>
+					<prop name="posy">276</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="RescaleNode" index="6">
+				<param name="value" type="4" value="0.000000"></param>
+				<param name="sourcestart" type="4" value="0.000000"></param>
+				<param name="sourceend" type="4" value="1.000000"></param>
+				<param name="targetstart" type="4" value="0.000000"></param>
+				<param name="targetend" type="4" value="1.000000"></param>
+				<param name="clamp" type="11" value="false"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="sourcestart" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="sourceend" type="4" structure="1" group="0" instance="0" port="2"></portdef>
+				<portdef name="targetstart" type="4" structure="1" group="0" instance="0" port="3"></portdef>
+				<portdef name="targetend" type="4" structure="1" group="0" instance="0" port="4"></portdef>
+				<portdef name="clamp" type="1" structure="1" group="0" instance="0" port="5"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-539</prop>
+					<prop name="posy">132</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Set Data" version="1.0" index="7">
+				<param name="Reference" type="31" value="Self.PointPosition"></param>
+				<param name="Value.Value_x" type="4" value="0.000000"></param>
+				<param name="Value.Value_y" type="4" value="0.000000"></param>
+				<param name="Value.Value_z" type="4" value="0.000000"></param>
+				<param_ext name="Reference" type="31" value="Self.PointPosition"></param_ext>
+				<portdef name="Value" type="16" structure="1" group="2" instance="0" port="0" groupname="Value"></portdef>
+				<portdef name="In_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">821</prop>
+					<prop name="posy">32</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="8">
+				<param name="reference" type="31" value="PointPosition"></param>
+				<param_ext name="reference" type="31" value="PointPosition"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">144</prop>
+					<prop name="posy">74</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetMinimumInSetNode" index="9">
+				<param name="value" type="4" value="0.000000"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-767</prop>
+					<prop name="posy">208</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="geometry" username="geometry" basename="geometry" portlabel="geometry" exposetype="single"> </port>
+			<port index="7" portname="Execute" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="0" from_port="result" to_node="8" to_port="source"> </cnx>
+			<cnx from_node="1" from_port="vector" to_node="2" to_port="value1"> </cnx>
+			<cnx from_node="9" from_port="min" to_node="6" to_port="sourcestart"> </cnx>
+			<cnx from_node="6" from_port="result" to_node="0" to_port="uv"> </cnx>
+			<cnx from_node="3" from_port="x" to_node="6" to_port="value"> </cnx>
+			<cnx from_node="3" from_port="x" to_node="9" to_port="value"> </cnx>
+			<cnx from_node="3" from_port="x" to_node="5" to_port="value"> </cnx>
+			<cnx from_node="3" from_port="z" to_node="1" to_port="z"> </cnx>
+			<cnx from_node="5" from_port="max" to_node="6" to_port="sourceend"> </cnx>
+			<cnx from_node="2" from_port="result" to_node="7" to_port="Value"> </cnx>
+			<cnx from_node="8" from_port="value" to_node="2" to_port="value2"> </cnx>
+			<cnx from_node="4" from_port="value" to_node="3" to_port="vector"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="geometry"> </item>
+			<item type="output" name="Execute"> </item>
+		</layout>
+	</definition>
+</xsi_file>

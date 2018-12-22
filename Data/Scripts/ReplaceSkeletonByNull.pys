@@ -1,0 +1,54 @@
+'''
+Bind Nulls to Skeleton Cloud
+'''
+from Globals import* 
+import Utils2 as uti
+import ICETree as tree
+
+cloud = xsi.Selection(0)
+model = cloud.Model
+root = model.AddNull("Envelopes")
+id=0
+attrs = cloud.ActivePrimitive.ICEAttributes
+pos = attrs("PointPosition").DataArray
+scl = attrs("Scale").DataArray
+ori = attrs("Orientation").DataArray
+
+sname = cloud.ActivePrimitive.GetICEAttributeFromName("SkeletonName").DataArray
+
+	
+group = uti.GroupSetup(model,None,"Envelope")
+
+t = XSIMath.CreateTransform()
+lastname = ""
+subid = 1
+for pnt in cloud.ActivePrimitive.Geometry.Points:
+	p = pos[id]
+	o = ori[id]
+	s = scl[id]
+	t.SetTranslation(p)
+	t.SetRotation(o)
+	t.SetScaling(s)
+	
+	'''
+	n = root.AddNull("Buffer"+str(id))
+	tr = tree.CreateICETree(n,"Kinematics")
+	node = xsi.AddICECompoundNode("BindTransformToPoint", str(tr))
+	xsi.ConnectICENodes(str(tr)+".port1", str(node)+".Execute")
+	xsi.SetValue(str(node)+".ID", id, "")
+	'''
+	currentname = sname[id]
+	if not sname:
+		xsi.LogMessage("You need to display Skeleton Name ICE Attribute!!!",constants.siWarning)
+		break
+	else:
+		if not currentname == lastname:
+			lastname = currentname
+			subid = 1
+			
+		n = root.AddNull(currentname+str(subid)+"_Env"+str(id))
+		n.ActivePrimitive.Primary_Icon = 4
+		group.AddMember(n)
+		n.Kinematics.Global.Transform = t
+		id = id+1
+		subid = subid+1

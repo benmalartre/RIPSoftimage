@@ -1,0 +1,7 @@
+from Globals import *
+import Utils2 as uti
+reload(uti)
+
+for s in xsi.Selection:
+
+	uti.SymmetrizeWeights(s,1,False,2)

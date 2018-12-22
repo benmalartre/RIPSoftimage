@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="Cleanup Painted Weights" tasks="Deformation/Skinning" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="6732954">
+	<definition>
+		<nodes>
+			<node type="GetDataNode" index="0">
+				<param name="reference" type="31" value="EnvelopeDeformerIndices"></param>
+				<param_ext name="reference" type="31" value="EnvelopeDeformerIndices"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1820</prop>
+					<prop name="posy">2777</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="1">
+				<param name="reference" type="31" value="Self.cls.EnvelopWeightCls.Envelope_Weights"></param>
+				<param_ext name="reference" type="31" value="Self.cls.EnvelopWeightCls.Envelope_Weights"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1418</prop>
+					<prop name="posy">2818</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="2">
+				<param name="reference" type="31" value=".Kine.Global"></param>
+				<param_ext name="reference" type="31" value=".Kine.Global"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1722</prop>
+					<prop name="posy">2664</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="Set Data" version="1.0" index="3">
+				<param name="Reference" type="31" value="Self.EnvelopeDeformerIndices"></param>
+				<param name="Reference1" type="31" value="Self.EnvelopeWeights"></param>
+				<param name="Value" type="3" value="0"></param>
+				<param name="Value1" type="4" value="0.000000"></param>
+				<param_ext name="Reference" type="31" value="Self.EnvelopeDeformerIndices"></param_ext>
+				<param_ext name="Reference1" type="31" value="Self.EnvelopeWeights"></param_ext>
+				<portdef name="Value" type="2" structure="2" group="2" instance="0" port="0" groupname="Value"></portdef>
+				<portdef name="Value1" type="4" structure="2" group="2" instance="1" port="0" groupname="Value"></portdef>
+				<portdef name="In_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2865</prop>
+					<prop name="posy">2767</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+				<comment type="node" state="maximized" wordwrap="true" autoresize="true" background="0" background_alpha="0.000000" title="14876671" title_text="0" offsetx="-74" offsety="-124" sizex="114" sizey="71"><![CDATA[Store the modified weights in an ICE attribute. ]]></comment>
+			</node>
+			<node type="GetArraySizeNode" index="4">
+				<param name="array.array_00" type="4" value="1.000000"></param>
+				<param name="array.array_01" type="4" value="0.000000"></param>
+				<param name="array.array_02" type="4" value="0.000000"></param>
+				<param name="array.array_03" type="4" value="0.000000"></param>
+				<param name="array.array_10" type="4" value="0.000000"></param>
+				<param name="array.array_11" type="4" value="1.000000"></param>
+				<param name="array.array_12" type="4" value="0.000000"></param>
+				<param name="array.array_13" type="4" value="0.000000"></param>
+				<param name="array.array_20" type="4" value="0.000000"></param>
+				<param name="array.array_21" type="4" value="0.000000"></param>
+				<param name="array.array_22" type="4" value="1.000000"></param>
+				<param name="array.array_23" type="4" value="0.000000"></param>
+				<param name="array.array_30" type="4" value="0.000000"></param>
+				<param name="array.array_31" type="4" value="0.000000"></param>
+				<param name="array.array_32" type="4" value="0.000000"></param>
+				<param name="array.array_33" type="4" value="1.000000"></param>
+				<portdef name="array" type="256" structure="2" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1907</prop>
+					<prop name="posy">2665</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="RemoveFromArrayNode" index="5">
+				<param name="index" type="3" value="0"></param>
+				<param name="array" type="3" value="0"></param>
+				<portdef name="index" type="2" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="array" type="2" structure="2" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2434</prop>
+					<prop name="posy">2743</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="FindInArrayNode" index="6">
+				<param name="value" type="11" value="true"></param>
+				<param name="array" type="11" value="false"></param>
+				<param name="epsilon" type="4" value="0.000000"></param>
+				<portdef name="value" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="array" type="1" structure="2" group="0" instance="0" port="1"></portdef>
+				<portdef name="epsilon" type="4" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2254</prop>
+					<prop name="posy">2664</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="RemoveFromArrayNode" index="7">
+				<param name="index" type="3" value="0"></param>
+				<param name="array" type="4" value="0.000000"></param>
+				<portdef name="index" type="2" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="array" type="4" structure="2" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2437</prop>
+					<prop name="posy">2886</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="DivideByScalarNode" index="8">
+				<param name="value" type="4" value="0.000000"></param>
+				<param name="divideby" type="4" value="1.000000"></param>
+				<portdef name="value" type="4" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="divideby" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2642</prop>
+					<prop name="posy">2934</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetArraySumNode" index="9">
+				<param name="array" type="4" value="0.000000"></param>
+				<portdef name="array" type="4" structure="2" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2468</prop>
+					<prop name="posy">2987</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="CompareNode" index="10">
+				<param name="type" type="3" value="5"></param>
+				<param name="epsilon" type="5" value="0.000000"></param>
+				<param name="first" type="3" value="0"></param>
+				<param name="second" type="3" value="0"></param>
+				<portdef name="first" type="2" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="2" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2168</prop>
+					<prop name="posy">2673</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="11">
+				<param name="reference" type="31" value="EnvelopeWeights"></param>
+				<param_ext name="reference" type="31" value="EnvelopeWeights"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1819</prop>
+					<prop name="posy">2874</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<comment type="node" state="maximized" wordwrap="true" autoresize="false" background="0" background_alpha="0.000000" title="14876671" title_text="0" offsetx="2161" offsety="2504" sizex="418" sizey="133"><![CDATA[In some cases, the painted weights refer to bones no longer in the weights table. These bones may have been deleted after they were added to teh envelope operator. 
+
+Here, we remove these bones, and re-normalize the weights. 
+
+We then store the weights in an ICE attribute. 
+
+Note: If the weights are modified by, for example, sombody paints them, this graph re-evaluates, and updates the ICE attributes. 
+
+
+]]></comment>
+			<comment type="group" state="maximized" wordwrap="false" autoresize="false" background="0" background_alpha="0.100000" title="14876671" title_text="0" offsetx="2399" offsety="2856" sizex="390" sizey="219"><![CDATA[Re-normalize the weights]]></comment>
+		</nodes>
+		<exposed_ports>
+			<port index="2" portname="inname" username="Bone_Groups_Name" basename="Bone Groups Name" portlabel="Bone Groups Name" exposetype="single"> </port>
+			<port index="3" portname="Execute" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="11" from_port="value" to_node="7" to_port="array"> </cnx>
+			<cnx from_node="0" from_port="value" to_node="10" to_port="first"> </cnx>
+			<cnx from_node="0" from_port="value" to_node="5" to_port="array"> </cnx>
+			<cnx from_node="1" from_port="outname" to_node="0" to_port="inname"> </cnx>
+			<cnx from_node="1" from_port="outname" to_node="11" to_port="inname"> </cnx>
+			<cnx from_node="2" from_port="value" to_node="4" to_port="array"> </cnx>
+			<cnx from_node="7" from_port="result" to_node="8" to_port="value"> </cnx>
+			<cnx from_node="7" from_port="result" to_node="9" to_port="array"> </cnx>
+			<cnx from_node="9" from_port="result" to_node="8" to_port="divideby"> </cnx>
+			<cnx from_node="10" from_port="result" to_node="6" to_port="array"> </cnx>
+			<cnx from_node="6" from_port="indexarray" to_node="5" to_port="index"> </cnx>
+			<cnx from_node="6" from_port="indexarray" to_node="7" to_port="index"> </cnx>
+			<cnx from_node="4" from_port="size" to_node="10" to_port="second"> </cnx>
+			<cnx from_node="8" from_port="result" to_node="3" to_port="Value1"> </cnx>
+			<cnx from_node="5" from_port="result" to_node="3" to_port="Value"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Bone_Groups_Name"> </item>
+			<item type="output" name="Execute"> </item>
+		</layout>
+	</definition>
+</xsi_file>

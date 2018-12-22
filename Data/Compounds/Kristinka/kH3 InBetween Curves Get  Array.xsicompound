@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="kH3 InBetween Curves Get  Array" tasks="k Hair3/Nested" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="10126967">
+	<definition>
+		<nodes>
+			<node type="InsertInArrayNode" index="0">
+				<param name="index" type="3" value="0"></param>
+				<param name="value" type="4" value="0.000000"></param>
+				<param name="array" type="4" value="0.000000"></param>
+				<portdef name="index" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="array" type="4" structure="2" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-2195</prop>
+					<prop name="posy">552</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IntegerNode" index="1">
+				<param name="value" type="3" value="0"></param>
+				<portdef name="value" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-2341</prop>
+					<prop name="posy">450</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ScalarNode" index="9">
+				<param name="value" type="4" value="0.000000"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-2353</prop>
+					<prop name="posy">519</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="FirstValidNode" index="10">
+				<param name="in1.in1_x" type="4" value="0.000000"></param>
+				<param name="in1.in1_y" type="4" value="0.000000"></param>
+				<param name="in1.in1_z" type="4" value="0.000000"></param>
+				<param name="in2.in2_x" type="4" value="0.000000"></param>
+				<param name="in2.in2_y" type="4" value="0.000000"></param>
+				<param name="in2.in2_z" type="4" value="0.000000"></param>
+				<portdef name="in1" type="16" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="in2" type="16" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1463</prop>
+					<prop name="posy">451</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="11">
+				<param name="reference" type="31" value="Self.StrandRatio"></param>
+				<param_ext name="reference" type="31" value="Self.StrandRatio"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-2457</prop>
+					<prop name="posy">605</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="12">
+				<param name="reference" type="31" value="PointPosition"></param>
+				<param_ext name="reference" type="31" value="PointPosition"></param_ext>
+				<portdef name="source" type="2048" structure="2" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1822</prop>
+					<prop name="posy">464</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="UVToLocationNode" index="14">
+				<param name="reference" type="31" value=""></param>
+				<param name="useprojection" type="11" value="false"></param>
+				<param name="uv" type="4" value="0.000000"></param>
+				<param name="curveorfaceindex" type="3" value="0"></param>
+				<param_ext name="reference" type="31" value=""></param_ext>
+				<portdef name="geometry" type="1024" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<portdef name="uv" type="4" structure="2" group="4" instance="0" port="0"></portdef>
+				<portdef name="curveorfaceindex" type="2" structure="1" group="5" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-2017</prop>
+					<prop name="posy">494</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="15">
+				<portdef name="in" type="1024" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">-2337</prop>
+					<prop name="posy">376</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="3DVectorNode" index="43">
+				<param name="value.value_x" type="4" value="0.000000"></param>
+				<param name="value.value_y" type="4" value="0.000000"></param>
+				<param name="value.value_z" type="4" value="0.000000"></param>
+				<portdef name="value" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1625</prop>
+					<prop name="posy">516</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="10" portname="out" username="Out_Array" basename="Out Array" portlabel="Out Array" exposetype="single"> </port>
+			<port index="15" portname="in" username="Curve" basename="Curve" portlabel="Curve" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="14" from_port="result" to_node="12" to_port="source"> </cnx>
+			<cnx from_node="0" from_port="result" to_node="14" to_port="uv"> </cnx>
+			<cnx from_node="43" from_port="result" to_node="10" to_port="in2"> </cnx>
+			<cnx from_node="9" from_port="result" to_node="0" to_port="value"> </cnx>
+			<cnx from_node="15" from_port="out" to_node="14" to_port="geometry"> </cnx>
+			<cnx from_node="1" from_port="result" to_node="0" to_port="index"> </cnx>
+			<cnx from_node="11" from_port="value" to_node="0" to_port="array"> </cnx>
+			<cnx from_node="12" from_port="value" to_node="10" to_port="in1"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Curve" min="0" max="0"> </item>
+			<item type="output" name="Out_Array" min="0" max="0"> </item>
+		</layout>
+	</definition>
+</xsi_file>

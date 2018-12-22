@@ -1,0 +1,41 @@
+import win32com.client
+from win32com.client import constants
+
+from bGlobals import *
+from bRigUtils import *
+
+def AddMuscleControl(inObj):
+
+	if s.Properties("MuscleControl"):
+		xsi.DeleteObj(s.Properties("MuscleControl"))
+		
+	ctrl = s.AddProperty("CustomProperty",0, "MuscleControl")
+	ctrl.AddParameter3("StartCurveIndex",constants.siInt4,0,0,100,0,0)
+	ctrl.AddParameter3("EndCurveIndex",constants.siInt4,0,0,100,0,0)
+	ctrl.AddParameter3("NbLines",constants.siInt4,6,1,20,0,0)
+	ctrl.AddParameter3("NbPoints",constants.siInt4,3,1,20,0,0)
+	ctrl.AddParameter3("IsClosed",constants.siBool,0,0,1,0,0)
+	ctrl.AddParameter3("UpDown",constants.siBool,0,0,1,0,0)
+	ctrl.AddParameter3("Stick",constants.siBool,0,0,1,0,0)
+	ctrl.AddParameter3("UpVectorID",constants.siInt4,0,0,100,0,0)
+	ctrl.AddParameter3("StartU",constants.siFloat,0,0,1,0,0)
+	ctrl.AddParameter3("EndU",constants.siFloat,1,0,1,0,0)
+	ctrl.AddParameter3("StartV",constants.siFloat,0,0,1,0,0)
+	ctrl.AddParameter3("EndV",constants.siFloat,1,0,1,0,0)
+	
+def MirrorCurve(inCrv):
+	points = inCrv.ActivePrimitive.Geometry.Points
+	pos = []
+	for p in points:
+		xsi.LogMessage("Yeah!!")
+		pos.append(p.Position.X)
+		pos.append(p.Position.Y)
+		pos.append(p.Position.Z)
+	
+xsi = Application
+sel = xsi.Selection
+for s in sel:
+	AddMuscleControl(s)
+	
+#MirrorCurve(s)
+	

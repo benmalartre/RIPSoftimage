@@ -1,0 +1,4 @@
+from Globals import *
+import Utils2 as uti
+
+uti.BuildCurveOnPoints(xsi.Selection,0,0,1)

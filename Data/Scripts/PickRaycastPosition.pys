@@ -1,0 +1,47 @@
+from Globals import *
+import Utils2 as uti
+
+mesh = xsi.Selection(0)
+if not mesh or not mesh.Type == "Polymesh":
+	mesh = uti.PickElement(constants.siPolyMeshFilter,"Pick Mesh")
+	
+pos = uti.PickMultiPosition()
+rcpos = XSIMath.CreateVector3()
+ray = XSIMath.CreateVector3(0,1,0)
+
+
+geom = mesh.ActivePrimitive.Geometry
+root = xsi.ActiveSceneRoot
+
+for p in pos:
+
+	dir = []
+	pnt = []
+	pnt.append(p.X)
+	pnt.append(p.Y)
+	pnt.append(p.Z)
+	dir.append(ray.X)
+	dir.append(ray.Y)
+	dir.append(ray.Z)
+	
+	raycastLocation = geom.GetRaycastIntersections(pnt,dir)
+	raycastPosition = geom.EvaluatePositions(raycastLocation)
+	
+	n = uti.AddNull(root,1,0.1,"Test")
+	t = n.Kinematics.Local.Transform
+	if raycastPosition:
+		xsi.LogMessage(raycastPosition[0][0])
+		xsi.LogMessage(raycastPosition[1][0])
+		xsi.LogMessage(raycastPosition[2][0])
+		rcpos.Set(raycastPosition[0][0],raycastPosition[1][0],raycastPosition[2][0])
+		t.SetTranslationFromValues(raycastPosition[0][0],raycastPosition[1][0],raycastPosition[2][0])
+	else:
+		t.SetTranslation(p)
+	
+	
+	
+	n.Kinematics.Local.Transform = t
+
+
+
+

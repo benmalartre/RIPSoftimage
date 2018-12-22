@@ -1,0 +1,11 @@
+from Globals import *
+from Constants import *
+
+import Utils2 as uti
+
+obj = xsi.Selection(0)
+target = xsi.Selection(1)
+
+uti.SimpleSymmetry(obj,target,YZ_AXIS)
+xsi.SetNeutralPose(obj)
+xsi.RemoveAllAnimation(obj)

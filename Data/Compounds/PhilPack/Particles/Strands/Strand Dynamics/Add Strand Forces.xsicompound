@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="Add Strand Forces" author="Softimage" formatversion="1.4" compoundversion="1.0" constructionmode="Simulation" backgroundcolor="10721675">
+	<description><![CDATA[This compound is used as a type of ""hub"" when applying forces to particles. You plug in other force outputs into its force ports and then it adds up all those forces and applies them to the particles. Note: If forces have already been applied to particles, this compound adds new force to the existing forces.]]></description>
+	<definition>
+		<nodes>
+			<node type="Add Strand Force" version="1.0" index="0">
+				<param name="Force.Force_x" type="4" value="0.000000"></param>
+				<param name="Force.Force_y" type="4" value="0.000000"></param>
+				<param name="Force.Force_z" type="4" value="0.000000"></param>
+				<portdef name="Force" type="16" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2815</prop>
+					<prop name="posy">2515</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ExecuteNode" index="1">
+				<portdef name="port1" type="4096" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">3017</prop>
+					<prop name="posy">2517</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="[embedded_0]" index="2">
+				<datablob category="ui_infos">
+					<prop name="posx">2958</prop>
+					<prop name="posy">2457</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ExecuteNode" index="3">
+				<portdef name="port1" type="4096" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="port2" type="4096" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">3156</prop>
+					<prop name="posy">2477</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<comment type="node" state="maximized" wordwrap="true" autoresize="false" background="0" background_alpha="0.000000" title="14876671" title_text="0" offsetx="2759" offsety="2232" sizex="412" sizey="189"><![CDATA[We add each input force vector to the points force vector separately using the 'Add Force' node. 
+
+This is so that if any of the force nodes start filtering the particles( Surface Force will do this), then all the filtered particles will not have any forces applied. This is because once they are filtered by any node, then every node upstream( to the right), will inherit the filtering and not apply any changes for this particle. 
+
+
+Note: Filtering is where a node decides not to process a particle. Any particles outside the cuttoff distance of the surface force will get filtered.]]></comment>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="Force" username="Force1" basename="Force1" portlabel="Force1" exposetype="use_node_import"> </port>
+			<port index="3" portname="execute" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="0" from_port="value" to_node="1" to_port="port1"> </cnx>
+			<cnx from_node="2" from_port="value" to_node="3" to_port="port1"> </cnx>
+			<cnx from_node="1" from_port="execute" to_node="3" to_port="port2"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Force1" min="0" max="0"> </item>
+			<item type="output" name="Execute"> </item>
+		</layout>
+	</definition>
+	<embedded_0 name="Reset Strand Force" formatversion="1.4" compoundversion="1.0" constructionmode="Modeling" backgroundcolor="6732954">
+		<nodes>
+			<node type="SetOneDataNode" index="0">
+				<param name="reference" type="31" value="Self.StrandForce"></param>
+				<param name="source.source_x" type="4" value="0.000000"></param>
+				<param name="source.source_y" type="4" value="0.000000"></param>
+				<param name="source.source_z" type="4" value="0.000000"></param>
+				<param_ext name="reference" type="31" value="Self.StrandForce"></param_ext>
+				<portdef name="source" type="16" structure="2" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-304</prop>
+					<prop name="posy">95</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="BuildArrayFromConstantNode" index="1">
+				<param name="size" type="3" value="0"></param>
+				<param name="value.value_x" type="4" value="0.000000"></param>
+				<param name="value.value_y" type="4" value="0.000000"></param>
+				<param name="value.value_z" type="4" value="0.000000"></param>
+				<portdef name="size" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value" type="16" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-546</prop>
+					<prop name="posy">97</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="2">
+				<param name="reference" type="31" value="Self.StrandCount"></param>
+				<param_ext name="reference" type="31" value="Self.StrandCount"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-755</prop>
+					<prop name="posy">97</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="value" username="value" basename="value" portlabel="value" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="2" from_port="value" to_node="1" to_port="size"> </cnx>
+			<cnx from_node="1" from_port="array" to_node="0" to_port="source"> </cnx>
+		</connections>
+		<layout>
+			<item type="output" name="value"> </item>
+		</layout>
+	</embedded_0>
+</xsi_file>

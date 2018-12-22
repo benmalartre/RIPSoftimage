@@ -1,0 +1,43 @@
+'''
+' Export Face Rig
+'''
+
+from Globals import *
+import Utils2 as uti
+reload(uti)
+
+def HideGroup(model,name):
+	grp = model.groups(name)
+	if grp:
+		grp.Parameters("ViewVis").Value = False
+		grp.Parameters("RendVis").Value = False
+
+def RemoveAnimation(model):
+	xsi.LogMessage("Remove Animation Called!!!")
+	grp = model.Groups("Anim_Ctrl")
+	if grp:
+		xsi.RemoveAllAnimation(grp.Members)
+
+sel = xsi.Selection(0)
+model = None
+if sel:
+	if sel.Type == "#model":
+		model = sel
+	else:
+		model = sel.Model
+else:
+	model = uti.PickElement(constants.siModelFilter,"Pick Model")
+
+xsi.LogMessage(model)
+
+if model:
+	HideGroup(model,"Muscle_Start")
+	HideGroup(model,"Muscle_StartDepth")
+	HideGroup(model,"Muscle_End")
+	HideGroup(model,"Muscle_EndDepth")
+	HideGroup(model,"Envelope")
+	HideGroup(model,"Helpers")
+	HideGroup(model,"Guide_Points")
+	HideGroup(model,"Guide_Curves")
+	
+	RemoveAnimation(model)

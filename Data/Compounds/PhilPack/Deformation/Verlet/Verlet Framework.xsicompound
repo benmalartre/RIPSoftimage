@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="Verlet Framework" tasks="Deformation/Verlet" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="6732954">
+	<definition>
+		<nodes>
+			<node type="GetDataNode" index="0">
+				<param name="reference" type="31" value="Self.Pinned"></param>
+				<param_ext name="reference" type="31" value="Self.Pinned"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-37</prop>
+					<prop name="posy">42</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="IfNode" index="1">
+				<param name="condition" type="11" value="false"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="4096" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="iffalse" type="4096" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">165</prop>
+					<prop name="posy">43</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ExecuteNode" index="2">
+				<portdef name="port1" type="4096" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-178</prop>
+					<prop name="posy">174</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Blend Verlet Effect" version="1.0" index="3">
+				<param name="Reference" type="31" value=""></param>
+				<param name="Min_Effect" type="4" value="0.000000"></param>
+				<param name="Max_Effect" type="4" value="1.000000"></param>
+				<param name="Blend" type="4" value="1.000000"></param>
+				<param name="Select_Blend_Target" type="3" value="0"></param>
+				<param_ext name="Reference" type="31" value=""></param_ext>
+				<portdef name="Select_Blend_Target" type="2" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Blend" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Max_Effect" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Min_Effect" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Target_Mesh_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-252</prop>
+					<prop name="posy">-21</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Add Verlet Force" version="1.0" index="4">
+				<param name="Force.Force_x" type="4" value="0.000000"></param>
+				<param name="Force.Force_y" type="4" value="0.000000"></param>
+				<param name="Force.Force_z" type="4" value="0.000000"></param>
+				<param name="Global_Space" type="11" value="false"></param>
+				<portdef name="Global_Space" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Force" type="16" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-358</prop>
+					<prop name="posy">176</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Simulate Mesh using Verlet Integration" version="1.0" index="5">
+				<datablob category="ui_infos">
+					<prop name="posx">-360</prop>
+					<prop name="posy">284</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ExecuteNode" index="6">
+				<portdef name="port1" type="4096" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="port2" type="4096" structure="1" group="0" instance="1" port="0"></portdef>
+				<portdef name="port3" type="4096" structure="1" group="0" instance="2" port="0"></portdef>
+				<portdef name="port4" type="4096" structure="1" group="0" instance="3" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">11</prop>
+					<prop name="posy">198</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="RepeatNode" index="7">
+				<param name="iterations" type="3" value="5"></param>
+				<portdef name="iterations" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="port" type="4096" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-148</prop>
+					<prop name="posy">439</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ExecuteNode" index="8">
+				<portdef name="port1" type="4096" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-283</prop>
+					<prop name="posy">461</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ExecuteNode" index="9">
+				<portdef name="port1" type="4096" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="port2" type="4096" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">267</prop>
+					<prop name="posy">-24</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ExecuteNode" index="10">
+				<portdef name="port1" type="4096" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-177</prop>
+					<prop name="posy">346</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="3" portname="Min_Effect" username="Min_Effect" basename="Min Effect" portlabel="Min Effect" exposetype="single"> </port>
+			<port index="3" portname="Max_Effect" username="Max_Effect" basename="Max Effect" portlabel="Max Effect" exposetype="single"> </port>
+			<port index="3" portname="Blend" username="Blend" basename="Blend" portlabel="Blend" exposetype="single"> </port>
+			<port index="3" portname="Select_Blend_Target" username="Select_Blend_Target" basename="Select Blend Target" portlabel="Select Blend Target" exposetype="single"> </port>
+			<port index="3" portname="Target_Mesh_Name" username="Target_Mesh_Name" basename="Target Mesh Name" portlabel="Target Mesh Name" exposetype="single"> </port>
+			<port index="3" portname="Reference" username="Reference" basename="Reference" portlabel="Reference" exposetype="single"> </port>
+			<port index="4" portname="Force" username="Force1" basename="Force1" portlabel="Force1" exposetype="use_node_import"> </port>
+			<port index="4" portname="Global_Space" username="Global_Space1" basename="Global Space1" portlabel="Global Space1" exposetype="use_node_import"> </port>
+			<port index="7" portname="iterations" username="Iterations" basename="Iterations" portlabel="Iterations" exposetype="single"> </port>
+			<port index="8" portname="port1" username="Execute_Each_Iteration1" basename="Execute Each Iteration1" portlabel="Execute Each Iteration1" exposetype="all_instances"> </port>
+			<port index="9" portname="execute" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+			<port index="10" portname="port1" username="Execute1" basename="Execute1" portlabel="Execute1" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="5" from_port="Execute" to_node="6" to_port="port2"> </cnx>
+			<cnx from_node="4" from_port="value" to_node="2" to_port="port1"> </cnx>
+			<cnx from_node="3" from_port="Execute" to_node="9" to_port="port1"> </cnx>
+			<cnx from_node="1" from_port="result" to_node="9" to_port="port2"> </cnx>
+			<cnx from_node="6" from_port="execute" to_node="1" to_port="iffalse"> </cnx>
+			<cnx from_node="7" from_port="execute" to_node="6" to_port="port4"> </cnx>
+			<cnx from_node="8" from_port="execute" to_node="7" to_port="port"> </cnx>
+			<cnx from_node="10" from_port="execute" to_node="6" to_port="port3"> </cnx>
+			<cnx from_node="2" from_port="execute" to_node="6" to_port="port1"> </cnx>
+			<cnx from_node="0" from_port="value" to_node="1" to_port="condition"> </cnx>
+		</connections>
+		<layout>
+			<group type="input" name="Blend">
+				<item type="input" name="Min_Effect"> </item>
+				<item type="input" name="Max_Effect"> </item>
+				<item type="input" name="Blend"> </item>
+				<item type="input" name="Select_Blend_Target"> </item>
+				<item type="input" name="Target_Mesh_Name"> </item>
+				<item type="input" name="Reference"> </item>
+			</group>
+			<group type="input" name="Forces">
+				<item type="input" name="Force1" min="0" max="0"> </item>
+				<item type="input" name="Global_Space1" min="0" max="0"> </item>
+			</group>
+			<group type="input" name="Single Execution">
+				<item type="input" name="Execute1"> </item>
+			</group>
+			<group type="input" name="Iterative Execution">
+				<item type="input" name="Iterations"> </item>
+				<item type="input" name="Execute_Each_Iteration1" min="0" max="0"> </item>
+			</group>
+			<item type="output" name="Execute"> </item>
+		</layout>
+	</definition>
+</xsi_file>

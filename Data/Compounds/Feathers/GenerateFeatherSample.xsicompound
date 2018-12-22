@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="GenerateFeatherSample" category="Feathers" author="benmalartre" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="2715107">
+	<definition>
+		<nodes>
+			<node type="GetDataNode" index="0">
+				<param name="reference" type="31" value="polymsh.PolygonPosition"></param>
+				<param_ext name="reference" type="31" value="polymsh.PolygonPosition"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1164</prop>
+					<prop name="posy">-894</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Set Data" version="1.0" index="1">
+				<param name="Reference1" type="31" value="Self.Size"></param>
+				<param name="Reference" type="31" value="Self.EmitPosition"></param>
+				<param name="Value1" type="4" value="0.100000"></param>
+				<param_ext name="Reference1" type="31" value="Self.Size"></param_ext>
+				<param_ext name="Reference" type="31" value="Self.EmitPosition"></param_ext>
+				<portdef name="In_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Value1" type="4" structure="1" group="2" instance="0" port="0" groupname="Value"></portdef>
+				<portdef name="Value" type="2048" structure="1" group="2" instance="1" port="0" groupname="Value"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2199</prop>
+					<prop name="posy">-706</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ExecuteNode" index="2">
+				<portdef name="port1" type="4096" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="port2" type="4096" structure="1" group="0" instance="1" port="0"></portdef>
+				<portdef name="port3" type="4096" structure="1" group="0" instance="2" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2407</prop>
+					<prop name="posy">-900</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IfNode" index="4">
+				<param name="condition" type="11" value="true"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="4096" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="iffalse" type="4096" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2175</prop>
+					<prop name="posy">-1169</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="7">
+				<param name="reference" type="31" value="Self.PointPosition"></param>
+				<param_ext name="reference" type="31" value="Self.PointPosition"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1714</prop>
+					<prop name="posy">-647</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="AddPointNode" index="8">
+				<param name="reference" type="31" value="Self"></param>
+				<param name="positions1.positions1_x" type="4" value="0.000000"></param>
+				<param name="positions1.positions1_y" type="4" value="0.000000"></param>
+				<param name="positions1.positions1_z" type="4" value="0.000000"></param>
+				<param_ext name="reference" type="31" value="Self"></param_ext>
+				<portdef name="positions1" type="16" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<portdef name="oncreation1" type="4096" structure="1" group="4" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1951</prop>
+					<prop name="posy">-1243</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="FilterNode" index="9">
+				<param name="keep" type="11" value="true"></param>
+				<param name="value.value_x" type="4" value="0.000000"></param>
+				<param name="value.value_y" type="4" value="0.000000"></param>
+				<param name="value.value_z" type="4" value="0.000000"></param>
+				<portdef name="keep" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value" type="16" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1697</prop>
+					<prop name="posy">-1268</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetClosestLocationNode" index="10">
+				<param name="proximitymethod" type="3" value="0"></param>
+				<param name="position.position_x" type="4" value="0.000000"></param>
+				<param name="position.position_y" type="4" value="0.000000"></param>
+				<param name="position.position_z" type="4" value="0.000000"></param>
+				<param name="enablecutoffdistance" type="11" value="false"></param>
+				<param name="cutoffdistance" type="4" value="0.000000"></param>
+				<portdef name="geometry" type="1024" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="position" type="16" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="enablecutoffdistance" type="1" structure="1" group="0" instance="0" port="2"></portdef>
+				<portdef name="cutoffdistance" type="4" structure="1" group="0" instance="0" port="3"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1992</prop>
+					<prop name="posy">-712</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="11">
+				<param name="reference" type="31" value="polymsh.PointPosition"></param>
+				<param_ext name="reference" type="31" value="polymsh.PointPosition"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">953</prop>
+					<prop name="posy">-1320</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="12">
+				<portdef name="in" type="8192" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">-379</prop>
+					<prop name="posy">-1233</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="13">
+				<portdef name="in" type="1024" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">-410</prop>
+					<prop name="posy">-1332</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="14">
+				<param name="in" type="11" value="true"></param>
+				<portdef name="in" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">-20</prop>
+					<prop name="posy">-1429</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="15">
+				<param name="in" type="11" value="true"></param>
+				<portdef name="in" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">15</prop>
+					<prop name="posy">-1526</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="AddPointNode" index="16">
+				<param name="reference" type="31" value="Self"></param>
+				<param name="positions1.positions1_x" type="4" value="0.000000"></param>
+				<param name="positions1.positions1_y" type="4" value="0.000000"></param>
+				<param name="positions1.positions1_z" type="4" value="0.000000"></param>
+				<param_ext name="reference" type="31" value="Self"></param_ext>
+				<portdef name="positions1" type="16" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<portdef name="oncreation1" type="4096" structure="1" group="4" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1940</prop>
+					<prop name="posy">-924</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="FilterNode" index="17">
+				<param name="keep" type="11" value="true"></param>
+				<param name="value.value_x" type="4" value="0.000000"></param>
+				<param name="value.value_y" type="4" value="0.000000"></param>
+				<param name="value.value_z" type="4" value="0.000000"></param>
+				<portdef name="keep" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value" type="16" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1681</prop>
+					<prop name="posy">-954</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IfNode" index="18">
+				<param name="condition" type="11" value="true"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="4096" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="iffalse" type="4096" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2174</prop>
+					<prop name="posy">-888</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<comment type="group" state="maximized" wordwrap="false" autoresize="false" background="0" background_alpha="0.100000" title="14876671" title_text="0" offsetx="919" offsety="-1511" sizex="1378" sizey="428"><![CDATA[add a feather at each point]]></comment>
+			<comment type="group" state="maximized" wordwrap="false" autoresize="false" background="0" background_alpha="0.100000" title="14876671" title_text="0" offsetx="1028" offsety="-1070" sizex="1274" sizey="346"><![CDATA[add a feather at each polygon]]></comment>
+		</nodes>
+		<exposed_ports>
+			<port index="2" portname="execute" username="Add" basename="Add" portlabel="Add" exposetype="single"> </port>
+			<port index="9" portname="keep" username="FilterPoint" basename="FilterPoint" portlabel="FilterPoint" exposetype="single"> </port>
+			<port index="12" portname="in" username="StaticName" basename="StaticName" portlabel="StaticName" exposetype="single"> </port>
+			<port index="13" portname="in" username="StaticGeometry" basename="StaticGeometry" portlabel="StaticGeometry" exposetype="single"> </port>
+			<port index="14" portname="in" username="OnPolygon" basename="OnPolygon" portlabel="OnPolygon" exposetype="single"> </port>
+			<port index="15" portname="in" username="OnPoint" basename="OnPoint" portlabel="OnPoint" exposetype="single"> </port>
+			<port index="17" portname="keep" username="FilterPolygon" basename="FilterPolygon" portlabel="FilterPolygon" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="12" from_port="out" to_node="11" to_port="inname"> </cnx>
+			<cnx from_node="12" from_port="out" to_node="0" to_port="inname"> </cnx>
+			<cnx from_node="10" from_port="location" to_node="1" to_port="Value"> </cnx>
+			<cnx from_node="9" from_port="result" to_node="8" to_port="positions1"> </cnx>
+			<cnx from_node="8" from_port="add" to_node="4" to_port="iftrue"> </cnx>
+			<cnx from_node="4" from_port="result" to_node="2" to_port="port1"> </cnx>
+			<cnx from_node="0" from_port="value" to_node="17" to_port="value"> </cnx>
+			<cnx from_node="1" from_port="Execute" to_node="2" to_port="port3"> </cnx>
+			<cnx from_node="11" from_port="value" to_node="9" to_port="value"> </cnx>
+			<cnx from_node="7" from_port="value" to_node="10" to_port="position"> </cnx>
+			<cnx from_node="17" from_port="result" to_node="16" to_port="positions1"> </cnx>
+			<cnx from_node="18" from_port="result" to_node="2" to_port="port2"> </cnx>
+			<cnx from_node="13" from_port="out" to_node="10" to_port="geometry"> </cnx>
+			<cnx from_node="15" from_port="out" to_node="4" to_port="condition"> </cnx>
+			<cnx from_node="14" from_port="out" to_node="18" to_port="condition"> </cnx>
+			<cnx from_node="16" from_port="add" to_node="18" to_port="iftrue"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="StaticGeometry"> </item>
+			<item type="input" name="StaticName"> </item>
+			<item type="input" name="OnPoint"> </item>
+			<item type="input" name="OnPolygon"> </item>
+			<item type="input" name="FilterPoint"> </item>
+			<item type="input" name="FilterPolygon"> </item>
+			<item type="output" name="Add"> </item>
+		</layout>
+	</definition>
+</xsi_file>

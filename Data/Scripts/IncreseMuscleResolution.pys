@@ -1,0 +1,12 @@
+from Globals import *
+
+model = xsi.Selection(0)
+children = model.FindChildren()
+for c in children:
+	if c.Name.find("_Start")>-1:
+		prop = c.Properties("MuscleControl")
+		if not prop:
+			xsi.LogMessage(c.FullName+" does NOT have Muscle Control PPG")
+		else:
+			v = prop.Parameters("Divisions").Value
+			prop.Parameters("Divisions").Value = v*0.25

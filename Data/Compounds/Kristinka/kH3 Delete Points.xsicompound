@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="kH3 Delete Points" category="" tasks="k Hair3/Shading" author="Anto Matkovic" url="http://www.matkovic.com/anto" formatversion="1.4" compoundversion="1.0" versiontag="" constructionmode="Current" backgroundcolor="10662546">
+	<description><![CDATA[]]></description>
+	<definition>
+		<nodes>
+			<node type="RandomValueNode" index="0">
+				<param name="distributiontype" type="3" value="0"></param>
+				<param name="seed" type="3" value="12349"></param>
+				<param name="timevarying" type="11" value="false"></param>
+				<param name="id" type="3" value="0"></param>
+				<param name="meanvalue" type="4" value="0.500000"></param>
+				<param name="variance" type="4" value="0.500000"></param>
+				<portdef name="seed" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="timevarying" type="1" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="id" type="2" structure="1" group="0" instance="0" port="2"></portdef>
+				<portdef name="meanvalue" type="4" structure="1" group="0" instance="0" port="3"></portdef>
+				<portdef name="variance" type="4" structure="1" group="0" instance="0" port="4"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-933</prop>
+					<prop name="posy">389</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="CompareNode" index="1">
+				<param name="type" type="3" value="2"></param>
+				<param name="epsilon" type="5" value="0.001000"></param>
+				<param name="first" type="4" value="0.000000"></param>
+				<param name="second" type="4" value="0.500000"></param>
+				<portdef name="first" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-609</prop>
+					<prop name="posy">377</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="DeletePointNode" index="2">
+				<param name="reference" type="31" value="Self"></param>
+				<param name="deleted" type="11" value="false"></param>
+				<param_ext name="reference" type="31" value="Self"></param_ext>
+				<portdef name="deleted" type="1" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-503</prop>
+					<prop name="posy">371</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="3">
+				<param name="reference" type="31" value="Self.kH_ChunkID"></param>
+				<param_ext name="reference" type="31" value="Self.kH_ChunkID"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1551</prop>
+					<prop name="posy">560</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IntegerNode" index="4">
+				<param name="value" type="3" value="13357"></param>
+				<portdef name="value" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1150</prop>
+					<prop name="posy">290</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IfNode" index="5">
+				<param name="condition" type="11" value="true"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="4096" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="iffalse" type="4096" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-355</prop>
+					<prop name="posy">299</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IfNode" index="6">
+				<param name="condition" type="11" value="true"></param>
+				<param name="iftrue" type="4" value="0.000000"></param>
+				<param name="iffalse" type="4" value="0.000000"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="iffalse" type="4" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-718</prop>
+					<prop name="posy">200</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ScalarNode" index="7">
+				<param name="value" type="4" value="1.000000"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-962</prop>
+					<prop name="posy">186</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="8">
+				<param name="in" type="4" value="0.500000"></param>
+				<portdef name="in" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">-1190</prop>
+					<prop name="posy">212</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="SubtractNode" index="9">
+				<param name="first" type="4" value="0.000000"></param>
+				<param name="second" type="4" value="0.000000"></param>
+				<portdef name="first" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-874</prop>
+					<prop name="posy">181</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="RescaleNode" index="10">
+				<param name="value" type="4" value="0.000000"></param>
+				<param name="sourcestart" type="4" value="0.000000"></param>
+				<param name="sourceend" type="4" value="1.000000"></param>
+				<param name="targetstart" type="4" value="0.010000"></param>
+				<param name="targetend" type="4" value="1.000000"></param>
+				<param name="clamp" type="11" value="true"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="sourcestart" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="sourceend" type="4" structure="1" group="0" instance="0" port="2"></portdef>
+				<portdef name="targetstart" type="4" structure="1" group="0" instance="0" port="3"></portdef>
+				<portdef name="targetend" type="4" structure="1" group="0" instance="0" port="4"></portdef>
+				<portdef name="clamp" type="1" structure="1" group="0" instance="0" port="5"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-755</prop>
+					<prop name="posy">375</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ScalarNode" index="11">
+				<param name="value" type="4" value="0.500000"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1084</prop>
+					<prop name="posy">484</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="SelectCaseNode" index="12">
+				<param name="condition" type="3" value="0"></param>
+				<param name="case0" type="3" value="0"></param>
+				<param name="case1" type="3" value="0"></param>
+				<param name="case2" type="3" value="0"></param>
+				<param name="default" type="3" value="0"></param>
+				<portdef name="condition" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="case0" type="2" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="case1" type="2" structure="1" group="1" instance="1" port="0"></portdef>
+				<portdef name="case2" type="2" structure="1" group="1" instance="2" port="0"></portdef>
+				<portdef name="default" type="2" structure="1" group="2" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1262</prop>
+					<prop name="posy">417</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="13">
+				<param name="reference" type="31" value="Self.kH_GroupID"></param>
+				<param_ext name="reference" type="31" value="Self.kH_GroupID"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1552</prop>
+					<prop name="posy">686</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="14">
+				<param name="reference" type="31" value="Self.ID"></param>
+				<param_ext name="reference" type="31" value="Self.ID"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1542</prop>
+					<prop name="posy">437</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="4" portname="value" username="Seed" basename="Seed" portlabel="Seed" exposetype="single"> </port>
+			<port index="5" portname="result" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+			<port index="5" portname="condition" username="Enable" basename="Enable" portlabel="Enable" exposetype="single"> </port>
+			<port index="6" portname="condition" username="Invert" basename="Invert" portlabel="Invert" exposetype="single"> </port>
+			<port index="8" portname="in" username="Scalar_In" basename="Scalar In" portlabel="Scalar In" exposetype="single"> </port>
+			<port index="10" portname="targetstart" username="Threshold_A" basename="Threshold A" portlabel="Threshold A" exposetype="single"> </port>
+			<port index="10" portname="targetend" username="Threshold_B" basename="Threshold B" portlabel="Threshold B" exposetype="single"> </port>
+			<port index="12" portname="condition" username="ID" basename="ID" portlabel="ID" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="6" from_port="result" to_node="1" to_port="second"> </cnx>
+			<cnx from_node="2" from_port="execute" to_node="5" to_port="iftrue"> </cnx>
+			<cnx from_node="0" from_port="value" to_node="10" to_port="value"> </cnx>
+			<cnx from_node="1" from_port="result" to_node="2" to_port="deleted"> </cnx>
+			<cnx from_node="4" from_port="result" to_node="0" to_port="seed"> </cnx>
+			<cnx from_node="7" from_port="result" to_node="9" to_port="first"> </cnx>
+			<cnx from_node="8" from_port="out" to_node="9" to_port="second"> </cnx>
+			<cnx from_node="8" from_port="out" to_node="6" to_port="iffalse"> </cnx>
+			<cnx from_node="9" from_port="result" to_node="6" to_port="iftrue"> </cnx>
+			<cnx from_node="10" from_port="result" to_node="1" to_port="first"> </cnx>
+			<cnx from_node="11" from_port="result" to_node="0" to_port="meanvalue"> </cnx>
+			<cnx from_node="11" from_port="result" to_node="0" to_port="variance"> </cnx>
+			<cnx from_node="3" from_port="value" to_node="12" to_port="case1"> </cnx>
+			<cnx from_node="13" from_port="value" to_node="12" to_port="case2"> </cnx>
+			<cnx from_node="14" from_port="value" to_node="12" to_port="case0"> </cnx>
+			<cnx from_node="12" from_port="result" to_node="0" to_port="id"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Enable" min="0" max="0"> </item>
+			<item type="input" name="Invert" min="0" max="0"> </item>
+			<item type="input" name="ID" min="0" max="0">
+				<enum value="0"><![CDATA[Point]]></enum>
+				<enum value="1"><![CDATA[Guide]]></enum>
+				<enum value="2"><![CDATA[Group]]></enum>
+			</item>
+			<item type="input" name="Scalar_In" min="0" max="1"> </item>
+			<item type="input" name="Threshold_A" min="0" max="1"> </item>
+			<item type="input" name="Threshold_B" min="0" max="1"> </item>
+			<item type="input" name="Seed" min="0" max="0"> </item>
+			<item type="output" name="Execute" min="0" max="0"> </item>
+		</layout>
+	</definition>
+</xsi_file>

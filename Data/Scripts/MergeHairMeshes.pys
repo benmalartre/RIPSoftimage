@@ -1,0 +1,52 @@
+#-------------------------------------------
+# ELIHair Merge Mesh
+#
+# Merge selected meshes
+# merging TipPolygons cluster
+#
+#-------------------------------------------
+from RigGlobals import *
+from RigUtils import *
+from RigICETree import *
+
+def MergeHairMeshes():
+	sel = xsi.Selection
+	if not CheckSelection(sel):
+		return false
+	
+	tipsmerged = GetTipPolygonsIndices(sel)
+	op = xsi.ApplyGenOp("MeshMerge", "", sel, 3, "siPersistentOperation", "siKeepGenOpInputs", "")(0)
+	op.Parameters("Tolerance").Value = 0
+	mesh = op.Parent3DObject
+	mesh.Name = "Hair_Mesh"
+	mesh.ActivePrimitive.Geometry.AddCluster(constants.siPolygonCluster,"TipPolygons",tipsmerged)
+	xsi.FreezeObj(mesh)
+	
+def GetTipPolygonsIndices(sel):
+	tips = []
+	offset = 0
+	
+	for s in sel:
+		cls = s.ActivePrimitive.Geometry.Clusters("TipPolygons")
+		elems = cls.Elements.Array
+		for e in elems:
+			tips.append(e+offset)
+		offset += s.ActivePrimitive.Geometry.Polygons.Count
+		
+	return tips
+	
+
+def CheckSelection(sel):
+	for s in sel:
+		mesh = xsi.Selection(0)
+		if not s.type=="polymsh":
+			xsi.LogMessage("Select Polygon Meshes you want to merge")
+			return false
+			
+		cls = mesh.ActivePrimitive.Geometry.Clusters("TipPolygons")
+		if not cls:
+			xsi.LogMessage("No TipPolygon Cluster on selected Geometry : Add Hair From Mesh aborted...")
+			return false
+	return true
+	
+MergeHairMeshes()

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsi_file type="CompoundNode" name="Muscle Curve Guide" category="Muscles" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="1395388">
+	<definition>
+		<nodes>
+			<node type="ScalarNode" index="0">
+				<param name="value" type="4" value="0.500000"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-361</prop>
+					<prop name="posy">507</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="1">
+				<param name="in" type="4" value="1.000000"></param>
+				<portdef name="in" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">-1139</prop>
+					<prop name="posy">19</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Set Data" version="1.0" index="2">
+				<param name="Reference" type="31" value="Self.MuscleU"></param>
+				<param name="Reference1" type="31" value="Self.MuscleV"></param>
+				<param name="Reference2" type="31" value="Self.MuscleWidth"></param>
+				<param name="Reference3" type="31" value="Self.MuscleDepth"></param>
+				<param name="Reference4" type="31" value="Self.MuscleStartTangent"></param>
+				<param name="Reference5" type="31" value="Self.MuscleEndTangent"></param>
+				<param name="Reference6" type="31" value="Self.StartSkeleton"></param>
+				<param name="Reference7" type="31" value="Self.EndSkeleton"></param>
+				<param name="Value" type="3" value="0"></param>
+				<param name="Value1" type="3" value="0"></param>
+				<param name="Value2" type="4" value="0.000000"></param>
+				<param name="Value3" type="4" value="0.000000"></param>
+				<param name="Value4" type="4" value="0.000000"></param>
+				<param name="Value5" type="4" value="0.000000"></param>
+				<param name="Value6" type="3" value="0"></param>
+				<param name="Value7" type="3" value="0"></param>
+				<param_ext name="Reference" type="31" value="Self.MuscleU"></param_ext>
+				<param_ext name="Reference1" type="31" value="Self.MuscleV"></param_ext>
+				<param_ext name="Reference2" type="31" value="Self.MuscleWidth"></param_ext>
+				<param_ext name="Reference3" type="31" value="Self.MuscleDepth"></param_ext>
+				<param_ext name="Reference4" type="31" value="Self.MuscleStartTangent"></param_ext>
+				<param_ext name="Reference5" type="31" value="Self.MuscleEndTangent"></param_ext>
+				<param_ext name="Reference6" type="31" value="Self.StartSkeleton"></param_ext>
+				<param_ext name="Reference7" type="31" value="Self.EndSkeleton"></param_ext>
+				<portdef name="In_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Value" type="2" structure="1" group="2" instance="0" port="0" groupname="Value"></portdef>
+				<portdef name="Value1" type="2" structure="1" group="2" instance="1" port="0" groupname="Value"></portdef>
+				<portdef name="Value2" type="4" structure="1" group="2" instance="2" port="0" groupname="Value"></portdef>
+				<portdef name="Value3" type="4" structure="1" group="2" instance="3" port="0" groupname="Value"></portdef>
+				<portdef name="Value4" type="4" structure="1" group="2" instance="4" port="0" groupname="Value"></portdef>
+				<portdef name="Value5" type="4" structure="1" group="2" instance="5" port="0" groupname="Value"></portdef>
+				<portdef name="Value6" type="2" structure="1" group="2" instance="6" port="0" groupname="Value"></portdef>
+				<portdef name="Value7" type="2" structure="1" group="2" instance="7" port="0" groupname="Value"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">289</prop>
+					<prop name="posy">20</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="3">
+				<param name="in" type="4" value="1.000000"></param>
+				<portdef name="in" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">-1139</prop>
+					<prop name="posy">46</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IntegerNode" index="4">
+				<param name="value" type="3" value="8"></param>
+				<portdef name="value" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-517</prop>
+					<prop name="posy">81</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IntegerNode" index="5">
+				<param name="value" type="3" value="3"></param>
+				<portdef name="value" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1268</prop>
+					<prop name="posy">114</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IntegerNode" index="8">
+				<param name="value" type="3" value="-1"></param>
+				<portdef name="value" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-352</prop>
+					<prop name="posy">579</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IntegerNode" index="9">
+				<param name="value" type="3" value="-1"></param>
+				<portdef name="value" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-362</prop>
+					<prop name="posy">661</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ScalarNode" index="10">
+				<param name="value" type="4" value="0.500000"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-379</prop>
+					<prop name="posy">422</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="value" username="End_Tangent" basename="End Tangent" portlabel="End Tangent" exposetype="single"> </port>
+			<port index="1" portname="in" username="Width_Factor" basename="Width Factor" portlabel="Width Factor" exposetype="single"> </port>
+			<port index="2" portname="Execute" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+			<port index="3" portname="in" username="Depth_Factor" basename="Depth Factor" portlabel="Depth Factor" exposetype="single"> </port>
+			<port index="4" portname="value" username="U" basename="U" portlabel="U" exposetype="single"> </port>
+			<port index="5" portname="value" username="V" basename="V" portlabel="V" exposetype="single"> </port>
+			<port index="8" portname="value" username="Start_Skeleton" basename="Start Skeleton" portlabel="Start Skeleton" exposetype="single"> </port>
+			<port index="9" portname="value" username="End_Skeleton" basename="End Skeleton" portlabel="End Skeleton" exposetype="single"> </port>
+			<port index="10" portname="value" username="Start_Tangent" basename="Start Tangent" portlabel="Start Tangent" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="0" from_port="result" to_node="2" to_port="Value5"> </cnx>
+			<cnx from_node="1" from_port="out" to_node="2" to_port="Value2"> </cnx>
+			<cnx from_node="4" from_port="result" to_node="2" to_port="Value"> </cnx>
+			<cnx from_node="5" from_port="result" to_node="2" to_port="Value1"> </cnx>
+			<cnx from_node="8" from_port="result" to_node="2" to_port="Value6"> </cnx>
+			<cnx from_node="9" from_port="result" to_node="2" to_port="Value7"> </cnx>
+			<cnx from_node="10" from_port="result" to_node="2" to_port="Value4"> </cnx>
+			<cnx from_node="3" from_port="out" to_node="2" to_port="Value3"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="U"> </item>
+			<item type="input" name="V"> </item>
+			<item type="input" name="Width_Factor"> </item>
+			<item type="input" name="Depth_Factor"> </item>
+			<item type="input" name="Start_Tangent" min="0" max="1"> </item>
+			<item type="input" name="End_Tangent" min="0" max="1"> </item>
+			<item type="input" name="Start_Skeleton"> </item>
+			<item type="input" name="End_Skeleton"> </item>
+			<item type="output" name="Execute"> </item>
+		</layout>
+	</definition>
+</xsi_file>

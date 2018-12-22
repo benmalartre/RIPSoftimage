@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="kH3 Initialize PolyMesh Emitter" category="" tasks="k Hair3/Emitters" author="Anto Matkovic" url="http://www.matkovic.com/anto" formatversion="1.4" compoundversion="1.0" versiontag="" constructionmode="Current" backgroundcolor="8033438">
+	<description><![CDATA[]]></description>
+	<definition>
+		<nodes>
+			<node type="Set Data" version="1.0" index="5">
+				<param name="Reference1" type="31" value="Self.kH_MeshPolyID"></param>
+				<param name="Reference" type="31" value="Self.kH_MeshPointID"></param>
+				<param name="Value" type="3" value="0"></param>
+				<param name="Value1" type="3" value="0"></param>
+				<param_ext name="Reference1" type="31" value="Self.kH_MeshPolyID"></param_ext>
+				<param_ext name="Reference" type="31" value="Self.kH_MeshPointID"></param_ext>
+				<portdef name="Value1" type="2" structure="1" group="2" instance="0" port="0" groupname="Value"></portdef>
+				<portdef name="Value" type="2" structure="1" group="2" instance="1" port="0" groupname="Value"></portdef>
+				<portdef name="In_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">564</prop>
+					<prop name="posy">14</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="6">
+				<param name="reference" type="31" value="Self.PolygonPosition"></param>
+				<param_ext name="reference" type="31" value="Self.PolygonPosition"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-12</prop>
+					<prop name="posy">-53</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="7">
+				<param name="reference" type="31" value="Self.PointPosition"></param>
+				<param_ext name="reference" type="31" value="Self.PointPosition"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-9</prop>
+					<prop name="posy">-178</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetElementIndicesNode" index="11">
+				<param name="value.value_x" type="4" value="0.000000"></param>
+				<param name="value.value_y" type="4" value="0.000000"></param>
+				<param name="value.value_z" type="4" value="0.000000"></param>
+				<portdef name="value" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">270</prop>
+					<prop name="posy">-191</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetElementIndicesNode" index="12">
+				<param name="value.value_x" type="4" value="0.000000"></param>
+				<param name="value.value_y" type="4" value="0.000000"></param>
+				<param name="value.value_z" type="4" value="0.000000"></param>
+				<portdef name="value" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">279</prop>
+					<prop name="posy">-71</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="5" portname="Execute" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="7" from_port="value" to_node="11" to_port="value"> </cnx>
+			<cnx from_node="6" from_port="value" to_node="12" to_port="value"> </cnx>
+			<cnx from_node="12" from_port="indices" to_node="5" to_port="Value1"> </cnx>
+			<cnx from_node="11" from_port="indices" to_node="5" to_port="Value"> </cnx>
+		</connections>
+		<layout>
+			<item type="output" name="Execute"> </item>
+		</layout>
+	</definition>
+</xsi_file>

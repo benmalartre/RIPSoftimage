@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="Get 2D SubArray Size" category="Array2d" tasks="" author="" url="" formatversion="1.4" compoundversion="1.0" versiontag="" constructionmode="Current" backgroundcolor="6732954">
+	<description><![CDATA[]]></description>
+	<definition>
+		<nodes>
+			<node type="Calc Sub Array Size" version="1.0" index="0">
+				<param name="Sub_Array_Indices" type="3" value="0"></param>
+				<param name="Index" type="3" value="2"></param>
+				<portdef name="Index" type="2" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Sub_Array_Indices" type="2" structure="2" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-105</prop>
+					<prop name="posy">-190</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="11">
+				<param name="reference" type="31" value="Self.2darrayids"></param>
+				<param_ext name="reference" type="31" value="Self.2darrayids"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-308</prop>
+					<prop name="posy">-193</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="Index" username="Index" basename="Index" portlabel="Index" exposetype="single"> </port>
+			<port index="0" portname="Sub_Array_Size" username="Result" basename="Result" portlabel="Result" exposetype="single"> </port>
+			<port index="11" portname="inname" username="Array_Indices_Name" basename="Array Indices Name" portlabel="Array Indices Name" exposetype="single"> </port>
+			<port index="11" portname="reference" username="Array_Indices_Reference" basename="Array Indices Reference" portlabel="Array Indices Reference" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="11" from_port="value" to_node="0" to_port="Sub_Array_Indices"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Array_Indices_Name"> </item>
+			<item type="input" name="Array_Indices_Reference"> </item>
+			<item type="input" name="Index"> </item>
+			<item type="output" name="Result"> </item>
+		</layout>
+	</definition>
+</xsi_file>

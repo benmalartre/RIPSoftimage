@@ -1,0 +1,9 @@
+App = Application
+Root = App.ActiveSceneRoot
+Group = Root.Groups("TerrainPoint")
+Points Group.Members
+Vertices=[]
+Polygons=[]
+
+
+#.AddPolygonMesh(Vertices,Polygons,"Terrain")

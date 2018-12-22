@@ -1,0 +1,726 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="VorleX Friction Force" category="" tasks="" author="ZSelector" url="" formatversion="1.4" compoundversion="1.0" versiontag="" constructionmode="Modeling" backgroundcolor="10205655">
+	<description><![CDATA[]]></description>
+	<definition>
+		<nodes>
+			<node type="[embedded_0]" index="0">
+				<param name="Type" type="3" value="2"></param>
+				<param name="Epsilon" type="5" value="0.000000"></param>
+				<param name="Enable_Cutoff_Distance" type="11" value="true"></param>
+				<param name="Cutoff_Distance" type="4" value="0.500000"></param>
+				<param name="Test_Distance" type="4" value="0.300000"></param>
+				<portdef name="Cutoff_Distance" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Enable_Cutoff_Distance" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Surface1" type="1024" structure="1" group="2" instance="0" port="0" groupname="Surface1"></portdef>
+				<portdef name="Surface2" type="1024" structure="1" group="2" instance="1" port="0" groupname="Surface1"></portdef>
+				<portdef name="Test_Distance" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">537</prop>
+					<prop name="posy">973</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IfNode" index="1">
+				<param name="condition" type="11" value="false"></param>
+				<param name="iftrue.iftrue_x" type="4" value="0.000000"></param>
+				<param name="iftrue.iftrue_y" type="4" value="0.000000"></param>
+				<param name="iftrue.iftrue_z" type="4" value="0.000000"></param>
+				<param name="iffalse.iffalse_x" type="4" value="0.000000"></param>
+				<param name="iffalse.iffalse_y" type="4" value="0.000000"></param>
+				<param name="iffalse.iffalse_z" type="4" value="0.000000"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="16" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="iffalse" type="16" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2719</prop>
+					<prop name="posy">1172</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="MultiplyVectorByMatrixNode" index="2">
+				<param name="vector.vector_x" type="4" value="0.000000"></param>
+				<param name="vector.vector_y" type="4" value="0.000000"></param>
+				<param name="vector.vector_z" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_00" type="4" value="1.000000"></param>
+				<param name="matrix.matrix_01" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_02" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_03" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_10" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_11" type="4" value="1.000000"></param>
+				<param name="matrix.matrix_12" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_13" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_20" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_21" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_22" type="4" value="1.000000"></param>
+				<param name="matrix.matrix_23" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_30" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_31" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_32" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_33" type="4" value="1.000000"></param>
+				<portdef name="vector" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="matrix" type="256" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1249</prop>
+					<prop name="posy">1221</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="SRTToMatrixNode" index="3">
+				<param name="scaling.scaling_x" type="4" value="1.000000"></param>
+				<param name="scaling.scaling_y" type="4" value="1.000000"></param>
+				<param name="scaling.scaling_z" type="4" value="1.000000"></param>
+				<param name="rotation.rotation_x" type="4" value="1.000000"></param>
+				<param name="rotation.rotation_y" type="4" value="0.000000"></param>
+				<param name="rotation.rotation_z" type="4" value="0.000000"></param>
+				<param name="rotation.rotation_angle" type="4" value="0.000000"></param>
+				<param name="translation.translation_x" type="4" value="0.000000"></param>
+				<param name="translation.translation_y" type="4" value="0.000000"></param>
+				<param name="translation.translation_z" type="4" value="0.000000"></param>
+				<portdef name="scaling" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="rotation" type="16384" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="translation" type="16" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">761</prop>
+					<prop name="posy">1438</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="SubtractNode" index="4">
+				<param name="first.first_x" type="4" value="0.000000"></param>
+				<param name="first.first_y" type="4" value="0.000000"></param>
+				<param name="first.first_z" type="4" value="0.000000"></param>
+				<param name="second.second_x" type="4" value="0.000000"></param>
+				<param name="second.second_y" type="4" value="0.000000"></param>
+				<param name="second.second_z" type="4" value="0.000000"></param>
+				<portdef name="first" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="16" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">743</prop>
+					<prop name="posy">1235</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="MultiplyByScalarNode" index="5">
+				<param name="value.value_x" type="4" value="0.000000"></param>
+				<param name="value.value_y" type="4" value="0.000000"></param>
+				<param name="value.value_z" type="4" value="0.000000"></param>
+				<param name="factor" type="4" value="4.000000"></param>
+				<portdef name="value" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="factor" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1497</prop>
+					<prop name="posy">1222</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="6">
+				<param name="reference" type="31" value="Self.PointPosition"></param>
+				<param_ext name="reference" type="31" value="Self.PointPosition"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">457</prop>
+					<prop name="posy">1203</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="7">
+				<param name="reference" type="31" value="self._PrevFramePointPosition"></param>
+				<param_ext name="reference" type="31" value="self._PrevFramePointPosition"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">436</prop>
+					<prop name="posy">1270</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="8">
+				<param name="reference" type="31" value="self.kine.global"></param>
+				<param_ext name="reference" type="31" value="self.kine.global"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">435</prop>
+					<prop name="posy">1466</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="4x4MatrixNode" index="9">
+				<param name="value.value_00" type="4" value="1.000000"></param>
+				<param name="value.value_01" type="4" value="0.000000"></param>
+				<param name="value.value_02" type="4" value="0.000000"></param>
+				<param name="value.value_03" type="4" value="0.000000"></param>
+				<param name="value.value_10" type="4" value="0.000000"></param>
+				<param name="value.value_11" type="4" value="1.000000"></param>
+				<param name="value.value_12" type="4" value="0.000000"></param>
+				<param name="value.value_13" type="4" value="0.000000"></param>
+				<param name="value.value_20" type="4" value="0.000000"></param>
+				<param name="value.value_21" type="4" value="0.000000"></param>
+				<param name="value.value_22" type="4" value="1.000000"></param>
+				<param name="value.value_23" type="4" value="0.000000"></param>
+				<param name="value.value_30" type="4" value="0.000000"></param>
+				<param name="value.value_31" type="4" value="0.000000"></param>
+				<param name="value.value_32" type="4" value="0.000000"></param>
+				<param name="value.value_33" type="4" value="1.000000"></param>
+				<portdef name="value" type="256" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">916</prop>
+					<prop name="posy">1439</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="MatrixToSRTNode" index="10">
+				<param name="matrix.matrix_00" type="4" value="1.000000"></param>
+				<param name="matrix.matrix_01" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_02" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_03" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_10" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_11" type="4" value="1.000000"></param>
+				<param name="matrix.matrix_12" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_13" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_20" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_21" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_22" type="4" value="1.000000"></param>
+				<param name="matrix.matrix_23" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_30" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_31" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_32" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_33" type="4" value="1.000000"></param>
+				<portdef name="matrix" type="256" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">618</prop>
+					<prop name="posy">1443</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="11">
+				<param name="in.in_x" type="4" value="0.000000"></param>
+				<param name="in.in_y" type="4" value="0.000000"></param>
+				<param name="in.in_z" type="4" value="0.000000"></param>
+				<portdef name="in" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">1866</prop>
+					<prop name="posy">1241</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="12">
+				<param name="in.in_x" type="4" value="0.000000"></param>
+				<param name="in.in_y" type="4" value="0.000000"></param>
+				<param name="in.in_z" type="4" value="0.000000"></param>
+				<portdef name="in" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">1632</prop>
+					<prop name="posy">1408</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+				<comment type="node" state="maximized" wordwrap="true" autoresize="true" background="0" background_alpha="0.000000" title="14876671" title_text="0" offsetx="25" offsety="-34" sizex="64" sizey="58"><![CDATA[Surface Point Velocity To Connect]]></comment>
+			</node>
+			<node type="ScalarNode" index="13">
+				<param name="value" type="4" value="-1.000000"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2455</prop>
+					<prop name="posy">1403</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="DotProductNode" index="14">
+				<param name="first.first_x" type="4" value="0.000000"></param>
+				<param name="first.first_y" type="4" value="0.000000"></param>
+				<param name="first.first_z" type="4" value="0.000000"></param>
+				<param name="second.second_x" type="4" value="0.000000"></param>
+				<param name="second.second_y" type="4" value="0.000000"></param>
+				<param name="second.second_z" type="4" value="0.000000"></param>
+				<portdef name="first" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="16" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2000</prop>
+					<prop name="posy">1279</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="MultiplyByScalarNode" index="15">
+				<param name="value.value_x" type="4" value="0.000000"></param>
+				<param name="value.value_y" type="4" value="0.000000"></param>
+				<param name="value.value_z" type="4" value="0.000000"></param>
+				<param name="factor" type="4" value="1.000000"></param>
+				<portdef name="value" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="factor" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2136</prop>
+					<prop name="posy">1242</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="SubtractNode" index="16">
+				<param name="first.first_x" type="4" value="0.000000"></param>
+				<param name="first.first_y" type="4" value="0.000000"></param>
+				<param name="first.first_z" type="4" value="0.000000"></param>
+				<param name="second.second_x" type="4" value="0.000000"></param>
+				<param name="second.second_y" type="4" value="0.000000"></param>
+				<param name="second.second_z" type="4" value="0.000000"></param>
+				<portdef name="first" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="16" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1791</prop>
+					<prop name="posy">1356</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="SubtractNode" index="17">
+				<param name="first.first_x" type="4" value="0.000000"></param>
+				<param name="first.first_y" type="4" value="0.000000"></param>
+				<param name="first.first_z" type="4" value="0.000000"></param>
+				<param name="second.second_x" type="4" value="0.000000"></param>
+				<param name="second.second_y" type="4" value="0.000000"></param>
+				<param name="second.second_z" type="4" value="0.000000"></param>
+				<portdef name="first" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="16" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2347</prop>
+					<prop name="posy">1344</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="MultiplyByScalarNode" index="18">
+				<param name="value.value_x" type="4" value="0.000000"></param>
+				<param name="value.value_y" type="4" value="0.000000"></param>
+				<param name="value.value_z" type="4" value="0.000000"></param>
+				<param name="factor" type="4" value="-1.000000"></param>
+				<portdef name="value" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="factor" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2527</prop>
+					<prop name="posy">1347</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="MultiplyVectorByMatrixNode" index="19">
+				<param name="vector.vector_x" type="4" value="0.000000"></param>
+				<param name="vector.vector_y" type="4" value="0.000000"></param>
+				<param name="vector.vector_z" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_00" type="4" value="1.000000"></param>
+				<param name="matrix.matrix_01" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_02" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_03" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_10" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_11" type="4" value="1.000000"></param>
+				<param name="matrix.matrix_12" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_13" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_20" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_21" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_22" type="4" value="1.000000"></param>
+				<param name="matrix.matrix_23" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_30" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_31" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_32" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_33" type="4" value="1.000000"></param>
+				<portdef name="vector" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="matrix" type="256" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1232</prop>
+					<prop name="posy">1008</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<comment type="group" state="maximized" wordwrap="false" autoresize="false" background="0" background_alpha="0.100000" title="13103871" title_text="0" offsetx="397" offsety="944" sizex="2412" sizey="699"><![CDATA[Group]]></comment>
+			<comment type="group" state="maximized" wordwrap="false" autoresize="false" background="0" background_alpha="0.100000" title="13103871" title_text="0" offsetx="426" offsety="1410" sizex="635" sizey="154"><![CDATA[Convert To Global Space]]></comment>
+			<comment type="group" state="maximized" wordwrap="false" autoresize="false" background="0" background_alpha="0.100000" title="13103871" title_text="0" offsetx="2321" offsety="1286" sizex="128" sizey="154"><![CDATA[Tangent Velocity]]></comment>
+			<comment type="group" state="maximized" wordwrap="false" autoresize="false" background="0" background_alpha="0.100000" title="13103871" title_text="0" offsetx="1860" offsety="1214" sizex="436" sizey="146"><![CDATA[Normal Velocity]]></comment>
+			<comment type="group" state="maximized" wordwrap="false" autoresize="false" background="0" background_alpha="0.100000" title="13103871" title_text="0" offsetx="416" offsety="1178" sizex="457" sizey="165"><![CDATA[Velocity In Local Space]]></comment>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="Surface1" username="Geometry" basename="Geometry" portlabel="Geometry" exposetype="all_instances"> </port>
+			<port index="0" portname="Surface2" username="Geometry1" basename="Geometry" portlabel="Geometry1" exposetype="all_instances"> </port>
+			<port index="1" portname="result" username="Result" basename="Result" portlabel="Result" exposetype="single"> </port>
+			<port index="5" portname="factor" username="Strength" basename="Strength" portlabel="Strength" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="0" from_port="Result" to_node="1" to_port="condition"> </cnx>
+			<cnx from_node="0" from_port="Normal" to_node="19" to_port="vector"> </cnx>
+			<cnx from_node="2" from_port="result" to_node="5" to_port="value"> </cnx>
+			<cnx from_node="3" from_port="matrix" to_node="9" to_port="value"> </cnx>
+			<cnx from_node="4" from_port="result" to_node="2" to_port="vector"> </cnx>
+			<cnx from_node="5" from_port="result" to_node="16" to_port="first"> </cnx>
+			<cnx from_node="14" from_port="result" to_node="15" to_port="factor"> </cnx>
+			<cnx from_node="9" from_port="result" to_node="2" to_port="matrix"> </cnx>
+			<cnx from_node="9" from_port="result" to_node="19" to_port="matrix"> </cnx>
+			<cnx from_node="10" from_port="rotation" to_node="3" to_port="rotation"> </cnx>
+			<cnx from_node="11" from_port="out" to_node="15" to_port="value"> </cnx>
+			<cnx from_node="11" from_port="out" to_node="14" to_port="second"> </cnx>
+			<cnx from_node="12" from_port="out" to_node="16" to_port="second"> </cnx>
+			<cnx from_node="13" from_port="result" to_node="18" to_port="factor"> </cnx>
+			<cnx from_node="6" from_port="value" to_node="4" to_port="first"> </cnx>
+			<cnx from_node="7" from_port="value" to_node="4" to_port="second"> </cnx>
+			<cnx from_node="8" from_port="value" to_node="10" to_port="matrix"> </cnx>
+			<cnx from_node="15" from_port="result" to_node="17" to_port="second"> </cnx>
+			<cnx from_node="16" from_port="result" to_node="17" to_port="first"> </cnx>
+			<cnx from_node="16" from_port="result" to_node="14" to_port="first"> </cnx>
+			<cnx from_node="17" from_port="result" to_node="18" to_port="value"> </cnx>
+			<cnx from_node="18" from_port="result" to_node="1" to_port="iftrue"> </cnx>
+			<cnx from_node="19" from_port="result" to_node="11" to_port="in"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Geometry" min="0" max="0"> </item>
+			<item type="input" name="Geometry1" min="0" max="0"> </item>
+			<item type="input" name="Strength" min="0" max="10"> </item>
+			<item type="output" name="Result"> </item>
+		</layout>
+		<blob_dictionary>
+		</blob_dictionary>
+	</definition>
+	<embedded_3 name="Get Particle Position" tasks="Particles/Getters" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="12228200">
+	<description><![CDATA[This compound gets the particle's current position data as set by its PointPosition attribute. You can output the Position value as a 3D vector.]]></description>
+		<nodes>
+			<node type="GetDataNode" index="0">
+				<param name="reference" type="31" value="Self.PointPosition"></param>
+				<param_ext name="reference" type="31" value="Self.PointPosition"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-345</prop>
+					<prop name="posy">255</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="value" username="Position" basename="Position" portlabel="Position" exposetype="single"> </port>
+			<port index="0" portname="reference" username="Reference" basename="Reference" portlabel="Reference" exposetype="single">
+				<description><![CDATA[The particle's PointPosition attribute. Click the Explorer button to open up an explorer and select a different particle attribute.]]></description>
+			</port>
+		</exposed_ports>
+		<connections>
+		</connections>
+		<layout>
+			<item type="input" name="Reference"> </item>
+			<item type="output" name="Position"> </item>
+		</layout>
+	</embedded_3>
+	<embedded_2 name="Get Closest Location on Geometry" tasks="Particles/Getters,Particles/Surface Interaction" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="12228200">
+	<description><![CDATA[This compound gets the geometry component data on the object that is plugged in here. You can output the Location, Position, and Normal data from the object.]]></description>
+		<nodes>
+			<node type="[embedded_3]" index="0">
+				<param name="Reference" type="31" value="Self.PointPosition"></param>
+				<param_ext name="Reference" type="31" value="Self.PointPosition"></param_ext>
+				<datablob category="ui_infos">
+					<prop name="posx">-207</prop>
+					<prop name="posy">405</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetClosestLocationNode" index="1">
+				<param name="proximitymethod" type="3" value="0"></param>
+				<param name="position.position_x" type="4" value="0.000000"></param>
+				<param name="position.position_y" type="4" value="0.000000"></param>
+				<param name="position.position_z" type="4" value="0.000000"></param>
+				<param name="enablecutoffdistance" type="11" value="true"></param>
+				<param name="cutoffdistance" type="4" value="0.500000"></param>
+				<portdef name="geometry" type="1024" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="position" type="16" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="enablecutoffdistance" type="1" structure="1" group="0" instance="0" port="2"></portdef>
+				<portdef name="cutoffdistance" type="4" structure="1" group="0" instance="0" port="3"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">74</prop>
+					<prop name="posy">232</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GroupGeometryNode" index="2">
+				<portdef name="geometry1" type="1024" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="geometry2" type="1024" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-205</prop>
+					<prop name="posy">138</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="FirstValidNode" index="3">
+				<param name="in1.in1_x" type="4" value="0.000000"></param>
+				<param name="in1.in1_y" type="4" value="0.000000"></param>
+				<param name="in1.in1_z" type="4" value="0.000000"></param>
+				<param name="in2.in2_x" type="4" value="0.000000"></param>
+				<param name="in2.in2_y" type="4" value="0.000000"></param>
+				<param name="in2.in2_z" type="4" value="0.000000"></param>
+				<portdef name="in1" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="in2" type="16" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">494</prop>
+					<prop name="posy">349</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="4">
+				<param name="reference" type="31" value="PointPosition"></param>
+				<param_ext name="reference" type="31" value="PointPosition"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">318</prop>
+					<prop name="posy">209</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="5">
+				<param name="reference" type="31" value="PointNormal"></param>
+				<param_ext name="reference" type="31" value="PointNormal"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">314</prop>
+					<prop name="posy">324</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="3DVectorNode" index="6">
+				<param name="value.value_x" type="4" value="0.000000"></param>
+				<param name="value.value_y" type="4" value="1.000000"></param>
+				<param name="value.value_z" type="4" value="0.000000"></param>
+				<portdef name="value" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">347</prop>
+					<prop name="posy">440</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="1" portname="enablecutoffdistance" username="Enable_Cutoff_Distance" basename="Enable Cutoff Distance" portlabel="Enable Cutoff Distance" exposetype="single">
+				<description><![CDATA[Toggles the activeness of the Cutoff Distance option.]]></description>
+			</port>
+			<port index="1" portname="proximitymethod" username="Proximity_Method" basename="Proximity Method" portlabel="Proximity Method" exposetype="single">
+				<description><![CDATA[The geometry component that is used as the closest location: Closest Surface, Closest Vertex or Knot, or Closest Smoothed Surface.]]></description>
+			</port>
+			<port index="1" portname="location" username="Location" basename="Location" portlabel="Location" exposetype="single"> </port>
+			<port index="1" portname="cutoffdistance" username="Cutoff_Distance" basename="Cutoff Distance" portlabel="Cutoff Distance" exposetype="single">
+				<description><![CDATA[The maximum distance (in Softimage units) within which the particles consider the object.]]></description>
+			</port>
+			<port index="2" portname="geometry1" username="Geometry1" basename="Geometry1" portlabel="Geometry1" exposetype="all_instances">
+				<description><![CDATA[The object that you want the particles to consider. This must be an object with a surface. Plug in the object's Value output into this port.]]></description>
+			</port>
+			<port index="2" portname="geometry2" username="Geometry2" basename="Geometry1" portlabel="Geometry2" exposetype="all_instances">
+				<description><![CDATA[The object that you want the particles to consider. This must be an object with a surface. Plug in the object's Value output into this port.]]></description>
+			</port>
+			<port index="3" portname="out" username="Normal" basename="Normal" portlabel="Normal" exposetype="single"> </port>
+			<port index="4" portname="value" username="Position" basename="Position" portlabel="Position" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="1" from_port="location" to_node="5" to_port="source"> </cnx>
+			<cnx from_node="1" from_port="location" to_node="4" to_port="source"> </cnx>
+			<cnx from_node="2" from_port="result" to_node="1" to_port="geometry"> </cnx>
+			<cnx from_node="0" from_port="Position" to_node="1" to_port="position"> </cnx>
+			<cnx from_node="5" from_port="value" to_node="3" to_port="in1"> </cnx>
+			<cnx from_node="6" from_port="result" to_node="3" to_port="in2"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Geometry1" min="0" max="0"> </item>
+			<item type="input" name="Geometry2" min="0" max="0"> </item>
+			<item type="input" name="Enable_Cutoff_Distance"> </item>
+			<item type="input" name="Cutoff_Distance"> </item>
+			<item type="input" name="Proximity_Method"> </item>
+			<item type="output" name="Location"> </item>
+			<item type="output" name="Position"> </item>
+			<item type="output" name="Normal"> </item>
+		</layout>
+	</embedded_2>
+	<embedded_4 name="Get Particle Position" tasks="Particles/Getters" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="12228200">
+	<description><![CDATA[This compound gets the particle's current position data as set by its PointPosition attribute. You can output the Position value as a 3D vector.]]></description>
+		<nodes>
+			<node type="GetDataNode" index="0">
+				<param name="reference" type="31" value="Self.PointPosition"></param>
+				<param_ext name="reference" type="31" value="Self.PointPosition"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-345</prop>
+					<prop name="posy">255</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="value" username="Position" basename="Position" portlabel="Position" exposetype="single"> </port>
+			<port index="0" portname="reference" username="Reference" basename="Reference" portlabel="Reference" exposetype="single">
+				<description><![CDATA[The particle's PointPosition attribute. Click the Explorer button to open up an explorer and select a different particle attribute.]]></description>
+			</port>
+		</exposed_ports>
+		<connections>
+		</connections>
+		<layout>
+			<item type="input" name="Reference"> </item>
+			<item type="output" name="Position"> </item>
+		</layout>
+	</embedded_4>
+	<embedded_1 name="Get Distance to Surface" tasks="Particles/Getters,Particles/Surface Interaction" author="Softimage" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="12228200">
+	<description><![CDATA[This compound gets the distance from the current particle position to the surface of an object. You can output the Distance and Distance Vector values.]]></description>
+		<nodes>
+			<node type="[embedded_2]" index="0">
+				<param name="Proximity_Method" type="3" value="0"></param>
+				<param name="Enable_Cutoff_Distance" type="11" value="true"></param>
+				<param name="Cutoff_Distance" type="4" value="0.500000"></param>
+				<portdef name="Enable_Cutoff_Distance" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Cutoff_Distance" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Geometry1" type="1024" structure="1" group="2" instance="0" port="0" groupname="Geometry1"></portdef>
+				<portdef name="Geometry2" type="1024" structure="1" group="2" instance="1" port="0" groupname="Geometry1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2178</prop>
+					<prop name="posy">2274</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="[embedded_4]" index="1">
+				<param name="Reference" type="31" value="Self.PointPosition"></param>
+				<param_ext name="Reference" type="31" value="Self.PointPosition"></param_ext>
+				<datablob category="ui_infos">
+					<prop name="posx">2202</prop>
+					<prop name="posy">2483</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="LengthNode" index="2">
+				<param name="vector.vector_x" type="4" value="0.000000"></param>
+				<param name="vector.vector_y" type="4" value="0.000000"></param>
+				<param name="vector.vector_z" type="4" value="0.000000"></param>
+				<portdef name="vector" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2613</prop>
+					<prop name="posy">2315</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="SubtractNode" index="3">
+				<param name="first.first_x" type="4" value="0.000000"></param>
+				<param name="first.first_y" type="4" value="0.000000"></param>
+				<param name="first.first_z" type="4" value="0.000000"></param>
+				<param name="second.second_x" type="4" value="0.000000"></param>
+				<param name="second.second_y" type="4" value="0.000000"></param>
+				<param name="second.second_z" type="4" value="0.000000"></param>
+				<portdef name="first" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="16" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2485</prop>
+					<prop name="posy">2409</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="Enable_Cutoff_Distance" username="Enable_Cutoff_Distance" basename="Enable Cutoff Distance" portlabel="Enable Cutoff Distance" exposetype="single">
+				<description><![CDATA[Toggles the activeness of the Cutoff Distance option.]]></description>
+			</port>
+			<port index="0" portname="Cutoff_Distance" username="Cutoff_Distance" basename="Cutoff Distance" portlabel="Cutoff Distance" exposetype="single">
+				<description><![CDATA[The maximum distance (in Softimage units) within which the particles consider the object.]]></description>
+			</port>
+			<port index="0" portname="Proximity_Method" username="proximity_Method" basename="proximity Method" portlabel="proximity Method" exposetype="single">
+				<description><![CDATA[The geometry component of the object that is used to calculate the distance: Closest Surface, Closest Vertex or Knot, or Closest Smoothed Surface.]]></description>
+			</port>
+			<port index="0" portname="Geometry1" username="Surface1" basename="Surface1" portlabel="Surface1" exposetype="all_instances">
+				<description><![CDATA[The object that you want the particles to consider. This must be an object with a surface. Plug in the object's Value output into this port.]]></description>
+			</port>
+			<port index="0" portname="Location" username="Location" basename="Location" portlabel="Location" exposetype="single"> </port>
+			<port index="0" portname="Normal" username="Normal" basename="Normal" portlabel="Normal" exposetype="single"> </port>
+			<port index="0" portname="Geometry2" username="Surface2" basename="Surface1" portlabel="Surface2" exposetype="all_instances">
+				<description><![CDATA[The object that you want the particles to consider. This must be an object with a surface. Plug in the object's Value output into this port.]]></description>
+			</port>
+			<port index="2" portname="result" username="Distance" basename="Distance" portlabel="Distance" exposetype="single"> </port>
+			<port index="3" portname="result" username="Distance_Vector" basename="Distance Vector" portlabel="Distance Vector" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="0" from_port="Position" to_node="3" to_port="first"> </cnx>
+			<cnx from_node="1" from_port="Position" to_node="3" to_port="second"> </cnx>
+			<cnx from_node="3" from_port="result" to_node="2" to_port="vector"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Surface1" min="0" max="0"> </item>
+			<item type="input" name="Surface2" min="0" max="0"> </item>
+			<item type="input" name="Enable_Cutoff_Distance"> </item>
+			<item type="input" name="Cutoff_Distance"> </item>
+			<item type="input" name="proximity_Method"> </item>
+			<item type="output" name="Location"> </item>
+			<item type="output" name="Distance"> </item>
+			<item type="output" name="Distance_Vector"> </item>
+			<item type="output" name="Normal"> </item>
+		</layout>
+	</embedded_1>
+	<embedded_0 name="Test Distance to Surface" tasks="Particles/Conditionals" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="5546441">
+	<description><![CDATA[This compound uses the distance to an object as a trigger for an effect. Plug its Result output into a Trigger port on a State compound.]]></description>
+		<nodes>
+			<node type="[embedded_1]" index="0">
+				<param name="proximity_Method" type="3" value="0"></param>
+				<param name="Enable_Cutoff_Distance" type="11" value="true"></param>
+				<param name="Cutoff_Distance" type="4" value="0.500000"></param>
+				<portdef name="Enable_Cutoff_Distance" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Cutoff_Distance" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Surface1" type="1024" structure="1" group="2" instance="0" port="0" groupname="Surface1"></portdef>
+				<portdef name="Surface2" type="1024" structure="1" group="2" instance="1" port="0" groupname="Surface1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1693</prop>
+					<prop name="posy">2773</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="CompareNode" index="1">
+				<param name="type" type="3" value="2"></param>
+				<param name="epsilon" type="5" value="0.000000"></param>
+				<param name="first" type="4" value="0.000000"></param>
+				<param name="second" type="4" value="0.300000"></param>
+				<portdef name="first" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1996</prop>
+					<prop name="posy">2796</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="Cutoff_Distance" username="Cutoff_Distance" basename="Cutoff Distance" portlabel="Cutoff Distance" exposetype="single">
+				<description><![CDATA[The maximum distance (in Softimage units) in which the particle considers the object.]]></description>
+			</port>
+			<port index="0" portname="Enable_Cutoff_Distance" username="Enable_Cutoff_Distance" basename="Enable Cutoff Distance" portlabel="Enable Cutoff Distance" exposetype="single">
+				<description><![CDATA[Toggles the activeness of the Cutoff Distance option.]]></description>
+			</port>
+			<port index="0" portname="Surface1" username="Surface1" basename="Surface1" portlabel="Surface1" exposetype="all_instances">
+				<description><![CDATA[The object whose distance from the particles you want to use as a trigger. This must be an object with a surface. Plug the object's Value output into this port.]]></description>
+			</port>
+			<port index="0" portname="Location" username="Location" basename="Location" portlabel="Location" exposetype="single"> </port>
+			<port index="0" portname="Normal" username="Normal" basename="Normal" portlabel="Normal" exposetype="single"> </port>
+			<port index="0" portname="Surface2" username="Surface2" basename="Surface1" portlabel="Surface2" exposetype="all_instances">
+				<description><![CDATA[The object whose distance from the particles you want to use as a trigger. This must be an object with a surface. Plug the object's Value output into this port.]]></description>
+			</port>
+			<port index="1" portname="second" username="Test_Distance" basename="Test Distance" portlabel="Test Distance" exposetype="single">
+				<description><![CDATA[The distance in Softimage units from a particle to the object.]]></description>
+			</port>
+			<port index="1" portname="type" username="Type" basename="Type" portlabel="Type" exposetype="single">
+				<description><![CDATA[Defines the condition for the Test Distance value to be triggered: Equal To; Not Equal To; Less Than; Less than or Equal to; Greater Than; or Greater Than or Equal To.]]></description>
+			</port>
+			<port index="1" portname="epsilon" username="Epsilon" basename="Epsilon" portlabel="Epsilon" exposetype="single">
+				<description><![CDATA[Widens the range of acceptable values by a small amount so as to reduce rounding errors.]]></description>
+			</port>
+			<port index="1" portname="result" username="Result" basename="Result" portlabel="Result" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="0" from_port="Distance" to_node="1" to_port="first"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Surface1" min="0" max="0"> </item>
+			<item type="input" name="Surface2" min="0" max="0"> </item>
+			<item type="input" name="Enable_Cutoff_Distance"> </item>
+			<item type="input" name="Cutoff_Distance"> </item>
+			<item type="input" name="Test_Distance"> </item>
+			<item type="input" name="Type"> </item>
+			<item type="input" name="Epsilon"> </item>
+			<item type="output" name="Result"> </item>
+			<item type="output" name="Location"> </item>
+			<item type="output" name="Normal"> </item>
+		</layout>
+	</embedded_0>
+</xsi_file>

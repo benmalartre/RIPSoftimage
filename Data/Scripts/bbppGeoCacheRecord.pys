@@ -1,0 +1,2 @@
+xsi = Application
+xsi.bbppGeoCacheRecord(xsi.Selection(0),"E:\\Works\\bbpp_xsi\\Caches",1,3,0)

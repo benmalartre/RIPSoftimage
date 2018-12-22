@@ -1,0 +1,44 @@
+from HairGlobals import *
+import HairUtils as uti
+import HairICETree as ice
+
+def AddHairFromMesh():
+	mesh = xsi.Selection(0)
+	if not mesh or not mesh.type=="polymsh":
+		return
+		
+	cls = mesh.ActivePrimitive.Geometry.Clusters("TipPolygons")
+	if not cls:
+		xsi.LogMessage("No TipPolygon Cluster on selected Geometry : Add Hair From Mesh aborted...")
+		return
+	else:
+		tree = ice.CreateRigIceTree(mesh,"HairMeshData",2)
+		compound = xsi.AddICECompoundNode("ELIHairGetMeshData", str(tree))
+		xsi.ConnectICENodes(str(tree)+".port1", str(compound)+".execute")
+		
+		hair = xsi.ActiveSceneRoot.AddPrimitive("PointCloud","Hair")
+		tree = ice.CreateRigIceTree(hair,"Emit",0)
+		compound = xsi.AddICECompoundNode("ELIHairSkeleton", str(tree))
+		xsi.ConnectICENodes(str(tree)+".port"+str(1), str(compound)+".execute")
+		get = xsi.AddICENode("GetDataNode", str(tree))
+		xsi.SetValue(str(get)+".reference", str(mesh), "")
+		xsi.ConnectICENodes(str(compound)+".Guide_Geometry", str(get)+".outname")
+		
+		compound = xsi.AddICECompoundNode("ELIHairGuideInit", str(tree))
+		xsi.AddPortToICENode(str(tree)+".port1", "siNodePortDataInsertionLocationAfter")
+		xsi.ConnectICENodes(str(tree)+".port2", str(compound)+".execute")
+		xsi.ConnectICENodes(str(compound)+".Guide_Geometry", str(get)+".outname")
+		
+		compound = xsi.AddICECompoundNode("ELIHairGuideRoot", str(tree))
+		xsi.AddPortToICENode(str(tree)+".port2", "siNodePortDataInsertionLocationAfter")
+		xsi.ConnectICENodes(str(tree)+".port3", str(compound)+".execute")
+		'''
+		get = xsi.AddICENode("GetDataNode", str(tree))
+		xsi.SetValue(str(get)+".reference", str(mesh), "")
+		xsi.ConnectICENodes(str(compound)+".Guide_Geometry", str(get)+".outname")
+		'''
+		#xsi.ConnectICENodes(str(compound)+".Skeleton_Cloud", str(get2)+".outname")
+
+	
+		
+AddHairFromMesh()

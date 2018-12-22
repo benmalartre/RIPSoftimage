@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="Filter by Particle IDs" tasks="Particles/Emission Control" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="6732954">
+	<description><![CDATA[This compound reduces the number of particles that are emitted based on the weight map that is attached to the emitter. Particles are emitted only where the weight map has values over 0. Plug this compound's Execute on Emit output into an Execute on Emit port of the Emit compound.]]></description>
+	<definition>
+		<nodes>
+			<node type="Get Point ID" version="1.0" index="0">
+				<param name="In_Name_Reference" type="31" value="Self"></param>
+				<param_ext name="In_Name_Reference" type="31" value="Self"></param_ext>
+				<portdef name="In_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-584</prop>
+					<prop name="posy">154</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IfNode" index="1">
+				<param name="condition" type="11" value="false"></param>
+				<param name="iftrue" type="11" value="false"></param>
+				<param name="iffalse" type="11" value="false"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="1" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="iffalse" type="1" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-98</prop>
+					<prop name="posy">-23</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="DeletePointNode" index="2">
+				<param name="reference" type="31" value="Self"></param>
+				<param name="deleted" type="11" value="false"></param>
+				<param_ext name="reference" type="31" value="Self"></param_ext>
+				<portdef name="deleted" type="1" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">14</prop>
+					<prop name="posy">-59</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="NotNode" index="3">
+				<param name="value" type="11" value="false"></param>
+				<portdef name="value" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-184</prop>
+					<prop name="posy">52</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="FindInArrayNode" index="4">
+				<param name="value" type="3" value="0"></param>
+				<param name="array" type="3" value="0"></param>
+				<param name="epsilon" type="4" value="0.000000"></param>
+				<portdef name="value" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="array" type="2" structure="2" group="0" instance="0" port="1"></portdef>
+				<portdef name="epsilon" type="4" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-392</prop>
+					<prop name="posy">-47</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="BuildArrayNode" index="5">
+				<param name="value1" type="3" value="0"></param>
+				<portdef name="value1" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-566</prop>
+					<prop name="posy">-72</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="1" portname="condition" username="Invert" basename="Invert" portlabel="Invert" exposetype="single"> </port>
+			<port index="2" portname="execute" username="Execute_on_Emit" basename="Execute on Emit" portlabel="Execute on Emit" exposetype="single"> </port>
+			<port index="5" portname="value1" username="Particle_ID1" basename="Particle ID1" portlabel="Particle ID1" exposetype="all_instances"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="0" from_port="Point_ID" to_node="4" to_port="value"> </cnx>
+			<cnx from_node="1" from_port="result" to_node="2" to_port="deleted"> </cnx>
+			<cnx from_node="3" from_port="result" to_node="1" to_port="iffalse"> </cnx>
+			<cnx from_node="4" from_port="found" to_node="1" to_port="iftrue"> </cnx>
+			<cnx from_node="4" from_port="found" to_node="3" to_port="value"> </cnx>
+			<cnx from_node="5" from_port="array" to_node="4" to_port="array"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Invert"> </item>
+			<item type="input" name="Particle_ID1" min="0" max="0"> </item>
+			<item type="output" name="Execute_on_Emit"> </item>
+		</layout>
+	</definition>
+</xsi_file>

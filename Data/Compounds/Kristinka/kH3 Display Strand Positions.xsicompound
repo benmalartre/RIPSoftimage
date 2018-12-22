@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="kH3 Display Strand Positions" category="" tasks="k Hair3/Utilities" author="Anto Matkovic" url="http://www.matkovic.com/anto" formatversion="1.4" compoundversion="1.0" versiontag="" constructionmode="Current" backgroundcolor="10002042">
+	<description><![CDATA[]]></description>
+	<definition>
+		<nodes>
+			<node type="Set Data" version="1.0" index="0">
+				<param name="Reference" type="31" value="Self.kH_StrandsDisplay"></param>
+				<param name="Value.Value_x" type="4" value="0.000000"></param>
+				<param name="Value.Value_y" type="4" value="0.000000"></param>
+				<param name="Value.Value_z" type="4" value="0.000000"></param>
+				<param_ext name="Reference" type="31" value="Self.kH_StrandsDisplay"></param_ext>
+				<portdef name="Value" type="16" structure="2" group="2" instance="0" port="0" groupname="Value"></portdef>
+				<portdef name="In_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">470</prop>
+					<prop name="posy">229</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+				<datablob category="vis_1">
+					<prop name="colorb">0.000000</prop>
+					<prop name="colorg">1.000000</prop>
+					<prop name="colorr">0.980000</prop>
+					<prop name="displaymode">11</prop>
+					<prop name="enable">1</prop>
+					<prop name="port">Value</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="1">
+				<param name="reference" type="31" value="Self.StrandPosition"></param>
+				<param_ext name="reference" type="31" value="Self.StrandPosition"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">59</prop>
+					<prop name="posy">188</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ModuloNode" index="2">
+				<param name="value" type="3" value="0"></param>
+				<param name="moduloby" type="3" value="333"></param>
+				<portdef name="value" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="moduloby" type="2" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">473</prop>
+					<prop name="posy">-110</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Set Data" version="1.0" index="3">
+				<param name="Reference" type="31" value="Self.kH_StrandsDisplay"></param>
+				<param name="Reference1" type="31" value="Self.PointPosition"></param>
+				<param name="Value.Value_x" type="4" value="0.000000"></param>
+				<param name="Value.Value_y" type="4" value="0.000000"></param>
+				<param name="Value.Value_z" type="4" value="0.000000"></param>
+				<param name="Value1.Value1_x" type="4" value="0.000000"></param>
+				<param name="Value1.Value1_y" type="4" value="0.000000"></param>
+				<param name="Value1.Value1_z" type="4" value="0.000000"></param>
+				<param_ext name="Reference" type="31" value="Self.kH_StrandsDisplay"></param_ext>
+				<param_ext name="Reference1" type="31" value="Self.PointPosition"></param_ext>
+				<portdef name="Value" type="16" structure="2" group="2" instance="0" port="0" groupname="Value"></portdef>
+				<portdef name="Value1" type="16" structure="1" group="2" instance="1" port="0" groupname="Value"></portdef>
+				<portdef name="In_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">460</prop>
+					<prop name="posy">78</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+				<datablob category="vis_1">
+					<prop name="colorb">0.000000</prop>
+					<prop name="colorg">1.000000</prop>
+					<prop name="colorr">0.980000</prop>
+					<prop name="displaymode">2</prop>
+					<prop name="enable">1</prop>
+					<prop name="port">Value</prop>
+				</datablob>
+				<datablob category="vis_2">
+					<prop name="colorb">0.232000</prop>
+					<prop name="colorg">0.462400</prop>
+					<prop name="colorr">1.000000</prop>
+					<prop name="displaymode">2</prop>
+					<prop name="enable">1</prop>
+					<prop name="port">Value1</prop>
+					<prop name="scale">1.500000</prop>
+				</datablob>
+			</node>
+			<node type="IfNode" index="4">
+				<param name="condition" type="11" value="false"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="4096" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="iffalse" type="4096" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1015</prop>
+					<prop name="posy">99</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="CombineLogicNode" index="5">
+				<param name="type" type="3" value="0"></param>
+				<param name="value1" type="11" value="true"></param>
+				<param name="value2" type="11" value="true"></param>
+				<portdef name="value1" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value2" type="1" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">838</prop>
+					<prop name="posy">-42</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="SelectCaseNode" index="6">
+				<param name="condition" type="3" value="0"></param>
+				<portdef name="condition" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="case0" type="4096" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="case1" type="4096" structure="1" group="1" instance="1" port="0"></portdef>
+				<portdef name="default" type="4096" structure="1" group="2" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">662</prop>
+					<prop name="posy">139</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="7">
+				<param name="reference" type="31" value="Self.PointPosition"></param>
+				<param_ext name="reference" type="31" value="Self.PointPosition"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">57</prop>
+					<prop name="posy">64</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="CompareNode" index="8">
+				<param name="type" type="3" value="0"></param>
+				<param name="epsilon" type="5" value="0.100000"></param>
+				<param name="first" type="3" value="0"></param>
+				<param name="second" type="3" value="0"></param>
+				<portdef name="first" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="2" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">631</prop>
+					<prop name="posy">-103</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="9">
+				<param name="reference" type="31" value="Self.ID"></param>
+				<param_ext name="reference" type="31" value="Self.ID"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">277</prop>
+					<prop name="posy">-103</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="2" portname="moduloby" username="Every_Nth" basename="Every Nth" portlabel="Every Nth" exposetype="single"> </port>
+			<port index="4" portname="result" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+			<port index="5" portname="value1" username="Enable" basename="Enable" portlabel="Enable" exposetype="single"> </port>
+			<port index="6" portname="condition" username="Display_Type" basename="Display Type" portlabel="Display Type" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="1" from_port="value" to_node="3" to_port="Value"> </cnx>
+			<cnx from_node="1" from_port="value" to_node="0" to_port="Value"> </cnx>
+			<cnx from_node="7" from_port="value" to_node="3" to_port="Value1"> </cnx>
+			<cnx from_node="6" from_port="result" to_node="4" to_port="iftrue"> </cnx>
+			<cnx from_node="3" from_port="Execute" to_node="6" to_port="case0"> </cnx>
+			<cnx from_node="0" from_port="Execute" to_node="6" to_port="case1"> </cnx>
+			<cnx from_node="9" from_port="value" to_node="2" to_port="value"> </cnx>
+			<cnx from_node="2" from_port="result" to_node="8" to_port="first"> </cnx>
+			<cnx from_node="5" from_port="result" to_node="4" to_port="condition"> </cnx>
+			<cnx from_node="8" from_port="result" to_node="5" to_port="value2"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Enable" min="0" max="0"> </item>
+			<item type="input" name="Every_Nth" min="0" max="200"> </item>
+			<item type="input" name="Display_Type" min="0" max="0">
+				<enum value="0"><![CDATA[Points]]></enum>
+				<enum value="1"><![CDATA[Lines]]></enum>
+			</item>
+			<item type="output" name="Execute" min="0" max="0"> </item>
+		</layout>
+	</definition>
+</xsi_file>

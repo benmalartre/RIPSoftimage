@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="Cheap Point In Volume" tasks="ELI_fur/Utilities" author="Ahmidou Lyazidi" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="6732954">
+	<definition>
+		<nodes>
+			<node type="GetDataNode" index="0">
+				<param name="reference" type="31" value="_norm"></param>
+				<param_ext name="reference" type="31" value="_norm"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-997</prop>
+					<prop name="posy">-155</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+				<comment type="node" state="maximized" wordwrap="true" autoresize="true" background="0" background_alpha="0.000000" title="14876671" title_text="0" offsetx="-129" offsety="-116" sizex="422" sizey="58"><![CDATA[Due to a bug (UDEV00258008 - Simulation resut differances between playback types)
+I need to pick the deformed normals from a custom attribute]]></comment>
+			</node>
+			<node type="SubtractNode" index="1">
+				<param name="first.first_x" type="4" value="0.000000"></param>
+				<param name="first.first_y" type="4" value="0.000000"></param>
+				<param name="first.first_z" type="4" value="0.000000"></param>
+				<param name="second.second_x" type="4" value="0.000000"></param>
+				<param name="second.second_y" type="4" value="0.000000"></param>
+				<param name="second.second_z" type="4" value="0.000000"></param>
+				<portdef name="first" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="16" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-803</prop>
+					<prop name="posy">231</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IfNode" index="2">
+				<param name="condition" type="11" value="true"></param>
+				<param name="iftrue.iftrue_x" type="4" value="0.000000"></param>
+				<param name="iftrue.iftrue_y" type="4" value="0.000000"></param>
+				<param name="iftrue.iftrue_z" type="4" value="0.000000"></param>
+				<param name="iffalse.iffalse_x" type="4" value="0.000000"></param>
+				<param name="iffalse.iffalse_y" type="4" value="0.000000"></param>
+				<param name="iffalse.iffalse_z" type="4" value="0.000000"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="16" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="iffalse" type="16" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-669</prop>
+					<prop name="posy">-62</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="NormalizeNode" index="3">
+				<param name="vector.vector_x" type="4" value="1.000000"></param>
+				<param name="vector.vector_y" type="4" value="0.000000"></param>
+				<param name="vector.vector_z" type="4" value="0.000000"></param>
+				<portdef name="vector" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-678</prop>
+					<prop name="posy">170</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="DotProductNode" index="4">
+				<param name="first.first_x" type="4" value="0.000000"></param>
+				<param name="first.first_y" type="4" value="0.000000"></param>
+				<param name="first.first_z" type="4" value="0.000000"></param>
+				<param name="second.second_x" type="4" value="0.000000"></param>
+				<param name="second.second_y" type="4" value="0.000000"></param>
+				<param name="second.second_z" type="4" value="0.000000"></param>
+				<portdef name="first" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="16" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-524</prop>
+					<prop name="posy">101</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IfNode" index="5">
+				<param name="condition" type="11" value="false"></param>
+				<param name="iftrue" type="4" value="0.000000"></param>
+				<param name="iffalse" type="4" value="1.000000"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="iffalse" type="4" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-364</prop>
+					<prop name="posy">15</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetClosestLocationNode" index="6">
+				<param name="proximitymethod" type="3" value="2"></param>
+				<param name="position.position_x" type="4" value="0.000000"></param>
+				<param name="position.position_y" type="4" value="0.000000"></param>
+				<param name="position.position_z" type="4" value="0.000000"></param>
+				<param name="enablecutoffdistance" type="11" value="true"></param>
+				<param name="cutoffdistance" type="4" value="10.000000"></param>
+				<portdef name="geometry" type="1024" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="position" type="16" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="enablecutoffdistance" type="1" structure="1" group="0" instance="0" port="2"></portdef>
+				<portdef name="cutoffdistance" type="4" structure="1" group="0" instance="0" port="3"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1216</prop>
+					<prop name="posy">89</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="7">
+				<param name="reference" type="31" value="PointPosition"></param>
+				<param_ext name="reference" type="31" value="PointPosition"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1002</prop>
+					<prop name="posy">106</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="8">
+				<param name="reference" type="31" value="PointNormal"></param>
+				<param_ext name="reference" type="31" value="PointNormal"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-997</prop>
+					<prop name="posy">-15</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="9">
+				<param name="in.in_x" type="4" value="0.000000"></param>
+				<param name="in.in_y" type="4" value="0.000000"></param>
+				<param name="in.in_z" type="4" value="0.000000"></param>
+				<portdef name="in" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">-1375</prop>
+					<prop name="posy">246</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="CompareNode" index="10">
+				<param name="type" type="3" value="2"></param>
+				<param name="epsilon" type="5" value="0.000000"></param>
+				<param name="first" type="4" value="0.000000"></param>
+				<param name="second" type="4" value="0.000000"></param>
+				<portdef name="first" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-280</prop>
+					<prop name="posy">26</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="FirstValidNode" index="11">
+				<param name="in1.in1_x" type="4" value="0.000000"></param>
+				<param name="in1.in1_y" type="4" value="0.000000"></param>
+				<param name="in1.in1_z" type="4" value="0.000000"></param>
+				<param name="in2.in2_x" type="4" value="0.000000"></param>
+				<param name="in2.in2_y" type="4" value="0.000000"></param>
+				<param name="in2.in2_z" type="4" value="0.000000"></param>
+				<portdef name="in1" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="in2" type="16" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-812</prop>
+					<prop name="posy">-102</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="reference" username="CustomNormals" basename="CustomNormals" portlabel="CustomNormals" exposetype="single"> </port>
+			<port index="2" portname="result" username="OutNormal" basename="OutNormal" portlabel="OutNormal" exposetype="single"> </port>
+			<port index="2" portname="condition" username="useCustomNormals" basename="useCustomNormals" portlabel="useCustomNormals" exposetype="single"> </port>
+			<port index="6" portname="geometry" username="Geometry" basename="Geometry" portlabel="Geometry" exposetype="single">
+				<description><![CDATA[The object whose volume you want to use to modulate the particle's or object's values. This must be an object with geometry. Plug the object's Value output into this port.]]></description>
+			</port>
+			<port index="6" portname="found" username="found" basename="found" portlabel="found" exposetype="single"> </port>
+			<port index="6" portname="cutoffdistance" username="cutoffdistance" basename="cutoffdistance" portlabel="cutoffdistance" exposetype="single"> </port>
+			<port index="6" portname="location" username="OutLocation" basename="OutLocation" portlabel="OutLocation" exposetype="single"> </port>
+			<port index="7" portname="value" username="OutPosition" basename="OutPosition" portlabel="OutPosition" exposetype="single"> </port>
+			<port index="9" portname="in" username="InPosition" basename="InPosition" portlabel="InPosition" exposetype="single"> </port>
+			<port index="10" portname="result" username="IsInVolume" basename="IsInVolume" portlabel="IsInVolume" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="7" from_port="value" to_node="1" to_port="second"> </cnx>
+			<cnx from_node="8" from_port="value" to_node="11" to_port="in2"> </cnx>
+			<cnx from_node="8" from_port="value" to_node="2" to_port="iffalse"> </cnx>
+			<cnx from_node="0" from_port="value" to_node="4" to_port="first"> </cnx>
+			<cnx from_node="0" from_port="value" to_node="11" to_port="in1"> </cnx>
+			<cnx from_node="1" from_port="result" to_node="3" to_port="vector"> </cnx>
+			<cnx from_node="9" from_port="out" to_node="6" to_port="position"> </cnx>
+			<cnx from_node="9" from_port="out" to_node="1" to_port="first"> </cnx>
+			<cnx from_node="3" from_port="result" to_node="4" to_port="second"> </cnx>
+			<cnx from_node="4" from_port="result" to_node="5" to_port="iftrue"> </cnx>
+			<cnx from_node="11" from_port="out" to_node="2" to_port="iftrue"> </cnx>
+			<cnx from_node="5" from_port="result" to_node="10" to_port="first"> </cnx>
+			<cnx from_node="6" from_port="location" to_node="7" to_port="source"> </cnx>
+			<cnx from_node="6" from_port="location" to_node="8" to_port="source"> </cnx>
+			<cnx from_node="6" from_port="location" to_node="0" to_port="source"> </cnx>
+			<cnx from_node="6" from_port="found" to_node="5" to_port="condition"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Geometry"> </item>
+			<item type="input" name="InPosition"> </item>
+			<item type="input" name="cutoffdistance"> </item>
+			<item type="input" name="useCustomNormals"> </item>
+			<item type="input" name="CustomNormals"> </item>
+			<item type="output" name="OutLocation"> </item>
+			<item type="output" name="OutPosition"> </item>
+			<item type="output" name="OutNormal"> </item>
+			<item type="output" name="IsInVolume"> </item>
+			<item type="output" name="found"> </item>
+		</layout>
+		<blob_dictionary>
+		</blob_dictionary>
+	</definition>
+</xsi_file>

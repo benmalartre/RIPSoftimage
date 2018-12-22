@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsi_file type="CompoundNode" name="ELIFurRenderDeform" tasks="ELIFur/Render" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="4633276">
+	<definition>
+		<nodes>
+			<node type="ELIFurLength" version="1.0" index="0">
+				<param name="Reference" type="31" value="cls.furMaps.Scale_Map.Weights"></param>
+				<param name="Active" type="11" value="true"></param>
+				<param name="Scale" type="4" value="1.400000"></param>
+				<param name="Randomize" type="4" value="1.385000"></param>
+				<param name="Use_Scale_Map" type="11" value="true"></param>
+				<param_ext name="Reference" type="31" value="cls.furMaps.Scale_Map.Weights"></param_ext>
+				<portdef name="Use_Scale_Map" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Active" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Randomize" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Scale" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-717</prop>
+					<prop name="posy">-60</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ELIFurClump" version="1.0" index="1">
+				<param name="Profile" type="buffer">2 20 1 0.332436 -1.79769E+308 1.79769E+308 3 0
+0 0.000000 0.332436 0.186851 0.287781 -0.145036 -0.223379 4 3
+0 1.000000 0.939481 0.694221 -0.009210 -0.388745 0.005157 4 3
+</param>
+				<param name="ClumpMap" type="31" value="cls.furMaps.Clump_Map.Weights"></param>
+				<param name="Active" type="11" value="true"></param>
+				<param name="Factor" type="4" value="1.000000"></param>
+				<param name="DistanceFilter" type="4" value="0.000000"></param>
+				<param name="Randomize" type="4" value="0.462000"></param>
+				<param name="Min_Value" type="4" value="0.000000"></param>
+				<param name="Max_Value" type="4" value="1.000000"></param>
+				<param name="Turbulence_Scale" type="4" value="1.000000"></param>
+				<param name="UseWmap" type="11" value="false"></param>
+				<param_ext name="ClumpMap" type="31" value="cls.furMaps.Clump_Map.Weights"></param_ext>
+				<portdef name="UseWmap" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Active" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Min_Value" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Max_Value" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Turbulence_Scale" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Factor" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Randomize" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="DistanceFilter" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-651</prop>
+					<prop name="posy">191</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ELIFurFrizz" version="1.0" index="2">
+				<param name="Frizz_Profile" type="buffer">2 20 1 0.283616 -1.79769E+308 1.79769E+308 3 0
+0 0.015547 0.283616 0.063693 0.339462 -0.036032 -0.192036 4 3
+0 1.000000 0.783723 0.194921 0.009654 -0.324306 -0.016065 4 3
+</param>
+				<param name="Active" type="11" value="false"></param>
+				<param name="Frizz_Type" type="3" value="3"></param>
+				<param name="Frizz_Factor" type="4" value="0.252000"></param>
+				<param name="Frizz_Frequency" type="4" value="0.300000"></param>
+				<param name="Turbulence_Scale" type="4" value="0.189000"></param>
+				<param name="Frizz_Start" type="4" value="0.000000"></param>
+				<param name="Use_Frizz_Map" type="11" value="false"></param>
+				<portdef name="Frizz_Type" type="2" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Use_Frizz_Map" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Active" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Frizz_Start" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Frizz_Factor" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Frizz_Frequency" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Turbulence_Scale" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-654</prop>
+					<prop name="posy">539</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ELIFurInterpolateFromGuides" version="1.0" index="3">
+				<param name="Stick2Subdivision" type="11" value="true"></param>
+				<portdef name="Geometry" type="1024" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Stick2Subdivision" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-831</prop>
+					<prop name="posy">-186</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ExecuteNode" index="4">
+				<portdef name="port1" type="4096" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="port2" type="4096" structure="1" group="0" instance="1" port="0"></portdef>
+				<portdef name="port3" type="4096" structure="1" group="0" instance="2" port="0"></portdef>
+				<portdef name="port4" type="4096" structure="1" group="0" instance="3" port="0"></portdef>
+				<portdef name="port5" type="4096" structure="1" group="0" instance="4" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-143</prop>
+					<prop name="posy">75</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="5">
+				<param name="reference" type="31" value="Self.FrizzFrequency"></param>
+				<param_ext name="reference" type="31" value="Self.FrizzFrequency"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-924</prop>
+					<prop name="posy">647</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="6">
+				<param name="reference" type="31" value="Self.FrizzTurbulenceScale"></param>
+				<param_ext name="reference" type="31" value="Self.FrizzTurbulenceScale"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-962</prop>
+					<prop name="posy">681</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="7">
+				<param name="reference" type="31" value="Self.FrizzStart"></param>
+				<param_ext name="reference" type="31" value="Self.FrizzStart"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-898</prop>
+					<prop name="posy">718</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="8">
+				<param name="reference" type="31" value="Self.FrizzFactor"></param>
+				<param_ext name="reference" type="31" value="Self.FrizzFactor"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-902</prop>
+					<prop name="posy">615</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="9">
+				<param name="reference" type="31" value="Self.FrizzType"></param>
+				<param_ext name="reference" type="31" value="Self.FrizzType"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-892</prop>
+					<prop name="posy">578</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="10">
+				<param name="reference" type="31" value="Self.UseFrizz"></param>
+				<param_ext name="reference" type="31" value="Self.UseFrizz"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-885</prop>
+					<prop name="posy">541</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="11">
+				<param name="reference" type="31" value="Self.UseClumpMap"></param>
+				<param_ext name="reference" type="31" value="Self.UseClumpMap"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-946</prop>
+					<prop name="posy">480</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="12">
+				<param name="reference" type="31" value="Self.ClumpTurbulenceScale"></param>
+				<param_ext name="reference" type="31" value="Self.ClumpTurbulenceScale"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-995</prop>
+					<prop name="posy">436</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="13">
+				<param name="reference" type="31" value="Self.ClumpMaxValue"></param>
+				<param_ext name="reference" type="31" value="Self.ClumpMaxValue"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-956</prop>
+					<prop name="posy">369</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="14">
+				<param name="reference" type="31" value="Self.ClumpMinValue"></param>
+				<param_ext name="reference" type="31" value="Self.ClumpMinValue"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-952</prop>
+					<prop name="posy">303</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="15">
+				<param name="reference" type="31" value="Self.ClumpRandomize"></param>
+				<param_ext name="reference" type="31" value="Self.ClumpRandomize"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-957</prop>
+					<prop name="posy">239</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="16">
+				<param name="reference" type="31" value="Self.ClumpDistanceFilter"></param>
+				<param_ext name="reference" type="31" value="Self.ClumpDistanceFilter"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-973</prop>
+					<prop name="posy">176</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="17">
+				<param name="reference" type="31" value="Self.ClumpFactor"></param>
+				<param_ext name="reference" type="31" value="Self.ClumpFactor"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-931</prop>
+					<prop name="posy">127</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="18">
+				<param name="reference" type="31" value="Self.UseClump"></param>
+				<param_ext name="reference" type="31" value="Self.UseClump"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-916</prop>
+					<prop name="posy">79</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="19">
+				<param name="reference" type="31" value="Self.UseScaleMap"></param>
+				<param_ext name="reference" type="31" value="Self.UseScaleMap"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-946</prop>
+					<prop name="posy">23</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="20">
+				<param name="reference" type="31" value="Self.ScaleRandomize"></param>
+				<param_ext name="reference" type="31" value="Self.ScaleRandomize"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-965</prop>
+					<prop name="posy">-6</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="21">
+				<param name="reference" type="31" value="Self.ScaleFactor"></param>
+				<param_ext name="reference" type="31" value="Self.ScaleFactor"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-935</prop>
+					<prop name="posy">-35</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="22">
+				<param name="reference" type="31" value="Self.UseScale"></param>
+				<param_ext name="reference" type="31" value="Self.UseScale"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-921</prop>
+					<prop name="posy">-63</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="23">
+				<param name="reference" type="31" value="Self.StickToSubdivision"></param>
+				<param_ext name="reference" type="31" value="Self.StickToSubdivision"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1173</prop>
+					<prop name="posy">-300</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="24">
+				<param name="reference" type="31" value="Self.UseFrizzMap"></param>
+				<param_ext name="reference" type="31" value="Self.UseFrizzMap"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-915</prop>
+					<prop name="posy">753</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="25">
+				<param name="reference" type="31" value="Self.CutRandomize"></param>
+				<param_ext name="reference" type="31" value="Self.CutRandomize"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-979</prop>
+					<prop name="posy">938</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="26">
+				<param name="reference" type="31" value="Self.CutMaxValue"></param>
+				<param_ext name="reference" type="31" value="Self.CutMaxValue"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1005</prop>
+					<prop name="posy">1092</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="27">
+				<param name="reference" type="31" value="Self.CutMinValue"></param>
+				<param_ext name="reference" type="31" value="Self.CutMinValue"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-982</prop>
+					<prop name="posy">1015</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="28">
+				<param name="reference" type="31" value="Self.CutFactor"></param>
+				<param_ext name="reference" type="31" value="Self.CutFactor"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-949</prop>
+					<prop name="posy">872</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="29">
+				<param name="reference" type="31" value="Self.UseCutMap"></param>
+				<param_ext name="reference" type="31" value="Self.UseCutMap"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-961</prop>
+					<prop name="posy">1152</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="30">
+				<param name="reference" type="31" value="Self.UseCut"></param>
+				<param_ext name="reference" type="31" value="Self.UseCut"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-917</prop>
+					<prop name="posy">808</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="ELIFurCut" version="1.0" index="31">
+				<param name="Reference" type="31" value="cls.furMaps.Cut_Map.Weights"></param>
+				<param name="Active" type="11" value="false"></param>
+				<param name="Factor" type="4" value="1.000000"></param>
+				<param name="Randomize" type="4" value="0.000000"></param>
+				<param name="Min_Value" type="4" value="0.000000"></param>
+				<param name="Max_Value" type="4" value="1.000000"></param>
+				<param name="Seed" type="3" value="441558"></param>
+				<param name="Use_Wmap" type="11" value="true"></param>
+				<param_ext name="Reference" type="31" value="cls.furMaps.Cut_Map.Weights"></param_ext>
+				<portdef name="Use_Wmap" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Active" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Min_Value" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Max_Value" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Seed" type="2" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Factor" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Randomize" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-635</prop>
+					<prop name="posy">876</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="3" portname="Geometry" username="Subdivided" basename="Subdivided" portlabel="Subdivided" exposetype="single"> </port>
+			<port index="4" portname="execute" username="execute" basename="execute" portlabel="execute" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="3" from_port="Execute" to_node="4" to_port="port1"> </cnx>
+			<cnx from_node="31" from_port="Execute" to_node="4" to_port="port5"> </cnx>
+			<cnx from_node="0" from_port="Execute" to_node="4" to_port="port2"> </cnx>
+			<cnx from_node="1" from_port="Execute" to_node="4" to_port="port3"> </cnx>
+			<cnx from_node="2" from_port="Execute" to_node="4" to_port="port4"> </cnx>
+			<cnx from_node="5" from_port="value" to_node="2" to_port="Frizz_Frequency"> </cnx>
+			<cnx from_node="6" from_port="value" to_node="2" to_port="Turbulence_Scale"> </cnx>
+			<cnx from_node="7" from_port="value" to_node="2" to_port="Frizz_Start"> </cnx>
+			<cnx from_node="8" from_port="value" to_node="2" to_port="Frizz_Factor"> </cnx>
+			<cnx from_node="9" from_port="value" to_node="2" to_port="Frizz_Type"> </cnx>
+			<cnx from_node="10" from_port="value" to_node="2" to_port="Active"> </cnx>
+			<cnx from_node="11" from_port="value" to_node="1" to_port="UseWmap"> </cnx>
+			<cnx from_node="12" from_port="value" to_node="1" to_port="Turbulence_Scale"> </cnx>
+			<cnx from_node="13" from_port="value" to_node="1" to_port="Max_Value"> </cnx>
+			<cnx from_node="14" from_port="value" to_node="1" to_port="Min_Value"> </cnx>
+			<cnx from_node="15" from_port="value" to_node="1" to_port="Randomize"> </cnx>
+			<cnx from_node="16" from_port="value" to_node="1" to_port="DistanceFilter"> </cnx>
+			<cnx from_node="17" from_port="value" to_node="1" to_port="Factor"> </cnx>
+			<cnx from_node="18" from_port="value" to_node="1" to_port="Active"> </cnx>
+			<cnx from_node="19" from_port="value" to_node="0" to_port="Use_Scale_Map"> </cnx>
+			<cnx from_node="20" from_port="value" to_node="0" to_port="Randomize"> </cnx>
+			<cnx from_node="21" from_port="value" to_node="0" to_port="Scale"> </cnx>
+			<cnx from_node="22" from_port="value" to_node="0" to_port="Active"> </cnx>
+			<cnx from_node="23" from_port="value" to_node="3" to_port="Stick2Subdivision"> </cnx>
+			<cnx from_node="24" from_port="value" to_node="2" to_port="Use_Frizz_Map"> </cnx>
+			<cnx from_node="25" from_port="value" to_node="31" to_port="Randomize"> </cnx>
+			<cnx from_node="26" from_port="value" to_node="31" to_port="Max_Value"> </cnx>
+			<cnx from_node="27" from_port="value" to_node="31" to_port="Min_Value"> </cnx>
+			<cnx from_node="28" from_port="value" to_node="31" to_port="Factor"> </cnx>
+			<cnx from_node="29" from_port="value" to_node="31" to_port="Use_Wmap"> </cnx>
+			<cnx from_node="30" from_port="value" to_node="31" to_port="Active"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Subdivided"> </item>
+			<item type="output" name="execute"> </item>
+		</layout>
+		<blob_dictionary>
+		</blob_dictionary>
+	</definition>
+</xsi_file>

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsi_file type="CompoundNode" name="ELIHairRandomizeColor" category="ELIHair" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="6520779">
+	<definition>
+		<nodes>
+			<node type="Set Data" version="1.0" index="0">
+				<param name="Reference" type="31" value="Self.COlor"></param>
+				<param name="Value.Value_red" type="4" value="0.000000"></param>
+				<param name="Value.Value_green" type="4" value="0.000000"></param>
+				<param name="Value.Value_blue" type="4" value="0.000000"></param>
+				<param name="Value.Value_alpha" type="4" value="1.000000"></param>
+				<param_ext name="Reference" type="31" value="Self.COlor"></param_ext>
+				<portdef name="In_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Value" type="512" structure="1" group="2" instance="0" port="0" groupname="Value"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">270</prop>
+					<prop name="posy">982</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Randomize Color by Gradient" version="1.0" index="1">
+				<param name="Gradient.interp" type="3" value="1"></param>
+				<param name="Gradient.color1.r" type="5" value="1.000000"></param>
+				<param name="Gradient.color1.g" type="5" value="0.000000"></param>
+				<param name="Gradient.color1.b" type="5" value="0.000000"></param>
+				<param name="Gradient.color1.a" type="5" value="1.000000"></param>
+				<param name="Gradient.pos1" type="5" value="0.000000"></param>
+				<param name="Gradient.mid1" type="5" value="0.500000"></param>
+				<param name="Gradient.color2.r" type="5" value="1.000000"></param>
+				<param name="Gradient.color2.g" type="5" value="0.473000"></param>
+				<param name="Gradient.color2.b" type="5" value="0.182000"></param>
+				<param name="Gradient.color2.a" type="5" value="1.000000"></param>
+				<param name="Gradient.pos2" type="5" value="1.000000"></param>
+				<param name="Gradient.mid2" type="5" value="0.500000"></param>
+				<param name="Gradient.color3.r" type="5" value="0.000000"></param>
+				<param name="Gradient.color3.g" type="5" value="1.000000"></param>
+				<param name="Gradient.color3.b" type="5" value="0.000000"></param>
+				<param name="Gradient.color3.a" type="5" value="1.000000"></param>
+				<param name="Gradient.pos3" type="5" value="-1.000000"></param>
+				<param name="Gradient.mid3" type="5" value="0.500000"></param>
+				<param name="Gradient.color4.r" type="5" value="0.000000"></param>
+				<param name="Gradient.color4.g" type="5" value="0.000000"></param>
+				<param name="Gradient.color4.b" type="5" value="0.000000"></param>
+				<param name="Gradient.color4.a" type="5" value="0.000000"></param>
+				<param name="Gradient.pos4" type="5" value="-1.000000"></param>
+				<param name="Gradient.mid4" type="5" value="0.500000"></param>
+				<param name="Gradient.color5.r" type="5" value="0.000000"></param>
+				<param name="Gradient.color5.g" type="5" value="0.000000"></param>
+				<param name="Gradient.color5.b" type="5" value="0.000000"></param>
+				<param name="Gradient.color5.a" type="5" value="0.000000"></param>
+				<param name="Gradient.pos5" type="5" value="-1.000000"></param>
+				<param name="Gradient.mid5" type="5" value="0.500000"></param>
+				<param name="Gradient.color6.r" type="5" value="0.000000"></param>
+				<param name="Gradient.color6.g" type="5" value="0.000000"></param>
+				<param name="Gradient.color6.b" type="5" value="0.000000"></param>
+				<param name="Gradient.color6.a" type="5" value="0.000000"></param>
+				<param name="Gradient.pos6" type="5" value="-1.000000"></param>
+				<param name="Gradient.mid6" type="5" value="0.500000"></param>
+				<param name="Gradient.color7.r" type="5" value="0.000000"></param>
+				<param name="Gradient.color7.g" type="5" value="0.000000"></param>
+				<param name="Gradient.color7.b" type="5" value="0.000000"></param>
+				<param name="Gradient.color7.a" type="5" value="0.000000"></param>
+				<param name="Gradient.pos7" type="5" value="-1.000000"></param>
+				<param name="Gradient.mid7" type="5" value="0.500000"></param>
+				<param name="Gradient.color8.r" type="5" value="0.000000"></param>
+				<param name="Gradient.color8.g" type="5" value="0.000000"></param>
+				<param name="Gradient.color8.b" type="5" value="0.000000"></param>
+				<param name="Gradient.color8.a" type="5" value="0.000000"></param>
+				<param name="Gradient.pos8" type="5" value="-1.000000"></param>
+				<param name="Gradient.mid8" type="5" value="0.500000"></param>
+				<param name="Gradient.color9.r" type="5" value="0.000000"></param>
+				<param name="Gradient.color9.g" type="5" value="0.000000"></param>
+				<param name="Gradient.color9.b" type="5" value="0.000000"></param>
+				<param name="Gradient.color9.a" type="5" value="0.000000"></param>
+				<param name="Gradient.pos9" type="5" value="-1.000000"></param>
+				<param name="Gradient.mid9" type="5" value="0.500000"></param>
+				<param name="Gradient.color10.r" type="5" value="0.000000"></param>
+				<param name="Gradient.color10.g" type="5" value="0.000000"></param>
+				<param name="Gradient.color10.b" type="5" value="0.000000"></param>
+				<param name="Gradient.color10.a" type="5" value="0.000000"></param>
+				<param name="Gradient.pos10" type="5" value="-1.000000"></param>
+				<param name="Gradient.mid10" type="5" value="0.500000"></param>
+				<param name="Gradient.color11.r" type="5" value="0.000000"></param>
+				<param name="Gradient.color11.g" type="5" value="0.000000"></param>
+				<param name="Gradient.color11.b" type="5" value="0.000000"></param>
+				<param name="Gradient.color11.a" type="5" value="0.000000"></param>
+				<param name="Gradient.pos11" type="5" value="-1.000000"></param>
+				<param name="Gradient.mid11" type="5" value="0.500000"></param>
+				<param name="Gradient.color12.r" type="5" value="0.000000"></param>
+				<param name="Gradient.color12.g" type="5" value="0.000000"></param>
+				<param name="Gradient.color12.b" type="5" value="0.000000"></param>
+				<param name="Gradient.color12.a" type="5" value="0.000000"></param>
+				<param name="Gradient.pos12" type="5" value="-1.000000"></param>
+				<param name="Gradient.mid12" type="5" value="0.500000"></param>
+				<param name="Gradient.color13.r" type="5" value="0.000000"></param>
+				<param name="Gradient.color13.g" type="5" value="0.000000"></param>
+				<param name="Gradient.color13.b" type="5" value="0.000000"></param>
+				<param name="Gradient.color13.a" type="5" value="0.000000"></param>
+				<param name="Gradient.pos13" type="5" value="-1.000000"></param>
+				<param name="Gradient.mid13" type="5" value="0.500000"></param>
+				<param name="Gradient.color14.r" type="5" value="0.000000"></param>
+				<param name="Gradient.color14.g" type="5" value="0.000000"></param>
+				<param name="Gradient.color14.b" type="5" value="0.000000"></param>
+				<param name="Gradient.color14.a" type="5" value="0.000000"></param>
+				<param name="Gradient.pos14" type="5" value="-1.000000"></param>
+				<param name="Gradient.mid14" type="5" value="0.500000"></param>
+				<param name="Gradient.color15.r" type="5" value="0.000000"></param>
+				<param name="Gradient.color15.g" type="5" value="0.000000"></param>
+				<param name="Gradient.color15.b" type="5" value="0.000000"></param>
+				<param name="Gradient.color15.a" type="5" value="0.000000"></param>
+				<param name="Gradient.pos15" type="5" value="-1.000000"></param>
+				<param name="Gradient.mid15" type="5" value="0.500000"></param>
+				<param name="Gradient.color16.r" type="5" value="0.000000"></param>
+				<param name="Gradient.color16.g" type="5" value="0.000000"></param>
+				<param name="Gradient.color16.b" type="5" value="0.000000"></param>
+				<param name="Gradient.color16.a" type="5" value="0.000000"></param>
+				<param name="Gradient.pos16" type="5" value="-1.000000"></param>
+				<param name="Gradient.mid16" type="5" value="0.500000"></param>
+				<param name="Animated" type="11" value="true"></param>
+				<param name="Seed" type="3" value="175325"></param>
+				<portdef name="Animated" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Seed" type="2" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-173</prop>
+					<prop name="posy">1020</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="2">
+				<param name="reference" type="31" value="Self.PointHairType"></param>
+				<param_ext name="reference" type="31" value="Self.PointHairType"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-299</prop>
+					<prop name="posy">819</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="FilterNode" index="3">
+				<param name="keep" type="11" value="false"></param>
+				<param name="value.value_red" type="4" value="0.000000"></param>
+				<param name="value.value_green" type="4" value="0.000000"></param>
+				<param name="value.value_blue" type="4" value="0.000000"></param>
+				<param name="value.value_alpha" type="4" value="1.000000"></param>
+				<portdef name="keep" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value" type="512" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">128</prop>
+					<prop name="posy">945</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="CompareNode" index="4">
+				<param name="type" type="3" value="4"></param>
+				<param name="epsilon" type="5" value="0.001000"></param>
+				<param name="first" type="3" value="0"></param>
+				<param name="second" type="3" value="0"></param>
+				<portdef name="first" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="2" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-25</prop>
+					<prop name="posy">826</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IntegerNode" index="5">
+				<param name="value" type="3" value="0"></param>
+				<portdef name="value" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-110</prop>
+					<prop name="posy">924</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="BooleanNode" index="6">
+				<param name="value" type="11" value="false"></param>
+				<portdef name="value" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-365</prop>
+					<prop name="posy">1094</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="Execute" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+			<port index="1" portname="Gradient" username="Gradient" basename="Gradient" portlabel="Gradient" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="6" from_port="result" to_node="1" to_port="Animated"> </cnx>
+			<cnx from_node="1" from_port="out" to_node="3" to_port="value"> </cnx>
+			<cnx from_node="2" from_port="value" to_node="4" to_port="first"> </cnx>
+			<cnx from_node="3" from_port="result" to_node="0" to_port="Value"> </cnx>
+			<cnx from_node="4" from_port="result" to_node="3" to_port="keep"> </cnx>
+			<cnx from_node="5" from_port="result" to_node="4" to_port="second"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Gradient"> </item>
+			<item type="output" name="Execute"> </item>
+		</layout>
+		<blob_dictionary>
+		</blob_dictionary>
+	</definition>
+</xsi_file>

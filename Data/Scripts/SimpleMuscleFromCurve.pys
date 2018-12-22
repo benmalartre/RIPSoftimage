@@ -1,0 +1,77 @@
+#--------------------------------------------------------------------
+#
+#	Create Muscle From Merged Curve WIP
+#
+#--------------------------------------------------------------------
+from Globals import *
+import Utils2 as uti
+import ICETree as tree
+
+
+root = xsi.ActiveSceneRoot
+pos = uti.PickMultiPosition()
+pnts = []
+id = 1
+name = "Test"
+
+crv_grp = root.Groups("Curves")
+pnt_grp = root.Groups("Points")
+
+for p in pos:
+	n = uti.AddNull(root,2,0.1,name+"_Pnt"+str(id))
+	t = n.Kinematics.Global.Transform
+	t.SetTranslation(p)
+	n.Kinematics.Global.Transform = t
+	pnts.append(n)
+	pnt_grp.AddMember(n)
+	id = id+1
+	
+delta = XSIMath.CreateVector3()
+for i in range(len(pnts)):
+	pnt = pnts[i]
+
+	if i<len(pnts)-1:
+		target = pnts[i+1]
+		tt = target.Kinematics.Global.Transform
+		tp = pnt.Kinematics.Global.Transform
+		delta.Sub(tt.Translation,tp.Translation)
+		delta.NormalizeInPlace()
+		ori = uti.GetRotationFromTwoVectors(delta)
+		tp.SetRotation(ori)
+		pnt.Kinematics.Global.Transform = tp
+	else:
+		uti.MatchRotation(pnt,pnts[i-1])
+
+crv = uti.BuildCurveOnPoints(pnts,0,0,True)
+
+uti.GetWeightMap(crv,"TwistMap")
+uti.GetWeightMap(crv,"WidthMap")
+uti.GetWeightMap(crv,"DepthMap")
+
+crv_grp.AddMember(crv)
+crv.Name = name+"_Crv"
+
+#prop = crv.AddProperty("MuscleControl")
+
+t = tree.CreateICETree(crv,"Muscle Guide",2)
+node = xsi.AddICECompoundNode("Muscle Curve Guide",str(t))
+xsi.InspectObj(node,None,None,constants.siLock)
+xsi.ConnectICENodes(str(t)+".port1",str(node)+".Execute")
+
+'''
+Merged Curve Stuff
+
+root = xsi.ActiveSceneRoot 
+skel_crv = root.FindChild("Skeleton_Crv")
+if skel_crv:
+	xsi.DeleteObj(skel_crv)
+
+if crv_grp.Members.Count>1:
+	xsi.SelectObj(crv_grp.Members)
+	Application.bMergeCurve()
+elif crv_grp.Members.Count == 1:
+	xsi.LogMessage("Not Enough Curves for Merge Curve")
+	skel_crv = xsi.Duplicate(crv_grp.Members(0))(0)
+	
+	skel_crv.Name = "Skeleton_Crv"
+'''

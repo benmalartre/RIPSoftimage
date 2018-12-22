@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="Strand Gravity Force" tasks="Particles/Strand Dynamics" formatversion="1.4" compoundversion="1.0" constructionmode="Modeling" backgroundcolor="10721675">
+	<description><![CDATA[This compound applies a directional force that defines an acceleration over time. It moves simulated objects based on their mass and existing velocity.]]></description>
+	<definition>
+		<nodes>
+			<node type="BuildArrayFromConstantNode" index="0">
+				<param name="size" type="3" value="0"></param>
+				<param name="value.value_x" type="4" value="0.000000"></param>
+				<param name="value.value_y" type="4" value="0.000000"></param>
+				<param name="value.value_z" type="4" value="0.000000"></param>
+				<portdef name="size" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value" type="16" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2298</prop>
+					<prop name="posy">2536</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="1">
+				<param name="reference" type="31" value="self.StrandCount"></param>
+				<param_ext name="reference" type="31" value="self.StrandCount"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2046</prop>
+					<prop name="posy">2516</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="3DVectorNode" index="2">
+				<param name="value.value_x" type="4" value="0.000000"></param>
+				<param name="value.value_y" type="4" value="-250.000000"></param>
+				<param name="value.value_z" type="4" value="0.000000"></param>
+				<portdef name="value" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2105</prop>
+					<prop name="posy">2598</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="array" username="Force" basename="Force" portlabel="Force" exposetype="single"> </port>
+			<port index="2" portname="value" username="Gravity_Strength_and_Direction" basename="Gravity Strength and Direction" portlabel="Gravity Strength and Direction" exposetype="single">
+				<description><![CDATA[Defines the XYZ direction of the gravity and its strength. The default value of -9 in Y represents earth's gravity.]]></description>
+			</port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="2" from_port="result" to_node="0" to_port="value"> </cnx>
+			<cnx from_node="1" from_port="value" to_node="0" to_port="size"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Gravity_Strength_and_Direction"> </item>
+			<item type="output" name="Force"> </item>
+		</layout>
+	</definition>
+</xsi_file>

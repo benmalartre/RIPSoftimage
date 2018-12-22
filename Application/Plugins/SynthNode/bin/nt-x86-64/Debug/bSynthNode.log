@@ -1,0 +1,180 @@
+﻿Build started 31/10/2018 17:45:37.
+     1>Project "E:\Projects\RnD\bWorkgroup\Application\Plugins\bSynthNode\bSynthNode.vcxproj" on node 2 (Build target(s)).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of Mutex.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are ..\..\..\..\Others\STK\src\Mutex.cpp, Mutex.cpp.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of RtAudio.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are ..\..\..\..\Others\STK\src\RtAudio.cpp, RtAudio.cpp.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of RtWvOut.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are ..\..\..\..\Others\STK\src\RtWvOut.cpp, RtWvOut.cpp.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of SineWave.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are ..\..\..\..\Others\STK\src\SineWave.cpp, SineWave.cpp.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of Stk.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are ..\..\..\..\Others\STK\src\Stk.cpp, Stk.cpp.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(1186,5): warning MSB8012: TargetPath(E:\Projects\RnD\bWorkgroup\Application\Plugins\bSynthNode\.\bin\nt-x86-64\Synthox.dll) does not match the Linker's OutputFile property value (E:\Projects\RnD\bWorkgroup\Application\Plugins\bSynthNode\bin\nt-x86-64\bSynthNode.dll). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(1188,5): warning MSB8012: TargetName(Synthox) does not match the Linker's OutputFile property value (bSynthNode). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+     1>Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:".\bin\nt-x86-64\bSynthNode.dll" /NOLOGO /LIBPATH:"C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\lib\nt-x86-64" /LIBPATH:"C:\Program Files (x86)\Microsoft DirectX SDK (August 2006)\Lib\x64" dsound.lib Wsock32.lib winmm.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib sicoresdk.lib sicppsdk.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\bin\nt-x86-64\Synthox.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\bin\nt-x86-64\Synthox.lib" /MACHINE:X64 /DLL ".\bin\nt-x86-64\Debug\SynthoxInstrument.obj"
+         ".\bin\nt-x86-64\Debug\SynthoxInstruments.obj"
+         ".\bin\nt-x86-64\Debug\SynthoxPlayer.obj"
+         ".\bin\nt-x86-64\Debug\SynthoxReader.obj"
+         ".\bin\nt-x86-64\Debug\SynthoxRegister.obj"
+         ".\bin\nt-x86-64\Debug\SynthoxVoicer.obj"
+         ".\bin\nt-x86-64\Debug\ADSR.obj"
+         ".\bin\nt-x86-64\Debug\Asymp.obj"
+         ".\bin\nt-x86-64\Debug\BandedWG.obj"
+         ".\bin\nt-x86-64\Debug\BeeThree.obj"
+         ".\bin\nt-x86-64\Debug\BiQuad.obj"
+         ".\bin\nt-x86-64\Debug\Blit.obj"
+         ".\bin\nt-x86-64\Debug\BlitSaw.obj"
+         ".\bin\nt-x86-64\Debug\BlitSquare.obj"
+         ".\bin\nt-x86-64\Debug\BlowBotl.obj"
+         ".\bin\nt-x86-64\Debug\BlowHole.obj"
+         ".\bin\nt-x86-64\Debug\Bowed.obj"
+         ".\bin\nt-x86-64\Debug\Brass.obj"
+         ".\bin\nt-x86-64\Debug\Chorus.obj"
+         ".\bin\nt-x86-64\Debug\Clarinet.obj"
+         ".\bin\nt-x86-64\Debug\Delay.obj"
+         ".\bin\nt-x86-64\Debug\DelayA.obj"
+         ".\bin\nt-x86-64\Debug\DelayL.obj"
+         ".\bin\nt-x86-64\Debug\Drummer.obj"
+         ".\bin\nt-x86-64\Debug\Echo.obj"
+         ".\bin\nt-x86-64\Debug\Envelope.obj"
+         ".\bin\nt-x86-64\Debug\FileLoop.obj"
+         ".\bin\nt-x86-64\Debug\FileRead.obj"
+         ".\bin\nt-x86-64\Debug\FileWrite.obj"
+         ".\bin\nt-x86-64\Debug\FileWvIn.obj"
+         ".\bin\nt-x86-64\Debug\FileWvOut.obj"
+         ".\bin\nt-x86-64\Debug\Fir.obj"
+         ".\bin\nt-x86-64\Debug\Flute.obj"
+         ".\bin\nt-x86-64\Debug\FM.obj"
+         ".\bin\nt-x86-64\Debug\FMVoices.obj"
+         ".\bin\nt-x86-64\Debug\FormSwep.obj"
+         ".\bin\nt-x86-64\Debug\Granulate.obj"
+         ".\bin\nt-x86-64\Debug\HevyMetl.obj"
+         ".\bin\nt-x86-64\Debug\Iir.obj"
+         ".\bin\nt-x86-64\Debug\InetWvIn.obj"
+         ".\bin\nt-x86-64\Debug\InetWvOut.obj"
+         ".\bin\nt-x86-64\Debug\JCRev.obj"
+         ".\bin\nt-x86-64\Debug\LentPitShift.obj"
+         ".\bin\nt-x86-64\Debug\Mandolin.obj"
+         ".\bin\nt-x86-64\Debug\Mesh2D.obj"
+         ".\bin\nt-x86-64\Debug\Messager.obj"
+         ".\bin\nt-x86-64\Debug\MidiFileIn.obj"
+         ".\bin\nt-x86-64\Debug\Modal.obj"
+         ".\bin\nt-x86-64\Debug\ModalBar.obj"
+         ".\bin\nt-x86-64\Debug\Modulate.obj"
+         ".\bin\nt-x86-64\Debug\Moog.obj"
+         ".\bin\nt-x86-64\Debug\Mutex.obj"
+         ".\bin\nt-x86-64\Debug\Noise.obj"
+         ".\bin\nt-x86-64\Debug\NRev.obj"
+         ".\bin\nt-x86-64\Debug\OnePole.obj"
+         ".\bin\nt-x86-64\Debug\OneZero.obj"
+         ".\bin\nt-x86-64\Debug\PercFlut.obj"
+         ".\bin\nt-x86-64\Debug\Phonemes.obj"
+         ".\bin\nt-x86-64\Debug\PitShift.obj"
+         ".\bin\nt-x86-64\Debug\Plucked.obj"
+         ".\bin\nt-x86-64\Debug\PluckTwo.obj"
+         ".\bin\nt-x86-64\Debug\PoleZero.obj"
+         ".\bin\nt-x86-64\Debug\PRCRev.obj"
+         ".\bin\nt-x86-64\Debug\Resonate.obj"
+         ".\bin\nt-x86-64\Debug\Rhodey.obj"
+         ".\bin\nt-x86-64\Debug\RtAudio.obj"
+         ".\bin\nt-x86-64\Debug\RtMidi.obj"
+         ".\bin\nt-x86-64\Debug\RtWvIn.obj"
+         ".\bin\nt-x86-64\Debug\RtWvOut.obj"
+         ".\bin\nt-x86-64\Debug\Sampler.obj"
+         ".\bin\nt-x86-64\Debug\Saxofony.obj"
+         ".\bin\nt-x86-64\Debug\Shakers.obj"
+         ".\bin\nt-x86-64\Debug\Simple.obj"
+         ".\bin\nt-x86-64\Debug\SineWave.obj"
+         ".\bin\nt-x86-64\Debug\SingWave.obj"
+         ".\bin\nt-x86-64\Debug\Sitar.obj"
+         ".\bin\nt-x86-64\Debug\Skini.obj"
+         ".\bin\nt-x86-64\Debug\Socket.obj"
+         ".\bin\nt-x86-64\Debug\Sphere.obj"
+         ".\bin\nt-x86-64\Debug\StifKarp.obj"
+         ".\bin\nt-x86-64\Debug\Stk.obj"
+         ".\bin\nt-x86-64\Debug\TapDelay.obj"
+         ".\bin\nt-x86-64\Debug\TcpClient.obj"
+         ".\bin\nt-x86-64\Debug\TcpServer.obj"
+         ".\bin\nt-x86-64\Debug\Thread.obj"
+         ".\bin\nt-x86-64\Debug\TubeBell.obj"
+         ".\bin\nt-x86-64\Debug\TwoPole.obj"
+         ".\bin\nt-x86-64\Debug\TwoZero.obj"
+         ".\bin\nt-x86-64\Debug\UdpSocket.obj"
+         ".\bin\nt-x86-64\Debug\Voicer.obj"
+         ".\bin\nt-x86-64\Debug\VoicForm.obj"
+         ".\bin\nt-x86-64\Debug\Whistle.obj"
+         ".\bin\nt-x86-64\Debug\Wurley.obj"
+         ".\bin\nt-x86-64\Debug\bRagaNode.obj"
+         ".\bin\nt-x86-64\Debug\Drone.obj"
+         ".\bin\nt-x86-64\Debug\Mutex.obj"
+         ".\bin\nt-x86-64\Debug\RtAudio.obj"
+         ".\bin\nt-x86-64\Debug\RtWvOut.obj"
+         ".\bin\nt-x86-64\Debug\SineWave.obj"
+         ".\bin\nt-x86-64\Debug\Stk.obj"
+         ".\bin\nt-x86-64\Debug\SynthoxData.obj"
+         ".\bin\nt-x86-64\Debug\Tabla.obj"
+         ".\bin\nt-x86-64\Debug\VoicDrum.obj"
+         ".\bin\nt-x86-64\Debug\XSIWvOut.obj"
+     1>.\bin\nt-x86-64\Debug\Mutex.obj : warning LNK4042: object specified more than once; extras ignored
+     1>.\bin\nt-x86-64\Debug\RtAudio.obj : warning LNK4042: object specified more than once; extras ignored
+     1>.\bin\nt-x86-64\Debug\RtWvOut.obj : warning LNK4042: object specified more than once; extras ignored
+     1>.\bin\nt-x86-64\Debug\SineWave.obj : warning LNK4042: object specified more than once; extras ignored
+     1>.\bin\nt-x86-64\Debug\Stk.obj : warning LNK4042: object specified more than once; extras ignored
+            Creating library .\bin\nt-x86-64\Synthox.lib and object .\bin\nt-x86-64\Synthox.exp
+     1>Tabla.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>VoicDrum.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>VoicForm.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>Whistle.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>Wurley.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>Drone.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>TubeBell.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>TwoPole.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>TwoZero.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>Voicer.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>Skini.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>StifKarp.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>Stk.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>TapDelay.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>Saxofony.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>Simple.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>SingWave.obj : error LNK2019: unresolved external symbol __imp__CrtDbgReportW referenced in function "public: double __cdecl stk::Modulate::tick(void)" (?tick@Modulate@stk@@QEAANXZ)
+     1>Sitar.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>Rhodey.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>RtAudio.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>RtMidi.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>Sampler.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>PercFlut.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>Plucked.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>PoleZero.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>Resonate.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>Modulate.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>Moog.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>OnePole.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>OneZero.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>Messager.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>MidiFileIn.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>Modal.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>ModalBar.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>HevyMetl.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>Iir.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>Mandolin.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>Mesh2D.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>FM.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>FMVoices.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>FormSwep.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>Granulate.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>Clarinet.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>Drummer.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>Fir.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>Flute.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>BlowBotl.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>BlowHole.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>Bowed.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>Brass.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>SynthoxVoicer.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>BandedWG.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>BeeThree.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>BiQuad.obj : error LNK2001: unresolved external symbol __imp__CrtDbgReportW
+     1>.\bin\nt-x86-64\bSynthNode.dll : fatal error LNK1120: 1 unresolved externals
+     1>Done Building Project "E:\Projects\RnD\bWorkgroup\Application\Plugins\bSynthNode\bSynthNode.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:00.51

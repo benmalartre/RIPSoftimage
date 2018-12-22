@@ -1,0 +1,48 @@
+'''
+Transfer Weights From ICE Tree
+'''
+from Globals import* 
+import Utils2 as uti
+import ICETree as tree
+
+def GetWeights(envelopeOp):
+	weightsTuple = envelopeOp.Weights.Array
+	return [weightsTuple[j][i] for i in range(len(weightsTuple[0])) for j in range(len(weightsTuple))]
+	
+
+def TransferWeightsFromICETree(obj,source):
+
+	hist = obj.ActivePrimitive.ConstructionHistory
+	env = hist.Filter("envelopop")(0)
+
+	if not env:
+		xsi.LogMessage("[Transfer Weights from Point Cloud] Mesh does NOT have an envelope!, aborted!!", constants.siError)
+		return
+
+	
+
+	
+	
+	nbDeformers = env.Deformers.Count
+	nbPoints = mesh.ActivePrimitive.Geometry.Points.Count
+	
+	xsi.LogMessage("Nb Deformers : "+str(nbDeformers))
+	xsi.LogMessage("Nb Points : "+str(nbPoints))
+	
+	weightsTuple = env.Weights.Array
+	weights = GetWeights(env)
+	
+	geom = source.ActivePrimitive.Geometry
+		
+	ICEweights = geom.GetICEAttributeFromName("SkeletonWeights")
+	ICEweightsData = ICEweights.DataArray2D
+	id = 0
+	for data in ICEweightsData:
+		for elem in data:
+			weights[id] = elem
+			id = id+1
+
+	env.Weights.Array = weights
+mesh = xsi.Selection(0)
+source = xsi.Selection(1)
+TransferWeightsFromICETree(mesh,source)

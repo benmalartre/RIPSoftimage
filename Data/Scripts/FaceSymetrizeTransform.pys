@@ -1,0 +1,14 @@
+import win32com.client
+from win32com.client import constants
+
+from bGlobals import *
+from bRigUtils import *
+
+xsi = Application
+sel = xsi.Selection(0)
+pick = bPickElement("null","Pick Reference Object")
+
+xf = pick.Kinematics.Global.Transform
+xf.Posx *= -1
+sel.Kinematics.Global.Transform = xf
+

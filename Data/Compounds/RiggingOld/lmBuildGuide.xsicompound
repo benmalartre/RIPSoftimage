@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="lmBuildGuide" category="" tasks="lmRig/Guide" author="" url="" formatversion="1.4" compoundversion="1.0" versiontag="" constructionmode="Current" backgroundcolor="2259618">
+	<description><![CDATA[]]></description>
+	<definition>
+		<nodes>
+			<node type="IntegerNode" index="0">
+				<param name="value" type="3" value="0"></param>
+				<portdef name="value" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">301</prop>
+					<prop name="posy">-73</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Set Data" version="1.0" index="1">
+				<param name="Reference" type="31" value="Self.__RigElementID"></param>
+				<param name="Value" type="3" value="0"></param>
+				<param_ext name="Reference" type="31" value="Self.__RigElementID"></param_ext>
+				<portdef name="Value" type="2" structure="1" group="2" instance="0" port="0" groupname="Value"></portdef>
+				<portdef name="In_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">419</prop>
+					<prop name="posy">-101</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ExecuteNode" index="2">
+				<portdef name="port1" type="4096" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="port2" type="4096" structure="1" group="0" instance="1" port="0"></portdef>
+				<portdef name="port3" type="4096" structure="1" group="0" instance="2" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">667</prop>
+					<prop name="posy">-11</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="Set Data" version="1.0" index="3">
+				<param name="Reference" type="31" value="Self.Size"></param>
+				<param name="Reference1" type="31" value="Self.Shape"></param>
+				<param name="Reference2" type="31" value="Self.Color"></param>
+				<param name="Value" type="4" value="0.500000"></param>
+				<param name="Value1" type="3" value="5"></param>
+				<param name="Value2.Value2_red" type="4" value="1.000000"></param>
+				<param name="Value2.Value2_green" type="4" value="1.000000"></param>
+				<param name="Value2.Value2_blue" type="4" value="0.798000"></param>
+				<param name="Value2.Value2_alpha" type="4" value="1.000000"></param>
+				<param_ext name="Reference" type="31" value="Self.Size"></param_ext>
+				<param_ext name="Reference1" type="31" value="Self.Shape"></param_ext>
+				<param_ext name="Reference2" type="31" value="Self.Color"></param_ext>
+				<portdef name="Value" type="4" structure="1" group="2" instance="0" port="0" groupname="Value"></portdef>
+				<portdef name="Value1" type="32768" structure="1" group="2" instance="1" port="0" groupname="Value"></portdef>
+				<portdef name="Value2" type="512" structure="1" group="2" instance="2" port="0" groupname="Value"></portdef>
+				<portdef name="In_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">374</prop>
+					<prop name="posy">172</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ExecuteNode" index="4">
+				<portdef name="port1" type="4096" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="port2" type="4096" structure="1" group="0" instance="1" port="0"></portdef>
+				<portdef name="port3" type="4096" structure="1" group="0" instance="2" port="0"></portdef>
+				<portdef name="port4" type="4096" structure="1" group="0" instance="3" port="0"></portdef>
+				<portdef name="port5" type="4096" structure="1" group="0" instance="4" port="0"></portdef>
+				<portdef name="port6" type="4096" structure="1" group="0" instance="5" port="0"></portdef>
+				<portdef name="port7" type="4096" structure="1" group="0" instance="6" port="0"></portdef>
+				<portdef name="port8" type="4096" structure="1" group="0" instance="7" port="0"></portdef>
+				<portdef name="port9" type="4096" structure="1" group="0" instance="8" port="0"></portdef>
+				<portdef name="port10" type="4096" structure="1" group="0" instance="9" port="0"></portdef>
+				<portdef name="port11" type="4096" structure="1" group="0" instance="10" port="0"></portdef>
+				<portdef name="port12" type="4096" structure="1" group="0" instance="11" port="0"></portdef>
+				<portdef name="port13" type="4096" structure="1" group="0" instance="12" port="0"></portdef>
+				<portdef name="port14" type="4096" structure="1" group="0" instance="13" port="0"></portdef>
+				<portdef name="port15" type="4096" structure="1" group="0" instance="14" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">498</prop>
+					<prop name="posy">21</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="2" portname="execute" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+			<port index="3" portname="Value" username="Size" basename="Size" portlabel="Size" exposetype="single"> </port>
+			<port index="3" portname="Value1" username="Shape" basename="Shape" portlabel="Shape" exposetype="single"> </port>
+			<port index="3" portname="Value2" username="Color" basename="Color" portlabel="Color" exposetype="single"> </port>
+			<port index="4" portname="port1" username="Port1" basename="Port1" portlabel="Port1" exposetype="all_instances"> </port>
+			<port index="4" portname="port2" username="Port2" basename="Port1" portlabel="Port2" exposetype="all_instances"> </port>
+			<port index="4" portname="port3" username="Port3" basename="Port1" portlabel="Port3" exposetype="all_instances"> </port>
+			<port index="4" portname="port5" username="Port5" basename="Port1" portlabel="Port5" exposetype="all_instances"> </port>
+			<port index="4" portname="port6" username="Port6" basename="Port1" portlabel="Port6" exposetype="all_instances"> </port>
+			<port index="4" portname="port13" username="Port13" basename="Port1" portlabel="Port13" exposetype="all_instances"> </port>
+			<port index="4" portname="port14" username="Port14" basename="Port1" portlabel="Port14" exposetype="all_instances"> </port>
+			<port index="4" portname="port4" username="Port4" basename="Port1" portlabel="Port4" exposetype="all_instances"> </port>
+			<port index="4" portname="port8" username="Port8" basename="Port1" portlabel="Port8" exposetype="all_instances"> </port>
+			<port index="4" portname="port7" username="Port7" basename="Port1" portlabel="Port7" exposetype="all_instances"> </port>
+			<port index="4" portname="port9" username="Port9" basename="Port1" portlabel="Port9" exposetype="all_instances"> </port>
+			<port index="4" portname="port10" username="Port10" basename="Port1" portlabel="Port10" exposetype="all_instances"> </port>
+			<port index="4" portname="port11" username="Port11" basename="Port1" portlabel="Port11" exposetype="all_instances"> </port>
+			<port index="4" portname="port12" username="Port12" basename="Port1" portlabel="Port12" exposetype="all_instances"> </port>
+			<port index="4" portname="port15" username="Port15" basename="Port1" portlabel="Port15" exposetype="all_instances"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="3" from_port="Execute" to_node="2" to_port="port3"> </cnx>
+			<cnx from_node="4" from_port="execute" to_node="2" to_port="port2"> </cnx>
+			<cnx from_node="1" from_port="Execute" to_node="2" to_port="port1"> </cnx>
+			<cnx from_node="0" from_port="result" to_node="1" to_port="Value"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Port1" min="0" max="0"> </item>
+			<item type="input" name="Port2" min="0" max="0"> </item>
+			<item type="input" name="Port3" min="0" max="0"> </item>
+			<item type="input" name="Port4" min="0" max="0"> </item>
+			<item type="input" name="Port5" min="0" max="0"> </item>
+			<item type="input" name="Port6" min="0" max="0"> </item>
+			<item type="input" name="Port7" min="0" max="0"> </item>
+			<item type="input" name="Port8" min="0" max="0"> </item>
+			<item type="input" name="Port9" min="0" max="0"> </item>
+			<item type="input" name="Port10" min="0" max="0"> </item>
+			<item type="input" name="Port11" min="0" max="0"> </item>
+			<item type="input" name="Port12" min="0" max="0"> </item>
+			<item type="input" name="Port13" min="0" max="0"> </item>
+			<item type="input" name="Port14" min="0" max="0"> </item>
+			<item type="input" name="Port15" min="0" max="0"> </item>
+			<item type="input" name="Size"> </item>
+			<item type="input" name="Shape"> </item>
+			<item type="input" name="Color"> </item>
+			<item type="output" name="Execute"> </item>
+		</layout>
+		<blob_dictionary>
+		</blob_dictionary>
+	</definition>
+</xsi_file>

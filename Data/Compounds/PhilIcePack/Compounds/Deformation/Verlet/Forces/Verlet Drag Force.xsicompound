@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="Verlet Drag Force" tasks="Deformation/Verlet Forces" author="Softimage" formatversion="1.4" compoundversion="1.0" constructionmode="Simulation" backgroundcolor="10721675">
+	<description><![CDATA[This compound applies a force that slows particles down over time.]]></description>
+	<definition>
+		<nodes>
+			<node type="Get Particle Mass" version="1.0" index="0">
+				<param name="Reference" type="31" value="Self.Mass"></param>
+				<param_ext name="Reference" type="31" value="Self.Mass"></param_ext>
+				<datablob category="ui_infos">
+					<prop name="posx">1925</prop>
+					<prop name="posy">2936</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="MultiplyNode" index="1">
+				<param name="value1" type="4" value="1.000000"></param>
+				<param name="value2" type="4" value="1.000000"></param>
+				<portdef name="value1" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value2" type="4" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2423</prop>
+					<prop name="posy">2976</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="MultiplyNode" index="3">
+				<param name="value1" type="4" value="0.100000"></param>
+				<param name="value2" type="4" value="-1.000000"></param>
+				<param name="value3" type="4" value="1.000000"></param>
+				<portdef name="value1" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value2" type="4" structure="1" group="0" instance="1" port="0"></portdef>
+				<portdef name="value3" type="4" structure="1" group="0" instance="2" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2259</prop>
+					<prop name="posy">2849</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="FirstValidNode" index="4">
+				<param name="in1" type="4" value="0.000000"></param>
+				<param name="in2" type="4" value="1.000000"></param>
+				<portdef name="in1" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="in2" type="4" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2097</prop>
+					<prop name="posy">2932</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+				<comment type="node" state="maximized" wordwrap="true" autoresize="true" background="0" background_alpha="0.000000" title="14876671" title_text="0" offsetx="-190" offsety="76" sizex="160" sizey="19"><![CDATA[Mass defaults to 1 if undefined]]></comment>
+			</node>
+			<node type="SimulationStepNode" index="5">
+				<datablob category="ui_infos">
+					<prop name="posx">2250</prop>
+					<prop name="posy">3005</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="DivideByScalarNode" index="6">
+				<param name="value.value_x" type="4" value="0.000000"></param>
+				<param name="value.value_y" type="4" value="0.000000"></param>
+				<param name="value.value_z" type="4" value="0.000000"></param>
+				<param name="divideby" type="4" value="1.000000"></param>
+				<portdef name="value" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="divideby" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2656</prop>
+					<prop name="posy">2786</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="8">
+				<param name="reference" type="31" value="Self.PointVelocity"></param>
+				<param_ext name="reference" type="31" value="Self.PointVelocity"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2012</prop>
+					<prop name="posy">2757</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="MultiplyByScalarNode" index="15">
+				<param name="value.value_x" type="4" value="0.000000"></param>
+				<param name="value.value_y" type="4" value="0.000000"></param>
+				<param name="value.value_z" type="4" value="0.000000"></param>
+				<param name="factor" type="4" value="0.100000"></param>
+				<portdef name="value" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="factor" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2416</prop>
+					<prop name="posy">2791</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="3" portname="value1" username="Strength" basename="Strength" portlabel="Strength" exposetype="single"> </port>
+			<port index="6" portname="result" username="Force" basename="Force" portlabel="Force" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="0" from_port="Mass" to_node="4" to_port="in1"> </cnx>
+			<cnx from_node="4" from_port="out" to_node="3" to_port="value3"> </cnx>
+			<cnx from_node="3" from_port="result" to_node="15" to_port="factor"> </cnx>
+			<cnx from_node="1" from_port="result" to_node="6" to_port="divideby"> </cnx>
+			<cnx from_node="15" from_port="result" to_node="6" to_port="value"> </cnx>
+			<cnx from_node="5" from_port="time" to_node="1" to_port="value1"> </cnx>
+			<cnx from_node="5" from_port="time" to_node="1" to_port="value2"> </cnx>
+			<cnx from_node="8" from_port="value" to_node="15" to_port="value"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Strength" min="0" max="1"> </item>
+			<item type="output" name="Force"> </item>
+		</layout>
+	</definition>
+</xsi_file>

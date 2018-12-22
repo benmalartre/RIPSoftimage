@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="Quaternion nlerp" category="Rotation" formatversion="1.4" compoundversion="1.0">
+	<definition>
+		<nodes>
+			<node type="QuaternionToScalarNode" index="0">
+				<param name="quaternion.quaternion_w" type="4" value="1.000000"></param>
+				<param name="quaternion.quaternion_x" type="4" value="0.000000"></param>
+				<param name="quaternion.quaternion_y" type="4" value="0.000000"></param>
+				<param name="quaternion.quaternion_z" type="4" value="0.000000"></param>
+				<portdef name="quaternion" type="64" structure="2" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1903</prop>
+					<prop name="posy">3380</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="ScalarTo4DVectorNode" index="1">
+				<param name="x" type="4" value="0.000000"></param>
+				<param name="y" type="4" value="0.000000"></param>
+				<param name="z" type="4" value="0.000000"></param>
+				<param name="w" type="4" value="0.000000"></param>
+				<portdef name="x" type="4" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="y" type="4" structure="2" group="0" instance="0" port="1"></portdef>
+				<portdef name="z" type="4" structure="2" group="0" instance="0" port="2"></portdef>
+				<portdef name="w" type="4" structure="2" group="0" instance="0" port="3"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2108</prop>
+					<prop name="posy">3371</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="4DVectorToScalarNode" index="2">
+				<param name="vector.vector_x" type="4" value="0.000000"></param>
+				<param name="vector.vector_y" type="4" value="0.000000"></param>
+				<param name="vector.vector_z" type="4" value="0.000000"></param>
+				<param name="vector.vector_w" type="4" value="0.000000"></param>
+				<portdef name="vector" type="32" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2673</prop>
+					<prop name="posy">3382</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="MultiplyByScalarNode" index="3">
+				<param name="value.value_z" type="4" value="0.000000"></param>
+				<param name="value.value_y" type="4" value="0.000000"></param>
+				<param name="value.value_x" type="4" value="0.000000"></param>
+				<param name="value.value_w" type="4" value="0.000000"></param>
+				<param name="factor" type="4" value="1.000000"></param>
+				<portdef name="value" type="32" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="factor" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2305</prop>
+					<prop name="posy">3408</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ScalarToQuaternionNode" index="4">
+				<param name="x" type="4" value="0.000000"></param>
+				<param name="y" type="4" value="0.000000"></param>
+				<param name="z" type="4" value="0.000000"></param>
+				<param name="w" type="4" value="1.000000"></param>
+				<portdef name="x" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="y" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="z" type="4" structure="1" group="0" instance="0" port="2"></portdef>
+				<portdef name="w" type="4" structure="1" group="0" instance="0" port="3"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2878</prop>
+					<prop name="posy">3375</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetArrayAverageNode" index="5">
+				<param name="array.array_x" type="4" value="0.000000"></param>
+				<param name="array.array_y" type="4" value="0.000000"></param>
+				<param name="array.array_z" type="4" value="0.000000"></param>
+				<param name="array.array_w" type="4" value="0.000000"></param>
+				<portdef name="array" type="32" structure="2" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2484</prop>
+					<prop name="posy">3408</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="quaternion" username="Quaternion_Array" basename="Quaternion Array" portlabel="Quaternion Array" exposetype="single"> </port>
+			<port index="3" portname="factor" username="Weights_Array" basename="Weights Array" portlabel="Weights Array" exposetype="single"> </port>
+			<port index="4" portname="quaternion" username="Result" basename="Result" portlabel="Result" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="1" from_port="vector" to_node="3" to_port="value"> </cnx>
+			<cnx from_node="0" from_port="x" to_node="1" to_port="x"> </cnx>
+			<cnx from_node="0" from_port="y" to_node="1" to_port="y"> </cnx>
+			<cnx from_node="0" from_port="z" to_node="1" to_port="z"> </cnx>
+			<cnx from_node="0" from_port="w" to_node="1" to_port="w"> </cnx>
+			<cnx from_node="2" from_port="x" to_node="4" to_port="x"> </cnx>
+			<cnx from_node="2" from_port="y" to_node="4" to_port="y"> </cnx>
+			<cnx from_node="2" from_port="z" to_node="4" to_port="z"> </cnx>
+			<cnx from_node="2" from_port="w" to_node="4" to_port="w"> </cnx>
+			<cnx from_node="3" from_port="result" to_node="5" to_port="array"> </cnx>
+			<cnx from_node="5" from_port="result" to_node="2" to_port="vector"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Quaternion_Array"> </item>
+			<item type="input" name="Weights_Array"> </item>
+			<item type="output" name="Result"> </item>
+		</layout>
+	</definition>
+</xsi_file>

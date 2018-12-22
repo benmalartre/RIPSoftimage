@@ -1,0 +1,19 @@
+﻿  ApplyVoronoi.cpp
+  CVoronoi.cpp
+  HEMesh.cpp
+e:\projects\rnd\bworkgroup\application\plugins\voronoi\hemesh.cpp(14): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+e:\projects\rnd\bworkgroup\application\plugins\voronoi\hemesh.cpp(15): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+e:\projects\rnd\bworkgroup\application\plugins\voronoi\hemesh.cpp(16): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+e:\projects\rnd\bworkgroup\application\plugins\voronoi\hemesh.cpp(17): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+e:\projects\rnd\bworkgroup\application\plugins\voronoi\hemesh.cpp(23): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+e:\projects\rnd\bworkgroup\application\plugins\voronoi\hemesh.cpp(57): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
+e:\projects\rnd\bworkgroup\application\plugins\voronoi\hemesh.cpp(107): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
+e:\projects\rnd\bworkgroup\application\plugins\voronoi\hemesh.cpp(226): warning C4267: 'argument' : conversion de 'size_t' en 'ULONG', perte possible de données
+e:\projects\rnd\bworkgroup\application\plugins\voronoi\hemesh.cpp(324): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
+e:\projects\rnd\bworkgroup\application\plugins\voronoi\hemesh.cpp(327): warning C4267: '=' : conversion de 'size_t' en 'ULONG', perte possible de données
+  Voronoi.cpp
+  Génération de code en cours...
+C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(1205,5): warning MSB8012: TargetPath(E:\Projects\RnD\bWorkgroup\Application\Plugins\Voronoi\x64\Debug\Voronoi.dll) ne correspond pas à la valeur de la propriété OutputFile (E:\Projects\RnD\bWorkgroup\Application\Plugins\Voronoi\bVoronoi.dll) de Linker. Cela peut entraîner une génération incorrecte de votre projet. Pour corriger ce problème, vérifiez que les valeurs des propriétés $(OutDir), $(TargetName) et $(TargetExt) correspondent à la valeur spécifiée dans %(Link.OutputFile).
+C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(1207,5): warning MSB8012: TargetName(Voronoi) ne correspond pas à la valeur de la propriété OutputFile (bVoronoi) de Linker. Cela peut entraîner une génération incorrecte de votre projet. Pour corriger ce problème, vérifiez que les valeurs des propriétés $(OutDir), $(TargetName) et $(TargetExt) correspondent à la valeur spécifiée dans %(Link.OutputFile).
+     Création de la bibliothèque x64\Debug\Voronoi.lib et de l'objet x64\Debug\Voronoi.exp
+  Voronoi.vcxproj -> E:\Projects\RnD\bWorkgroup\Application\Plugins\Voronoi\x64\Debug\Voronoi.dll

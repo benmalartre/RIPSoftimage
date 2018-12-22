@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="Stick Particle to Emit Location" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="6732954">
+	<definition>
+		<nodes>
+			<node type="Get Particle Emit Location" version="1.0" index="0">
+				<param name="Reference" type="31" value="Self.EmitLocation"></param>
+				<param_ext name="Reference" type="31" value="Self.EmitLocation"></param_ext>
+				<datablob category="ui_infos">
+					<prop name="posx">-914</prop>
+					<prop name="posy">109</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Set Data" version="1.0" index="1">
+				<param name="Reference" type="31" value="Self.Orientation"></param>
+				<param name="Reference1" type="31" value="Self.PointPosition"></param>
+				<param name="Value.Value_x" type="4" value="1.000000"></param>
+				<param name="Value.Value_y" type="4" value="0.000000"></param>
+				<param name="Value.Value_z" type="4" value="0.000000"></param>
+				<param name="Value.Value_angle" type="4" value="0.000000"></param>
+				<param name="Value1.Value1_x" type="4" value="0.000000"></param>
+				<param name="Value1.Value1_y" type="4" value="0.000000"></param>
+				<param name="Value1.Value1_z" type="4" value="0.000000"></param>
+				<param_ext name="Reference" type="31" value="Self.Orientation"></param_ext>
+				<param_ext name="Reference1" type="31" value="Self.PointPosition"></param_ext>
+				<portdef name="Value" type="16384" structure="1" group="2" instance="0" port="0" groupname="Value"></portdef>
+				<portdef name="Value1" type="16" structure="1" group="2" instance="1" port="0" groupname="Value"></portdef>
+				<portdef name="In_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-255</prop>
+					<prop name="posy">127</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="MatrixToSRTNode" index="2">
+				<param name="matrix.matrix_00" type="4" value="1.000000"></param>
+				<param name="matrix.matrix_01" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_02" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_10" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_11" type="4" value="1.000000"></param>
+				<param name="matrix.matrix_12" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_20" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_21" type="4" value="0.000000"></param>
+				<param name="matrix.matrix_22" type="4" value="1.000000"></param>
+				<portdef name="matrix" type="128" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-411</prop>
+					<prop name="posy">77</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="3">
+				<param name="reference" type="31" value="PointReferenceFrame"></param>
+				<param_ext name="reference" type="31" value="PointReferenceFrame"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-645</prop>
+					<prop name="posy">72</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Increment Rotation with 2 Vectors" version="1.0" index="4">
+				<param name="Rotation.Rotation_x" type="4" value="1.000000"></param>
+				<param name="Rotation.Rotation_y" type="4" value="0.000000"></param>
+				<param name="Rotation.Rotation_z" type="4" value="0.000000"></param>
+				<param name="Rotation.Rotation_angle" type="4" value="0.000000"></param>
+				<param name="Local_Vector.Local_Vector_x" type="4" value="0.000000"></param>
+				<param name="Local_Vector.Local_Vector_y" type="4" value="1.000000"></param>
+				<param name="Local_Vector.Local_Vector_z" type="4" value="0.000000"></param>
+				<param name="To_Vector.To_Vector_x" type="4" value="0.000000"></param>
+				<param name="To_Vector.To_Vector_y" type="4" value="0.000000"></param>
+				<param name="To_Vector.To_Vector_z" type="4" value="0.000000"></param>
+				<param name="Weight" type="4" value="1.000000"></param>
+				<portdef name="Rotation" type="16384" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Local_Vector" type="16" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Weight" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="To_Vector" type="16" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-665</prop>
+					<prop name="posy">191</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Get Particle Orientation" version="1.0" index="5">
+				<param name="Reference" type="31" value="Self.Orientation"></param>
+				<param_ext name="Reference" type="31" value="Self.Orientation"></param_ext>
+				<datablob category="ui_infos">
+					<prop name="posx">-909</prop>
+					<prop name="posy">214</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="1" portname="Execute" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="4" from_port="Result" to_node="1" to_port="Value"> </cnx>
+			<cnx from_node="0" from_port="Normal" to_node="4" to_port="To_Vector"> </cnx>
+			<cnx from_node="0" from_port="Position" to_node="1" to_port="Value1"> </cnx>
+			<cnx from_node="0" from_port="Location" to_node="3" to_port="source"> </cnx>
+			<cnx from_node="5" from_port="Orientation" to_node="4" to_port="Rotation"> </cnx>
+			<cnx from_node="3" from_port="value" to_node="2" to_port="matrix"> </cnx>
+		</connections>
+		<layout>
+			<item type="output" name="Execute"> </item>
+		</layout>
+	</definition>
+</xsi_file>

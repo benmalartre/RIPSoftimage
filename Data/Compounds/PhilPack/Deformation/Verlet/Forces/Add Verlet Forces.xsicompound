@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="Add Verlet Forces" tasks="Deformation/Verlet Forces" author="Softimage" formatversion="1.4" compoundversion="1.0" constructionmode="Simulation" backgroundcolor="10721675">
+	<description><![CDATA[This compound is used as a type of ""hub"" when applying forces to particles or simulated objects. You plug other force outputs into its force ports and then it adds up all those forces and applies them to the particles. Note: If forces have already been applied to particles, this compound adds new force to the existing forces. Plug this compound's Execute output into a port on the ICETree node or into a State compound, if you using particle states.]]></description>
+	<definition>
+		<nodes>
+			<node type="Add Verlet Force" version="1.0" index="0">
+				<param name="Force.Force_x" type="4" value="0.000000"></param>
+				<param name="Force.Force_y" type="4" value="0.000000"></param>
+				<param name="Force.Force_z" type="4" value="0.000000"></param>
+				<param name="Global_Space" type="11" value="false"></param>
+				<portdef name="Force" type="16" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Global_Space" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2815</prop>
+					<prop name="posy">2497</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ExecuteNode" index="2">
+				<portdef name="port1" type="4096" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">3013</prop>
+					<prop name="posy">2516</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="Force" username="Force1" basename="Force1" portlabel="Force1" exposetype="use_node_import">
+				<description><![CDATA[Defines a force value to be applied to the particle or object. You can connect any of the force compounds into this port, or you can type in XYZ values to create a general force.]]></description>
+			</port>
+			<port index="0" portname="Global_Space" username="Global_Space1" basename="Global Space1" portlabel="Global Space1" exposetype="use_node_import"> </port>
+			<port index="2" portname="execute" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="0" from_port="value" to_node="2" to_port="port1"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Force1" min="0" max="0"> </item>
+			<item type="input" name="Global_Space1" min="0" max="0"> </item>
+			<item type="output" name="Execute"> </item>
+		</layout>
+	</definition>
+</xsi_file>

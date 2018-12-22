@@ -1,0 +1,28 @@
+from Utils2 import *
+
+bones = []
+parents = []
+
+def AddTmpNull(model,slave):
+	master = AddNull(model,1,0.1,slave.Name+"_T")
+	MatchPosition(master,slave)
+	MatchRotation(master,slave)
+	slave.Kinematics.AddConstraint("Position",master)
+	slave.Kinematics.AddConstraint("Orientation",master)
+	
+model = xsi.ActiveSceneRoot.AddModel(None,"Model")
+xsi.SelectChildNodes()
+for s in xsi.Selection:
+	bones.append(s)
+	AddTmpNull(model,s)
+	parents.append(s.Parent3DObject)
+	model.AddChild(s)
+	
+	
+for b in bones:
+	xsi.ResetTransform(b, "siObj", "siScl", "siXYZ")
+
+i = 0
+for b in bones:
+	parents[i].AddChild(b)
+	i = i+1

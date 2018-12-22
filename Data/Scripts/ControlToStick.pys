@@ -1,0 +1,20 @@
+from siutils import *
+
+def CtrlToStick(ctrl):
+	tra = ctrl.Kinematics.Global.Transform
+	start = tra.Translation
+	start = XSIMath.MapWorldPositionToObjectSpace( tra, start )
+	child = ctrl.Children(0)
+
+	if child:
+		end = child.Kinematics.Global.Transform.Translation
+		end = XSIMath.MapWorldPositionToObjectSpace( tra, end )
+		crv = ctrl.ActivePrimitive.Geometry
+		pnts = [start.X,start.Y,start.Z,1,end.X,end.Y,end.Z,1]
+		crv.Set( 1, pnts, 2, [0,1], [2], [False], [1], [1])
+	else:
+		si.LogMessage(ctrl.FullName+" doesn't have children ---> Skipped!!")
+		
+sel = si.Selection
+for s in sel:
+	CtrlToStick(s)

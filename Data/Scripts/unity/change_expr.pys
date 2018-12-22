@@ -1,0 +1,7 @@
+from Utils2 import *
+
+param = xsi.Selection(0).Properties("Visibility").Parameters("Selectability")
+
+if param.Source.type == "Expression":
+	expr = param.Source.Parameters("Definition").Value
+	param.Source.Parameters("Definition").Value = expr.replace("L_","R_")

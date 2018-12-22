@@ -1,0 +1,55 @@
+from Globals import *
+import Utils2 as uti
+import Skeleton as ske
+import ICETree as tre
+import Property as pro
+
+def replaceFirstTwoChar(str,rep):
+	return rep[0:2]+str[2:]
+	
+def GetGeometryObject(prop):
+	print prop.Parameters("GeometryChooser").Value
+	pick = uti.PickElement(constants.siPolyMeshFilter,"Pick Geometry")
+	return pick
+	
+def ApplyFitter(crv,object):
+	prop = crv.Properties("RigElement")
+	if not prop:
+		return false
+		
+	if crv.Name[0:2] == "L_" or crv.Name[0:2] == "M_" or not prop.Parameters("Symmetrize").Value:
+		t = tre.CreateICETree(crv,"Fitter",2)
+		n = xsi.AddICECompoundNode("IRFitSkeleton", str(t))
+		xsi.ConnectICENodes(str(t)+".port1", str(n)+".Execute")
+		
+		#object = pro.GetObjectFromSelectedUIItem(ppg,"GeometryChooser")
+		if object:
+			name = tre.ReplaceModelNameByThisModel(object,model)
+			xsi.SetValue(str(n)+".Reference", name, "")
+		else:
+			xsi.LogMessage("No Geometry Set, Fitter may be invalid",constants.siWarningMsg)
+	else:
+		# add symmetrize element data ICE Tree
+		t = tre.CreateICETree(crv,"SymmetyrizeDatas",2)
+		n = xsi.AddICECompoundNode("IRSymetrizeSkeletonDatas", str(t))
+		xsi.ConnectICENodes(str(t)+".port1", str(n)+".Execute")
+		
+		symcrv = crv.Model.FindChild(replaceFirstTwoChar(crv.Name,"L_"))
+		if symcrv:
+			name = tre.ReplaceModelNameByThisModel(symcrv,crv.Model)
+			xsi.SetValue(str(n)+".Reference", name, "")
+elems = []
+for s in xsi.Selection:
+	if s.Type == "crvlist" and not s.Name.find("_Crv")==-1:
+		elems.append(s)
+
+if len(elems):	
+	model = elems[0].Model
+	ppg = model.Properties("RigBuilder")
+	print ppg
+	object = GetGeometryObject(ppg)
+	for e in elems:
+		ApplyFitter(e,object)
+			
+else:
+	print "Nothing Selected!!! Try again!!"

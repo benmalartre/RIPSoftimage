@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="While with Counter" category="Execution" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="6732954">
+	<description><![CDATA[Repeats the connected execute branch as many times as there are items in the array. If you want to affect a single item in each loop, use ""Self.__IteratorIndex"" as the array index value.]]></description>
+	<definition>
+		<nodes>
+			<node type="WhileNode" index="0">
+				<param name="condition" type="11" value="false"></param>
+				<param name="maxrepeat" type="3" value="0"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="maxrepeat" type="2" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="port" type="4096" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">978</prop>
+					<prop name="posy">558</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ExecuteNode" index="1">
+				<portdef name="port1" type="4096" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="port2" type="4096" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1110</prop>
+					<prop name="posy">438</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IntegerNode" index="2">
+				<param name="value" type="3" value="1"></param>
+				<portdef name="value" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">438</prop>
+					<prop name="posy">717</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="SetOneDataNode" index="3">
+				<param name="reference" type="31" value=""></param>
+				<param name="source" type="3" value="0"></param>
+				<param_ext name="reference" type="31" value=""></param_ext>
+				<portdef name="source" type="2" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">927</prop>
+					<prop name="posy">395</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="SetOneDataNode" index="4">
+				<param name="reference" type="31" value=""></param>
+				<param name="source" type="3" value="0"></param>
+				<param_ext name="reference" type="31" value=""></param_ext>
+				<portdef name="source" type="2" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">685</prop>
+					<prop name="posy">690</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="5">
+				<param name="reference" type="31" value=""></param>
+				<param_ext name="reference" type="31" value=""></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">245</prop>
+					<prop name="posy">543</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="6">
+				<param name="in" type="3" value="0"></param>
+				<portdef name="in" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">251</prop>
+					<prop name="posy">466</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ExecuteNode" index="7">
+				<portdef name="port1" type="4096" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="port2" type="4096" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">840</prop>
+					<prop name="posy">626</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="AddNode" index="8">
+				<param name="value1" type="3" value="0"></param>
+				<param name="value2" type="3" value="0"></param>
+				<portdef name="value1" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value2" type="2" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">554</prop>
+					<prop name="posy">691</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="MinimumNode" index="9">
+				<param name="value1" type="3" value="0"></param>
+				<param name="value2" type="3" value="0"></param>
+				<portdef name="value1" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value2" type="2" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">778</prop>
+					<prop name="posy">421</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ExecuteNode" index="10">
+				<portdef name="port1" type="4096" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">247</prop>
+					<prop name="posy">648</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<comment type="group" state="maximized" wordwrap="true" autoresize="false" background="0" background_alpha="0.100000" title="14876671" title_text="0" offsetx="743" offsety="366" sizex="172" sizey="165"><![CDATA[This is simply to force the same context on the iterator index as the passed in array.]]></comment>
+			<comment type="group" state="maximized" wordwrap="false" autoresize="false" background="0" background_alpha="0.100000" title="65535" title_text="0" offsetx="705" offsety="342" sizex="360" sizey="199"><![CDATA[Initialize the counter value]]></comment>
+			<comment type="group" state="maximized" wordwrap="false" autoresize="false" background="0" background_alpha="0.100000" title="65535" title_text="0" offsetx="532" offsety="661" sizex="289" sizey="139"><![CDATA[Increment to Counter Value]]></comment>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="condition" username="Condition" basename="Condition" portlabel="Condition" exposetype="single"> </port>
+			<port index="1" portname="execute" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+			<port index="5" portname="inname" username="In_Name" basename="In Name" portlabel="In Name" exposetype="single"> </port>
+			<port index="5" portname="reference" username="Reference" basename="Reference" portlabel="Reference" exposetype="single"> </port>
+			<port index="6" portname="in" username="Max_Repeat" basename="Max Repeat" portlabel="Max Repeat" exposetype="single"> </port>
+			<port index="10" portname="port1" username="Execute_Each_Iteration" basename="Execute Each Iteration" portlabel="Execute Each Iteration" exposetype="all_instances">
+				<description><![CDATA[The branch to execute.]]></description>
+			</port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="3" from_port="value" to_node="1" to_port="port1"> </cnx>
+			<cnx from_node="8" from_port="result" to_node="4" to_port="source"> </cnx>
+			<cnx from_node="9" from_port="min" to_node="3" to_port="source"> </cnx>
+			<cnx from_node="7" from_port="execute" to_node="0" to_port="port"> </cnx>
+			<cnx from_node="6" from_port="out" to_node="9" to_port="value1"> </cnx>
+			<cnx from_node="6" from_port="out" to_node="0" to_port="maxrepeat"> </cnx>
+			<cnx from_node="4" from_port="value" to_node="7" to_port="port2"> </cnx>
+			<cnx from_node="5" from_port="outname" to_node="3" to_port="inname"> </cnx>
+			<cnx from_node="5" from_port="value" to_node="8" to_port="value1"> </cnx>
+			<cnx from_node="5" from_port="outname" to_node="4" to_port="inname"> </cnx>
+			<cnx from_node="10" from_port="execute" to_node="7" to_port="port1"> </cnx>
+			<cnx from_node="0" from_port="execute" to_node="1" to_port="port2"> </cnx>
+			<cnx from_node="2" from_port="result" to_node="8" to_port="value2"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Condition"> </item>
+			<item type="input" name="Max_Repeat"> </item>
+			<item type="input" name="In_Name"> </item>
+			<item type="input" name="Reference"> </item>
+			<item type="input" name="Execute_Each_Iteration" min="0" max="0"> </item>
+			<item type="output" name="Execute"> </item>
+		</layout>
+	</definition>
+</xsi_file>

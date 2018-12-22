@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsi_file type="CompoundNode" name="lmEmitFKJoints" tasks="lmRig/Rig" formatversion="1.4" compoundversion="1.0">
+	<definition>
+		<nodes>
+			<node type="GetDataNode" index="0">
+				<param name="reference" type="31" value="Static_KineState"></param>
+				<param_ext name="reference" type="31" value="Static_KineState"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-753</prop>
+					<prop name="posy">-2712</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="1">
+				<param name="reference" type="31" value="Self.CtrlStaticKineState"></param>
+				<param_ext name="reference" type="31" value="Self.CtrlStaticKineState"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-790</prop>
+					<prop name="posy">-2835</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="[embedded_0]" index="2">
+				<param name="Reference" type="31" value=""></param>
+				<param name="Value.Value_00" type="4" value="1.000000"></param>
+				<param name="Value.Value_01" type="4" value="0.000000"></param>
+				<param name="Value.Value_02" type="4" value="0.000000"></param>
+				<param name="Value.Value_03" type="4" value="0.000000"></param>
+				<param name="Value.Value_10" type="4" value="0.000000"></param>
+				<param name="Value.Value_11" type="4" value="1.000000"></param>
+				<param name="Value.Value_12" type="4" value="0.000000"></param>
+				<param name="Value.Value_13" type="4" value="0.000000"></param>
+				<param name="Value.Value_20" type="4" value="0.000000"></param>
+				<param name="Value.Value_21" type="4" value="0.000000"></param>
+				<param name="Value.Value_22" type="4" value="1.000000"></param>
+				<param name="Value.Value_23" type="4" value="0.000000"></param>
+				<param name="Value.Value_30" type="4" value="0.000000"></param>
+				<param name="Value.Value_31" type="4" value="0.000000"></param>
+				<param name="Value.Value_32" type="4" value="0.000000"></param>
+				<param name="Value.Value_33" type="4" value="1.000000"></param>
+				<param_ext name="Reference" type="31" value=""></param_ext>
+				<portdef name="Value" type="256" structure="2" group="2" instance="0" port="0" groupname="Value"></portdef>
+				<portdef name="In_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-302</prop>
+					<prop name="posy">-2786</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="BuildArrayNode" index="3">
+				<param name="value1.value1_00" type="4" value="1.000000"></param>
+				<param name="value1.value1_01" type="4" value="0.000000"></param>
+				<param name="value1.value1_02" type="4" value="0.000000"></param>
+				<param name="value1.value1_03" type="4" value="0.000000"></param>
+				<param name="value1.value1_10" type="4" value="0.000000"></param>
+				<param name="value1.value1_11" type="4" value="1.000000"></param>
+				<param name="value1.value1_12" type="4" value="0.000000"></param>
+				<param name="value1.value1_13" type="4" value="0.000000"></param>
+				<param name="value1.value1_20" type="4" value="0.000000"></param>
+				<param name="value1.value1_21" type="4" value="0.000000"></param>
+				<param name="value1.value1_22" type="4" value="1.000000"></param>
+				<param name="value1.value1_23" type="4" value="0.000000"></param>
+				<param name="value1.value1_30" type="4" value="0.000000"></param>
+				<param name="value1.value1_31" type="4" value="0.000000"></param>
+				<param name="value1.value1_32" type="4" value="0.000000"></param>
+				<param name="value1.value1_33" type="4" value="1.000000"></param>
+				<param name="value2.value2_00" type="4" value="1.000000"></param>
+				<param name="value2.value2_01" type="4" value="0.000000"></param>
+				<param name="value2.value2_02" type="4" value="0.000000"></param>
+				<param name="value2.value2_03" type="4" value="0.000000"></param>
+				<param name="value2.value2_10" type="4" value="0.000000"></param>
+				<param name="value2.value2_11" type="4" value="1.000000"></param>
+				<param name="value2.value2_12" type="4" value="0.000000"></param>
+				<param name="value2.value2_13" type="4" value="0.000000"></param>
+				<param name="value2.value2_20" type="4" value="0.000000"></param>
+				<param name="value2.value2_21" type="4" value="0.000000"></param>
+				<param name="value2.value2_22" type="4" value="1.000000"></param>
+				<param name="value2.value2_23" type="4" value="0.000000"></param>
+				<param name="value2.value2_30" type="4" value="0.000000"></param>
+				<param name="value2.value2_31" type="4" value="0.000000"></param>
+				<param name="value2.value2_32" type="4" value="0.000000"></param>
+				<param name="value2.value2_33" type="4" value="1.000000"></param>
+				<portdef name="value1" type="256" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="value2" type="256" structure="2" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-454</prop>
+					<prop name="posy">-2740</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="inname" username="inname" basename="inname" portlabel="inname" exposetype="single"> </port>
+			<port index="2" portname="Execute" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="1" from_port="value" to_node="3" to_port="value1"> </cnx>
+			<cnx from_node="1" from_port="outname" to_node="2" to_port="In_Name"> </cnx>
+			<cnx from_node="0" from_port="value" to_node="3" to_port="value2"> </cnx>
+			<cnx from_node="3" from_port="array" to_node="2" to_port="Value"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="inname"> </item>
+			<item type="output" name="Execute"> </item>
+		</layout>
+		<blob_dictionary>
+		</blob_dictionary>
+	</definition>
+	<embedded_0 name="Set Data" category="Data Access" author="Softimage" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="12693621">
+	<description><![CDATA[Sets the specified attributes to the supplied values.]]></description>
+		<nodes>
+			<node type="SetOneDataNode" index="0">
+				<param name="reference" type="31" value=""></param>
+				<param name="source.source_00" type="4" value="1.000000"></param>
+				<param name="source.source_01" type="4" value="0.000000"></param>
+				<param name="source.source_02" type="4" value="0.000000"></param>
+				<param name="source.source_03" type="4" value="0.000000"></param>
+				<param name="source.source_10" type="4" value="0.000000"></param>
+				<param name="source.source_11" type="4" value="1.000000"></param>
+				<param name="source.source_12" type="4" value="0.000000"></param>
+				<param name="source.source_13" type="4" value="0.000000"></param>
+				<param name="source.source_20" type="4" value="0.000000"></param>
+				<param name="source.source_21" type="4" value="0.000000"></param>
+				<param name="source.source_22" type="4" value="1.000000"></param>
+				<param name="source.source_23" type="4" value="0.000000"></param>
+				<param name="source.source_30" type="4" value="0.000000"></param>
+				<param name="source.source_31" type="4" value="0.000000"></param>
+				<param name="source.source_32" type="4" value="0.000000"></param>
+				<param name="source.source_33" type="4" value="1.000000"></param>
+				<param_ext name="reference" type="31" value=""></param_ext>
+				<portdef name="source" type="256" structure="2" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">209</prop>
+					<prop name="posy">114</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="1">
+				<portdef name="in" type="8192" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">49</prop>
+					<prop name="posy">114</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ExecuteNode" index="2">
+				<portdef name="port1" type="4096" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">368</prop>
+					<prop name="posy">114</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="source" username="Value" basename="Value" overridelabel="Reference" portlabel="Value" exposetype="use_node_import">
+				<description><![CDATA[The value to set.]]></description>
+			</port>
+			<port index="0" portname="reference" username="Reference" basename="Reference" portlabel="Reference" exposetype="use_node_import">
+				<description><![CDATA[The name of the attribute to set.]]></description>
+			</port>
+			<port index="1" portname="in" username="In_Name" basename="In Name" portlabel="In Name" exposetype="single">
+				<description><![CDATA[Name prefixed to each attribute to be set. Use this to specify the object name, and then specify each attribute in the Reference ports.]]></description>
+			</port>
+			<port index="2" portname="execute" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="0" from_port="value" to_node="2" to_port="port1"> </cnx>
+			<cnx from_node="1" from_port="out" to_node="0" to_port="inname"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="In_Name"> </item>
+			<item type="input" name="Value" min="0" max="0"> </item>
+			<item type="input" name="Reference"> </item>
+			<item type="output" name="Execute"> </item>
+		</layout>
+	</embedded_0>
+</xsi_file>

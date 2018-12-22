@@ -1,0 +1,12 @@
+from RigGlobals import *
+from RigUtils import *
+
+str = "130,137,136,131,135,132,133,134,122,129,128,123,127,124,125,126"
+split = str.split(",")
+toInt = []
+for s in split:
+	toInt.append(int(s))
+
+obj= xsi.Selection(0)
+sub = obj.ActivePrimitive.Geometry.CreateSubComponent(constants.siPolygonCluster,toInt)
+xsi.SelectObj(sub)

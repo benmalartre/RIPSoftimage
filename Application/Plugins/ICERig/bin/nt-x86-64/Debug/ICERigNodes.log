@@ -1,0 +1,37 @@
+﻿  IRCubicBezier.cpp
+c:\program files\autodesk\softimage 2015 sp2\xsisdk\include\xsi_vector2f.h(310): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+c:\program files\autodesk\softimage 2015 sp2\xsisdk\include\xsi_matrix3f.h(529): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+c:\program files\autodesk\softimage 2015 sp2\xsisdk\include\xsi_matrix3f.h(533): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+c:\program files\autodesk\softimage 2015 sp2\xsisdk\include\xsi_matrix3f.h(537): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+c:\program files\autodesk\softimage 2015 sp2\xsisdk\include\xsi_matrix3f.h(541): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+c:\program files\autodesk\softimage 2015 sp2\xsisdk\include\xsi_matrix3f.h(545): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+c:\program files\autodesk\softimage 2015 sp2\xsisdk\include\xsi_matrix3f.h(549): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+c:\program files\autodesk\softimage 2015 sp2\xsisdk\include\xsi_vector3f.h(719): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+c:\program files\autodesk\softimage 2015 sp2\xsisdk\include\xsi_vector3f.h(985): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+c:\program files\autodesk\softimage 2015 sp2\xsisdk\include\xsi_vector3f.h(994): warning C4244: 'argument' : conversion de 'double' en 'const float', perte possible de données
+c:\program files\autodesk\softimage 2015 sp2\xsisdk\include\xsi_vector3f.h(1002): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+c:\program files\autodesk\softimage 2015 sp2\xsisdk\include\xsi_vector3f.h(1003): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+c:\program files\autodesk\softimage 2015 sp2\xsisdk\include\xsi_vector3f.h(1004): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+c:\program files\autodesk\softimage 2015 sp2\xsisdk\include\xsi_vector4f.h(680): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+c:\program files\autodesk\softimage 2015 sp2\xsisdk\include\xsi_vector4f.h(681): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+c:\program files\autodesk\softimage 2015 sp2\xsisdk\include\xsi_vector4f.h(682): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+c:\program files\autodesk\softimage 2015 sp2\xsisdk\include\xsi_vector4f.h(683): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+c:\program files\autodesk\softimage 2015 sp2\xsisdk\include\xsi_vector4f.h(702): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+c:\program files\autodesk\softimage 2015 sp2\xsisdk\include\xsi_quaternionf.h(518): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+c:\program files\autodesk\softimage 2015 sp2\xsisdk\include\xsi_quaternionf.h(737): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+c:\program files\autodesk\softimage 2015 sp2\xsisdk\include\xsi_quaternionf.h(781): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+c:\program files\autodesk\softimage 2015 sp2\xsisdk\include\xsi_quaternionf.h(782): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+c:\program files\autodesk\softimage 2015 sp2\xsisdk\include\xsi_quaternionf.h(784): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+c:\program files\autodesk\softimage 2015 sp2\xsisdk\include\xsi_quaternionf.h(785): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+c:\program files\autodesk\softimage 2015 sp2\xsisdk\include\xsi_rotationf.h(842): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+c:\program files\autodesk\softimage 2015 sp2\xsisdk\include\xsi_rotationf.h(843): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+e:\projects\rnd\bworkgroup\application\plugins\icerig\iroglprimitives.h(374): warning C4838: la conversion de 'double' en 'float' requiert une conversion restrictive
+e:\projects\rnd\bworkgroup\application\plugins\icerig\iroglprimitives.h(374): warning C4305: 'initialisation' : troncation de 'double' à 'float'
+e:\projects\rnd\bworkgroup\application\plugins\icerig\iroglprimitives.h(525): warning C4838: la conversion de 'double' en 'float' requiert une conversion restrictive
+e:\projects\rnd\bworkgroup\application\plugins\icerig\iroglprimitives.h(525): warning C4305: 'initialisation' : troncation de 'double' à 'float'
+e:\projects\rnd\bworkgroup\application\plugins\icerig\ircubicbezier.cpp(27): warning C4267: 'argument' : conversion de 'size_t' en 'ULONG', perte possible de données
+e:\projects\rnd\bworkgroup\application\plugins\icerig\ircubicbezier.cpp(41): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+e:\projects\rnd\bworkgroup\application\plugins\icerig\ircubicbezier.cpp(58): warning C4305: 'initialisation' : troncation de 'double' à 'float'
+e:\projects\rnd\bworkgroup\application\plugins\icerig\ircubicbezier.cpp(274): warning C4267: 'argument' : conversion de 'size_t' en 'ULONG', perte possible de données
+e:\projects\rnd\bworkgroup\application\plugins\icerig\ircubicbezier.cpp(261): warning C4101: 'crv' : variable locale non référencée
+  ICERigNodes.vcxproj -> E:\Projects\RnD\bWorkgroup\Application\Plugins\ICERig\.\bin\nt-x86-64\ICERigNodes.dll

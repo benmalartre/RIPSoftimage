@@ -1,0 +1,43 @@
+from Globals import *
+import Utils2 as uti
+
+def GetRig():
+	rig = xsi.Selection(0)
+	if not rig or not rig.type == "#model" or not rig.Properties("RigBuilder"):
+		xsi.LogMessage("Select Proper Rig Model")
+		sel = uti.PickElement(constants.siModelFilter,"PickRig")
+		if sel:
+			if sel.type == "#model" and sel.Properties("RigBuilder"):
+				return sel
+			else:
+				return None
+	else:
+		return rig
+
+def GetRigElements(rig):
+	elements = []
+	children = rig.FindChildren()
+	for c in children:
+		if c.Type == "crvlist" and c.Properties("RigElement"):
+			elements.append(c)
+	
+	return elements
+
+def CreateParameter(prop, name, type, value, min, max,animatable=1,readonly=0):
+	prop.AddParameter3(name, type, value, min, max, animatable, readonly )
+	
+def UpdateParameter(prop,name,min,max):
+	param = prop.Parameters(name)
+	if not param:
+		return
+	else:
+		xsi.EditParameterDefinition(param,param.Name,param.Value,min,max,min,max)
+		
+	
+rig = GetRig()
+
+if rig:
+	elements = GetRigElements(rig)
+	for e in elements:
+		p = e.Properties("RigElement")
+		UpdateParameter(p,"ControlType",0,6)

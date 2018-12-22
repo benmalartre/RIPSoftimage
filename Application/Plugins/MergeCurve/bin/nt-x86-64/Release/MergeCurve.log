@@ -1,0 +1,10 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.Cpp.Common.props(144,5): warning MSB4211: La propriété "WindowsTargetPlatformVersion" est définie à une valeur pour la première fois, mais elle a déjà été consommée à "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.Cpp.WindowsSDK.props (29,5)".
+  MergeCurveCmd.cpp
+  MergeCurveMenu.cpp
+  MergeCurveOp.cpp
+  Register.cpp
+  Génération de code en cours...
+C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(1205,5): warning MSB8012: TargetPath(E:\Projects\RnD\bWorkgroup\Application\Plugins\MergeCurve\.\bin\nt-x86-64\MergeCurve.dll) ne correspond pas à la valeur de la propriété OutputFile (E:\Projects\RnD\bWorkgroup\Application\Plugins\MergeCurve\bin\nt-x86-64\bMergeCurve.dll) de Linker. Cela peut entraîner une génération incorrecte de votre projet. Pour corriger ce problème, vérifiez que les valeurs des propriétés $(OutDir), $(TargetName) et $(TargetExt) correspondent à la valeur spécifiée dans %(Link.OutputFile).
+C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(1207,5): warning MSB8012: TargetName(MergeCurve) ne correspond pas à la valeur de la propriété OutputFile (bMergeCurve) de Linker. Cela peut entraîner une génération incorrecte de votre projet. Pour corriger ce problème, vérifiez que les valeurs des propriétés $(OutDir), $(TargetName) et $(TargetExt) correspondent à la valeur spécifiée dans %(Link.OutputFile).
+     CrÚation de la bibliothÞque .\bin\nt-x86-64\MergeCurve.lib et de l'objet .\bin\nt-x86-64\MergeCurve.exp
+  MergeCurve.vcxproj -> E:\Projects\RnD\bWorkgroup\Application\Plugins\MergeCurve\.\bin\nt-x86-64\MergeCurve.dll

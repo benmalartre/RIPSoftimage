@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsi_file type="CompoundNode" name="ToonixGetCamera" category="Toonix" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="11517109">
+	<definition>
+		<nodes>
+			<node type="GetDataNode" index="0">
+				<param name="reference" type="31" value="..fov"></param>
+				<param_ext name="reference" type="31" value="..fov"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-702</prop>
+					<prop name="posy">160</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="1">
+				<param name="reference" type="31" value="kine.global"></param>
+				<param_ext name="reference" type="31" value="kine.global"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-744</prop>
+					<prop name="posy">-57</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="2">
+				<param name="reference" type="31" value="Camera"></param>
+				<param_ext name="reference" type="31" value="Camera"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-988</prop>
+					<prop name="posy">76</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="3">
+				<param name="reference" type="31" value="..aspect"></param>
+				<param_ext name="reference" type="31" value="..aspect"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-727</prop>
+					<prop name="posy">284</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="4">
+				<param name="reference" type="31" value="pos"></param>
+				<param_ext name="reference" type="31" value="pos"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-546</prop>
+					<prop name="posy">-17</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="value" username="Fov" basename="Fov" portlabel="Fov" exposetype="single"> </port>
+			<port index="1" portname="value" username="Global" basename="Global" portlabel="Global" exposetype="single"> </port>
+			<port index="2" portname="reference" username="Reference" basename="Reference" portlabel="Reference" exposetype="single"> </port>
+			<port index="3" portname="value" username="Aspect" basename="Aspect" portlabel="Aspect" exposetype="single"> </port>
+			<port index="4" portname="value" username="Position" basename="Position" portlabel="Position" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="1" from_port="outname" to_node="4" to_port="inname"> </cnx>
+			<cnx from_node="2" from_port="outname" to_node="0" to_port="inname"> </cnx>
+			<cnx from_node="2" from_port="outname" to_node="1" to_port="inname"> </cnx>
+			<cnx from_node="2" from_port="outname" to_node="3" to_port="inname"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Reference"> </item>
+			<item type="output" name="Global"> </item>
+			<item type="output" name="Position"> </item>
+			<item type="output" name="Fov"> </item>
+			<item type="output" name="Aspect"> </item>
+		</layout>
+		<blob_dictionary>
+		</blob_dictionary>
+	</definition>
+</xsi_file>

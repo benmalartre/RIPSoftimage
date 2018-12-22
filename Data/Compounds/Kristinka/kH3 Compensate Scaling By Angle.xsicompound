@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="kH3 Compensate Scaling By Angle" category="" tasks="k Hair3/Nested" author="Anto Matkovic" url="" formatversion="1.4" compoundversion="1.0" versiontag="" backgroundcolor="10126967">
+	<description><![CDATA[]]></description>
+	<definition>
+		<nodes>
+			<node type="MaximumNode" index="11">
+				<param name="value1" type="4" value="0.000000"></param>
+				<param name="value2" type="4" value="0.000000"></param>
+				<portdef name="value1" type="4" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="value2" type="4" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1169</prop>
+					<prop name="posy">-173</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ScalarNode" index="14">
+				<param name="value" type="4" value="0.010000"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1277</prop>
+					<prop name="posy">-85</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ScalarNode" index="15">
+				<param name="value" type="4" value="360.000000"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1504</prop>
+					<prop name="posy">-110</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ScalarNode" index="16">
+				<param name="value" type="4" value="360.000000"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-2059</prop>
+					<prop name="posy">19</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="AbsoluteValueNode" index="18">
+				<param name="value" type="4" value="0.000000"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1777</prop>
+					<prop name="posy">-144</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ClampNode" index="23">
+				<param name="value" type="4" value="-56.327000"></param>
+				<param name="limit1" type="4" value="0.000000"></param>
+				<param name="limit2" type="4" value="0.000000"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="limit1" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="limit2" type="4" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1886</prop>
+					<prop name="posy">-127</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ScalarNode" index="26">
+				<param name="value" type="4" value="-360.000000"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-2063</prop>
+					<prop name="posy">-56</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="SubtractNode" index="31">
+				<param name="first" type="4" value="1.000000"></param>
+				<param name="second" type="4" value="0.000000"></param>
+				<portdef name="first" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="4" structure="2" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1512</prop>
+					<prop name="posy">-36</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ScalarNode" index="42">
+				<param name="value" type="4" value="1.000000"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1603</prop>
+					<prop name="posy">-94</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="RescaleNode" index="47">
+				<param name="value" type="4" value="0.000000"></param>
+				<param name="sourcestart" type="4" value="0.000000"></param>
+				<param name="sourceend" type="4" value="360.000000"></param>
+				<param name="targetstart" type="4" value="1.000000"></param>
+				<param name="targetend" type="4" value="0.010000"></param>
+				<param name="clamp" type="11" value="true"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="sourcestart" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="sourceend" type="4" structure="1" group="0" instance="0" port="2"></portdef>
+				<portdef name="targetstart" type="4" structure="1" group="0" instance="0" port="3"></portdef>
+				<portdef name="targetend" type="4" structure="2" group="0" instance="0" port="4"></portdef>
+				<portdef name="clamp" type="1" structure="1" group="0" instance="0" port="5"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1382</prop>
+					<prop name="posy">-159</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="11" portname="max" username="Scale_By_Angle" basename="Scale By Angle" portlabel="Scale By Angle" exposetype="single"> </port>
+			<port index="23" portname="value" username="In_Angle" basename="In Angle" portlabel="In Angle" exposetype="single"> </port>
+			<port index="31" portname="second" username="Strand_Array_Ratio" basename="Strand Array Ratio" portlabel="Strand Array Ratio" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="42" from_port="result" to_node="47" to_port="targetstart"> </cnx>
+			<cnx from_node="42" from_port="result" to_node="31" to_port="first"> </cnx>
+			<cnx from_node="47" from_port="result" to_node="11" to_port="value1"> </cnx>
+			<cnx from_node="14" from_port="result" to_node="11" to_port="value2"> </cnx>
+			<cnx from_node="15" from_port="result" to_node="47" to_port="sourceend"> </cnx>
+			<cnx from_node="16" from_port="result" to_node="23" to_port="limit2"> </cnx>
+			<cnx from_node="18" from_port="result" to_node="47" to_port="value"> </cnx>
+			<cnx from_node="23" from_port="result" to_node="18" to_port="value"> </cnx>
+			<cnx from_node="26" from_port="result" to_node="23" to_port="limit1"> </cnx>
+			<cnx from_node="31" from_port="result" to_node="47" to_port="targetend"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="In_Angle" min="-360" max="360"> </item>
+			<item type="input" name="Strand_Array_Ratio" min="0" max="1"> </item>
+			<item type="output" name="Scale_By_Angle" min="0" max="0"> </item>
+		</layout>
+	</definition>
+</xsi_file>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="SPH Simulation Sub Step" category="" tasks="SPH/Particles" author="" url="" formatversion="1.4" compoundversion="1.0" versiontag="" constructionmode="Modeling" backgroundcolor="12040105">
+	<description><![CDATA[]]></description>
+	<definition>
+		<nodes>
+			<node type="MultiplyNode" index="0">
+				<param name="value1" type="4" value="1.000000"></param>
+				<param name="value2" type="4" value="1.000000"></param>
+				<portdef name="value1" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value2" type="4" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">389</prop>
+					<prop name="posy">953</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="DivideByScalarNode" index="1">
+				<param name="value" type="4" value="0.000000"></param>
+				<param name="divideby" type="4" value="1.000000"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="divideby" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">157</prop>
+					<prop name="posy">919</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IntegerToScalarNode" index="2">
+				<param name="integer" type="3" value="0"></param>
+				<portdef name="integer" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-71</prop>
+					<prop name="posy">988</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ScalarNode" index="3">
+				<param name="value" type="4" value="1.000000"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-134</prop>
+					<prop name="posy">880</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="SimulationStepNode" index="4">
+				<datablob category="ui_infos">
+					<prop name="posx">119</prop>
+					<prop name="posy">1056</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="5">
+				<param name="reference" type="31" value="Self.__SubStep"></param>
+				<param_ext name="reference" type="31" value="Self.__SubStep"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-278</prop>
+					<prop name="posy">998</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="result" username="Out" basename="Out" portlabel="Out" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="1" from_port="result" to_node="0" to_port="value1"> </cnx>
+			<cnx from_node="3" from_port="result" to_node="1" to_port="value"> </cnx>
+			<cnx from_node="2" from_port="scalar" to_node="1" to_port="divideby"> </cnx>
+			<cnx from_node="5" from_port="value" to_node="2" to_port="integer"> </cnx>
+			<cnx from_node="4" from_port="time" to_node="0" to_port="value2"> </cnx>
+		</connections>
+		<layout>
+			<item type="output" name="Out"> </item>
+		</layout>
+		<blob_dictionary>
+		</blob_dictionary>
+	</definition>
+</xsi_file>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="Get Next Particle" tasks="Particles/Getters" formatversion="1.4" compoundversion="1.0" constructionmode="Modeling" backgroundcolor="12228200">
+	<definition>
+		<nodes>
+			<node type="IDToLocation" index="0">
+				<param name="id" type="3" value="0"></param>
+				<portdef name="geometry" type="1024" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="id" type="2" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-608</prop>
+					<prop name="posy">267</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="AddNode" index="1">
+				<param name="value1" type="3" value="0"></param>
+				<param name="value2" type="3" value="1"></param>
+				<portdef name="value1" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value2" type="2" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-795</prop>
+					<prop name="posy">223</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Get Point ID" version="1.0" index="2">
+				<param name="In_Name_Reference" type="31" value="Self"></param>
+				<param_ext name="In_Name_Reference" type="31" value="Self"></param_ext>
+				<portdef name="In_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-955</prop>
+					<prop name="posy">229</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="3">
+				<param name="reference" type="31" value="Self."></param>
+				<param_ext name="reference" type="31" value="Self."></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-796</prop>
+					<prop name="posy">326</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="result" username="Result" basename="Result" portlabel="Result" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="2" from_port="Point_ID" to_node="1" to_port="value1"> </cnx>
+			<cnx from_node="1" from_port="result" to_node="0" to_port="id"> </cnx>
+			<cnx from_node="3" from_port="value" to_node="0" to_port="geometry"> </cnx>
+		</connections>
+		<layout>
+			<item type="output" name="Result"> </item>
+		</layout>
+	</definition>
+</xsi_file>

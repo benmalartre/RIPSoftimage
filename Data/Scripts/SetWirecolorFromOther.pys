@@ -1,0 +1,11 @@
+from Globals import *
+import Utils2 as uti
+
+master = uti.PickElement(constants.siGenericObjectFilter,"Pick Color Master")
+prop = master.Properties("Display")
+r = prop.Parameters("WireColorR").Value
+g = prop.Parameters("WireColorG").Value
+b = prop.Parameters("WireColorB").Value
+
+for s in xsi.Selection:
+	uti.SetWireColor(s,r,g,b)

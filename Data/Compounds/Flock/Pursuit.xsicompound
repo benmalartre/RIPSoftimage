@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="Pursuit" category="flock" tasks="" author="benmalartre" url="" formatversion="1.4" compoundversion="1.0" versiontag="" backgroundcolor="2057983">
+	<description><![CDATA[]]></description>
+	<definition>
+		<nodes>
+			<node type="SimulationStepNode" index="0">
+				<datablob category="ui_infos">
+					<prop name="posx">-920</prop>
+					<prop name="posy">-31</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="NormalizeNode" index="1">
+				<param name="vector.vector_x" type="4" value="1.000000"></param>
+				<param name="vector.vector_y" type="4" value="0.000000"></param>
+				<param name="vector.vector_z" type="4" value="0.000000"></param>
+				<portdef name="vector" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">48</prop>
+					<prop name="posy">-92</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="MultiplyByScalarNode" index="2">
+				<param name="value.value_x" type="4" value="0.000000"></param>
+				<param name="value.value_y" type="4" value="0.000000"></param>
+				<param name="value.value_z" type="4" value="0.000000"></param>
+				<param name="factor" type="4" value="1.000000"></param>
+				<portdef name="value" type="16" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="factor" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-672</prop>
+					<prop name="posy">-117</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="SubtractNode" index="3">
+				<param name="first.first_x" type="4" value="0.000000"></param>
+				<param name="first.first_y" type="4" value="0.000000"></param>
+				<param name="first.first_z" type="4" value="0.000000"></param>
+				<param name="second.second_x" type="4" value="0.000000"></param>
+				<param name="second.second_y" type="4" value="0.000000"></param>
+				<param name="second.second_z" type="4" value="0.000000"></param>
+				<portdef name="first" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="16" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-97</prop>
+					<prop name="posy">-59</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="AddNode" index="4">
+				<param name="value1.value1_x" type="4" value="0.000000"></param>
+				<param name="value1.value1_y" type="4" value="0.000000"></param>
+				<param name="value1.value1_z" type="4" value="0.000000"></param>
+				<param name="value2.value2_x" type="4" value="0.000000"></param>
+				<param name="value2.value2_y" type="4" value="0.000000"></param>
+				<param name="value2.value2_z" type="4" value="0.000000"></param>
+				<portdef name="value1" type="16" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="value2" type="16" structure="2" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-474</prop>
+					<prop name="posy">-180</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IfNode" index="5">
+				<param name="condition" type="11" value="false"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="4096" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="iffalse" type="4096" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">396</prop>
+					<prop name="posy">-105</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="6">
+				<param name="reference" type="31" value="PointPosition"></param>
+				<param_ext name="reference" type="31" value="PointPosition"></param_ext>
+				<portdef name="source" type="2048" structure="2" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-979</prop>
+					<prop name="posy">-310</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="7">
+				<param name="reference" type="31" value="PointVelocity"></param>
+				<param_ext name="reference" type="31" value="PointVelocity"></param_ext>
+				<portdef name="source" type="2048" structure="2" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-966</prop>
+					<prop name="posy">-192</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="BlendVelocity" version="1.0" index="8">
+				<param name="Change_Direction.Change_Direction_x" type="4" value="0.000000"></param>
+				<param name="Change_Direction.Change_Direction_y" type="4" value="0.000000"></param>
+				<param name="Change_Direction.Change_Direction_z" type="4" value="0.000000"></param>
+				<param name="Blend" type="4" value="1.000000"></param>
+				<portdef name="Change_Direction" type="16" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Blend" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">219</prop>
+					<prop name="posy">-54</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="9">
+				<param name="reference" type="31" value="Self.PointPosition"></param>
+				<param_ext name="reference" type="31" value="Self.PointPosition"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-504</prop>
+					<prop name="posy">27</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="10">
+				<portdef name="in" type="2048" structure="2" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">-1385</prop>
+					<prop name="posy">-403</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetArrayMinimumNode" index="11">
+				<param name="array.array_x" type="4" value="0.000000"></param>
+				<param name="array.array_y" type="4" value="0.000000"></param>
+				<param name="array.array_z" type="4" value="0.000000"></param>
+				<portdef name="array" type="16" structure="2" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-314</prop>
+					<prop name="posy">-240</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="5" portname="result" username="result" basename="result" portlabel="result" exposetype="single"> </port>
+			<port index="5" portname="condition" username="Found" basename="Found" portlabel="Found" exposetype="single"> </port>
+			<port index="8" portname="Blend" username="Blend" basename="Blend" portlabel="Blend" exposetype="single"> </port>
+			<port index="10" portname="in" username="Points" basename="Points" portlabel="Points" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="1" from_port="result" to_node="8" to_port="Change_Direction"> </cnx>
+			<cnx from_node="3" from_port="result" to_node="1" to_port="vector"> </cnx>
+			<cnx from_node="4" from_port="result" to_node="11" to_port="array"> </cnx>
+			<cnx from_node="2" from_port="result" to_node="4" to_port="value2"> </cnx>
+			<cnx from_node="0" from_port="time" to_node="2" to_port="factor"> </cnx>
+			<cnx from_node="6" from_port="value" to_node="4" to_port="value1"> </cnx>
+			<cnx from_node="7" from_port="value" to_node="2" to_port="value"> </cnx>
+			<cnx from_node="8" from_port="Execute" to_node="5" to_port="iftrue"> </cnx>
+			<cnx from_node="9" from_port="value" to_node="3" to_port="second"> </cnx>
+			<cnx from_node="10" from_port="out" to_node="6" to_port="source"> </cnx>
+			<cnx from_node="10" from_port="out" to_node="7" to_port="source"> </cnx>
+			<cnx from_node="11" from_port="min" to_node="3" to_port="first"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Blend"> </item>
+			<item type="input" name="Found"> </item>
+			<item type="input" name="Points"> </item>
+			<item type="output" name="result"> </item>
+		</layout>
+	</definition>
+</xsi_file>

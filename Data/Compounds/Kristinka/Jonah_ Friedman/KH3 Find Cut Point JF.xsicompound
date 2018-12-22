@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsi_file type="CompoundNode" name="KH3 Find Cut Point JF" category="" tasks="k Hair3/Utilities" author="Jonah Friedman" url="" formatversion="1.4" compoundversion="1.0" versiontag="" constructionmode="Current" backgroundcolor="10662546">
+	<description><![CDATA[]]></description>
+	<definition>
+		<nodes>
+			<node type="AddNode" index="0">
+				<param name="value1" type="3" value="0"></param>
+				<param name="value2" type="3" value="1"></param>
+				<portdef name="value1" type="2" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="value2" type="2" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-3836</prop>
+					<prop name="posy">5793</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetArraySizeNode" index="1">
+				<param name="array.array_x" type="4" value="0.000000"></param>
+				<param name="array.array_y" type="4" value="0.000000"></param>
+				<param name="array.array_z" type="4" value="0.000000"></param>
+				<portdef name="array" type="16" structure="2" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-4643</prop>
+					<prop name="posy">5705</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="SubtractNode" index="2">
+				<param name="first" type="3" value="0"></param>
+				<param name="second" type="3" value="1"></param>
+				<portdef name="first" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="2" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-4434</prop>
+					<prop name="posy">5669</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="BooleanNode" index="3">
+				<param name="value" type="11" value="true"></param>
+				<portdef name="value" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-3016</prop>
+					<prop name="posy">5517</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetArraySubIndicesNode" index="4">
+				<param name="array.array_x" type="4" value="0.000000"></param>
+				<param name="array.array_y" type="4" value="0.000000"></param>
+				<param name="array.array_z" type="4" value="0.000000"></param>
+				<portdef name="array" type="16" structure="2" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-4084</prop>
+					<prop name="posy">5807</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDistanceBetweenNode" index="5">
+				<param name="first.first_x" type="4" value="0.000000"></param>
+				<param name="first.first_y" type="4" value="0.000000"></param>
+				<param name="first.first_z" type="4" value="0.000000"></param>
+				<param name="second.second_x" type="4" value="0.000000"></param>
+				<param name="second.second_y" type="4" value="0.000000"></param>
+				<param name="second.second_z" type="4" value="0.000000"></param>
+				<portdef name="first" type="16" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="16" structure="2" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-3489</prop>
+					<prop name="posy">5810</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="FindInArrayNode" index="6">
+				<param name="value" type="11" value="false"></param>
+				<param name="array" type="11" value="false"></param>
+				<param name="epsilon" type="4" value="0.000000"></param>
+				<portdef name="value" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="array" type="1" structure="2" group="0" instance="0" port="1"></portdef>
+				<portdef name="epsilon" type="4" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-2894</prop>
+					<prop name="posy">5687</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+				<comment type="node" state="maximized" wordwrap="true" autoresize="true" background="0" background_alpha="0.000000" title="14876671" title_text="0" offsetx="-57" offsety="-45" sizex="201" sizey="19"><![CDATA[Array positon where raycast found geo]]></comment>
+			</node>
+			<node type="SubtractNode" index="7">
+				<param name="first.first_x" type="4" value="0.000000"></param>
+				<param name="first.first_y" type="4" value="0.000000"></param>
+				<param name="first.first_z" type="4" value="0.000000"></param>
+				<param name="second.second_x" type="4" value="0.000000"></param>
+				<param name="second.second_y" type="4" value="0.000000"></param>
+				<param name="second.second_z" type="4" value="0.000000"></param>
+				<portdef name="first" type="16" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="16" structure="2" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-3430</prop>
+					<prop name="posy">5681</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDistanceBetweenNode" index="8">
+				<param name="first.first_x" type="4" value="0.000000"></param>
+				<param name="first.first_y" type="4" value="0.000000"></param>
+				<param name="first.first_z" type="4" value="0.000000"></param>
+				<param name="second.second_x" type="4" value="0.000000"></param>
+				<param name="second.second_y" type="4" value="0.000000"></param>
+				<param name="second.second_z" type="4" value="0.000000"></param>
+				<portdef name="first" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="16" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-2333</prop>
+					<prop name="posy">6229</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+				<comment type="node" state="maximized" wordwrap="true" autoresize="true" background="0" background_alpha="0.000000" title="14876671" title_text="0" offsetx="-2" offsety="-45" sizex="337" sizey="19"><![CDATA[Distance between the first strand postion and the intersection point]]></comment>
+			</node>
+			<node type="AddNode" index="9">
+				<param name="value1" type="4" value="0.000000"></param>
+				<param name="value2" type="4" value="0.000000"></param>
+				<portdef name="value1" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value2" type="4" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1401</prop>
+					<prop name="posy">5685</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+				<comment type="node" state="maximized" wordwrap="true" autoresize="true" background="0" background_alpha="0.000000" title="14876671" title_text="0" offsetx="-7" offsety="-63" sizex="189" sizey="45"><![CDATA[strand ratio AT intersection]]></comment>
+			</node>
+			<node type="IntegerToScalarNode" index="10">
+				<param name="integer" type="3" value="0"></param>
+				<portdef name="integer" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1871</prop>
+					<prop name="posy">5844</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="DivideByScalarNode" index="11">
+				<param name="value" type="4" value="0.000000"></param>
+				<param name="divideby" type="4" value="1.000000"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="divideby" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1658</prop>
+					<prop name="posy">5812</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="12">
+				<param name="reference" type="31" value="self.strandRatio"></param>
+				<param_ext name="reference" type="31" value="self.strandRatio"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-2353</prop>
+					<prop name="posy">5499</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="13">
+				<param name="reference" type="31" value="PointPosition"></param>
+				<param_ext name="reference" type="31" value="PointPosition"></param_ext>
+				<portdef name="source" type="2048" structure="2" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-2957</prop>
+					<prop name="posy">5943</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+				<comment type="node" state="maximized" wordwrap="true" autoresize="true" background="0" background_alpha="0.000000" title="14876671" title_text="0" offsetx="45" offsety="-36" sizex="128" sizey="32"><![CDATA[Point at intersection]]></comment>
+			</node>
+			<node type="GetDataNode" index="14">
+				<param name="reference" type="31" value="self.strandPosition"></param>
+				<param_ext name="reference" type="31" value="self.strandPosition"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-5008</prop>
+					<prop name="posy">5600</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="15">
+				<param name="reference" type="31" value="self.strandPosition"></param>
+				<param_ext name="reference" type="31" value="self.strandPosition"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-3056</prop>
+					<prop name="posy">6223</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetArraySizeNode" index="16">
+				<param name="array" type="4" value="0.000000"></param>
+				<portdef name="array" type="4" structure="2" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-2135</prop>
+					<prop name="posy">5718</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="DivideByScalarNode" index="17">
+				<param name="value" type="4" value="0.000000"></param>
+				<param name="divideby" type="4" value="1.000000"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="divideby" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-2010</prop>
+					<prop name="posy">6046</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+				<comment type="node" state="maximized" wordwrap="true" autoresize="true" background="0" background_alpha="0.000000" title="14876671" title_text="0" offsetx="-1" offsety="-51" sizex="225" sizey="32"><![CDATA[Fraction between intersection point and the next point where the intersection was found]]></comment>
+			</node>
+			<node type="GetDistanceBetweenNode" index="18">
+				<param name="first.first_x" type="4" value="0.000000"></param>
+				<param name="first.first_y" type="4" value="0.000000"></param>
+				<param name="first.first_z" type="4" value="0.000000"></param>
+				<param name="second.second_x" type="4" value="0.000000"></param>
+				<param name="second.second_y" type="4" value="0.000000"></param>
+				<param name="second.second_z" type="4" value="0.000000"></param>
+				<portdef name="first" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="16" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-2328</prop>
+					<prop name="posy">6085</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+				<comment type="node" state="maximized" wordwrap="true" autoresize="true" background="0" background_alpha="0.000000" title="14876671" title_text="0" offsetx="-5" offsety="-45" sizex="241" sizey="19"><![CDATA[total distance between the two strand positions]]></comment>
+			</node>
+			<node type="PassThroughNode" index="19">
+				<param name="in" type="3" value="0"></param>
+				<portdef name="in" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-2416</prop>
+					<prop name="posy">5670</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+				<comment type="node" state="maximized" wordwrap="true" autoresize="true" background="0" background_alpha="0.000000" title="14876671" title_text="0" offsetx="0" offsety="-39" sizex="134" sizey="32"><![CDATA[Index before intersection]]></comment>
+			</node>
+			<node type="AddNode" index="20">
+				<param name="value1" type="3" value="0"></param>
+				<param name="value2" type="3" value="1"></param>
+				<portdef name="value1" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value2" type="2" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-2715</prop>
+					<prop name="posy">6231</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="SelectInArrayNode" index="21">
+				<param name="index" type="3" value="0"></param>
+				<param name="array.array_x" type="4" value="0.000000"></param>
+				<param name="array.array_y" type="4" value="0.000000"></param>
+				<param name="array.array_z" type="4" value="0.000000"></param>
+				<portdef name="index" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="array" type="16" structure="2" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-2603</prop>
+					<prop name="posy">6170</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+				<comment type="node" state="maximized" wordwrap="true" autoresize="true" background="0" background_alpha="0.000000" title="14876671" title_text="0" offsetx="10" offsety="-46" sizex="132" sizey="19"><![CDATA[Point Before Intersection]]></comment>
+			</node>
+			<node type="RaycastNode" index="22">
+				<param name="proximitymethod" type="3" value="0"></param>
+				<param name="position.position_x" type="4" value="0.000000"></param>
+				<param name="position.position_y" type="4" value="0.000000"></param>
+				<param name="position.position_z" type="4" value="0.000000"></param>
+				<param name="direction.direction_x" type="4" value="0.000000"></param>
+				<param name="direction.direction_y" type="4" value="0.000000"></param>
+				<param name="direction.direction_z" type="4" value="0.000000"></param>
+				<param name="enablecutoffdistance" type="11" value="true"></param>
+				<param name="cutoffdistance" type="4" value="0.000000"></param>
+				<portdef name="geometry" type="1024" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="position" type="16" structure="2" group="0" instance="0" port="1"></portdef>
+				<portdef name="direction" type="16" structure="2" group="0" instance="0" port="2"></portdef>
+				<portdef name="enablecutoffdistance" type="1" structure="1" group="0" instance="0" port="3"></portdef>
+				<portdef name="cutoffdistance" type="4" structure="2" group="0" instance="0" port="4"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-3134</prop>
+					<prop name="posy">5631</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="SelectInArrayNode" index="23">
+				<param name="index" type="3" value="0"></param>
+				<param name="array.array_x" type="4" value="0.000000"></param>
+				<param name="array.array_y" type="4" value="0.000000"></param>
+				<param name="array.array_z" type="4" value="0.000000"></param>
+				<portdef name="index" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="array" type="16" structure="2" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-2568</prop>
+					<prop name="posy">6349</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+				<comment type="node" state="maximized" wordwrap="true" autoresize="true" background="0" background_alpha="0.000000" title="14876671" title_text="0" offsetx="13" offsety="-37" sizex="125" sizey="19"><![CDATA[Point After Intersection]]></comment>
+			</node>
+			<node type="SelectInArrayNode" index="24">
+				<param name="index" type="3" value="0"></param>
+				<param name="array.array_x" type="4" value="0.000000"></param>
+				<param name="array.array_y" type="4" value="0.000000"></param>
+				<param name="array.array_z" type="4" value="0.000000"></param>
+				<portdef name="index" type="2" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="array" type="16" structure="2" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-3703</prop>
+					<prop name="posy">5605</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+				<comment type="node" state="maximized" wordwrap="true" autoresize="true" background="0" background_alpha="0.000000" title="14876671" title_text="0" offsetx="2" offsety="-64" sizex="132" sizey="32"><![CDATA[Positions to raycast to]]></comment>
+			</node>
+			<node type="SelectInArrayNode" index="25">
+				<param name="index" type="3" value="0"></param>
+				<param name="array" type="4" value="0.000000"></param>
+				<portdef name="index" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="array" type="4" structure="2" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1984</prop>
+					<prop name="posy">5578</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+				<comment type="node" state="maximized" wordwrap="true" autoresize="true" background="0" background_alpha="0.000000" title="14876671" title_text="0" offsetx="9" offsety="-66" sizex="123" sizey="45"><![CDATA[strand ratio BEFORE intersection]]></comment>
+			</node>
+			<node type="SelectInArrayNode" index="26">
+				<param name="index" type="3" value="0"></param>
+				<param name="array.array_x" type="4" value="0.000000"></param>
+				<param name="array.array_y" type="4" value="0.000000"></param>
+				<param name="array.array_z" type="4" value="0.000000"></param>
+				<portdef name="index" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="array" type="16" structure="2" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-2600</prop>
+					<prop name="posy">5995</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+				<comment type="node" state="maximized" wordwrap="true" autoresize="true" background="0" background_alpha="0.000000" title="14876671" title_text="0" offsetx="10" offsety="-46" sizex="132" sizey="19"><![CDATA[Point Before Intersection]]></comment>
+			</node>
+			<node type="ResizeArrayNode" index="27">
+				<param name="size" type="3" value="0"></param>
+				<param name="value.value_x" type="4" value="0.000000"></param>
+				<param name="value.value_y" type="4" value="0.000000"></param>
+				<param name="value.value_z" type="4" value="0.000000"></param>
+				<param name="array.array_x" type="4" value="0.000000"></param>
+				<param name="array.array_y" type="4" value="0.000000"></param>
+				<param name="array.array_z" type="4" value="0.000000"></param>
+				<portdef name="size" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value" type="16" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="array" type="16" structure="2" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-4282</prop>
+					<prop name="posy">5709</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+				<comment type="node" state="maximized" wordwrap="true" autoresize="true" background="0" background_alpha="0.000000" title="14876671" title_text="0" offsetx="-2" offsety="-116" sizex="57" sizey="58"><![CDATA[Array of points to raycast from]]></comment>
+			</node>
+			<node type="GroupGeometryNode" index="28">
+				<portdef name="geometry1" type="1024" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-3473</prop>
+					<prop name="posy">5385</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="9" portname="result" username="Result" basename="Result" portlabel="Result" exposetype="single"> </port>
+			<port index="28" portname="geometry1" username="Geometry" basename="Geometry" portlabel="Geometry" exposetype="all_instances"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="24" from_port="value" to_node="5" to_port="second"> </cnx>
+			<cnx from_node="24" from_port="value" to_node="7" to_port="first"> </cnx>
+			<cnx from_node="26" from_port="value" to_node="8" to_port="first"> </cnx>
+			<cnx from_node="26" from_port="value" to_node="18" to_port="first"> </cnx>
+			<cnx from_node="22" from_port="location" to_node="13" to_port="source"> </cnx>
+			<cnx from_node="22" from_port="hit" to_node="6" to_port="array"> </cnx>
+			<cnx from_node="25" from_port="value" to_node="9" to_port="value1"> </cnx>
+			<cnx from_node="21" from_port="value" to_node="8" to_port="second"> </cnx>
+			<cnx from_node="23" from_port="value" to_node="18" to_port="second"> </cnx>
+			<cnx from_node="12" from_port="value" to_node="25" to_port="array"> </cnx>
+			<cnx from_node="12" from_port="value" to_node="16" to_port="array"> </cnx>
+			<cnx from_node="13" from_port="value" to_node="21" to_port="array"> </cnx>
+			<cnx from_node="14" from_port="value" to_node="1" to_port="array"> </cnx>
+			<cnx from_node="14" from_port="value" to_node="27" to_port="array"> </cnx>
+			<cnx from_node="14" from_port="value" to_node="24" to_port="array"> </cnx>
+			<cnx from_node="15" from_port="value" to_node="26" to_port="array"> </cnx>
+			<cnx from_node="15" from_port="value" to_node="23" to_port="array"> </cnx>
+			<cnx from_node="27" from_port="result" to_node="4" to_port="array"> </cnx>
+			<cnx from_node="27" from_port="result" to_node="22" to_port="position"> </cnx>
+			<cnx from_node="27" from_port="result" to_node="7" to_port="second"> </cnx>
+			<cnx from_node="27" from_port="result" to_node="5" to_port="first"> </cnx>
+			<cnx from_node="28" from_port="result" to_node="22" to_port="geometry"> </cnx>
+			<cnx from_node="0" from_port="result" to_node="24" to_port="index"> </cnx>
+			<cnx from_node="1" from_port="size" to_node="2" to_port="first"> </cnx>
+			<cnx from_node="2" from_port="result" to_node="27" to_port="size"> </cnx>
+			<cnx from_node="3" from_port="result" to_node="6" to_port="value"> </cnx>
+			<cnx from_node="4" from_port="indices" to_node="0" to_port="value1"> </cnx>
+			<cnx from_node="5" from_port="result" to_node="22" to_port="cutoffdistance"> </cnx>
+			<cnx from_node="6" from_port="index" to_node="26" to_port="index"> </cnx>
+			<cnx from_node="6" from_port="index" to_node="20" to_port="value1"> </cnx>
+			<cnx from_node="6" from_port="index" to_node="21" to_port="index"> </cnx>
+			<cnx from_node="6" from_port="index" to_node="19" to_port="in"> </cnx>
+			<cnx from_node="7" from_port="result" to_node="22" to_port="direction"> </cnx>
+			<cnx from_node="8" from_port="result" to_node="17" to_port="value"> </cnx>
+			<cnx from_node="10" from_port="scalar" to_node="11" to_port="divideby"> </cnx>
+			<cnx from_node="11" from_port="result" to_node="9" to_port="value2"> </cnx>
+			<cnx from_node="16" from_port="size" to_node="10" to_port="integer"> </cnx>
+			<cnx from_node="17" from_port="result" to_node="11" to_port="value"> </cnx>
+			<cnx from_node="18" from_port="result" to_node="17" to_port="divideby"> </cnx>
+			<cnx from_node="19" from_port="out" to_node="25" to_port="index"> </cnx>
+			<cnx from_node="20" from_port="result" to_node="23" to_port="index"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Geometry" min="0" max="0"> </item>
+			<item type="output" name="Result"> </item>
+		</layout>
+		<blob_dictionary>
+		</blob_dictionary>
+	</definition>
+</xsi_file>

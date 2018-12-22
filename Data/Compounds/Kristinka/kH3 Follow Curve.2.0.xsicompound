@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="kH3 Follow Curve" category="" tasks="k Hair3/Form" author="Anto Matkovic" url="http://www.matkovic.com/anto" formatversion="1.4" compoundversion="2.0" versiontag="" constructionmode="Current" backgroundcolor="8689840">
+	<description><![CDATA[]]></description>
+	<definition>
+		<nodes>
+			<node type="PassThroughNode" index="0">
+				<param name="in" type="4" value="1.000000"></param>
+				<portdef name="in" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2050</prop>
+					<prop name="posy">265</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ExecuteNode" index="1">
+				<portdef name="port1" type="4096" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2566</prop>
+					<prop name="posy">78</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="2">
+				<param name="in" type="4" value="0.000000"></param>
+				<portdef name="in" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2038</prop>
+					<prop name="posy">74</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="3">
+				<param name="in" type="4" value="0.250000"></param>
+				<portdef name="in" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2057</prop>
+					<prop name="posy">-174</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="4">
+				<param name="in" type="4" value="0.900000"></param>
+				<portdef name="in" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2040</prop>
+					<prop name="posy">162</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="5">
+				<param name="in" type="4" value="0.792000"></param>
+				<portdef name="in" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2040</prop>
+					<prop name="posy">0</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IfNode" index="6">
+				<param name="condition" type="11" value="true"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="4096" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="iffalse" type="4096" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2731</prop>
+					<prop name="posy">50</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="7">
+				<param name="in" type="4" value="0.200000"></param>
+				<portdef name="in" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2050</prop>
+					<prop name="posy">-74</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="kH3 Follow Curve Core" version="2.0" index="8">
+				<param name="Distance" type="4" value="0.200000"></param>
+				<param name="Blend_End" type="4" value="0.000000"></param>
+				<param name="Clump" type="4" value="0.635000"></param>
+				<param name="CrossOver" type="4" value="0.119000"></param>
+				<param name="Cr_Length" type="4" value="0.597000"></param>
+				<param name="Align" type="4" value="1.000000"></param>
+				<portdef name="Cr_Length" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Blend_End" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Curve" type="1024" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="CrossOver" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Clump" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Distance" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Align" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2291</prop>
+					<prop name="posy">-91</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="in" username="Align_To_Tangent" basename="Align To Tangent" portlabel="Align To Tangent" exposetype="single"> </port>
+			<port index="2" portname="in" username="CrossOver" basename="CrossOver" portlabel="CrossOver" exposetype="single"> </port>
+			<port index="3" portname="in" username="Distance" basename="Distance" portlabel="Distance" exposetype="single"> </port>
+			<port index="4" portname="in" username="Cr_Length" basename="Cr Length" portlabel="Cr Length" exposetype="single"> </port>
+			<port index="5" portname="in" username="Clump" basename="Clump" portlabel="Clump" exposetype="single"> </port>
+			<port index="6" portname="result" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+			<port index="6" portname="condition" username="Enable" basename="Enable" portlabel="Enable" exposetype="single"> </port>
+			<port index="7" portname="in" username="Blend_End" basename="Blend End" portlabel="Blend End" exposetype="single"> </port>
+			<port index="8" portname="Curve" username="Curve" basename="Curve" portlabel="Curve" exposetype="use_node"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="7" from_port="out" to_node="8" to_port="Blend_End"> </cnx>
+			<cnx from_node="0" from_port="out" to_node="8" to_port="Align"> </cnx>
+			<cnx from_node="1" from_port="execute" to_node="6" to_port="iftrue"> </cnx>
+			<cnx from_node="4" from_port="out" to_node="8" to_port="Cr_Length"> </cnx>
+			<cnx from_node="3" from_port="out" to_node="8" to_port="Distance"> </cnx>
+			<cnx from_node="2" from_port="out" to_node="8" to_port="CrossOver"> </cnx>
+			<cnx from_node="5" from_port="out" to_node="8" to_port="Clump"> </cnx>
+			<cnx from_node="8" from_port="Execute" to_node="1" to_port="port1"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Enable" min="0" max="0"> </item>
+			<item type="input" name="Distance" min="0" max="0.2"> </item>
+			<item type="input" name="Blend_End" min="0" max="1"> </item>
+			<item type="input" name="Clump" min="0" max="1"> </item>
+			<item type="input" name="CrossOver" min="0" max="1"> </item>
+			<item type="input" name="Cr_Length" min="0" max="1"> </item>
+			<item type="input" name="Align_To_Tangent" min="0" max="1"> </item>
+			<item type="input" name="Curve" min="0" max="0"> </item>
+			<item type="output" name="Execute" min="0" max="0"> </item>
+		</layout>
+	</definition>
+</xsi_file>

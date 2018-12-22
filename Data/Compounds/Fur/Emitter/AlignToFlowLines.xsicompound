@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="AlignToFlowLines" tasks="ELI_Fur/Emitter" author="Ahmidou Lyazidi" formatversion="1.4" compoundversion="1.0" constructionmode="Modeling" backgroundcolor="6732954">
+	<definition>
+		<nodes>
+			<node type="Get Point Position" version="1.0" index="0">
+				<param name="Reference" type="31" value="Self.PointPosition"></param>
+				<param_ext name="Reference" type="31" value="Self.PointPosition"></param_ext>
+				<datablob category="ui_infos">
+					<prop name="posx">-1596</prop>
+					<prop name="posy">-283</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Set Data" version="1.0" index="1">
+				<param name="Reference" type="31" value="self.initTan"></param>
+				<param name="Reference1" type="31" value="self.pointU"></param>
+				<param name="Reference2" type="31" value="self._length"></param>
+				<param name="Reference3" type="31" value="self.FoundLoc"></param>
+				<param name="Reference4" type="31" value="self.colorID"></param>
+				<param name="Value.Value_x" type="4" value="0.000000"></param>
+				<param name="Value.Value_y" type="4" value="0.000000"></param>
+				<param name="Value.Value_z" type="4" value="0.000000"></param>
+				<param name="Value1" type="4" value="0.000000"></param>
+				<param name="Value2" type="4" value="0.000000"></param>
+				<param name="Value3" type="11" value="false"></param>
+				<param name="Value4.Value4_red" type="4" value="0.000000"></param>
+				<param name="Value4.Value4_green" type="4" value="0.000000"></param>
+				<param name="Value4.Value4_blue" type="4" value="0.000000"></param>
+				<param name="Value4.Value4_alpha" type="4" value="1.000000"></param>
+				<param_ext name="Reference" type="31" value="self.initTan"></param_ext>
+				<param_ext name="Reference1" type="31" value="self.pointU"></param_ext>
+				<param_ext name="Reference2" type="31" value="self._length"></param_ext>
+				<param_ext name="Reference3" type="31" value="self.FoundLoc"></param_ext>
+				<param_ext name="Reference4" type="31" value="self.colorID"></param_ext>
+				<portdef name="In_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Value" type="16" structure="1" group="2" instance="0" port="0" groupname="Value"></portdef>
+				<portdef name="Value1" type="4" structure="1" group="2" instance="1" port="0" groupname="Value"></portdef>
+				<portdef name="Value2" type="4" structure="1" group="2" instance="2" port="0" groupname="Value"></portdef>
+				<portdef name="Value3" type="1" structure="1" group="2" instance="3" port="0" groupname="Value"></portdef>
+				<portdef name="Value4" type="512" structure="1" group="2" instance="4" port="0" groupname="Value"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-367</prop>
+					<prop name="posy">-298</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="FirstValidNode" index="3">
+				<param name="in1" type="4" value="0.000000"></param>
+				<param name="in2" type="4" value="0.100000"></param>
+				<portdef name="in1" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="in2" type="4" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-962</prop>
+					<prop name="posy">-367</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetClosestLocationNode" index="4">
+				<param name="proximitymethod" type="3" value="0"></param>
+				<param name="position.position_x" type="4" value="0.000000"></param>
+				<param name="position.position_y" type="4" value="0.000000"></param>
+				<param name="position.position_z" type="4" value="0.000000"></param>
+				<param name="enablecutoffdistance" type="11" value="false"></param>
+				<param name="cutoffdistance" type="4" value="3.774000"></param>
+				<portdef name="geometry" type="1024" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="position" type="16" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="enablecutoffdistance" type="1" structure="1" group="0" instance="0" port="2"></portdef>
+				<portdef name="cutoffdistance" type="4" structure="1" group="0" instance="0" port="3"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1402</prop>
+					<prop name="posy">-354</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="5">
+				<param name="reference" type="31" value="PointU"></param>
+				<param_ext name="reference" type="31" value="PointU"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1152</prop>
+					<prop name="posy">-443</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="6">
+				<param name="reference" type="31" value="PointTangent"></param>
+				<param_ext name="reference" type="31" value="PointTangent"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1171</prop>
+					<prop name="posy">-623</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="7">
+				<param name="reference" type="31" value="_length"></param>
+				<param_ext name="reference" type="31" value="_length"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1146</prop>
+					<prop name="posy">-334</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="8">
+				<param name="reference" type="31" value="Color"></param>
+				<param_ext name="reference" type="31" value="Color"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1123</prop>
+					<prop name="posy">-150</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="9">
+				<portdef name="in" type="1024" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">-1568</prop>
+					<prop name="posy">-357</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="FirstValidNode" index="10">
+				<param name="in1.in1_x" type="4" value="0.000000"></param>
+				<param name="in1.in1_y" type="4" value="0.000000"></param>
+				<param name="in1.in1_z" type="4" value="0.000000"></param>
+				<param name="in2.in2_x" type="4" value="0.000000"></param>
+				<param name="in2.in2_y" type="4" value="0.000000"></param>
+				<param name="in2.in2_z" type="4" value="1.000000"></param>
+				<portdef name="in1" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="in2" type="16" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-960</prop>
+					<prop name="posy">-581</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="FirstValidNode" index="11">
+				<param name="in1" type="4" value="0.000000"></param>
+				<param name="in2" type="4" value="1.000000"></param>
+				<portdef name="in1" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="in2" type="4" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-962</prop>
+					<prop name="posy">-469</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="FirstValidNode" index="12">
+				<param name="in1.in1_red" type="4" value="0.000000"></param>
+				<param name="in1.in1_green" type="4" value="0.000000"></param>
+				<param name="in1.in1_blue" type="4" value="0.000000"></param>
+				<param name="in1.in1_alpha" type="4" value="1.000000"></param>
+				<param name="in2.in2_red" type="4" value="0.831884"></param>
+				<param name="in2.in2_green" type="4" value="0.680116"></param>
+				<param name="in2.in2_blue" type="4" value="0.822171"></param>
+				<param name="in2.in2_alpha" type="4" value="1.000000"></param>
+				<portdef name="in1" type="512" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="in2" type="512" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-955</prop>
+					<prop name="posy">-148</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="FirstValidNode" index="13">
+				<param name="in1" type="11" value="false"></param>
+				<param name="in2" type="11" value="true"></param>
+				<portdef name="in1" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="in2" type="1" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-957</prop>
+					<prop name="posy">-262</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="1" portname="Execute" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+			<port index="9" portname="in" username="Geometry" basename="Geometry" portlabel="Geometry" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="9" from_port="out" to_node="4" to_port="geometry"> </cnx>
+			<cnx from_node="5" from_port="value" to_node="11" to_port="in1"> </cnx>
+			<cnx from_node="6" from_port="value" to_node="10" to_port="in1"> </cnx>
+			<cnx from_node="7" from_port="value" to_node="3" to_port="in1"> </cnx>
+			<cnx from_node="8" from_port="value" to_node="12" to_port="in1"> </cnx>
+			<cnx from_node="3" from_port="out" to_node="1" to_port="Value2"> </cnx>
+			<cnx from_node="4" from_port="location" to_node="7" to_port="source"> </cnx>
+			<cnx from_node="4" from_port="location" to_node="6" to_port="source"> </cnx>
+			<cnx from_node="4" from_port="location" to_node="5" to_port="source"> </cnx>
+			<cnx from_node="4" from_port="location" to_node="8" to_port="source"> </cnx>
+			<cnx from_node="4" from_port="found" to_node="13" to_port="in1"> </cnx>
+			<cnx from_node="10" from_port="out" to_node="1" to_port="Value"> </cnx>
+			<cnx from_node="13" from_port="out" to_node="1" to_port="Value3"> </cnx>
+			<cnx from_node="12" from_port="out" to_node="1" to_port="Value4"> </cnx>
+			<cnx from_node="11" from_port="out" to_node="1" to_port="Value1"> </cnx>
+			<cnx from_node="0" from_port="Value" to_node="4" to_port="position"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Geometry"> </item>
+			<item type="output" name="Execute"> </item>
+		</layout>
+		<blob_dictionary>
+		</blob_dictionary>
+	</definition>
+</xsi_file>

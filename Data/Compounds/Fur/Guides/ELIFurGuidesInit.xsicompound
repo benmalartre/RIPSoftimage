@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsi_file type="CompoundNode" name="ELIFurGuidesInit" tasks="ELI_Fur/Guides" author="benmalartre" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="4368060">
+	<definition>
+		<nodes>
+			<node type="ELIFurAlign2Flow" version="1.0" index="0">
+				<param name="Reference" type="31" value="cls.FurMaps.Align_Map.Weights"></param>
+				<param name="AlignToFlow" type="4" value="0.000000"></param>
+				<param_ext name="Reference" type="31" value="cls.FurMaps.Align_Map.Weights"></param_ext>
+				<portdef name="AlignToFlow" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-42</prop>
+					<prop name="posy">353</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ReinterpretLocationToNewGeometryNode" index="1">
+				<portdef name="geometry" type="1024" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="geometrylocation" type="2048" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-796</prop>
+					<prop name="posy">167</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ExecuteNode" index="2">
+				<portdef name="port1" type="4096" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="port2" type="4096" structure="1" group="0" instance="1" port="0"></portdef>
+				<portdef name="port3" type="4096" structure="1" group="0" instance="2" port="0"></portdef>
+				<portdef name="port4" type="4096" structure="1" group="0" instance="3" port="0"></portdef>
+				<portdef name="port5" type="4096" structure="1" group="0" instance="4" port="0"></portdef>
+				<portdef name="port6" type="4096" structure="1" group="0" instance="5" port="0"></portdef>
+				<portdef name="port7" type="4096" structure="1" group="0" instance="6" port="0"></portdef>
+				<portdef name="port8" type="4096" structure="1" group="0" instance="7" port="0"></portdef>
+				<portdef name="port9" type="4096" structure="1" group="0" instance="8" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">803</prop>
+					<prop name="posy">418</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Create Strands" version="2.0" index="3">
+				<param name="Strand_Color_Gradient.interp" type="3" value="1"></param>
+				<param name="Strand_Color_Gradient.color1.r" type="5" value="1.000000"></param>
+				<param name="Strand_Color_Gradient.color1.g" type="5" value="1.000000"></param>
+				<param name="Strand_Color_Gradient.color1.b" type="5" value="1.000000"></param>
+				<param name="Strand_Color_Gradient.color1.a" type="5" value="1.000000"></param>
+				<param name="Strand_Color_Gradient.pos1" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.mid1" type="5" value="0.500000"></param>
+				<param name="Strand_Color_Gradient.color2.r" type="5" value="1.000000"></param>
+				<param name="Strand_Color_Gradient.color2.g" type="5" value="1.000000"></param>
+				<param name="Strand_Color_Gradient.color2.b" type="5" value="1.000000"></param>
+				<param name="Strand_Color_Gradient.color2.a" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.pos2" type="5" value="1.000000"></param>
+				<param name="Strand_Color_Gradient.mid2" type="5" value="0.500000"></param>
+				<param name="Strand_Color_Gradient.color3.r" type="5" value="1.000000"></param>
+				<param name="Strand_Color_Gradient.color3.g" type="5" value="0.019608"></param>
+				<param name="Strand_Color_Gradient.color3.b" type="5" value="0.019608"></param>
+				<param name="Strand_Color_Gradient.color3.a" type="5" value="1.000000"></param>
+				<param name="Strand_Color_Gradient.pos3" type="5" value="0.040892"></param>
+				<param name="Strand_Color_Gradient.mid3" type="5" value="0.294574"></param>
+				<param name="Strand_Color_Gradient.color4.r" type="5" value="1.000000"></param>
+				<param name="Strand_Color_Gradient.color4.g" type="5" value="1.000000"></param>
+				<param name="Strand_Color_Gradient.color4.b" type="5" value="1.000000"></param>
+				<param name="Strand_Color_Gradient.color4.a" type="5" value="0.091000"></param>
+				<param name="Strand_Color_Gradient.pos4" type="5" value="-1.000000"></param>
+				<param name="Strand_Color_Gradient.mid4" type="5" value="0.764706"></param>
+				<param name="Strand_Color_Gradient.color5.r" type="5" value="1.000000"></param>
+				<param name="Strand_Color_Gradient.color5.g" type="5" value="0.091000"></param>
+				<param name="Strand_Color_Gradient.color5.b" type="5" value="0.661000"></param>
+				<param name="Strand_Color_Gradient.color5.a" type="5" value="1.000000"></param>
+				<param name="Strand_Color_Gradient.pos5" type="5" value="-1.000000"></param>
+				<param name="Strand_Color_Gradient.mid5" type="5" value="0.500000"></param>
+				<param name="Strand_Color_Gradient.color6.r" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color6.g" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color6.b" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color6.a" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.pos6" type="5" value="-1.000000"></param>
+				<param name="Strand_Color_Gradient.mid6" type="5" value="0.500000"></param>
+				<param name="Strand_Color_Gradient.color7.r" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color7.g" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color7.b" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color7.a" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.pos7" type="5" value="-1.000000"></param>
+				<param name="Strand_Color_Gradient.mid7" type="5" value="0.500000"></param>
+				<param name="Strand_Color_Gradient.color8.r" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color8.g" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color8.b" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color8.a" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.pos8" type="5" value="-1.000000"></param>
+				<param name="Strand_Color_Gradient.mid8" type="5" value="0.500000"></param>
+				<param name="Strand_Color_Gradient.color9.r" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color9.g" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color9.b" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color9.a" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.pos9" type="5" value="-1.000000"></param>
+				<param name="Strand_Color_Gradient.mid9" type="5" value="0.500000"></param>
+				<param name="Strand_Color_Gradient.color10.r" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color10.g" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color10.b" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color10.a" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.pos10" type="5" value="-1.000000"></param>
+				<param name="Strand_Color_Gradient.mid10" type="5" value="0.500000"></param>
+				<param name="Strand_Color_Gradient.color11.r" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color11.g" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color11.b" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color11.a" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.pos11" type="5" value="-1.000000"></param>
+				<param name="Strand_Color_Gradient.mid11" type="5" value="0.500000"></param>
+				<param name="Strand_Color_Gradient.color12.r" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color12.g" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color12.b" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color12.a" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.pos12" type="5" value="-1.000000"></param>
+				<param name="Strand_Color_Gradient.mid12" type="5" value="0.500000"></param>
+				<param name="Strand_Color_Gradient.color13.r" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color13.g" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color13.b" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color13.a" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.pos13" type="5" value="-1.000000"></param>
+				<param name="Strand_Color_Gradient.mid13" type="5" value="0.500000"></param>
+				<param name="Strand_Color_Gradient.color14.r" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color14.g" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color14.b" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color14.a" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.pos14" type="5" value="-1.000000"></param>
+				<param name="Strand_Color_Gradient.mid14" type="5" value="0.500000"></param>
+				<param name="Strand_Color_Gradient.color15.r" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color15.g" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color15.b" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color15.a" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.pos15" type="5" value="-1.000000"></param>
+				<param name="Strand_Color_Gradient.mid15" type="5" value="0.500000"></param>
+				<param name="Strand_Color_Gradient.color16.r" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color16.g" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color16.b" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.color16.a" type="5" value="0.000000"></param>
+				<param name="Strand_Color_Gradient.pos16" type="5" value="-1.000000"></param>
+				<param name="Strand_Color_Gradient.mid16" type="5" value="0.500000"></param>
+				<param name="Strand_Size_Profile" type="buffer">2 20 1 0.107842 -1.79769E+308 1.79769E+308 3 0
+0 0.000000 1.000000 0.337371 0.000000 -0.306970 0.096818 8197 3
+0 0.998270 0.000000 0.337370 0.000000 -0.332757 0.000000 8197 3
+</param>
+				<param name="Num_Segments" type="3" value="12"></param>
+				<param name="Strand_Length" type="4" value="0.500000"></param>
+				<param name="Reverse_Strand_Direction" type="11" value="false"></param>
+				<param name="Loft_Shape_Along_Strand" type="11" value="true"></param>
+				<param name="Select_Strand_Color_Method" type="3" value="0"></param>
+				<portdef name="Select_Strand_Color_Method" type="2" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Reverse_Strand_Direction" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Strand_Length" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Loft_Shape_Along_Strand" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Num_Segments" type="2" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-65</prop>
+					<prop name="posy">453</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Set Data" version="1.0" index="4">
+				<param name="Reference" type="31" value="Self.DeformedLocation"></param>
+				<param name="Reference1" type="31" value="Self.InitOri"></param>
+				<param name="Value1.Value1_x" type="4" value="1.000000"></param>
+				<param name="Value1.Value1_y" type="4" value="0.000000"></param>
+				<param name="Value1.Value1_z" type="4" value="0.000000"></param>
+				<param name="Value1.Value1_angle" type="4" value="0.000000"></param>
+				<param_ext name="Reference" type="31" value="Self.DeformedLocation"></param_ext>
+				<param_ext name="Reference1" type="31" value="Self.InitOri"></param_ext>
+				<portdef name="Value" type="2048" structure="1" group="2" instance="0" port="0" groupname="Value"></portdef>
+				<portdef name="In_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Value1" type="16384" structure="1" group="2" instance="1" port="0" groupname="Value"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-6</prop>
+					<prop name="posy">195</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ELIFurGuidesCurl" version="1.0" index="5">
+				<param name="Curl_Map" type="31" value="cls.furMaps.Curl_Map.Weights"></param>
+				<param name="SpinRandom_Map" type="31" value="cls.furMaps.SpinRandom_Map.Weights"></param>
+				<param name="SpinAngle_Map" type="31" value="cls.furMaps.SpinAngle_Map.Weights"></param>
+				<param name="Active" type="11" value="true"></param>
+				<param name="Curl" type="4" value="0.200000"></param>
+				<param name="SpinAngle" type="4" value="180.000000"></param>
+				<param name="RandomizeSpin" type="4" value="3.000000"></param>
+				<param_ext name="Curl_Map" type="31" value="cls.furMaps.Curl_Map.Weights"></param_ext>
+				<param_ext name="SpinRandom_Map" type="31" value="cls.furMaps.SpinRandom_Map.Weights"></param_ext>
+				<param_ext name="SpinAngle_Map" type="31" value="cls.furMaps.SpinAngle_Map.Weights"></param_ext>
+				<portdef name="Active" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="RandomizeSpin" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="SpinAngle" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Curl" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-58</prop>
+					<prop name="posy">623</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Set Data" version="1.0" index="6">
+				<param name="Reference" type="31" value="Self.InitStrandPosition"></param>
+				<param name="Reference1" type="31" value="Self.DeformedOri"></param>
+				<param name="Value.Value_x" type="4" value="0.000000"></param>
+				<param name="Value.Value_y" type="4" value="0.000000"></param>
+				<param name="Value.Value_z" type="4" value="0.000000"></param>
+				<param name="Value1.Value1_x" type="4" value="1.000000"></param>
+				<param name="Value1.Value1_y" type="4" value="0.000000"></param>
+				<param name="Value1.Value1_z" type="4" value="0.000000"></param>
+				<param name="Value1.Value1_angle" type="4" value="0.000000"></param>
+				<param_ext name="Reference" type="31" value="Self.InitStrandPosition"></param_ext>
+				<param_ext name="Reference1" type="31" value="Self.DeformedOri"></param_ext>
+				<portdef name="Value" type="16" structure="2" group="2" instance="0" port="0" groupname="Value"></portdef>
+				<portdef name="In_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Value1" type="16384" structure="1" group="2" instance="1" port="0" groupname="Value"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-33</prop>
+					<prop name="posy">1118</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ELIFurFrizz" version="1.0" index="7">
+				<param name="Frizz_Profile" type="buffer">2 20 1 0.070891 -1.79769E+308 1.79769E+308 3 0
+0 0.000000 0.500000 0.325595 0.171934 -0.189203 -0.099911 4 3
+0 1.000000 1.000000 0.237395 0.021725 -0.305784 -0.027984 4 3
+</param>
+				<param name="Active" type="11" value="true"></param>
+				<param name="Frizz_Type" type="3" value="3"></param>
+				<param name="Frizz_Factor" type="4" value="0.050000"></param>
+				<param name="Frizz_Frequency" type="4" value="2.000000"></param>
+				<param name="Turbulence_Scale" type="4" value="0.500000"></param>
+				<param name="Frizz_Start" type="4" value="0.000000"></param>
+				<param name="Use_Frizz_Map" type="11" value="true"></param>
+				<portdef name="Frizz_Start" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Frizz_Type" type="2" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Use_Frizz_Map" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Active" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Frizz_Factor" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Frizz_Frequency" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Turbulence_Scale" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-34</prop>
+					<prop name="posy">817</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ELIFurGuidesEmit" version="1.0" index="8">
+				<param name="Enable" type="11" value="true"></param>
+				<param name="Rate" type="4" value="200.000000"></param>
+				<param name="Seed" type="3" value="18918"></param>
+				<param name="Mass" type="4" value="0.100000"></param>
+				<param name="Color.Color_red" type="4" value="0.715000"></param>
+				<param name="Color.Color_green" type="4" value="1.000000"></param>
+				<param name="Color.Color_blue" type="4" value="0.537000"></param>
+				<param name="Color.Color_alpha" type="4" value="1.000000"></param>
+				<param name="Shape" type="3" value="1"></param>
+				<param name="Orientation.Orientation_x" type="4" value="1.000000"></param>
+				<param name="Orientation.Orientation_y" type="4" value="0.000000"></param>
+				<param name="Orientation.Orientation_z" type="4" value="0.000000"></param>
+				<param name="Orientation.Orientation_angle" type="4" value="0.000000"></param>
+				<param name="Size" type="4" value="0.020000"></param>
+				<param name="EmissionMethod" type="3" value="2"></param>
+				<portdef name="Size" type="4" structure="1" group="-1" instance="-1" port="-1" groupname="Value"></portdef>
+				<portdef name="Emitter1" type="1024" structure="1" group="2" instance="0" port="0" groupname="Emitter1"></portdef>
+				<portdef name="Enable" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="EmissionMethod" type="2" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Rate" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Seed" type="2" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Mass" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Execute_on_Emit1" type="4096" structure="1" group="3" instance="0" port="0" groupname="Execute on Emit1"></portdef>
+				<portdef name="Shape" type="32768" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Color" type="512" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Orientation" type="16384" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">14</prop>
+					<prop name="posy">-106</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="DirectionToRotationNode" index="9">
+				<param name="pointat.pointat_x" type="4" value="0.000000"></param>
+				<param name="pointat.pointat_y" type="4" value="1.000000"></param>
+				<param name="pointat.pointat_z" type="4" value="0.000000"></param>
+				<param name="upvector.upvector_x" type="4" value="1.000000"></param>
+				<param name="upvector.upvector_y" type="4" value="0.000000"></param>
+				<param name="upvector.upvector_z" type="4" value="0.000000"></param>
+				<portdef name="pointat" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="upvector" type="16" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-433</prop>
+					<prop name="posy">11</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="MultiplyNode" index="10">
+				<param name="value1" type="4" value="1.000000"></param>
+				<param name="value2" type="4" value="0.250000"></param>
+				<portdef name="value1" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value2" type="4" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-426</prop>
+					<prop name="posy">497</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="11">
+				<param name="reference" type="31" value="Self.EmitLocation"></param>
+				<param_ext name="reference" type="31" value="Self.EmitLocation"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-860</prop>
+					<prop name="posy">22</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="12">
+				<param name="reference" type="31" value="PointNormal"></param>
+				<param_ext name="reference" type="31" value="PointNormal"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-645</prop>
+					<prop name="posy">13</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="13">
+				<param name="reference" type="31" value="cls.FurMaps.Length_Map.Weights"></param>
+				<param_ext name="reference" type="31" value="cls.FurMaps.Length_Map.Weights"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-988</prop>
+					<prop name="posy">482</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="14">
+				<param name="reference" type="31" value="Self.EmitLocation"></param>
+				<param_ext name="reference" type="31" value="Self.EmitLocation"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1079</prop>
+					<prop name="posy">272</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="15">
+				<param name="reference" type="31" value="Self.DeformedLocation"></param>
+				<param_ext name="reference" type="31" value="Self.DeformedLocation"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-1231</prop>
+					<prop name="posy">481</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="16">
+				<param name="reference" type="31" value="Self.StrandPosition"></param>
+				<param_ext name="reference" type="31" value="Self.StrandPosition"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-301</prop>
+					<prop name="posy">1143</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="17">
+				<param name="reference" type="31" value="Self.Orientation"></param>
+				<param_ext name="reference" type="31" value="Self.Orientation"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-407</prop>
+					<prop name="posy">274</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="18">
+				<param name="reference" type="31" value="Self.Orientation"></param>
+				<param_ext name="reference" type="31" value="Self.Orientation"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-317</prop>
+					<prop name="posy">1260</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IfNode" index="19">
+				<param name="condition" type="11" value="true"></param>
+				<param name="iftrue" type="4" value="0.000000"></param>
+				<param name="iffalse" type="4" value="0.000000"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="iffalse" type="4" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-232</prop>
+					<prop name="posy">500</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="20">
+				<param name="in" type="4" value="2.000000"></param>
+				<portdef name="in" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">-1199</prop>
+					<prop name="posy">399</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ELIFurVectorField" version="1.0" index="21">
+				<param name="DistanceProfile" type="buffer">2 20 1 1 -1.79769E+308 1.79769E+308 3 0
+0 0.000000 1.000000 0.096535 -0.376459 -0.076083 0.296703 7 3
+0 1.000000 0.000000 0.333333 0.000000 -0.333333 0.000000 7 3
+</param>
+				<param name="ClumpProfile" type="buffer">2 20 1 0 -1.79769E+308 1.79769E+308 3 0
+0 0.000000 0.000000 0.838524 -0.500228 -0.260220 0.155236 4 3
+0 1.000000 1.000000 0.000000 0.248395 0.000000 -0.314576 0 3
+</param>
+				<param name="Weight" type="4" value="1.000000"></param>
+				<portdef name="Weight" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="vField" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-46</prop>
+					<prop name="posy">1394</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="FirstValidNode" index="22">
+				<param name="in1" type="4" value="0.000000"></param>
+				<param name="in2" type="4" value="1.000000"></param>
+				<portdef name="in1" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="in2" type="4" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-572</prop>
+					<prop name="posy">487</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ELIFurSpringSimInit" version="1.0" index="23">
+				<param name="Enable" type="11" value="true"></param>
+				<portdef name="Enable" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">65</prop>
+					<prop name="posy">1566</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="AlignToFlow" username="AlignToFlow" basename="AlignToFlow" portlabel="AlignToFlow" exposetype="single"> </port>
+			<port index="1" portname="geometry" username="Deformed_Geometry" basename="Deformed Geometry" portlabel="Deformed Geometry" exposetype="single"> </port>
+			<port index="2" portname="execute" username="execute" basename="execute" portlabel="execute" exposetype="single"> </port>
+			<port index="3" portname="Num_Segments" username="Nb_Segments" basename="Nb Segments" portlabel="Nb Segments" exposetype="single"> </port>
+			<port index="5" portname="Curl" username="Curl" basename="Curl" portlabel="Curl" exposetype="single"> </port>
+			<port index="5" portname="SpinAngle" username="CurlSpinAngle" basename="CurlSpinAngle" portlabel="CurlSpinAngle" exposetype="single"> </port>
+			<port index="5" portname="RandomizeSpin" username="CurlRandomizeSpin" basename="CurlRandomizeSpin" portlabel="CurlRandomizeSpin" exposetype="single"> </port>
+			<port index="5" portname="Active" username="Use_Curl" basename="Use Curl" portlabel="Use Curl" exposetype="single"> </port>
+			<port index="7" portname="Active" username="Use_Frizz" basename="Use Frizz" portlabel="Use Frizz" exposetype="single"> </port>
+			<port index="7" portname="Frizz_Type" username="Frizz_Type" basename="Frizz Type" portlabel="Frizz Type" exposetype="single"> </port>
+			<port index="7" portname="Frizz_Factor" username="Frizz_Factor" basename="Frizz Factor" portlabel="Frizz Factor" exposetype="single"> </port>
+			<port index="7" portname="Frizz_Frequency" username="Frizz_Frequency" basename="Frizz Frequency" portlabel="Frizz Frequency" exposetype="single"> </port>
+			<port index="7" portname="Turbulence_Scale" username="Frizz_Turbulence_Scale" basename="Frizz Turbulence Scale" portlabel="Frizz Turbulence Scale" exposetype="single"> </port>
+			<port index="7" portname="Use_Frizz_Map" username="Use_Frizz_Map" basename="Use Frizz Map" portlabel="Use Frizz Map" exposetype="single"> </port>
+			<port index="7" portname="Frizz_Profile" username="Frizz_Profile" basename="Frizz Profile" portlabel="Frizz Profile" exposetype="single"> </port>
+			<port index="8" portname="Emitter1" username="Static_Geometry" basename="Static Geometry" portlabel="Static Geometry" exposetype="single"> </port>
+			<port index="8" portname="Rate" username="Rate" basename="Rate" portlabel="Rate" exposetype="single"> </port>
+			<port index="8" portname="EmissionMethod" username="EmissionMethod" basename="EmissionMethod" portlabel="EmissionMethod" exposetype="single"> </port>
+			<port index="8" portname="Size" username="Size" basename="Size" portlabel="Size" exposetype="single"> </port>
+			<port index="19" portname="condition" username="MultiplyLengthByWeightmap" basename="MultiplyLengthByWeightmap" portlabel="MultiplyLengthByWeightmap" exposetype="single"> </port>
+			<port index="20" portname="in" username="Length" basename="Length" portlabel="Length" exposetype="single"> </port>
+			<port index="21" portname="vField" username="Vector_Field_Group" basename="Vector Field Group" portlabel="Vector Field Group" exposetype="single"> </port>
+			<port index="21" portname="Weight" username="Vector_Field_Weight" basename="Vector Field Weight" portlabel="Vector Field Weight" exposetype="single"> </port>
+			<port index="23" portname="Enable" username="Enable_Dynamics" basename="Enable Dynamics" portlabel="Enable Dynamics" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="22" from_port="out" to_node="10" to_port="value1"> </cnx>
+			<cnx from_node="0" from_port="execute" to_node="2" to_port="port3"> </cnx>
+			<cnx from_node="23" from_port="Execute" to_node="2" to_port="port9"> </cnx>
+			<cnx from_node="11" from_port="value" to_node="12" to_port="source"> </cnx>
+			<cnx from_node="12" from_port="value" to_node="9" to_port="pointat"> </cnx>
+			<cnx from_node="13" from_port="value" to_node="22" to_port="in1"> </cnx>
+			<cnx from_node="14" from_port="value" to_node="1" to_port="geometrylocation"> </cnx>
+			<cnx from_node="15" from_port="value" to_node="13" to_port="source"> </cnx>
+			<cnx from_node="16" from_port="value" to_node="6" to_port="Value"> </cnx>
+			<cnx from_node="17" from_port="value" to_node="4" to_port="Value1"> </cnx>
+			<cnx from_node="18" from_port="value" to_node="6" to_port="Value1"> </cnx>
+			<cnx from_node="5" from_port="Execute" to_node="2" to_port="port5"> </cnx>
+			<cnx from_node="4" from_port="Execute" to_node="2" to_port="port2"> </cnx>
+			<cnx from_node="8" from_port="Emit" to_node="2" to_port="port1"> </cnx>
+			<cnx from_node="21" from_port="Execute" to_node="2" to_port="port8"> </cnx>
+			<cnx from_node="19" from_port="result" to_node="3" to_port="Strand_Length"> </cnx>
+			<cnx from_node="1" from_port="newlocation" to_node="4" to_port="Value"> </cnx>
+			<cnx from_node="3" from_port="Execute_on_Emit" to_node="2" to_port="port4"> </cnx>
+			<cnx from_node="6" from_port="Execute" to_node="2" to_port="port7"> </cnx>
+			<cnx from_node="7" from_port="Execute" to_node="2" to_port="port6"> </cnx>
+			<cnx from_node="9" from_port="rotation" to_node="8" to_port="Orientation"> </cnx>
+			<cnx from_node="10" from_port="result" to_node="19" to_port="iftrue"> </cnx>
+			<cnx from_node="20" from_port="out" to_node="10" to_port="value2"> </cnx>
+			<cnx from_node="20" from_port="out" to_node="19" to_port="iffalse"> </cnx>
+		</connections>
+		<layout>
+			<group type="input" name="Inputs">
+				<item type="input" name="Static_Geometry"> </item>
+				<item type="input" name="Deformed_Geometry"> </item>
+			</group>
+			<group type="input" name="Emission">
+				<item type="input" name="Nb_Segments"> </item>
+				<item type="input" name="EmissionMethod" min="0" max="2">
+					<enum value="0"><![CDATA[Random]]></enum>
+					<enum value="1"><![CDATA[Points]]></enum>
+					<enum value="2"><![CDATA[Random & Points]]></enum>
+				</item>
+				<item type="input" name="Rate"> </item>
+				<item type="input" name="Size" min="0" max="1"> </item>
+			</group>
+			<group type="input" name="Align">
+				<item type="input" name="AlignToFlow" min="0" max="1"> </item>
+			</group>
+			<group type="input" name="Length">
+				<item type="input" name="Length"> </item>
+				<item type="input" name="MultiplyLengthByWeightmap"> </item>
+			</group>
+			<group type="input" name="Curl">
+				<item type="input" name="Use_Curl"> </item>
+				<item type="input" name="Curl"> </item>
+				<item type="input" name="CurlSpinAngle" min="-180" max="180"> </item>
+				<item type="input" name="CurlRandomizeSpin"> </item>
+			</group>
+			<group type="input" name="Frizz">
+				<item type="input" name="Use_Frizz"> </item>
+				<item type="input" name="Frizz_Type" min="0" max="3">
+					<enum value="0"><![CDATA[Spiral]]></enum>
+					<enum value="1"><![CDATA[UWave]]></enum>
+					<enum value="2"><![CDATA[VWave]]></enum>
+					<enum value="3"><![CDATA[Turbulence]]></enum>
+				</item>
+				<item type="input" name="Frizz_Factor"> </item>
+				<item type="input" name="Frizz_Frequency"> </item>
+				<item type="input" name="Frizz_Turbulence_Scale"> </item>
+				<item type="input" name="Frizz_Profile"> </item>
+				<item type="input" name="Use_Frizz_Map"> </item>
+			</group>
+			<group type="input" name="Vector Field">
+				<item type="input" name="Vector_Field_Group"> </item>
+				<item type="input" name="Vector_Field_Weight"> </item>
+			</group>
+			<item type="input" name="Enable_Dynamics"> </item>
+			<item type="output" name="execute"> </item>
+		</layout>
+		<blob_dictionary>
+		</blob_dictionary>
+	</definition>
+</xsi_file>

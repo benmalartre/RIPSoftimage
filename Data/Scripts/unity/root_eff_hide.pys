@@ -1,0 +1,8 @@
+from Utils2 import *
+
+for s in xsi.Selection:
+	if s.type == "root" or s.Type == "eff":
+		s.ActivePrimitive.Parameters("primary_icon").Value = 0
+	elif s.Type == "bone":
+		xsi.SetNeutralPose(s)
+	

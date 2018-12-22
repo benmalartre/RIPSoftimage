@@ -1,0 +1,27 @@
+#Create Foot Roll
+#-----------------------------------
+
+from Globals import *
+import Utils2 as uti
+import Icon as ico
+
+crv = xsi.Selection(0)
+if crv:
+	pnts = crv.ActivePrimitive.Geometry.Points
+	pos = []
+
+	for p in pnts:
+		pos.append(p.Position)
+
+	dir = XSIMath.CreateVector3()
+	dir.Sub(pos[1],pos[0])
+	l = dir.Length()
+	rot = uti.GetRotationFromTwoVectors(dir)
+	t = XSIMath.CreateTransform()
+	t.SetTranslation(pos[0])
+	t.SetRotation(rot)
+
+	ico.IRIcon( xsi.ActiveSCeneRoot, "Heel_Ctrl", t, [0,1,0], "cube", l*0.1,l*0.1,l*0.1)
+else:
+	xsi.LogMessage("Nothing Selected!!",constants.siWarningMsg)
+

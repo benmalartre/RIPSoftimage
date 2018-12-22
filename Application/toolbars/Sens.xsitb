@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<xsi_file type="Shelf" xsi_version="11.0.525.0" syntax_version="1.0">
+   <shelf_view name="Sens" clsid="{CDBAF619-9769-42A0-9F4D-DBD27E78ED7D}">
+      <properties>
+         <showtabs>false</showtabs>
+      </properties>
+      <definition maxinstances="10000" acceptfocus="true" private="false" defaultsize="0,100,200,300" cmdmap="{00000000-0000-0000-0000-000000000000}" supportedtypes="6" category=""></definition>
+      <tabs layout="top" active="DS Toolbar">
+         <tab label="DS Toolbar" type="toolbar">
+            <properties id="{E064A125-0FFA-4C11-8197-7080FF3C8EFA}" name="" display_preset_as_small="False" display_as_text_only="False"></properties>
+            <item type="script" userwidth="120" name="CurveOnPoints" cmdid="{7073EAC9-0A04-4B23-8FE6-2349335687EF}"></item>
+         </tab>
+      </tabs>
+   </shelf_view>
+</xsi_file>

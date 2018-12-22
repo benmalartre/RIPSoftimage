@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsi_file type="CompoundNode" name="lmICEKineCacheOnFile" tasks="lmRig/Rig" formatversion="1.4" compoundversion="1.0">
+	<definition>
+		<nodes>
+			<node type="StringFilePathNode" index="0">
+				<param name="value.value_string" type="8" value=""></param>
+				<param name="value.value_uimode" type="8" value="1"></param>
+				<param name="value.value_filepathseq" type="8" value=""></param>
+				<param name="value.value_filename" type="8" value=""></param>
+				<portdef name="value" type="131072" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">223</prop>
+					<prop name="posy">121</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="lmKinematicsCache" index="1">
+				<param name="FileMode" type="3" value="0"></param>
+				<param name="FilePath.FilePath_string" type="8" value="default string"></param>
+				<param name="FilePath.FilePath_uimode" type="8" value=""></param>
+				<param name="FilePath.FilePath_filepathseq" type="8" value=""></param>
+				<param name="FilePath.FilePath_filename" type="8" value=""></param>
+				<param name="InMatrix.InMatrix_00" type="4" value="1.000000"></param>
+				<param name="InMatrix.InMatrix_01" type="4" value="0.000000"></param>
+				<param name="InMatrix.InMatrix_02" type="4" value="0.000000"></param>
+				<param name="InMatrix.InMatrix_03" type="4" value="0.000000"></param>
+				<param name="InMatrix.InMatrix_10" type="4" value="0.000000"></param>
+				<param name="InMatrix.InMatrix_11" type="4" value="1.000000"></param>
+				<param name="InMatrix.InMatrix_12" type="4" value="0.000000"></param>
+				<param name="InMatrix.InMatrix_13" type="4" value="0.000000"></param>
+				<param name="InMatrix.InMatrix_20" type="4" value="0.000000"></param>
+				<param name="InMatrix.InMatrix_21" type="4" value="0.000000"></param>
+				<param name="InMatrix.InMatrix_22" type="4" value="1.000000"></param>
+				<param name="InMatrix.InMatrix_23" type="4" value="0.000000"></param>
+				<param name="InMatrix.InMatrix_30" type="4" value="0.000000"></param>
+				<param name="InMatrix.InMatrix_31" type="4" value="0.000000"></param>
+				<param name="InMatrix.InMatrix_32" type="4" value="0.000000"></param>
+				<param name="InMatrix.InMatrix_33" type="4" value="1.000000"></param>
+				<portdef name="FileMode" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="FilePath" type="131072" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="InMatrix" type="256" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">444</prop>
+					<prop name="posy">42</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="value" username="FilePath" basename="FilePath" portlabel="FilePath" exposetype="single"> </port>
+			<port index="1" portname="FileMode" username="FileMode" basename="FileMode" portlabel="FileMode" exposetype="single"> </port>
+			<port index="1" portname="InMatrix" username="InMatrix" basename="InMatrix" portlabel="InMatrix" exposetype="single"> </port>
+			<port index="1" portname="OutMatrix" username="OutMatrix" basename="OutMatrix" portlabel="OutMatrix" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="0" from_port="result" to_node="1" to_port="FilePath"> </cnx>
+		</connections>
+		<layout>
+			<group type="input" name="File">
+				<item type="input" name="FileMode">
+				<enum value="0"><![CDATA[Do Nothing]]></enum>
+				<enum value="1"><![CDATA[Write File]]></enum>
+				<enum value="2"><![CDATA[Read File]]></enum>
+
+				</item>
+				<item type="input" name="FilePath"> </item>
+				<item type="output" name="OutMatrix"> </item>
+			</group>
+			<item type="input" name="InMatrix"> </item>
+		</layout>
+		<blob_dictionary>
+		</blob_dictionary>
+	</definition>
+</xsi_file>

@@ -1,0 +1,363 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>Synthox</ProjectName>
+    <ProjectGuid>{66B4779A-2D27-4DFA-881A-1BE809CF5D08}</ProjectGuid>
+    <RootNamespace>Synthox</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>12.0.21005.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>.\bin\nt-x86-32\</OutDir>
+    <IntDir>.\bin\nt-x86-32\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>.\bin\nt-x86-64\</OutDir>
+    <IntDir>.\bin\nt-x86-64\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>.\bin\nt-x86-32\</OutDir>
+    <IntDir>.\bin\nt-x86-32\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>.\bin\nt-x86-64\</OutDir>
+    <IntDir>.\bin\nt-x86-64\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>C:\Documents and Settings\Julien\Mes documents\WORKS\STK\src\include;C:\Documents and Settings\Julien\Mes documents\WORKS\STK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;WIN32;_CONSOLE;__WINDOWS_DS__;__LITTLE_ENDIAN__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>Wsock32.lib;dsound.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>.\bin\nt-x86-32\Synthox.dll</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include;E:\Projects\RnD\Others\STK\src\include;C:\Program Files (x86)\Microsoft DirectX SDK (August 2006)\Include;E:\Projects\RnD\Others\STK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;WIN64;__LITTLE_ENDIAN__;__WINDOWS_DS__;__WINDOWS_MM__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader />
+      <PrecompiledHeaderFile />
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>dsound.lib;Wsock32.lib;winmm.lib;%(AdditionalDependencies);sicoresdk.lib;sicppsdk.lib</AdditionalDependencies>
+      <OutputFile>.\bin\nt-x86-64\bSynthNode.dll</OutputFile>
+      <AdditionalLibraryDirectories>C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\lib\nt-x86-64;C:\Program Files (x86)\Microsoft DirectX SDK (August 2006)\Lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Documents and Settings\Julien\Mes documents\WORKS\STK\src\include;C:\Documents and Settings\Julien\Mes documents\WORKS\STK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;WIN32;_CONSOLE;__WINDOWS_DS__;__LITTLE_ENDIAN__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>Wsock32.lib;dsound.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>.\bin\nt-x86-32\bSynthNode.dll</OutputFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;D:\Works\RnD\Others\STK\include;D:\Works\RnD\Others\STK\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;__LITTLE_ENDIAN__;__OS_WINDOWS__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>dsound.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>.\bin\nt-x86-64\bSynthNode.dll</OutputFile>
+      <AdditionalLibraryDirectories>D:\Works\RnD\Others\STK\bin;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="SynthoxInstrument.h" />
+    <ClInclude Include="SynthoxInstruments.h" />
+    <ClInclude Include="SynthoxRegister.h" />
+    <ClInclude Include="SynthoxVoicer.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\ADSR.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Asymp.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\BandedWG.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\BeeThree.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\BiQuad.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Blit.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\BlitSaw.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\BlitSquare.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\BlowBotl.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\BlowHole.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Bowed.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\BowTable.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Brass.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Chorus.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Clarinet.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Delay.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\DelayA.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\DelayL.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Drummer.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Echo.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Effect.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Envelope.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\FileLoop.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\FileRead.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\FileWrite.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\FileWvIn.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\FileWvOut.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Filter.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Fir.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Flute.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\FM.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\FMVoices.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\FormSwep.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Function.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Generator.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Granulate.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\HevyMetl.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Iir.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\InetWvIn.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\InetWvOut.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Instrmnt.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\JCRev.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\JetTable.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\LentPitShift.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Mandolin.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Mesh2D.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Messager.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\MidiFileIn.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Modal.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\ModalBar.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Modulate.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Moog.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Mutex.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Noise.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\NRev.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\OnePole.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\OneZero.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\PercFlut.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Phonemes.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\PitShift.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Plucked.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\PluckTwo.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\PoleZero.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\PRCRev.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\ReedTable.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Resonate.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Rhodey.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\RtAudio.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\RtError.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\RtMidi.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\RtWvIn.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\RtWvOut.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Sampler.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Saxofony.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Shakers.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Simple.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\SineWave.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\SingWave.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Sitar.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Skini.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Socket.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Sphere.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\StifKarp.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Stk.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\TapDelay.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\TcpClient.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\TcpServer.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Thread.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\TubeBell.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\TwoPole.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\TwoZero.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\UdpSocket.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Vector3D.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Voicer.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\VoicForm.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Whistle.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\Wurley.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\WvIn.h" />
+    <ClInclude Include="..\..\..\..\Others\STK\include\WvOut.h" />
+    <ClInclude Include="Mutex.h" />
+    <ClInclude Include="RtAudio.h" />
+    <ClInclude Include="RtWvOut.h" />
+    <ClInclude Include="Stk.h" />
+    <ClInclude Include="SynthoxData.h" />
+    <ClInclude Include="Tabla.h" />
+    <ClInclude Include="VoicDrum.h" />
+    <ClInclude Include="WvOut.h" />
+    <ClInclude Include="XSIWvOut.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="SynthoxInstrument.cpp" />
+    <ClCompile Include="SynthoxInstruments.cpp" />
+    <ClCompile Include="SynthoxPlayer.cpp" />
+    <ClCompile Include="SynthoxReader.cpp" />
+    <ClCompile Include="SynthoxRegister.cpp" />
+    <ClCompile Include="SynthoxVoicer.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\ADSR.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Asymp.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\BandedWG.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\BeeThree.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\BiQuad.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Blit.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\BlitSaw.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\BlitSquare.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\BlowBotl.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\BlowHole.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Bowed.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Brass.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Chorus.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Clarinet.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Delay.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\DelayA.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\DelayL.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Drummer.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Echo.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Envelope.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\FileLoop.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\FileRead.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\FileWrite.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\FileWvIn.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\FileWvOut.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Fir.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Flute.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\FM.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\FMVoices.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\FormSwep.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Granulate.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\HevyMetl.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Iir.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\InetWvIn.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\InetWvOut.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\JCRev.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\LentPitShift.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Mandolin.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Mesh2D.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Messager.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\MidiFileIn.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Modal.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\ModalBar.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Modulate.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Moog.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Mutex.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Noise.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\NRev.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\OnePole.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\OneZero.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\PercFlut.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Phonemes.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\PitShift.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Plucked.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\PluckTwo.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\PoleZero.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\PRCRev.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Resonate.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Rhodey.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\RtAudio.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\RtMidi.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\RtWvIn.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\RtWvOut.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Sampler.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Saxofony.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Shakers.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Simple.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\SineWave.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\SingWave.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Sitar.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Skini.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Socket.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Sphere.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\StifKarp.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Stk.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\TapDelay.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\TcpClient.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\TcpServer.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Thread.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\TubeBell.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\TwoPole.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\TwoZero.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\UdpSocket.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Voicer.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\VoicForm.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Whistle.cpp" />
+    <ClCompile Include="..\..\..\..\Others\STK\src\Wurley.cpp" />
+    <ClCompile Include="bRagaNode.cpp" />
+    <ClCompile Include="Drone.cpp" />
+    <ClCompile Include="Mutex.cpp" />
+    <ClCompile Include="RtAudio.cpp" />
+    <ClCompile Include="RtWvOut.cpp" />
+    <ClCompile Include="SineWave.cpp" />
+    <ClCompile Include="Stk.cpp" />
+    <ClCompile Include="SynthoxData.cpp" />
+    <ClCompile Include="Tabla.cpp" />
+    <ClCompile Include="VoicDrum.cpp" />
+    <ClCompile Include="XSIWvOut.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\Others\STK\include\LentPitShift.h~" />
+    <None Include="..\..\..\..\Others\STK\src\Makefile.in" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

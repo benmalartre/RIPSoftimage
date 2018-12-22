@@ -1,0 +1,15 @@
+from HairGlobals import *
+from HairUtils import *
+
+wm = xsi.Selection(0)
+elems = wm.Elements.Array
+toSel = []
+index = 0
+for e in elems[0]:
+	xsi.LogMessage(e)
+	if e<0.01:
+		toSel.append(index)
+	index += 1
+	
+obj = wm.Parent3DObject
+obj.ActivePrimitive.Geometry.AddCluster(constants.siVertexCluster,"Pin_Cls",toSel)

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="KrHC Resample Strands" category="" tasks="Kristinka HairC/Modifiers" author="" url="" formatversion="1.4" compoundversion="1.0" versiontag="" constructionmode="Current" backgroundcolor="9284012">
+	<description><![CDATA[]]></description>
+	<definition>
+		<nodes>
+			<node type="GetDataNode" index="0">
+				<param name="reference" type="31" value="Self.StrandCount"></param>
+				<param_ext name="reference" type="31" value="Self.StrandCount"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-446</prop>
+					<prop name="posy">2122</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IfNode" index="3">
+				<param name="condition" type="11" value="true"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="4096" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="iffalse" type="4096" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">376</prop>
+					<prop name="posy">1972</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="mt_StrandFitting" index="16">
+				<param name="StrandPosition.StrandPosition_x" type="4" value="1.000000"></param>
+				<param name="StrandPosition.StrandPosition_y" type="4" value="1.000000"></param>
+				<param name="StrandPosition.StrandPosition_z" type="4" value="1.000000"></param>
+				<param name="Count" type="3" value="51"></param>
+				<param name="Min" type="4" value="0.000000"></param>
+				<param name="Max" type="4" value="1.000000"></param>
+				<portdef name="StrandPosition" type="16" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="Count" type="2" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="Min" type="4" structure="1" group="0" instance="0" port="2"></portdef>
+				<portdef name="Max" type="4" structure="1" group="0" instance="0" port="3"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-200</prop>
+					<prop name="posy">2063</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ClampNode" index="17">
+				<param name="value" type="4" value="1.000000"></param>
+				<param name="limit1" type="4" value="0.010000"></param>
+				<param name="limit2" type="4" value="1.000000"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="limit1" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="limit2" type="4" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-401</prop>
+					<prop name="posy">2255</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="18">
+				<param name="reference" type="31" value="self.StrandPosition"></param>
+				<param_ext name="reference" type="31" value="self.StrandPosition"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-538</prop>
+					<prop name="posy">2009</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="Set Data" version="1.0" index="24">
+				<param name="Reference" type="31" value="self.StrandPosition"></param>
+				<param name="Value.Value_x" type="4" value="0.000000"></param>
+				<param name="Value.Value_y" type="4" value="0.000000"></param>
+				<param name="Value.Value_z" type="4" value="0.000000"></param>
+				<param_ext name="Reference" type="31" value="self.StrandPosition"></param_ext>
+				<portdef name="Value" type="16" structure="2" group="2" instance="0" port="0" groupname="Value"></portdef>
+				<portdef name="In_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">31</prop>
+					<prop name="posy">2086</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="3" portname="result" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+			<port index="3" portname="condition" username="Enable" basename="Enable" portlabel="Enable" exposetype="single"> </port>
+			<port index="17" portname="value" username="End" basename="End" portlabel="End" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="0" from_port="value" to_node="16" to_port="Count"> </cnx>
+			<cnx from_node="16" from_port="Result" to_node="24" to_port="Value"> </cnx>
+			<cnx from_node="17" from_port="result" to_node="16" to_port="Max"> </cnx>
+			<cnx from_node="18" from_port="value" to_node="16" to_port="StrandPosition"> </cnx>
+			<cnx from_node="24" from_port="Execute" to_node="3" to_port="iftrue"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Enable" min="0" max="0"> </item>
+			<item type="input" name="End" min="0" max="1"> </item>
+			<item type="output" name="Execute" min="0" max="0"> </item>
+		</layout>
+	</definition>
+</xsi_file>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsi_file type="CompoundNode" name="Sound Synth Get Instrument" category="SoundSynth" tasks="" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="569777">
+	<definition>
+		<nodes>
+			<node type="IntegerNode" index="0">
+				<param name="value" type="3" value="0"></param>
+				<portdef name="value" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">33</prop>
+					<prop name="posy">1</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="value" username="Instrument" basename="Instrument" portlabel="Instrument" exposetype="single"> </port>
+			<port index="0" portname="result" username="ID" basename="ID" portlabel="ID" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+		</connections>
+		<layout>
+			<item type="input" name="Instrument" min="0" max="27">
+				<enum value="0"><![CDATA[Clarinet]]></enum>
+				<enum value="1"><![CDATA[BlowHole]]></enum>
+				<enum value="2"><![CDATA[Saxophony]]></enum>
+				<enum value="3"><![CDATA[Flute]]></enum>
+				<enum value="4"><![CDATA[Brass]]></enum>
+				<enum value="5"><![CDATA[BlowBot1]]></enum>
+				<enum value="6"><![CDATA[Bowed]]></enum>
+				<enum value="7"><![CDATA[Plucked]]></enum>
+				<enum value="8"><![CDATA[StifKarp]]></enum>
+				<enum value="9"><![CDATA[Sitar]]></enum>
+				<enum value="10"><![CDATA[Mandolin]]></enum>
+				<enum value="11"><![CDATA[Rhodey]]></enum>
+				<enum value="12"><![CDATA[Wurley]]></enum>
+				<enum value="13"><![CDATA[TubeBell]]></enum>
+				<enum value="14"><![CDATA[HevyMetl]]></enum>
+				<enum value="15"><![CDATA[PercFlut]]></enum>
+				<enum value="16"><![CDATA[BeeThree]]></enum>
+				<enum value="17"><![CDATA[FMVoices]]></enum>
+				<enum value="18"><![CDATA[VoicForm]]></enum>
+				<enum value="19"><![CDATA[Moog]]></enum>
+				<enum value="20"><![CDATA[Simple]]></enum>
+				<enum value="21"><![CDATA[Drummer]]></enum>
+				<enum value="22"><![CDATA[BandedWG]]></enum>
+				<enum value="23"><![CDATA[Shakers]]></enum>
+				<enum value="24"><![CDATA[ModalBar]]></enum>
+				<enum value="25"><![CDATA[Mesh2D]]></enum>
+				<enum value="26"><![CDATA[Resonate]]></enum>
+				<enum value="27"><![CDATA[Whistle]]></enum>
+			</item>
+			<item type="output" name="ID" min="0" max="27"> </item>
+		</layout>
+		<blob_dictionary>
+		</blob_dictionary>
+	</definition>
+</xsi_file>
