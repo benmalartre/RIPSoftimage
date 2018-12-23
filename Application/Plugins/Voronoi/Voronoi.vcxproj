@@ -22,10 +22,12 @@
     <ClCompile Include="ApplyVoronoi.cpp" />
     <ClCompile Include="CVoronoi.cpp" />
     <ClCompile Include="HEMesh.cpp" />
+    <ClCompile Include="IMVoronoi.cpp" />
     <ClCompile Include="Voronoi.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HEMesh.h" />
+    <ClInclude Include="IMVoronoi.h" />
     <ClInclude Include="Voronoi.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -2,7 +2,6 @@
 #ifndef _HEMESH_H_
 #define _HEMESH_H_
 
-
 #include <vector>
 #include <algorithm>
 #include <cassert>
@@ -10,6 +9,7 @@
 #include <map>
 #include <xsi_vector3.h>
 #include <xsi_longarray.h>
+#include <xsi_doublearray.h>
 
 using namespace XSI;
 using namespace MATH;
@@ -92,6 +92,7 @@ public:
 	void Clean();
 	void Set(HEMesh* fullMesh);
 	void SetHEData(CVector3Array& vertices, CLongArray& polys);
+	void SetHEData(CDoubleArray& vertices, CLongArray& polyCount, CLongArray& polyIndices);
 	void PairHalfEdges(std::vector<HEHalfEdge*>& edges);
 	void ResetInsertedFlag();
 	void RetrieveSplitEdges(HEPlane& P, vector<HESplitEdgeInfo_t>& splitEdges);

@@ -152,8 +152,63 @@ void HEMesh::SetHEData(CVector3Array& vertices, CLongArray& polys)
 
 	// associate each halfedge with its pair (belonging to adjacent face)
 	PairHalfEdges(m_halfEdges);
+}
+
+
+// HEMesh
+//-----------------------------------------
+void HEMesh::SetHEData(CDoubleArray& vertices, CLongArray& polyCount, CLongArray& polyIndices)
+{
+	// Add all input vertices to the mesh, the original index of the vertex is stored as an id.
+	for (int i = 0; i<vertices.GetCount()/3; i++)
+	{
+		HEVertex* vert = new HEVertex(vertices[i*3], vertices[i*3+1], vertices[i*3+2], i);
+		m_vertices.push_back(vert);
+	}
+	ULONG numVertices = vertices.GetCount();
+
+	// Create a loop of halfedges for each face
+	int base, nbvertices;
+	base = nbvertices = 0;
+	int nbpolys = polyCount.GetCount();
+
+	for(int i=0;i<nbpolys;i++)
+	{
+		vector<HEHalfEdge*> faceEdges;
+
+		HEFace* hef = new HEFace();
+		m_faces.push_back(hef);
+
+		nbvertices = polyCount[i];
+
+		for (int j = 0; j<nbvertices; j++)
+		{
+			HEHalfEdge* he = new HEHalfEdge();
+			he->m_face = hef;
+			if (hef->m_halfEdge == NULL) hef->m_halfEdge = he;
+			he->m_vert = m_vertices[polyIndices[j+base]];
+			if (he->m_vert->m_halfEdge == NULL) he->m_vert->m_halfEdge = he;
+			faceEdges.push_back(he);
+			m_halfEdges.push_back(he);
+		}
+		base += nbvertices;
+
+		int n = (int)faceEdges.size();
+		for (int j = 0; j<n - 1; j++)
+		{
+			HEHalfEdge* he = faceEdges[j];
+			he->m_next = faceEdges[j + 1];
+		}
+
+		HEHalfEdge* he = faceEdges[n - 1];
+		he->m_next = faceEdges[0];
+	}
+
+	// associate each halfedge with its pair (belonging to adjacent face)
+	PairHalfEdges(m_halfEdges);
 
 }
+
 
 
 //go through all the halfedges and find matching pairs
@@ -226,7 +281,6 @@ void HEMesh::RetrieveSplitEdges(HEPlane& P, vector<HESplitEdgeInfo_t>& splitEdge
 			index++;
 		}
 	}
-
 }
 
 // reset vertex is inserted flag
@@ -356,9 +410,9 @@ void HEMesh::SplitMesh( HEPlane& P, CVector3& center)
 			PairHalfEdges(newHalfEdges);
 			
 			
-			//Cutting the mesh not only cuts the faces, it also creates one new planar face looping through all new cutpoints(in a convex mesh).
-			//This hole in the mesh is identified by unpaired halfedges remaining after the pairibg operation.
-			//This part needs to rethought to extend to concave meshes!!!
+			// Cutting the mesh not only cuts the faces, it also creates one new planar face looping through all new cutpoints(in a convex mesh).
+			// This hole in the mesh is identified by unpaired halfedges remaining after the pairing operation.
+			// This part needs to rethought to extend to concave meshes!!!
 			vector<HEHalfEdge*> unpairedEdges;
 			for (int i = 0; i<n; i++)
 			{
@@ -374,31 +428,43 @@ void HEMesh::SplitMesh( HEPlane& P, CVector3& center)
 				vector<HEHalfEdge*> faceEdges;
 				HEHalfEdge* he = unpairedEdges[0];
 				HEHalfEdge* hen = he;
+				bool valid = true;
 				do
 				{
-					hen = he->m_next->m_pair->m_next;
-					while (std::find(unpairedEdges.begin(), unpairedEdges.end(), hen) == unpairedEdges.end())hen = hen->m_pair->m_next;
-					HEHalfEdge* newhe = new HEHalfEdge();
-					faceEdges.push_back(newhe);
-					if (cutFace->m_halfEdge == NULL) cutFace->m_halfEdge = newhe;
-					newhe->m_vert = hen->m_vert;
-					newhe->m_pair = he;
-					he->m_pair = newhe;
-					newhe->m_face = cutFace;
-					he = hen;
-				} while (hen != unpairedEdges[0]);
+					if (!he->m_next->m_pair) {
+						valid = false;
+					}
+					else
+					{
+						hen = he->m_next->m_pair->m_next;
+						while (std::find(unpairedEdges.begin(), unpairedEdges.end(), hen) == unpairedEdges.end())hen = hen->m_pair->m_next;
+						HEHalfEdge* newhe = new HEHalfEdge();
+						faceEdges.push_back(newhe);
+						if (cutFace->m_halfEdge == NULL) cutFace->m_halfEdge = newhe;
+						newhe->m_vert = hen->m_vert;
+						newhe->m_pair = he;
+						he->m_pair = newhe;
+						newhe->m_face = cutFace;
+						he = hen;
+					}
+				} while (valid && hen != unpairedEdges[0]);
 
-				int m = (int)faceEdges.size();
-				for (int j = 1; j < m; j++)
+				if (valid)
 				{
-					he = faceEdges[j];
-					he->m_next = faceEdges[j - 1];
+					int m = (int)faceEdges.size();
+					for (int j = 1; j < m; j++)
+					{
+						he = faceEdges[j];
+						he->m_next = faceEdges[j - 1];
+						newHalfEdges.push_back(he);
+					}
+					he = faceEdges[0];
+					he->m_next = faceEdges[m - 1];
 					newHalfEdges.push_back(he);
+					newFaces.push_back(cutFace);
 				}
-				he = faceEdges[0];
-				he->m_next = faceEdges[m - 1];
-				newHalfEdges.push_back(he);
-				newFaces.push_back(cutFace);
+				else delete cutFace;
+				
 			}
 
 			

@@ -1,6 +1,10 @@
 // Voronoi.cpp
 //-------------------------------------------
 #include  "Voronoi.h"
+#include "IMVoronoi.h"
+
+
+XSI::CStatus RegisterIMVoronoi(XSI::PluginRegistrar& in_reg);
 
 SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
 {
@@ -11,7 +15,7 @@ SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
 	in_reg.PutVersion(1,0);
 	in_reg.RegisterOperator(L"Voronoi");
 	in_reg.RegisterCommand(L"ApplyVoronoi",L"ApplyVoronoi");
-
+	RegisterIMVoronoi(in_reg);
 	return CStatus::OK;
 }
 
