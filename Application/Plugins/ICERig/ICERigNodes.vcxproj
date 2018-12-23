@@ -144,6 +144,7 @@
     <ClCompile Include="IRResampleCurve.cpp" />
     <ClCompile Include="IRSmooth.cpp" />
     <ClCompile Include="IRSmoothWeights.cpp" />
+    <ClCompile Include="TestICEAttribute.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IRCubicBezier.h" />
