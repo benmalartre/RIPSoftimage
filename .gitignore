@@ -37,26 +37,22 @@
 *.xcodeproj
 *.bundle
 
-# Visual Studio Files
-*.ncb
-*.sln
-*.suo
-*.vcxproj*
-*.user
-*.pdb
-*.idb
-*.htm
-*.manifest
-*.obj
-*.tlog
-*.log
-*.sdf
-*.opensdf
-*x64*
-
 # Qt Creator Files
 *.config
 *.creator
 *.files
 *.includes
 *.pro
+
+# Visual Studio Code
+*.vscode
+*.clang*
+
+# Python Bytecode
+*.pyc
+
+# Rez 
+.group
+
+# windows
+windows
