@@ -35,7 +35,7 @@
 #include <xsi_time.h>
 
 using namespace XSI;
-
+using namespace stk;
 #define SAMPLE_RATE 44100.0
 
 // Specific Includes

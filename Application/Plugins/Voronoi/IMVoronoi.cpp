@@ -1,10 +1,6 @@
 //---------------------------------------------------
 #include "IMVoronoi.h"
 
-struct IMVoronoiData_t {
-	HEMesh* m_mesh;
-};
-
 CStatus RegisterIMVoronoi( PluginRegistrar& in_reg )
 {
         ICENodeDef nodeDef;
@@ -27,6 +23,8 @@ CStatus RegisterIMVoronoi( PluginRegistrar& in_reg )
 		st = nodeDef.AddInputPort(ID_IN_Points, ID_G_100, siICENodeDataVector3, siICENodeStructureSingle, siICENodeContextAny, L"Points", L"Points", MATH::CVector3f(1.0, 1.0, 1.0), CValue(), CValue(), ID_UNDEF, ID_UNDEF, ID_UNDEF);
 		st.AssertSucceeded();
 
+		st = nodeDef.AddInputPort(ID_IN_Offset, ID_G_100, siICENodeDataFloat, siICENodeStructureSingle, siICENodeContextSingleton, L"Offset", L"Offset", 0.0f, CValue(), CValue(), ID_UNDEF, ID_UNDEF, ID_UNDEF);
+		st.AssertSucceeded();
 
         // Add output ports.
         st = nodeDef.AddOutputPort(ID_OUT_Position,siICENodeDataVector3, siICENodeStructureArray, siICENodeContextSingleton,L"Position",L"Position", ID_UNDEF, ID_UNDEF, ID_CTXT_CNS);
@@ -41,200 +39,148 @@ CStatus RegisterIMVoronoi( PluginRegistrar& in_reg )
         return CStatus::OK;
 }
 
-
-/*
-SICALLBACK IMVoronoi_SubmitEvaluationPhaseInfo(ICENodeContext& in_ctxt)
-{
-	ULONG nPhase = in_ctxt.GetEvaluationPhaseIndex();
-	switch (nPhase)
-	{
-	case 0:
-	{
-		in_ctxt.AddEvaluationPhaseInputPort(ID_IN_Segment);
-		in_ctxt.AddEvaluationPhaseInputPort(ID_IN_Position);
-	}
-	break;
-
-	case 1:
-	{
-		in_ctxt.SetLastEvaluationPhase();
-	}
-	break;
-	}
-	return CStatus::OK;
-}
-*/
-
 SICALLBACK IMVoronoi_BeginEvaluate(ICENodeContext& in_ctxt)
 {
 	IMVoronoiData_t* data = (IMVoronoiData_t*)(CValue::siPtrType)in_ctxt.GetUserData();
 
+	for (std::vector<HEMesh*>::iterator it = data->m_voronoiCells.begin(); it < data->m_voronoiCells.end(); it++)
+		(*it)->Clean();
+	data->m_voronoiCells.clear();
+
 	CICEGeometry geom(in_ctxt, ID_IN_Mesh);
 
-	CDoubleArray points;
-	geom.GetPointPositions(points);
+	CDoubleArray vertices;
+	geom.GetPointPositions(vertices);
 
 	CLongArray polyCount;
 	CLongArray polyIndices;
-
 	geom.GetPolygonIndices(polyCount, polyIndices);
-	data->m_mesh->Clean();
-	data->m_mesh->SetHEData(points, polyCount, polyIndices);
 
-	LOG("IMVORONOI : HE mESH NUM POINTS :" + CString(data->m_mesh->m_vertices.size()));;;
+	data->m_mesh->Clean();
+	data->m_mesh->SetHEData(
+		(double*)&vertices[0],
+		vertices.GetCount() / 3,
+		(uint32_t*)&polyCount[0],
+		polyCount.GetCount(),
+		(uint32_t*)&polyIndices[0]
+	);
+	
+	CDataArrayFloat offsetArray(in_ctxt, ID_IN_Offset);
+	data->m_offset = offsetArray[0];
+
+	CDataArrayVector3f pointsArray(in_ctxt, ID_IN_Points);
+	ULONG numPoints = pointsArray.GetCount();
+	data->m_voronoiCells.resize(numPoints);
+	for (size_t i = 0; i < data->m_voronoiCells.size(); i++)
+	{
+		data->m_voronoiCells[i] = new HEMesh(data->m_mesh);
+	}
+
+	HEPlane plane;
+	for (LONG i = 0; i<numPoints; i++)
+	{
+		for (LONG j = 0; j<numPoints; j++)
+		{
+			if (i != j)
+			{
+				HEPoint P(
+					pointsArray[i].GetX(),
+					pointsArray[i].GetY(),
+					pointsArray[i].GetZ()
+				);
+				HEPoint N(
+					pointsArray[j].GetX() - P.m_x,
+					pointsArray[j].GetY() - P.m_y,
+					pointsArray[j].GetZ() - P.m_z
+				);
+				HEPointNormalize(N);
+				HEPoint O(
+					(pointsArray[j].GetX() + P.m_x) * 0.5 + N.m_x * - data->m_offset,
+					(pointsArray[j].GetY() + P.m_y) * 0.5 + N.m_x * - data->m_offset,
+					(pointsArray[j].GetZ() + P.m_z) * 0.5 + N.m_x * - data->m_offset
+				);
+				plane.Set(O, N);
+				data->m_voronoiCells[i]->SplitMesh(plane, P);
+			}
+		}
+		data->m_voronoiCells[i]->AddFragments();
+	}
+	
+	// build mesh
+	data->m_outVertices.clear();
+	data->m_outIndices.clear();
+
+	LONG offsetpolygonindex = 0;
+	LONG polygoncount = 0;
+	LONG nbp = 0;
+
+	for (int i = 0; i<numPoints; i++)
+	{
+		// there should be at least one tetrahedron that is four triangle 
+		if (data->m_voronoiCells[i]->m_polygondata.size() >= 16)
+		{
+			// Add Vertices
+			for (LONG j = 0; j<data->m_voronoiCells[i]->m_verticedata.size(); j++)
+			{
+				data->m_outVertices.push_back(CVector3f(
+					data->m_voronoiCells[i]->m_verticedata[j].m_x,
+					data->m_voronoiCells[i]->m_verticedata[j].m_y,
+					data->m_voronoiCells[i]->m_verticedata[j].m_z
+				));
+			}
+
+			LONG nb = (LONG)data->m_voronoiCells[i]->m_polygondata.size();
+			LONG start, end;
+			start = end = 0;
+			do
+			{
+				nbp = data->m_voronoiCells[i]->m_polygondata[start];
+				start++;
+				end = start + nbp;
+				for (LONG k = start; k<end; k++)
+				{
+					data->m_outIndices.push_back(data->m_voronoiCells[i]->m_polygondata[k] + offsetpolygonindex);
+				}
+				data->m_outIndices.push_back(-2);
+				nb -= (nbp + 1);
+				start = end;
+			} while (nb>0);
+
+			offsetpolygonindex += (LONG)(data->m_voronoiCells[i]->m_verticedata.size());
+		}
+	}
 	
 	in_ctxt.PutUserData((CValue::siPtrType)data);
 	return CStatus::OK;
 }
 
-/*
-XSIPLUGINCALLBACK CStatus Sample_BeginEvaluate(ICENodeContext& in_ctxt)
-{
-	CICEGeometry geom(in_ctxt, ID_IN_GeometryPortID);
-
-	// Geometry data are provided as a flat list of values
-	CDoubleArray points;
-	geom.GetPointPositions(points);
-
-	XSI::MATH::CMatrix4f transfo;
-	geom.GetTransformation(transfo);
-
-	std::vector< MATH::CVector3f >* pUserData = new std::vector< MATH::CVector3f >;
-
-	ULONG nCount = geom.GetPolygonCount();
-
-	CLongArray sizes;       // sizes holds the number of points per polygon
-	CLongArray indices;     // indices holds the polygon indices and are used for indexing the point values
-	geom.GetPolygonIndices(sizes, indices);
-
-	// Compute the center point of all polygons and save the result in a user data.
-	ULONG nOffset = 0;
-	for (ULONG i = 0; i<nCount; i++)
-	{
-		MATH::CVector3f vTotal;
-		for (ULONG j = 0; j<(ULONG)sizes[i]; j++, nOffset++)
-		{
-			MATH::CVector3f v((float)points[indices[nOffset] * 3],
-				(float)points[indices[nOffset] * 3 + 1],
-				(float)points[indices[nOffset] * 3 + 2]);
-			vTotal += v;
-		}
-
-		vTotal *= 1.0f / sizes[i];
-
-		// The points are relative to the geometry and must be converted to global coordinates.
-		vTotal.MulByMatrix4InPlace(transfo);
-		pUserData->push_back(vTotal);
-	}
-
-	return CStatus::OK;
-}
-*/
-
-
 SICALLBACK IMVoronoi_Evaluate(ICENodeContext& in_ctxt)
 {
 	IMVoronoiData_t* data = (IMVoronoiData_t*)(CValue::siPtrType)in_ctxt.GetUserData();
-	/*
-	// Read the current phase. 
-	ULONG nPhase = in_ctxt.GetEvaluationPhaseIndex();
-	switch (nPhase)
-	{
-	case 0:
-	{
-		CDataArrayLong segmentArray(in_ctxt, ID_IN_Segment);
-		CDataArray2DVector3f inputPositionArray(in_ctxt, ID_IN_Position);
-		CIndexSet indexSet(in_ctxt, ID_IN_Segment);
-		data->m_curves.clear();
-		data->m_valid = false;
-		for (CIndexSet::Iterator it = indexSet.Begin(); it.HasNext(); it.Next())
-		{
-			IRCubicBezier_t crv;
-			crv.m_segments = segmentArray[it.GetIndex()];
-			IRCubicBezierSetCurveKnots(&crv, inputPositionArray[it]);
-			IRCubicBezierDuplicateEndKnots(&crv);
-			if (crv.m_valid)
-			{
-				IRCubicBezierGetSamples(&crv, crv.m_segments);
-				data->m_valid = true;
-			}
-			data->m_curves.push_back(crv);
-		}
 
-		return CStatus::OK;
-	}
-	break;
-	};
-	
-	// exit on invalid input
-	if (!data->m_valid) return CStatus::OK;
-
-	*/
-
-
-	// The current output port being evaluated...
 	ULONG out_portID = in_ctxt.GetEvaluatedOutputPortID();
 
 	switch (out_portID)
 	{
 	case ID_OUT_Position:
 	{
-		LOG("UPODATE POSITION");
-		/*
-		CDataArray2DVector3f inputPositionArray(in_ctxt, ID_IN_Position);
 		CDataArray2DVector3f outputPositionArray(in_ctxt);
-
-		CIndexSet indexSet(in_ctxt);
-
-		for (CIndexSet::Iterator it = indexSet.Begin(); it.HasNext(); it.Next())
+		CDataArray2DVector3f::Accessor outputPosition = outputPositionArray.Resize(0, data->m_outVertices.size());
+		for (size_t i=0;i<data->m_outVertices.size();i++)
 		{
-			IRCubicBezier_t& crv = data->m_curves[it.GetAbsoluteIndex()];
-			// output
-			CDataArray2DVector3f::Accessor outputPosition = outputPositionArray.Resize(it, crv.m_samples.size());
-
-			for (ULONG i = 0; i < crv.m_samples.size(); i++)
-			{
-				size_t base = crv.m_samples[i].m_i;
-				IRComputePointOnBezierCurve(crv.m_position[base],
-					crv.m_position[base + 1],
-					crv.m_position[base + 2],
-					crv.m_position[base + 3],
-					crv.m_samples[i].m_u,
-					&outputPosition[i]);
-			}
+			outputPosition[i] = data->m_outVertices[i];
 		}
-		*/
 	}
 	break;
 
 	case ID_OUT_Indices:
 	{
-		LOG("UPDATE INDICES");
-		/*
-		CDataArray2DVector3f outputTangentArray(in_ctxt);
-
-		CIndexSet indexSet(in_ctxt);
-
-		for (CIndexSet::Iterator it = indexSet.Begin(); it.HasNext(); it.Next())
+		CDataArray2DLong outputIndicesArray(in_ctxt);
+		CDataArray2DLong::Accessor outputIndices = outputIndicesArray.Resize(0, data->m_outIndices.size());
+		for (size_t i = 0; i<data->m_outIndices.size(); i++)
 		{
-			IRCubicBezier_t& crv = data->m_curves[it.GetAbsoluteIndex()];
-			// output
-			CDataArray2DVector3f::Accessor outputTangent = outputTangentArray.Resize(it, crv.m_samples.size());
-
-			outputTangent[0] = crv.m_start_tangent;
-			for (ULONG i = 1; i < crv.m_samples.size() - 1; i++)
-			{
-				size_t base = crv.m_samples[i].m_i;
-				IRComputeTangentOnBezierCurve(crv.m_position[base],
-					crv.m_position[base + 1],
-					crv.m_position[base + 2],
-					crv.m_position[base + 3],
-					crv.m_samples[i].m_u,
-					&outputTangent[i]);
-			}
-			outputTangent[crv.m_samples.size() - 1] = crv.m_end_tangent;
+			outputIndices[i] = data->m_outIndices[i];
 		}
-		*/
 
 	}
 	break;

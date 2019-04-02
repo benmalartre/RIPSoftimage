@@ -31,7 +31,7 @@ CStatus CVoronoi::Update( OperatorContext& in_ctxt )
 	m_offset = in_ctxt.GetParameterValue(L"Offset");
 
 	LONG nb = m_positions.GetCount();
-	//if(m_numPoints != nb)
+
 	InitVoronoi(nb);
 	BuildVoronoi();
 	BuildMesh();
@@ -45,33 +45,40 @@ CStatus CVoronoi::Update( OperatorContext& in_ctxt )
 
 void CVoronoi::BuildVoronoi()
 {
-	for (ULONG i = 0; i < m_voronoiCells.size(); i++)
+	for (size_t i = 0; i < m_voronoiCells.size(); i++)
 	{
-		m_voronoiCells[i].SetHEData(m_containerVertices, m_containerPolygons);
+		m_voronoiCells[i].SetHEData(
+			(double*)&m_containerVertices[0],
+			m_containerVertices.GetCount(),
+			(uint32_t*)&m_containerPolygons[0],
+			m_containerPolygons.GetCount()
+		);
 	}
 
-	m_outVertices = m_containerVertices;
-	m_outPolygons = m_containerPolygons;
-	int base = m_outVertices.GetCount();
-
-	for (int i=0;i<m_numPoints;i++)
+	for (LONG i=0;i<m_numPoints;i++)
 	{
-		for(int j=0;j<m_numPoints;j++)
+		for(LONG j=0;j<m_numPoints;j++)
 		{
 			  if(i!=j)
 			  {
-					CVector3 N;
-					CVector3 Offset;
-					N.Sub(m_positions[j],m_positions[i]); // plane normal=normalized vector pinting from point i to point j
-					N.NormalizeInPlace();
-					CVector3 O;
-					O.Add(m_positions[j],m_positions[i]); // plane origin=point halfway between point i and point j
-					O.ScaleInPlace(0.5);
-					Offset.Scale(-m_offset,N);
-					O.AddInPlace(Offset);
-					m_P.Set(O,N);
-
-					m_voronoiCells[i].SplitMesh(m_P,m_positions[i]);
+				  HEPoint P(
+					  m_positions[i].GetX(),
+					  m_positions[i].GetY(),
+					  m_positions[i].GetZ()
+				  );
+				  HEPoint N(
+					  m_positions[j].GetX() - P.m_x,
+					  m_positions[j].GetY() - P.m_y,
+					  m_positions[j].GetZ() - P.m_z
+				  );
+				  HEPointNormalize(N);
+				  HEPoint O(
+					  (m_positions[j].GetX() + P.m_x) * 0.5 + N.m_x * -m_offset,
+					  (m_positions[j].GetY() + P.m_y) * 0.5 + N.m_x * -m_offset,
+					  (m_positions[j].GetZ() + P.m_z) * 0.5 + N.m_x * -m_offset
+				  );
+				  m_P.Set(O,N);
+				  m_voronoiCells[i].SplitMesh(m_P,P);
 			  }
 		}
 		m_voronoiCells[i].AddFragments();
@@ -80,40 +87,47 @@ void CVoronoi::BuildVoronoi()
 
 void CVoronoi::BuildMesh()
 {
-	
 	m_outVertices.Clear();
 	m_outPolygons.Clear();
 
-	int offsetpolygonindex = 0;
-	int polygoncount = 0;
-	int nbp = 0;
+	LONG offsetpolygonindex = 0;
+	LONG polygoncount = 0;
+	LONG nbp = 0;
 
 	for(int i=0;i<m_numPoints;i++)
 	{
-		// Add Vertices
-		for(int j=0;j<m_voronoiCells[i].m_verticedata.GetCount();j++)
-		{  
-			m_outVertices.Add(m_voronoiCells[i].m_verticedata[j]);
-		}
-		
-		int nb = m_voronoiCells[i].m_polygondata.GetCount();
-		int start, end;
-		start = end = 0;
-		do
+		// there should be at least one tetrahedron that is four triangle 
+		if (m_voronoiCells[i].m_polygondata.size() >= 16)
 		{
-			nbp = m_voronoiCells[i].m_polygondata[start];
-			start++;
-			end = start+nbp;
-
-			m_outPolygons.Add(nbp);
-			for(int k=start;k<end;k++)
+			// Add Vertices
+			for (LONG j = 0; j<m_voronoiCells[i].m_verticedata.size(); j++)
 			{
-				m_outPolygons.Add(m_voronoiCells[i].m_polygondata[k]+offsetpolygonindex);
+				m_outVertices.Add(CVector3(
+					m_voronoiCells[i].m_verticedata[j].m_x,
+					m_voronoiCells[i].m_verticedata[j].m_y,
+					m_voronoiCells[i].m_verticedata[j].m_z
+				));
 			}
-			nb -= (nbp+1);
-			start = end;
-		}while(nb>0);
 
-		offsetpolygonindex+=(m_voronoiCells[i].m_verticedata.GetCount());
+			LONG nb = (LONG)m_voronoiCells[i].m_polygondata.size();
+			LONG start, end;
+			start = end = 0;
+			do
+			{
+				nbp = m_voronoiCells[i].m_polygondata[start];
+				start++;
+				end = start + nbp;
+
+				m_outPolygons.Add(nbp);
+				for (LONG k = start; k<end; k++)
+				{
+					m_outPolygons.Add(m_voronoiCells[i].m_polygondata[k] + offsetpolygonindex);
+				}
+				nb -= (nbp + 1);
+				start = end;
+			} while (nb>0);
+
+			offsetpolygonindex += (LONG)(m_voronoiCells[i].m_verticedata.size());
+		}
 	}
 }

@@ -11,7 +11,8 @@
     by Perry R. Cook and Gary P. Scavone, 1995 - 2010.
 */
 /***************************************************/
-
+#include "Stk.h"
+#include"RtAudio.h"
 #include "VoicDrum.h"
 #include <cmath>
 

@@ -17,7 +17,10 @@
 */
 /***************************************************/
 
+#include <iostream>
+#include "Stk.h"
 #include "Drone.h"
+#include "RtError.h"
 
 namespace stk {
 

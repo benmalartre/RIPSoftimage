@@ -37,8 +37,8 @@ public:
 
 private:
 	vector<HEMesh> m_voronoiCells;
-	int m_numPoints;
-	double m_offset;
+	LONG m_numPoints;
+	float m_offset;
 	CVector3Array m_containerVertices;
 	CLongArray m_containerPolygons;
 	CVector3Array m_positions;

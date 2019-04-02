@@ -14,9 +14,10 @@ import ICETree as tre
 # Geometry Element Class
 # -------------------------------------------------------------------
 class IRGeometry(ele.IRElement):
-	def __init__(self, prop, parent):
-		super(IRGeometry, self).__init__(prop, parent)
-
+	def __init__(self,prop, parent, name):
+		super(IRGeometry, self).__init__(prop, parent,name)
+		self.builder = prop
+		
 	def AddToRig(self):
 		sel = xsi.Selection
 		self.list = "GeometryList"

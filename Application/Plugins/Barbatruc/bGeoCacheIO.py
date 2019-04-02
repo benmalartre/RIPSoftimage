@@ -1,6 +1,6 @@
 #---------------------------------------------------------------
 #
-#	bGeoCache IO
+#	GeoCache IO
 #
 #---------------------------------------------------------------
 
@@ -14,15 +14,15 @@ xsi = Application
 
 def XSILoadPlugin( in_reg ):
 	in_reg.Author = "benmalartre"
-	in_reg.Name = "bGeoCacheIOPlugin"
+	in_reg.Name = "GeoCacheIO"
 	in_reg.Major = 1
 	in_reg.Minor = 0
 
-	in_reg.RegisterProperty("bImportGeometryPPG")
-	in_reg.RegisterProperty("bExportGeometryPPG")
-	in_reg.RegisterCommand("bImportGeometry","bbppImportGeometry")
-	in_reg.RegisterCommand("bExportGeometry","bbppExportGeometry")
-	in_reg.RegisterMenu( constants.siMenuTbAnimateToolsImportID , "bGeoCache", false, false);
+	in_reg.RegisterProperty("ImportGeometryPPG")
+	in_reg.RegisterProperty("ExportGeometryPPG")
+	in_reg.RegisterCommand("ImportGeometry","ImportGeometry")
+	in_reg.RegisterCommand("ExportGeometry","ExportGeometry")
+	in_reg.RegisterMenu( constants.siMenuTbAnimateToolsImportID , "GeoCache", false, false);
 
 	return true
 
@@ -31,23 +31,23 @@ def XSIUnloadPlugin( in_reg ):
 	xsi.LogMessage(str(strPluginName) + str(" has been unloaded."),constants.siVerbose)
 	return true
 	
-def bGeoCache_Init(in_ctxt):
+def GeoCache_Init(in_ctxt):
 	oMenu = in_ctxt.source;
-	oMenu.AddCommandItem("&Import Geometry","bImportGeometry")
-	oMenu.AddCommandItem("&Export Geometry","bExportGeometry")
+	oMenu.AddCommandItem("&Import Geometry","ImportGeometry")
+	oMenu.AddCommandItem("&Export Geometry","ExportGeometry")
 	
-def bImportGeometry_Execute():
+def ImportGeometry_Execute():
 	oRoot = xsi.ActiveSceneRoot
-	oUI = oRoot.Properties("bImportGeometry")
+	oUI = oRoot.Properties("ImportGeometry")
 	
 	if not oUI:
-		oUI = oRoot.AddProperty("bImportGeometryPPG",false, "bImportGeometry")
+		oUI = oRoot.AddProperty("ImportGeometryPPG",false, "ImportGeometry")
 
 	oPanel = xsi.OpenView("Property Panel",True) 
 	oPanel.SetAttributeValue("targetcontent", str(oUI))
 	oPanel.Resize(320,200)
 	
-def bImportGeometryPPG_Define( in_ctxt ):
+def ImportGeometryPPG_Define( in_ctxt ):
 	oCustomProperty = in_ctxt.Source
 	oCustomProperty.AddParameter3("FileName", constants.siString, "", "", "", 0, 0 )
 	oCustomProperty.AddParameter3("IsStatic",constants.siBool,0,0,1,0,0)
@@ -56,14 +56,14 @@ def bImportGeometryPPG_Define( in_ctxt ):
 	oCustomProperty.Parameters("Frame").Enable(0)
 	return true
 	
-def bImportGeometryPPG_DefineLayout( in_ctxt ):
+def ImportGeometryPPG_DefineLayout( in_ctxt ):
 	oLayout = in_ctxt.Source
 	oLayout.Clear()
 	oGrp = oLayout.AddGroup()
 	
 	oItem = oLayout.AddItem("FileName","Cache File",constants.siControlFilePath)
 	oItem.SetAttribute(constants.siUIFileMustExist,1)
-	oItem.SetAttribute(constants.siUIFileFilter,"bGeoCache files(*.bgc)|*.bgc|All Files (*.*)|*.*||" )
+	oItem.SetAttribute(constants.siUIFileFilter,"GeoCache files(*.bgc)|*.bgc|All Files (*.*)|*.*||" )
 	
 	oEnum = ["Animated",0,"Static",1]
 	oLayout.AddEnumControl("IsStatic",oEnum,"Geometry Type",constants.siControlCombo)
@@ -76,7 +76,7 @@ def bImportGeometryPPG_DefineLayout( in_ctxt ):
 	oItem.SetAttribute(constants.siUICX,300)
 	oItem.SetAttribute(constants.siUICY,50)
 
-def bImportGeometryPPG_ImportGeometry_OnClicked():
+def ImportGeometryPPG_ImportGeometry_OnClicked():
 	oFile = PPG.Inspected(0).Parameters("FileName").Value
 	if oFile:
 		isstatic = PPG.Inspected(0).Parameters("IsStatic").Value
@@ -92,22 +92,22 @@ def bImportGeometryPPG_ImportGeometry_OnClicked():
 	else:
 		xsi.LogMessage("Invalid Cache File ---> Import Geometry Aborted...")
 	
-def bImportGeometryPPG_IsStatic_OnChanged():
+def ImportGeometryPPG_IsStatic_OnChanged():
 	enable = PPG.Inspected(0).Parameters("IsStatic").Value
 	PPG.Inspected(0).Parameters("Frame").Enable(enable)
 	
-def bExportGeometry_Execute():
+def ExportGeometry_Execute():
 	oRoot = xsi.ActiveSceneRoot
-	oUI = oRoot.Properties("bExportGeometry")
+	oUI = oRoot.Properties("ExportGeometry")
 	
 	if not oUI:
-		oUI = oRoot.AddProperty("bExportGeometryPPG",false, "bExportGeometry")
+		oUI = oRoot.AddProperty("ExportGeometryPPG",false, "ExportGeometry")
 
 	oPanel = xsi.OpenView("Property Panel",True) 
 	oPanel.SetAttributeValue("targetcontent", str(oUI))
 	oPanel.Resize(320,200)
 	
-def bExportGeometryPPG_Define( in_ctxt ):
+def ExportGeometryPPG_Define( in_ctxt ):
 	oRemote = xsi.Dictionary.GetObject("PlayControl")
 	startFrame = oRemote.Parameters("In").Value
 	endFrame = oRemote.Parameters("Out").Value
@@ -118,7 +118,7 @@ def bExportGeometryPPG_Define( in_ctxt ):
 	
 	return true
 	
-def bExportGeometryPPG_DefineLayout( in_ctxt ):
+def ExportGeometryPPG_DefineLayout( in_ctxt ):
 	oLayout = in_ctxt.Source
 	oLayout.Clear()
 	oGrp = oLayout.AddGroup()
@@ -138,7 +138,7 @@ def bExportGeometryPPG_DefineLayout( in_ctxt ):
 	oItem.SetAttribute(constants.siUICX,300)
 	oItem.SetAttribute(constants.siUICY,50)
 
-def bExportGeometryPPG_ExportGeometry_OnClicked():
+def ExportGeometryPPG_ExportGeometry_OnClicked():
 	objs = xsi.Selection
 	if (objs.Count == 0):
 		xsi.LogMessage("Nothing Selected ---> Export GeoCache Aborted...")
@@ -155,7 +155,7 @@ def bExportGeometryPPG_ExportGeometry_OnClicked():
 	for o in objs:
 		xsi.bbppGeoCacheRecord(o,folder,startFrame,endFrame,1)
 	
-def bImportGeometryPPG_IsStatic_OnChanged():
+def ImportGeometryPPG_IsStatic_OnChanged():
 	enable = PPG.Inspected(0).Parameters("IsStatic").Value
 	PPG.Inspected(0).Parameters("Frame").Enable(enable)
 

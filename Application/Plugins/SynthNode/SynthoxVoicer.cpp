@@ -1,6 +1,7 @@
 // SynthoxVoicer.cpp
 //----------------------------------------------
 #include "SynthoxVoicer.h"
+#include "RtError.h"
 
 CStatus RegisterSynthoxVoicer( PluginRegistrar& in_reg )
 {

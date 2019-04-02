@@ -610,7 +610,7 @@ def RigBuilder_AddGeometry_OnClicked():
 	prop = PPG.Inspected(0)
 	model = prop.Parent3DObject
 	
-	elem = geo.IRGeometry(prop, model)
+	elem = geo.IRGeometry(prop, model, xsi.Selection(0).FullName)
 	elem.AddToRig()
 	PPG.Refresh()
 

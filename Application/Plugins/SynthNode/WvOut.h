@@ -2,6 +2,8 @@
 #define STK_WVOUT_H
 
 #include "Stk.h"
+#include "RtAudio.h"
+#include "RtError.h"
 
 namespace stk {
 

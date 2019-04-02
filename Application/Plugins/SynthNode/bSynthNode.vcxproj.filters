@@ -27,303 +27,6 @@
     <ClInclude Include="SynthoxVoicer.h">
       <Filter>header</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\ADSR.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Asymp.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\BandedWG.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\BeeThree.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\BiQuad.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Blit.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\BlitSaw.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\BlitSquare.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\BlowBotl.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\BlowHole.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Bowed.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\BowTable.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Brass.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Chorus.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Clarinet.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Delay.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\DelayA.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\DelayL.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Drummer.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Echo.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Effect.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Envelope.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\FileLoop.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\FileRead.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\FileWrite.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\FileWvIn.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\FileWvOut.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Filter.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Fir.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Flute.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\FM.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\FMVoices.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\FormSwep.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Function.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Generator.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Granulate.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\HevyMetl.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Iir.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\InetWvIn.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\InetWvOut.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Instrmnt.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\JCRev.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\JetTable.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\LentPitShift.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Mandolin.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Mesh2D.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Messager.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\MidiFileIn.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Modal.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\ModalBar.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Modulate.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Moog.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Mutex.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Noise.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\NRev.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\OnePole.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\OneZero.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\PercFlut.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Phonemes.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\PitShift.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Plucked.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\PluckTwo.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\PoleZero.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\PRCRev.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\ReedTable.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Resonate.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Rhodey.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\RtAudio.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\RtError.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\RtMidi.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\RtWvIn.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\RtWvOut.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Sampler.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Saxofony.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Shakers.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Simple.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\SineWave.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\SingWave.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Sitar.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Skini.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Socket.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Sphere.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\StifKarp.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Stk.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\TapDelay.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\TcpClient.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\TcpServer.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Thread.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\TubeBell.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\TwoPole.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\TwoZero.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\UdpSocket.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Vector3D.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Voicer.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\VoicForm.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Whistle.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\Wurley.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\WvIn.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Others\STK\include\WvOut.h">
-      <Filter>STKheader</Filter>
-    </ClInclude>
     <ClInclude Include="Mutex.h" />
     <ClInclude Include="RtAudio.h" />
     <ClInclude Include="RtWvOut.h" />
@@ -333,6 +36,319 @@
     <ClInclude Include="VoicDrum.h" />
     <ClInclude Include="WvOut.h" />
     <ClInclude Include="XSIWvOut.h" />
+    <ClInclude Include="RtError.h" />
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\ADSR.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Arythmetic.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Asymp.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\BandedWG.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\BeeThree.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\BiQuad.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Blit.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\BlitSaw.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\BlitSquare.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\BlowBotl.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\BlowHole.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Bowed.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\BowTable.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Brass.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Chorus.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Clarinet.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Cubic.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Delay.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\DelayA.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\DelayL.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Drummer.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Echo.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Effect.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Envelope.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\FileLoop.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\FileRead.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\FileWrite.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\FileWvIn.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\FileWvOut.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Filter.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Fir.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Flute.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\FM.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\FMVoices.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\FormSwep.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\FreeVerb.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Function.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Generator.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Granulate.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Guitar.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\HevyMetl.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Iir.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\InetWvIn.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\InetWvOut.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Instrmnt.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\JCRev.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\JetTable.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\LentPitShift.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Mandolin.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Mesh2D.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Messager.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\MidiFileIn.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Modal.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\ModalBar.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Modulate.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Moog.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Mutex.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Noise.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\NRev.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\OnePole.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\OneZero.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\PercFlut.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Phonemes.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\PitShift.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Plucked.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\PoleZero.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\PRCRev.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\ReedTable.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Resonate.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Rhodey.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\RtAudio.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\RtMidi.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\RtWvIn.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\RtWvOut.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Sampler.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Saxofony.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Shakers.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Simple.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\SineWave.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\SingWave.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Sitar.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Skini.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\SKINImsg.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\SKINItbl.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Socket.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Sphere.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\StifKarp.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Stk.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\TapDelay.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\TcpClient.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\TcpServer.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Thread.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\TubeBell.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Twang.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\TwoPole.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\TwoZero.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\UdpSocket.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Vector3D.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Voicer.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\VoicForm.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Whistle.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\Wurley.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\WvIn.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\RnD\STK\include\WvOut.h">
+      <Filter>STKheader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SynthoxInstrument.cpp">
@@ -353,268 +369,6 @@
     <ClCompile Include="SynthoxVoicer.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\ADSR.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Asymp.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\BandedWG.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\BeeThree.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\BiQuad.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Blit.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\BlitSaw.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\BlitSquare.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\BlowBotl.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\BlowHole.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Bowed.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Brass.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Chorus.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Clarinet.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Delay.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\DelayA.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\DelayL.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Drummer.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Echo.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Envelope.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\FileLoop.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\FileRead.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\FileWrite.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\FileWvIn.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\FileWvOut.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Fir.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Flute.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\FM.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\FMVoices.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\FormSwep.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Granulate.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\HevyMetl.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Iir.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\InetWvIn.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\InetWvOut.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\JCRev.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\LentPitShift.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Mandolin.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Mesh2D.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Messager.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\MidiFileIn.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Modal.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\ModalBar.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Modulate.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Moog.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Mutex.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Noise.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\NRev.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\OnePole.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\OneZero.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\PercFlut.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Phonemes.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\PitShift.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Plucked.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\PluckTwo.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\PoleZero.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\PRCRev.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Resonate.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Rhodey.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\RtAudio.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\RtMidi.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\RtWvIn.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\RtWvOut.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Sampler.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Saxofony.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Shakers.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Simple.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\SineWave.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\SingWave.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Sitar.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Skini.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Socket.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Sphere.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\StifKarp.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Stk.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\TapDelay.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\TcpClient.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\TcpServer.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Thread.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\TubeBell.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\TwoPole.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\TwoZero.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\UdpSocket.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Voicer.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\VoicForm.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Whistle.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\Others\STK\src\Wurley.cpp">
-      <Filter>STKsource</Filter>
-    </ClCompile>
-    <ClCompile Include="bRagaNode.cpp" />
     <ClCompile Include="Drone.cpp" />
     <ClCompile Include="Mutex.cpp" />
     <ClCompile Include="RtAudio.cpp" />
@@ -625,12 +379,276 @@
     <ClCompile Include="Tabla.cpp" />
     <ClCompile Include="VoicDrum.cpp" />
     <ClCompile Include="XSIWvOut.cpp" />
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\ADSR.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Asymp.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\BandedWG.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\BeeThree.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\BiQuad.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Blit.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\BlitSaw.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\BlitSquare.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\BlowBotl.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\BlowHole.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Bowed.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Brass.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Chorus.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Clarinet.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Delay.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\DelayA.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\DelayL.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Drummer.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Echo.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Envelope.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\FileLoop.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\FileRead.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\FileWrite.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\FileWvIn.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\FileWvOut.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Fir.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Flute.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\FM.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\FMVoices.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\FormSwep.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\FreeVerb.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Granulate.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Guitar.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\HevyMetl.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Iir.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\InetWvIn.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\InetWvOut.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\JCRev.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\LentPitShift.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Mandolin.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Mesh2D.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Messager.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\MidiFileIn.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Modal.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\ModalBar.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Modulate.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Moog.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Mutex.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Noise.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\NRev.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\OnePole.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\OneZero.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\PercFlut.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Phonemes.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\PitShift.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Plucked.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\PoleZero.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\PRCRev.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Resonate.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Rhodey.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\RtAudio.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\RtMidi.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\RtWvIn.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\RtWvOut.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Sampler.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Saxofony.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Shakers.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Simple.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\SineWave.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\SingWave.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Sitar.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Skini.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Socket.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Sphere.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\StifKarp.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Stk.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\TapDelay.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\TcpClient.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\TcpServer.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Thread.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\TubeBell.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Twang.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\TwoPole.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\TwoZero.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\UdpSocket.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Voicer.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\VoicForm.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Whistle.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\RnD\STK\src\Wurley.cpp">
+      <Filter>STKsource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\Others\STK\include\LentPitShift.h~">
-      <Filter>STKheader</Filter>
-    </None>
-    <None Include="..\..\..\..\Others\STK\src\Makefile.in">
+    <None Include="..\..\..\..\..\RnD\STK\src\Makefile.in">
       <Filter>STKsource</Filter>
     </None>
   </ItemGroup>
