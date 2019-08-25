@@ -137,6 +137,7 @@
     <ClCompile Include="IRBuildElementID.cpp" />
     <ClCompile Include="IRCubicBezier.cpp" />
     <ClCompile Include="IRCubicBezierGenerator.cpp" />
+    <ClCompile Include="IRCubicBezierPoint.cpp" />
     <ClCompile Include="IRDeltaMush.cpp" />
     <ClCompile Include="IRDeltaMushHelpFunction.cpp" />
     <ClCompile Include="IRDeltaMushInit.cpp" />

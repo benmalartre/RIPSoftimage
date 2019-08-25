@@ -1187,6 +1187,9 @@ def RigElement_Define( in_ctxt ):
 	prop.AddParameter2("Symmetrize", constants.siBool, False, False, True, False, True)
 	prop.AddParameter2("SelfSymmetrize", constants.siBool, False, False, True, False, True)
 	prop.AddParameter2("SymmetryAxis", constants.siInt4, 0, 0, 2, 0, 2)
+	prop.AddParameter2("Radius", constants.siFloat, 1, 0, 100, -100, 100)
+	prop.AddParameter2("Contract", constants.siFloat, 1, -10, 10, -10, 10)
+	prop.AddParameter2("Slide", constants.siFloat, 0, -1, 1, -10, 10)
 	
 	prop.AddParameter2("ControlType", constants.siInt4, 0, 0, 6, 0, 6, constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable)
 	prop.AddParameter2("IKFKBlend", constants.siFloat, 0, 0, 1, 0, 1, constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable)
@@ -1233,6 +1236,10 @@ def RigElement_RebuildLayout(ppg):
 		item = layout.AddButton("AddProfileControl", "Add Profile Control")
 		item.SetAttribute(constants.siUIAlignCenter, 1)
 		item.SetAttribute(constants.siUICX, 300)
+		
+	layout.AddItem("Radius")
+	layout.AddItem("Contract")
+	layout.AddItem("Slide")
 	layout.EndGroup()
 
 	item = layout.AddButton("IRSetElement", "Set")

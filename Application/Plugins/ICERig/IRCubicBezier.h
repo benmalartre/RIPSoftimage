@@ -9,6 +9,7 @@ using namespace MATH;
 struct IRCubicBezierSample_t {
 	size_t m_i;
 	float m_u;
+	float m_nu;
 };
 
 struct IRCubicBezier_t
@@ -36,12 +37,14 @@ enum IRCubicBezierIDs
 {
 	ID_IN_Position = 0,
 	ID_IN_Segment = 1,
+	ID_IN_U = 2,
 
 	ID_G_100 = 100,
 	ID_OUT_Position = 200,
 	ID_OUT_Tangent = 201,
 	ID_OUT_U = 202,
-	ID_OUT_Segment = 203,
+	ID_OUT_NormalizedU = 203,
+	ID_OUT_Segment = 204,
 
 	ID_TYPE_CNS = 400,
 	ID_STRUCT_CNS,
@@ -52,6 +55,7 @@ enum IRCubicBezierIDs
 void IRCubicBezierDuplicateEndKnots(IRCubicBezier_t* crv);
 void IRCubicBezierSetCurveKnots(IRCubicBezier_t* crv, CDataArray2DVector3f::Accessor& positions);
 void IRCubicBezierGetSamples(IRCubicBezier_t* crv, size_t numSamples);
+void IRCubicBezierGetSample(IRCubicBezier_t* crv, float u);
 
 void IRComputePointOnBezierCurve(
 	const CVector3f& p1,

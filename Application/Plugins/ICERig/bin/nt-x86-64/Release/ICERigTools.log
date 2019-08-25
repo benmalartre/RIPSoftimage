@@ -1,3 +1,0 @@
-﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: Le répertoire intermédiaire (.\bin\nt-x86-64\Release\) contient des fichiers partagés provenant d'un autre projet (ICERigNodes.vcxproj). Cela peut entraîner un comportement de nettoyage et de régénération incorrect.
-     Création de la bibliothèque .\bin\nt-x86-64\ICERigTools.lib et de l'objet .\bin\nt-x86-64\ICERigTools.exp
-  ICERigTools.vcxproj -> E:\Projects\RnD\bWorkgroup\Application\Plugins\ICERig\.\bin\nt-x86-64\ICERigTools.dll

@@ -42,6 +42,7 @@
 XSI::CStatus RegisterIRSmoothWeights( XSI::PluginRegistrar& in_reg );
 XSI::CStatus RegisterIRCubicBezier( XSI::PluginRegistrar& in_reg );
 XSI::CStatus RegisterIRCubicBezierGenerator(XSI::PluginRegistrar& in_reg);
+XSI::CStatus RegisterIRCubicBezierPoint(XSI::PluginRegistrar& in_reg);
 XSI::CStatus RegisterIRBuildElementID( XSI::PluginRegistrar& in_reg );
 XSI::CStatus RegisterIRDeltaMushInit(XSI::PluginRegistrar& in_reg);
 XSI::CStatus RegisterIRDeltaMush(XSI::PluginRegistrar& in_reg);
@@ -56,6 +57,7 @@ SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
 	RegisterIRSmoothWeights( in_reg );
 	RegisterIRCubicBezier(in_reg);
 	RegisterIRCubicBezierGenerator(in_reg);
+	RegisterIRCubicBezierPoint(in_reg);
 	RegisterIRBuildElementID(in_reg);
 	RegisterIRDeltaMushInit(in_reg);
 	RegisterIRDeltaMush(in_reg);

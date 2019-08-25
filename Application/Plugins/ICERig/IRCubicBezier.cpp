@@ -48,15 +48,33 @@ void IRCubicBezierGetSamples(IRCubicBezier_t* crv, size_t numSamples)
 		size_t numPoints = crv->m_position.size();
 		size_t numPatches = numPoints - 3;
 		size_t lastPoint = numPoints - 4;
-		float u, u_clamped;
+		float u,nu, u_clamped;
 		for (size_t s = 0; s < numSamples; s++)
 		{
+			nu = s * incr;
 			u = s * incr * numPatches;
 			u_clamped = std::floorf(u);
 			crv->m_samples[s].m_u = u - u_clamped;
+			crv->m_samples[s].m_nu = nu;
 			crv->m_samples[s].m_i = (size_t)u_clamped;
 		}
 	}
+}
+
+void IRCubicBezierGetSample(IRCubicBezier_t* crv, float u)
+{
+	crv->m_samples.resize(1);
+	size_t numPoints = crv->m_position.size();
+	size_t numPatches = numPoints - 3;
+	size_t lastPoint = numPoints - 4;
+	float u_proj, u_clamped;
+
+	u_proj = u * numPatches;
+	u_clamped = std::floorf(u_proj);
+	crv->m_samples[0].m_u = u_proj - u_clamped;
+	crv->m_samples[0].m_nu = u;
+	crv->m_samples[0].m_i = (size_t)u_clamped;
+
 }
 
 void IRComputePointOnBezierCurve(const CVector3f& p1, const CVector3f&  p2, const CVector3f&  p3, const CVector3f&  p4, float u, CVector3f* result)
@@ -147,6 +165,9 @@ CStatus RegisterIRCubicBezier( PluginRegistrar& in_reg )
 		st = nodeDef.AddOutputPort(ID_OUT_U, siICENodeDataFloat, siICENodeStructureArray, siICENodeContextAny, L"U", L"U", ID_UNDEF, ID_UNDEF, ID_CTXT_CNS);
 		st.AssertSucceeded();
 
+		st = nodeDef.AddOutputPort(ID_OUT_NormalizedU, siICENodeDataFloat, siICENodeStructureArray, siICENodeContextAny, L"NormalizedU", L"NormalizedU", ID_UNDEF, ID_UNDEF, ID_CTXT_CNS);
+		st.AssertSucceeded();
+
 		st = nodeDef.AddOutputPort(ID_OUT_Segment, siICENodeDataLong, siICENodeStructureArray, siICENodeContextAny, L"S", L"S", ID_UNDEF, ID_UNDEF, ID_CTXT_CNS);
 		st.AssertSucceeded();
 
@@ -178,6 +199,7 @@ SICALLBACK IRCubicBezier_SubmitEvaluationPhaseInfo(ICENodeContext& in_ctxt)
 	}
 	return CStatus::OK;
 }
+
 
 SICALLBACK IRCubicBezier_Evaluate(ICENodeContext& in_ctxt)
 {
@@ -213,7 +235,7 @@ SICALLBACK IRCubicBezier_Evaluate(ICENodeContext& in_ctxt)
 	}
 	break;
 	};
-
+	
 	// exit on invalid input
 	if (!data->m_valid) return CStatus::OK;
 
@@ -298,6 +320,26 @@ SICALLBACK IRCubicBezier_Evaluate(ICENodeContext& in_ctxt)
 		}
 		break;
 
+		case ID_OUT_NormalizedU:
+		{
+			CDataArray2DFloat outputNormalizedUArray(in_ctxt);
+
+			CIndexSet indexSet(in_ctxt);
+
+			for (CIndexSet::Iterator it = indexSet.Begin(); it.HasNext(); it.Next())
+			{
+				IRCubicBezier_t& crv = data->m_curves[it.GetAbsoluteIndex()];
+				// output
+				CDataArray2DFloat::Accessor outputU = outputNormalizedUArray.Resize(it, crv.m_samples.size());
+
+				for (ULONG i = 0; i < crv.m_samples.size(); i++)
+				{
+					outputU[i] = crv.m_samples[i].m_nu;
+				}
+			}
+		}
+		break;
+
 		case ID_OUT_Segment:
 		{
 			CDataArray2DLong outputSArray(in_ctxt);
@@ -318,6 +360,7 @@ SICALLBACK IRCubicBezier_Evaluate(ICENodeContext& in_ctxt)
 		}
 		break;
 	}
+	
 	return CStatus::OK;
 }
 
