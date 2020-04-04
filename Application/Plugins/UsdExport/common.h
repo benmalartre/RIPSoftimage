@@ -12,6 +12,7 @@
 #include <xsi_scene.h>
 #include <xsi_model.h>
 #include <xsi_x3dobject.h>
+#include <xsi_kinematics.h>
 #include <xsi_primitive.h>
 #include <xsi_polygonmesh.h>
 #include <xsi_geometryaccessor.h>
@@ -21,6 +22,8 @@
 #include <xsi_point.h>
 #include <xsi_iceattribute.h>
 #include <xsi_iceattributedataarray.h>
+#include <xsi_matrix4.h>
+#include <xsi_matrix4f.h>
 
 #include <pxr/pxr.h>
 #include <pxr/base/tf/hash.h>

@@ -27,6 +27,16 @@ void X2UExportMesh::Init(UsdStageRefPtr& stage, std::string path, const CRef& re
     siSubdivisionRuleType::siCatmullClark
   );
 
+  // xform attribute
+  {
+    MATH::CTransformation xfo = obj.GetKinematics().GetLocal().GetTransform();
+    MATH::CMatrix4 srcMatrix = xfo.GetMatrix4();
+    GfMatrix4d dstMatrix;
+    X2UConvertMatrix4DoubleToDouble(srcMatrix, dstMatrix);
+    _xformOp = mesh.AddTransformOp();
+    _xformOp.Set<GfMatrix4d>(dstMatrix);
+  }
+
   // points attribute
   {
     CDoubleArray points;
@@ -112,6 +122,15 @@ void X2UExportMesh::WriteSample(double t)
     siConstructionMode::siConstructionModeSecondaryShape,
     siSubdivisionRuleType::siCatmullClark
   );
+
+  // xform
+  {
+    MATH::CTransformation xfo = obj.GetKinematics().GetLocal().GetTransform();
+    MATH::CMatrix4 srcMatrix = xfo.GetMatrix4();
+    GfMatrix4d dstMatrix;
+    X2UConvertMatrix4DoubleToDouble(srcMatrix, dstMatrix);
+    _xformOp.Set<GfMatrix4d>(dstMatrix, timeCode);
+  }
 
   // points
   {

@@ -2,6 +2,8 @@
 
 #include "common.h"
 #include <limits>
+#include <iostream>
+#include <string>
 
 static const GfVec3f UNDEFINED_COLOR = { 1.f,0.25f,0.5f};
 
@@ -33,4 +35,41 @@ GfBBox3d ComputeBoundingBox(T* points, size_t numPoints)
     if (points[i * 3 + 2] > bboxMax[2]) bboxMax[2] = points[i * 3 + 2];
   }
   return GfBBox3d(GfRange3d(bboxMin, bboxMax));
+}
+
+
+static void X2UConvertMatrix4FloatToDouble(const MATH::CMatrix4f& src, GfMatrix4d& dst)
+{
+  X2UCopyData<float, double>((float*)src.Get(), (double*)&dst, 16);
+}
+
+static void X2UConvertMatrix4DoubleToFloat(const MATH::CMatrix4& src, GfMatrix4f& dst)
+{
+  X2UCopyData<double, float>((double*)&src, dst.data(), 16);
+}
+
+static void X2UConvertMatrix4FloatToFloat(const MATH::CMatrix4f& src, GfMatrix4f& dst)
+{
+  memcpy((void*)&dst[0][0], (void*)src.Get(), 16 * sizeof(float));
+}
+
+static void X2UConvertMatrix4DoubleToDouble(const MATH::CMatrix4& src, GfMatrix4d& dst)
+{
+  memcpy((void*)&dst, (void*)&src, 16 * sizeof(double));
+}
+
+template<typename SRC, typename DST>
+void X2UConvertMatrix4(const SRC& src, DST& dst)
+{
+  size_t srcElemSize = sizeof(src.GetValue(0, 0));
+  size_t dstElemSize = sizeof(dst[0][0]);
+
+  if (srcElemSize == dstElemSize)
+  {
+
+  }
+  for (int i = 0; i < 16; ++i)
+  {
+
+  }
 }

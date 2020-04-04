@@ -19,29 +19,6 @@ public:
   X2UExportPrim();
   virtual ~X2UExportPrim();
 
-  /*
-  void AddAttribute(
-    std::string name,
-    UsdAttribute& dst, 
-    ICEAttribute& src
-  );
-
-  void AddAttribute(
-    std::string name,
-    UsdAttribute& dst
-  );
-
-  void AddAttribute(
-    std::string name,
-    UsdAttribute& dst,
-    X2UDataType type,
-    X2UDataPrecision precision,
-    bool isArray,
-    bool isPrimvar,
-    X2UPrimvarInterpolation interpolation
-  );
-  */
-
   virtual void Init(UsdStageRefPtr& stage, std::string path, const CRef& ref) = 0;
   virtual void WriteSample(double t )= 0;
   virtual void GetDisplayColor() = 0;
@@ -61,6 +38,7 @@ protected:
   std::string             _fullname;
   X2UExportAttributeMap   _attributes;
   GfBBox3d                _bbox;
+  UsdGeomXformOp          _xformOp;
   float                   _displayColorR;
   float                   _displayColorG;
   float                   _displayColorB;
