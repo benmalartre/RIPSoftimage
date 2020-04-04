@@ -60,6 +60,7 @@ protected:
   X2UExportPrimType       _type;
   std::string             _fullname;
   X2UExportAttributeMap   _attributes;
+  GfBBox3d                _bbox;
   float                   _displayColorR;
   float                   _displayColorG;
   float                   _displayColorB;

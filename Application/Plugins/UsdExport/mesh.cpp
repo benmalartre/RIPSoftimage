@@ -1,4 +1,5 @@
 #include "mesh.h"
+#include "utils.h"
 
 X2UExportMesh::X2UExportMesh()
   : _haveAuthoredNormals(false)
@@ -42,6 +43,15 @@ void X2UExportMesh::Init(UsdStageRefPtr& stage, std::string path, const CRef& re
       X2U_PRECISION_SINGLE,
       true);
 
+  // extent attribute
+  _attributes["extent"] =
+    X2UExportAttribute(
+      mesh.CreateExtentAttr(VtValue(), true),
+      X2U_DATA_VECTOR3,
+      X2U_PRECISION_DOUBLE,
+      true);
+
+  // display color
   GetDisplayColor();
  
 }
@@ -51,7 +61,8 @@ void X2UExportMesh::Init(UsdStageRefPtr& stage, std::string path, const CRef& re
 void X2UExportMesh::WriteSample(double t)
 {
   UsdTimeCode timeCode(t);
-  PolygonMesh mesh = GetXSI3DObject().GetActivePrimitive().GetGeometry(t);
+  X3DObject obj = GetXSI3DObject();
+  PolygonMesh mesh = obj.GetActivePrimitive().GetGeometry(t);
   CGeometryAccessor accessor = mesh.GetGeometryAccessor2
   (
     siConstructionMode::siConstructionModeSecondaryShape,
@@ -86,6 +97,13 @@ void X2UExportMesh::WriteSample(double t)
     item.WriteSample((const void*)&faceVertexCounts[0], numFaceVertexCounts, timeCode);
   }
 
+  // extent 
+  {
+    GetObjectBoundingBox(obj, _bbox);
+    X2UExportAttribute& item = GetAttribute("extent");
+    item.WriteSample((const void*)&_bbox.GetRange().GetMin()[0], 2, timeCode);
+  }
+
   // displayColor
   {
     X2UExportAttribute& item = GetAttribute("displayColor");
@@ -96,24 +114,21 @@ void X2UExportMesh::WriteSample(double t)
     }
     else
     {
-      if(_haveVertexColor)
-      ClusterProperty vertexColor = mesh.GetCurrentVertexColor();
-      if (vertexColor.IsValid())
+      if (_haveVertexColor)
       {
-        CFloatArray colors;
-        vertexColor.GetValues(colors);
-        item.WriteSample(&colors[0], colors.GetCount()/4, timeCode);
-      }
-      /*
-      if (item.IsConstant())
-      {
-
+        ClusterProperty vertexColor = mesh.GetCurrentVertexColor();
+        if (vertexColor.IsValid())
+        {
+          CFloatArray colors;
+          vertexColor.GetValues(colors);
+          item.WriteSample(&colors[0], colors.GetCount() / 4, timeCode);
+        }
       }
       else
       {
-
+        GfVec4f color(_displayColorR, _displayColorG, _displayColorB, 1.f);
+        item.WriteSample(&color[0], 1, timeCode);
       }
-      */
     }
   }
 }
@@ -122,7 +137,8 @@ void X2UExportMesh::GetDisplayColor()
 {
   _haveVertexColor = false;
   X3DObject obj(_ref);
-  // check for Color ICE Attribute
+  LOG(obj.GetFullName() + L" get display color");
+  // check for color from ICE Attribute
   ICEAttribute srcColorAttr = obj.GetActivePrimitive().GetICEAttributeFromName(L"Color");
   if (srcColorAttr.IsDefined())
   {
@@ -159,10 +175,25 @@ void X2UExportMesh::GetDisplayColor()
   }
 
   // fallback to wireframe color
-  Property displayProp;
-  if (obj.GetPropertyFromName(L"Display", displayProp) == CStatus::OK) {
-    //_displayColorR = displayProp.GetParameterValue("WirecolorR");
-    //_displayColorG = displayProp.GetParameterValue("WirecolorG");
-    //_displayColorB = displayProp.GetParameterValue("WirecolorB");
+  if (!_haveVertexColor)
+  {
+    Property displayProp;
+    if (obj.GetPropertyFromName(L"Display", displayProp) == CStatus::OK) {
+      GfVec4f displayColor = GetDisplayColorFromShadingNetwork(obj);
+
+      _displayColorR = displayColor[0];
+      _displayColorG = displayColor[1];
+      _displayColorB = displayColor[2];
+
+      UsdAttribute dstColorAttr = UsdGeomMesh(_prim).CreateDisplayColorAttr();
+
+      _attributes["displayColor"] =
+        X2UExportAttribute(
+          dstColorAttr,
+          X2U_DATA_COLOR4,
+          X2U_PRECISION_SINGLE,
+          false);
+    }
   }
+  
 }

@@ -15,6 +15,7 @@
 #include <xsi_primitive.h>
 #include <xsi_polygonmesh.h>
 #include <xsi_geometryaccessor.h>
+#include <xsi_clusterproperty.h>
 #include <xsi_polygonnode.h>
 #include <xsi_property.h>
 #include <xsi_point.h>
@@ -24,6 +25,7 @@
 #include <pxr/pxr.h>
 #include <pxr/base/tf/hash.h>
 #include <pxr/usd/usd/stage.h>
+#include <pxr/usd/usd/prim.h>
 #include <pxr/usd/usdGeom/camera.h>
 #include <pxr/usd/usdGeom/xform.h>
 #include <pxr/usd/usdGeom/basisCurves.h>
@@ -45,6 +47,9 @@
 #include <pxr/base/gf/matrix3d.h>
 #include <pxr/base/gf/matrix4f.h>
 #include <pxr/base/gf/matrix4d.h>
+#include <pxr/base/gf/range3f.h>
+#include <pxr/base/gf/range3d.h>
+#include <pxr/base/gf/bbox3d.h>
 
 #include <iostream>
 #include <vector>
