@@ -84,7 +84,6 @@ void X2UExportAttribute::Set(const VtValue& value, const UsdTimeCode& timeCode)
 
 void X2UExportAttribute::WriteSample(const void* datas, uint32_t numElements, const UsdTimeCode& timeCode)
 {
-
   uint64_t hash = ArchHash64((const char*)datas, numElements *  X2UGetDataSize(_srcDataType, _srcDataPrecision));
 
   if (hash != _hash)
@@ -476,7 +475,7 @@ void X2UExportAttribute::WriteSample(const UsdTimeCode& timeCode)
 
 void X2UExportAttribute::WriteInterpolation()
 {
-  if (_isPrimvar && _primvarInterpolation != X2U_INTERPOLATION_CONSTANT)
+  if (_isPrimvar)
   {
     UsdGeomPrimvar dstPrimvar(_dstAttribute);
     switch (_primvarInterpolation)

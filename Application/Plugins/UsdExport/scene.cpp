@@ -116,6 +116,8 @@ void X2UExportScene::WriteSample(double t)
 
 void X2UExportScene::Process()
 {
+ 
+
   // first build usd structure
   std::string rootPath = "";
   CRefArray children = _root.GetChildren();
@@ -125,8 +127,12 @@ void X2UExportScene::Process()
   }
 
   // then loop over time range writing samples
+  Project project = Application().GetActiveProject();
+  Property playControl = project.GetProperties().GetItem(L"Play Control");
+
   for (double t = _timeInfos.startFrame; t <= _timeInfos.endFrame; t += _timeInfos.sampleRate)
   {
+    playControl.PutParameterValue("Current", t);
     for (X2UExportScene& model: _models)model.WriteSample(t);
     WriteSample(t);
   }

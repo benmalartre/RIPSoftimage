@@ -19,38 +19,82 @@ void X2UExportMesh::Init(UsdStageRefPtr& stage, std::string path, const CRef& re
   _fullname = path;
   _prim = mesh.GetPrim();
 
+  X3DObject obj(_ref);
+  PolygonMesh xsiMesh = obj.GetActivePrimitive().GetGeometry();
+  CGeometryAccessor accessor = xsiMesh.GetGeometryAccessor2
+  (
+    siConstructionMode::siConstructionModeModeling,
+    siSubdivisionRuleType::siCatmullClark
+  );
+
   // points attribute
-  _attributes["points"] = 
-    X2UExportAttribute(
-      mesh.CreatePointsAttr(VtValue(), true),
-      X2U_DATA_VECTOR3,
-      X2U_PRECISION_DOUBLE,
-      true);
+  {
+    CDoubleArray points;
+    accessor.GetVertexPositions(points);
+    size_t numPoints = accessor.GetVertexCount();
+    
+    _bbox = ComputeBoundingBox<double>(&points[0], numPoints);
+    VtArray<GfVec3f> vtArray(numPoints);
+    X2UCastTuppledData<GfVec3d, GfVec3f>(
+      (GfVec3d*)&points[0], vtArray.data(), numPoints, 3, 3);
+    
+    _attributes["points"] =
+      X2UExportAttribute(
+        mesh.CreatePointsAttr(VtValue(vtArray), true),
+        X2U_DATA_VECTOR3,
+        X2U_PRECISION_DOUBLE,
+        true);
+  }
+  
 
   // faceVertexCounts attribute
-  _attributes["faceVertexCounts"] =
-    X2UExportAttribute(
-      mesh.CreateFaceVertexCountsAttr(VtValue(), true),
-      X2U_DATA_LONG,
-      X2U_PRECISION_SINGLE,
-      true);
+  {
+    CLongArray faceVertexCounts;
+    accessor.GetPolygonVerticesCount(faceVertexCounts);
+    size_t numFaceVertexCounts = faceVertexCounts.GetCount();
+    
+    VtArray<int> vtArray(numFaceVertexCounts);
+    X2UCopyData<LONG, int>(
+      (LONG*)&faceVertexCounts[0], vtArray.data(), numFaceVertexCounts);
+    
+    _attributes["faceVertexCounts"] =
+      X2UExportAttribute(
+        mesh.CreateFaceVertexCountsAttr(VtValue(vtArray), true),
+        X2U_DATA_LONG,
+        X2U_PRECISION_SINGLE,
+        true);
+  }
+  
 
   // faceVertexIndices attribute
-  _attributes["faceVertexIndices"] =
-    X2UExportAttribute(
-      mesh.CreateFaceVertexIndicesAttr(VtValue(), true),
-      X2U_DATA_LONG,
-      X2U_PRECISION_SINGLE,
-      true);
+  {
+    CLongArray faceVertexIndices;
+    accessor.GetVertexIndices(faceVertexIndices);
+    size_t numFaceVertexIndices = faceVertexIndices.GetCount();
+    
+    VtArray<int> vtArray(numFaceVertexIndices);
+    X2UCopyData<LONG, int>(
+      (LONG*)&faceVertexIndices[0], vtArray.data(), numFaceVertexIndices);
+  
+    _attributes["faceVertexIndices"] =
+      X2UExportAttribute(
+        mesh.CreateFaceVertexIndicesAttr(VtValue(vtArray), true),
+        X2U_DATA_LONG,
+        X2U_PRECISION_SINGLE,
+        true);
+  }
+  
 
   // extent attribute
-  _attributes["extent"] =
-    X2UExportAttribute(
-      mesh.CreateExtentAttr(VtValue(), true),
-      X2U_DATA_VECTOR3,
-      X2U_PRECISION_DOUBLE,
-      true);
-
+  {
+    _attributes["extent"] =
+      X2UExportAttribute(
+        mesh.CreateExtentAttr(VtValue(), true),
+        X2U_DATA_VECTOR3,
+        X2U_PRECISION_DOUBLE,
+        true);
+  }
+  
   // display color
   GetDisplayColor();
  
@@ -61,7 +105,7 @@ void X2UExportMesh::Init(UsdStageRefPtr& stage, std::string path, const CRef& re
 void X2UExportMesh::WriteSample(double t)
 {
   UsdTimeCode timeCode(t);
-  X3DObject obj = GetXSI3DObject();
+  X3DObject obj(_ref);
   PolygonMesh mesh = obj.GetActivePrimitive().GetGeometry(t);
   CGeometryAccessor accessor = mesh.GetGeometryAccessor2
   (
@@ -75,6 +119,7 @@ void X2UExportMesh::WriteSample(double t)
     accessor.GetVertexPositions(points);
     
     size_t numPoints = accessor.GetVertexCount();
+    _bbox = ComputeBoundingBox<double>(&points[0], numPoints);
     X2UExportAttribute& item = GetAttribute("points");
     item.WriteSample((const void*)&points[0], numPoints, timeCode);
   }
@@ -99,7 +144,6 @@ void X2UExportMesh::WriteSample(double t)
 
   // extent 
   {
-    GetObjectBoundingBox(obj, _bbox);
     X2UExportAttribute& item = GetAttribute("extent");
     item.WriteSample((const void*)&_bbox.GetRange().GetMin()[0], 2, timeCode);
   }
@@ -137,13 +181,23 @@ void X2UExportMesh::GetDisplayColor()
 {
   _haveVertexColor = false;
   X3DObject obj(_ref);
-  LOG(obj.GetFullName() + L" get display color");
   // check for color from ICE Attribute
   ICEAttribute srcColorAttr = obj.GetActivePrimitive().GetICEAttributeFromName(L"Color");
   if (srcColorAttr.IsDefined())
   {
+    // create attribute
     UsdGeomPrimvar dstColorPrimvar = UsdGeomMesh(_prim).CreateDisplayColorPrimvar(UsdGeomTokens->vertex);
     UsdAttribute dstColorAttr = dstColorPrimvar.GetAttr();
+    
+    // set default value
+    CICEAttributeDataArrayColor4f colors;
+    srcColorAttr.GetDataArray(colors);
+    size_t numElements = colors.GetCount();
+    VtArray<GfVec3f> vtArray(numElements);
+    X2UCastTuppledData<GfVec4f, GfVec3f>((GfVec4f*)&colors[0], vtArray.data(), numElements, 4, 3);
+    dstColorAttr.Set(VtValue(vtArray));
+    
+    // store in attribute map
     _attributes["displayColor"] =
       X2UExportAttribute(
         dstColorAttr,
@@ -160,9 +214,21 @@ void X2UExportMesh::GetDisplayColor()
     ClusterProperty vertexColor = mesh.GetCurrentVertexColor();
     if (vertexColor.IsValid())
     {
-      UsdGeomPrimvar dstColorPrimvar = UsdGeomMesh(_prim).CreateDisplayColorPrimvar(UsdGeomTokens->faceVarying);
+      size_t numElements = vertexColor.GetElements().GetCount() / 4;
+      
+      // create attribute
+      UsdGeomPrimvar dstColorPrimvar = 
+        UsdGeomMesh(_prim).CreateDisplayColorPrimvar(UsdGeomTokens->faceVarying, numElements);
       UsdAttribute dstColorAttr = dstColorPrimvar.GetAttr();
       
+      // set default value
+      CFloatArray colors;
+      vertexColor.GetValues(colors);
+      VtArray<GfVec3f> vtArray(numElements);
+      X2UCastTuppledData<GfVec4f, GfVec3f>((GfVec4f*)&colors[0], vtArray.data(), numElements, 4, 3);
+      dstColorAttr.Set(VtValue(vtArray));
+      
+      // store in attribute map
       _attributes["displayColor"] =
         X2UExportAttribute(
           dstColorAttr,
@@ -179,13 +245,14 @@ void X2UExportMesh::GetDisplayColor()
   {
     Property displayProp;
     if (obj.GetPropertyFromName(L"Display", displayProp) == CStatus::OK) {
-      GfVec4f displayColor = GetDisplayColorFromShadingNetwork(obj);
+      GfVec3f displayColor = GetDisplayColorFromShadingNetwork(obj);
 
       _displayColorR = displayColor[0];
       _displayColorG = displayColor[1];
       _displayColorB = displayColor[2];
 
-      UsdAttribute dstColorAttr = UsdGeomMesh(_prim).CreateDisplayColorAttr();
+      UsdAttribute dstColorAttr = 
+        UsdGeomMesh(_prim).CreateDisplayColorAttr();
 
       _attributes["displayColor"] =
         X2UExportAttribute(

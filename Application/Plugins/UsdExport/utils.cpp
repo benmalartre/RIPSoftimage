@@ -2,17 +2,16 @@
 #include <xsi_material.h>
 #include <xsi_oglmaterial.h>
 
-GfVec4f GetDisplayColorFromShadingNetwork(const X3DObject& obj)
+GfVec3f GetDisplayColorFromShadingNetwork(const X3DObject& obj)
 {
   Material material = obj.GetMaterial();
   if (material.IsValid()) {
     OGLMaterial oglMaterial(material.GetOGLMaterial());
     CColor color = oglMaterial.GetDiffuse();
-    return GfVec4f(
+    return GfVec3f(
       color.r,
       color.g,
-      color.b,
-      color.a
+      color.b
     );
   }
 
