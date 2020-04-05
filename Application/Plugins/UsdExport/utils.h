@@ -8,8 +8,12 @@
 static const GfVec3f UNDEFINED_COLOR = { 1.f,0.25f,0.5f};
 
 GfVec3f GetDisplayColorFromShadingNetwork(const X3DObject& obj);
+GfVec3f GetDisplayColorFromWireframeColor(const X3DObject& obj);
 
 void GetObjectBoundingBox(const X3DObject& obj, GfBBox3d& bbox);
+
+void GetLocalTransformAtTime(const X3DObject& obj, GfMatrix4d& ioMatrix, double t = DBL_MAX);
+void GetGlobalTransformAtTime(const X3DObject& obj, GfMatrix4d& ioMatrix, double t = DBL_MAX);
 
 template<typename T>
 GfBBox3d ComputeBoundingBox(T* points, size_t numPoints)
@@ -37,7 +41,28 @@ GfBBox3d ComputeBoundingBox(T* points, size_t numPoints)
   return GfBBox3d(GfRange3d(bboxMin, bboxMax));
 }
 
+// matrix 3
+static void X2UConvertMatrix3FloatToDouble(const MATH::CMatrix3f& src, GfMatrix3d& dst)
+{
+  X2UCopyData<float, double>((float*)src.Get(), (double*)&dst, 9);
+}
 
+static void X2UConvertMatrix3DoubleToFloat(const MATH::CMatrix3& src, GfMatrix3f& dst)
+{
+  X2UCopyData<double, float>((double*)&src, dst.data(), 9);
+}
+
+static void X2UConvertMatrix3FloatToFloat(const MATH::CMatrix3f& src, GfMatrix3f& dst)
+{
+  memcpy((void*)&dst, (void*)&src, 9 * sizeof(float));
+}
+
+static void X2UConvertMatrix3DoubleToDouble(const MATH::CMatrix3& src, GfMatrix3d& dst)
+{
+  memcpy((void*)&dst, (void*)&src, 9 * sizeof(double));
+}
+
+// matrix 4 
 static void X2UConvertMatrix4FloatToDouble(const MATH::CMatrix4f& src, GfMatrix4d& dst)
 {
   X2UCopyData<float, double>((float*)src.Get(), (double*)&dst, 16);
@@ -50,7 +75,7 @@ static void X2UConvertMatrix4DoubleToFloat(const MATH::CMatrix4& src, GfMatrix4f
 
 static void X2UConvertMatrix4FloatToFloat(const MATH::CMatrix4f& src, GfMatrix4f& dst)
 {
-  memcpy((void*)&dst[0][0], (void*)src.Get(), 16 * sizeof(float));
+  memcpy((void*)&dst, (void*)&src, 16 * sizeof(float));
 }
 
 static void X2UConvertMatrix4DoubleToDouble(const MATH::CMatrix4& src, GfMatrix4d& dst)

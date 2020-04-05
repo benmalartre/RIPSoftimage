@@ -2,8 +2,9 @@
 #include "utils.h"
 
 X2UExportMesh::X2UExportMesh()
-  : _haveAuthoredNormals(false)
-  , _haveVertexColor(false)
+  : _haveNormals(false)
+  , _haveColors(false)
+  , _haveUVs(false)
 {
 }
 
@@ -29,12 +30,20 @@ void X2UExportMesh::Init(UsdStageRefPtr& stage, std::string path, const CRef& re
 
   // xform attribute
   {
-    MATH::CTransformation xfo = obj.GetKinematics().GetLocal().GetTransform();
-    MATH::CMatrix4 srcMatrix = xfo.GetMatrix4();
     GfMatrix4d dstMatrix;
-    X2UConvertMatrix4DoubleToDouble(srcMatrix, dstMatrix);
+    GetLocalTransformAtTime(obj, dstMatrix);
     _xformOp = mesh.AddTransformOp();
-    _xformOp.Set<GfMatrix4d>(dstMatrix);
+    UsdAttribute xfoAttr = _xformOp.GetAttr();
+
+    _attributes["xform"] =
+      X2UExportAttribute(
+        xfoAttr,
+        X2U_DATA_MATRIX4,
+        X2U_PRECISION_DOUBLE,
+        false);
+
+    // set default value
+    _attributes["xform"].WriteSample((const void*)&dstMatrix, 1, UsdTimeCode::Default());
   }
 
   // points attribute
@@ -44,16 +53,17 @@ void X2UExportMesh::Init(UsdStageRefPtr& stage, std::string path, const CRef& re
     size_t numPoints = accessor.GetVertexCount();
     
     _bbox = ComputeBoundingBox<double>(&points[0], numPoints);
-    VtArray<GfVec3f> vtArray(numPoints);
-    X2UCastTuppledData<GfVec3d, GfVec3f>(
-      (GfVec3d*)&points[0], vtArray.data(), numPoints, 3, 3);
-    
+
     _attributes["points"] =
       X2UExportAttribute(
-        mesh.CreatePointsAttr(VtValue(vtArray), true),
+        mesh.CreatePointsAttr(VtValue(), true),
         X2U_DATA_VECTOR3,
         X2U_PRECISION_DOUBLE,
         true);
+
+    // set default value
+    _attributes["points"].WriteSample((const void*)&points[0], 
+      numPoints, UsdTimeCode::Default());
   }
   
 
@@ -63,16 +73,16 @@ void X2UExportMesh::Init(UsdStageRefPtr& stage, std::string path, const CRef& re
     accessor.GetPolygonVerticesCount(faceVertexCounts);
     size_t numFaceVertexCounts = faceVertexCounts.GetCount();
     
-    VtArray<int> vtArray(numFaceVertexCounts);
-    X2UCopyData<LONG, int>(
-      (LONG*)&faceVertexCounts[0], vtArray.data(), numFaceVertexCounts);
-    
     _attributes["faceVertexCounts"] =
       X2UExportAttribute(
-        mesh.CreateFaceVertexCountsAttr(VtValue(vtArray), true),
+        mesh.CreateFaceVertexCountsAttr(VtValue(), true),
         X2U_DATA_LONG,
         X2U_PRECISION_SINGLE,
         true);
+
+    // set default value
+    _attributes["faceVertexCounts"].WriteSample((const void*)&faceVertexCounts[0], 
+      numFaceVertexCounts, UsdTimeCode::Default());
   }
   
 
@@ -81,17 +91,17 @@ void X2UExportMesh::Init(UsdStageRefPtr& stage, std::string path, const CRef& re
     CLongArray faceVertexIndices;
     accessor.GetVertexIndices(faceVertexIndices);
     size_t numFaceVertexIndices = faceVertexIndices.GetCount();
-    
-    VtArray<int> vtArray(numFaceVertexIndices);
-    X2UCopyData<LONG, int>(
-      (LONG*)&faceVertexIndices[0], vtArray.data(), numFaceVertexIndices);
   
     _attributes["faceVertexIndices"] =
       X2UExportAttribute(
-        mesh.CreateFaceVertexIndicesAttr(VtValue(vtArray), true),
+        mesh.CreateFaceVertexIndicesAttr(VtValue(), true),
         X2U_DATA_LONG,
         X2U_PRECISION_SINGLE,
         true);
+
+    // set default value
+    _attributes["faceVertexIndices"].WriteSample((const void*)&faceVertexIndices[0], 
+      numFaceVertexIndices, UsdTimeCode::Default());
   }
   
 
@@ -103,14 +113,22 @@ void X2UExportMesh::Init(UsdStageRefPtr& stage, std::string path, const CRef& re
         X2U_DATA_VECTOR3,
         X2U_PRECISION_DOUBLE,
         true);
+
+    // set default value
+    _attributes["extent"].WriteSample((const void*)&_bbox.GetRange().GetMin(), 
+      2, UsdTimeCode::Default());
   }
   
   // display color
-  GetDisplayColor();
+  InitDisplayColor();
+
+  // normals
+  InitNormals();
+
+  // uvs
+  InitUVs();
  
 }
-
-//ClusterProperty GetCurrentVertexColor( void ) const;
 
 void X2UExportMesh::WriteSample(double t)
 {
@@ -125,11 +143,10 @@ void X2UExportMesh::WriteSample(double t)
 
   // xform
   {
-    MATH::CTransformation xfo = obj.GetKinematics().GetLocal().GetTransform();
-    MATH::CMatrix4 srcMatrix = xfo.GetMatrix4();
     GfMatrix4d dstMatrix;
-    X2UConvertMatrix4DoubleToDouble(srcMatrix, dstMatrix);
-    _xformOp.Set<GfMatrix4d>(dstMatrix, timeCode);
+    GetLocalTransformAtTime(obj, dstMatrix, t);
+    X2UExportAttribute& item = GetAttribute("xform");
+    item.WriteSample((const void*)&dstMatrix, 1, timeCode);
   }
 
   // points
@@ -170,38 +187,64 @@ void X2UExportMesh::WriteSample(double t)
   // displayColor
   {
     X2UExportAttribute& item = GetAttribute("displayColor");
-    if (item.FromICE())
+    if (_haveColors)
     {
-      item.SetSourceAttribute(mesh.GetICEAttributeFromName("Color"));
-      item.WriteSample(timeCode);
-    }
-    else
-    {
-      if (_haveVertexColor)
+      if (item.FromICE())
       {
-        ClusterProperty vertexColor = mesh.GetCurrentVertexColor();
-        if (vertexColor.IsValid())
-        {
-          CFloatArray colors;
-          vertexColor.GetValues(colors);
-          item.WriteSample(&colors[0], colors.GetCount() / 4, timeCode);
-        }
+        item.SetSourceAttribute(mesh.GetICEAttributeFromName("Color"));
+        item.WriteSample(timeCode);
       }
       else
       {
-        GfVec4f color(_displayColorR, _displayColorG, _displayColorB, 1.f);
-        item.WriteSample(&color[0], 1, timeCode);
+        VtArray<GfVec3f> colors;
+        if(_GetNodesColors(mesh, colors))
+        {
+          item.WriteSample((void*)colors.data(), colors.size(), timeCode);
+        }
+      }
+    }
+   
+    else
+    {
+      /*
+      GfVec4f color(_displayColorR, _displayColorG, _displayColorB, 1.f);
+      item.WriteSample(&color[0], 1, timeCode);
+      */
+    }
+  }
+
+  // normals
+  {
+    X2UExportAttribute& item = GetAttribute("normals");
+    VtArray<GfVec3f> normals;
+    if (_GetNodesNormals(mesh, normals))
+    {
+      item.WriteSample((void*)normals.data(), normals.size(), timeCode);
+    }
+  }
+
+  // uvs
+  {
+    if (_haveUVs)
+    {
+      X2UExportAttribute& item = GetAttribute("uvs");
+      VtArray<GfVec2f> uvs;
+      if (_GetNodesUVs(mesh, uvs))
+      {
+        item.WriteSample((void*)uvs.data(), uvs.size(), timeCode);
       }
     }
   }
 }
 
-void X2UExportMesh::GetDisplayColor()
+void X2UExportMesh::InitDisplayColor()
 {
-  _haveVertexColor = false;
-  X3DObject obj(_ref);
+  _haveColors = false;
+  X3DObject xsiObj(_ref);
+  Primitive xsiPrim = xsiObj.GetActivePrimitive();
+
   // check for color from ICE Attribute
-  ICEAttribute srcColorAttr = obj.GetActivePrimitive().GetICEAttributeFromName(L"Color");
+  ICEAttribute srcColorAttr = xsiPrim.GetICEAttributeFromName(L"Color");
   if (srcColorAttr.IsDefined())
   {
     // create attribute
@@ -212,9 +255,6 @@ void X2UExportMesh::GetDisplayColor()
     CICEAttributeDataArrayColor4f colors;
     srcColorAttr.GetDataArray(colors);
     size_t numElements = colors.GetCount();
-    VtArray<GfVec3f> vtArray(numElements);
-    X2UCastTuppledData<GfVec4f, GfVec3f>((GfVec4f*)&colors[0], vtArray.data(), numElements, 4, 3);
-    dstColorAttr.Set(VtValue(vtArray));
     
     // store in attribute map
     _attributes["displayColor"] =
@@ -222,32 +262,49 @@ void X2UExportMesh::GetDisplayColor()
         dstColorAttr,
         srcColorAttr
       );
+
+    // set default value
+    _attributes["displayColor"].WriteSample((const void*)&colors[0], colors.GetCount(), UsdTimeCode::Default());
   
-    _haveVertexColor = true;
+    _haveColors = true;
   }
   
   // check for vertex color map
-  if (!_haveVertexColor)
+  if (!_haveColors)
   {
-    PolygonMesh mesh = X3DObject(_ref).GetActivePrimitive().GetGeometry();
-    ClusterProperty vertexColor = mesh.GetCurrentVertexColor();
-    if (vertexColor.IsValid())
+    VtArray<GfVec3f> dstColors;
+    PolygonMesh xsiMesh = xsiPrim.GetGeometry();
+    if(_GetNodesColors(xsiMesh, dstColors))
     {
-      size_t numElements = vertexColor.GetElements().GetCount() / 4;
-      
       // create attribute
       UsdGeomPrimvar dstColorPrimvar = 
-        UsdGeomMesh(_prim).CreateDisplayColorPrimvar(UsdGeomTokens->faceVarying, numElements);
+        UsdGeomMesh(_prim).CreateDisplayColorPrimvar(UsdGeomTokens->faceVarying, dstColors.size());
       UsdAttribute dstColorAttr = dstColorPrimvar.GetAttr();
       
-      // set default value
-      CFloatArray colors;
-      vertexColor.GetValues(colors);
-      VtArray<GfVec3f> vtArray(numElements);
-      X2UCastTuppledData<GfVec4f, GfVec3f>((GfVec4f*)&colors[0], vtArray.data(), numElements, 4, 3);
-      dstColorAttr.Set(VtValue(vtArray));
-      
       // store in attribute map
+      _attributes["displayColor"] =
+        X2UExportAttribute(
+          dstColorAttr,
+          X2U_DATA_VECTOR3,
+          X2U_PRECISION_SINGLE,
+          true);
+
+      // set default value
+      _attributes["displayColor"].WriteSample((const void*)dstColors.data(), dstColors.size(), UsdTimeCode::Default());
+
+      _haveColors = true;
+    }
+  }
+  
+  // fallback to diffuse color
+  if (!_haveColors)
+  {
+    Property displayProp;
+    if (xsiObj.GetPropertyFromName(L"Display", displayProp) == CStatus::OK) {
+      VtArray<GfVec3f> dstColors(1);
+      dstColors[0] = GetDisplayColorFromShadingNetwork(xsiObj);
+      UsdAttribute dstColorAttr = UsdGeomMesh(_prim).CreateDisplayColorAttr();
+
       _attributes["displayColor"] =
         X2UExportAttribute(
           dstColorAttr,
@@ -255,31 +312,149 @@ void X2UExportMesh::GetDisplayColor()
           X2U_PRECISION_SINGLE,
           true);
 
-      _haveVertexColor = true;
+      // set default value
+      _attributes["displayColor"].WriteSample((const void*)dstColors.data(), dstColors.size(), UsdTimeCode::Default());
     }
   }
+}
 
-  // fallback to wireframe color
-  if (!_haveVertexColor)
+void X2UExportMesh::InitNormals()
+{
+  _haveNormals = false;
+  X3DObject xsiObj(_ref);
+  Primitive xsiPrim = xsiObj.GetActivePrimitive();
+
+  VtArray<GfVec3f> dstNormals;
+  PolygonMesh xsiMesh = xsiPrim.GetGeometry();
+  if (_GetNodesNormals(xsiMesh, dstNormals))
   {
-    Property displayProp;
-    if (obj.GetPropertyFromName(L"Display", displayProp) == CStatus::OK) {
-      GfVec3f displayColor = GetDisplayColorFromShadingNetwork(obj);
+    // create attribute
+    UsdAttribute dstNormalsAttr = 
+      UsdGeomMesh(_prim).CreateNormalsAttr(VtValue(), true);
 
-      _displayColorR = displayColor[0];
-      _displayColorG = displayColor[1];
-      _displayColorB = displayColor[2];
+    // store in attribute map
+    _attributes["normals"] =
+      X2UExportAttribute(
+        dstNormalsAttr,
+        X2U_DATA_VECTOR3,
+        X2U_PRECISION_SINGLE,
+        true);
 
-      UsdAttribute dstColorAttr = 
-        UsdGeomMesh(_prim).CreateDisplayColorAttr();
+    // set default value
+    _attributes["normals"].WriteSample((const void*)dstNormals.data(), dstNormals.size(), UsdTimeCode::Default());
 
-      _attributes["displayColor"] =
-        X2UExportAttribute(
-          dstColorAttr,
-          X2U_DATA_COLOR4,
-          X2U_PRECISION_SINGLE,
-          false);
-    }
+    _haveNormals = true;
   }
+}
+
+void X2UExportMesh::InitUVs()
+{
+  _haveUVs = false;
+  X3DObject xsiObj(_ref);
+  Primitive xsiPrim = xsiObj.GetActivePrimitive();
+
+  VtArray<GfVec2f> dstUVs;
+  PolygonMesh xsiMesh = xsiPrim.GetGeometry();
+  if (_GetNodesUVs(xsiMesh, dstUVs))
+  {
+    // create uv primvar
+    UsdGeomPrimvar dstUVPrimvar = 
+      UsdGeomMesh(_prim).CreatePrimvar(TfToken("st"), SdfValueTypeNames->TexCoord2dArray, UsdGeomTokens->faceVarying);
+
+    // get attribute
+    UsdAttribute dstUVsAttr = dstUVPrimvar.GetAttr();
+
+    // store in attribute map
+    _attributes["uvs"] =
+      X2UExportAttribute(
+        dstUVsAttr,
+        X2U_DATA_VECTOR2,
+        X2U_PRECISION_SINGLE,
+        true);
+
+    // set default value
+    _attributes["uvs"].WriteSample((const void*)dstUVs.data(), dstUVs.size(), UsdTimeCode::Default());
+
+    _haveUVs = true;
+  }
+}
+
+
+bool X2UExportMesh::_GetNodesColors(const PolygonMesh& mesh, VtArray<GfVec3f>& ioArray)
+{
+  // geometry accessor
+  CGeometryAccessor accessor = mesh.GetGeometryAccessor();
+  CRefArray vertexColors = accessor.GetVertexColors();
+  if (vertexColors.GetCount())
+  {
+    ClusterProperty vertexColor = vertexColors[0];
+    CLongArray nodeIndices;
+    accessor.GetNodeIndices(nodeIndices);
+
+    // get the values
+    CFloatArray colorValues;
+    vertexColor.GetValues(colorValues);
+    size_t numElements = colorValues.GetCount() / 4;
+    ioArray.resize(numElements);
+    for (size_t i = 0; i < numElements; i++)
+    {
+      size_t nodeIndex = nodeIndices[i];
+      ioArray[i] = GfVec3f(
+        colorValues[nodeIndex * 4],
+        colorValues[nodeIndex * 4 + 1],
+        colorValues[nodeIndex * 4 + 2]
+      );
+    }
+    return true;
+  }
+  return false;
+}
+
+bool X2UExportMesh::_GetNodesNormals(const PolygonMesh& mesh, VtArray<GfVec3f>& ioArray)
+{
+  // geometry accessor
+  CGeometryAccessor accessor = mesh.GetGeometryAccessor();
+
+  // get the values
+  CFloatArray normals;
+  accessor.GetNodeNormals(normals);
+
+  CLongArray nodeIndices;
+  accessor.GetNodeIndices(nodeIndices);
+
+  size_t numElements = normals.GetCount() / 3;
+  ioArray.resize(numElements);
+  memcpy((void*)ioArray.data(), &normals[0], numElements * 3 * sizeof(float));
   
+  return true;
+
+}
+
+bool X2UExportMesh::_GetNodesUVs(const PolygonMesh& mesh, VtArray<GfVec2f>& ioArray)
+{
+  // geometry accessor
+  CGeometryAccessor accessor = mesh.GetGeometryAccessor();
+  CRefArray uvs = accessor.GetUVs();
+  if (uvs.GetCount())
+  {
+    ClusterProperty uv = uvs[0];
+    CLongArray nodeIndices;
+    accessor.GetNodeIndices(nodeIndices);
+
+    // get the values
+    CFloatArray uvValues;
+    uv.GetValues(uvValues);
+    size_t numElements = uvValues.GetCount() / 3;
+    ioArray.resize(numElements);
+    for (size_t i = 0; i < numElements; i++)
+    {
+      size_t nodeIndex = nodeIndices[i];
+      ioArray[i] = GfVec2f(
+        uvValues[nodeIndex * 3],
+        uvValues[nodeIndex * 3 + 1]
+      );
+    }
+    return true;
+  }
+  return false;
 }

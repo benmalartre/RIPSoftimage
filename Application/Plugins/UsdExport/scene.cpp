@@ -68,8 +68,10 @@ void X2UExportScene::Recurse(const CRef& ref, const std::string& parentPath)
       }
       else if (type == L"crvlist")
       {
-        UsdGeomBasisCurves curve = UsdGeomBasisCurves::Define(_stage, SdfPath(objPath));
-        //_prims.push_back({ ref, curve.GetPrim(), X2U_CURVE, objPath });
+        X2UExportCurve* curve = new X2UExportCurve();;
+        curve->Init(_stage, objPath, ref);
+
+        _prims.push_back(X2UExportCurveSharedPtr(curve));
       }
       else if (type == L"pointcloud")
       {

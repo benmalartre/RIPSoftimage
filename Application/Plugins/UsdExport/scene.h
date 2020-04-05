@@ -3,6 +3,7 @@
 #include "common.h"
 #include "prim.h"
 #include "mesh.h"
+#include "curve.h"
 
 // Scene
 class X2UExportScene {

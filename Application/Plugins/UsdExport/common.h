@@ -16,6 +16,9 @@
 #include <xsi_primitive.h>
 #include <xsi_polygonmesh.h>
 #include <xsi_geometryaccessor.h>
+#include <xsi_cluster.h>
+#include <xsi_nurbscurvelist.h>
+#include <xsi_nurbscurve.h>
 #include <xsi_clusterproperty.h>
 #include <xsi_polygonnode.h>
 #include <xsi_property.h>
@@ -101,6 +104,13 @@ enum X2UPrimvarInterpolation {
   X2U_INTERPOLATION_VARYING,
   X2U_INTERPOLATION_VERTEX,
   X2U_INTERPOLATION_FACEVARYING
+};
+
+enum X2UWriteOptions {
+  X2U_WRITE_COLORS  = 1,
+  X2U_WRITE_NORMALS = 2,
+  X2U_WRITE_UVS     = 4,
+  X2U_WRITE_CUSTOM  = 8
 };
 
 static size_t X2UGetDataSize(X2UDataType type, X2UDataPrecision precision)

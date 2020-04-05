@@ -21,7 +21,7 @@ public:
 
   virtual void Init(UsdStageRefPtr& stage, std::string path, const CRef& ref) = 0;
   virtual void WriteSample(double t )= 0;
-  virtual void GetDisplayColor() = 0;
+  virtual void InitDisplayColor() = 0;
 
   inline X2UExportPrimType GetType() { return _type; };
   inline X3DObject GetXSI3DObject() { return X3DObject(_ref); };
@@ -39,9 +39,6 @@ protected:
   X2UExportAttributeMap   _attributes;
   GfBBox3d                _bbox;
   UsdGeomXformOp          _xformOp;
-  float                   _displayColorR;
-  float                   _displayColorG;
-  float                   _displayColorB;
 };
 
 typedef std::shared_ptr<X2UExportPrim> X2UExportPrimSharedPtr;
