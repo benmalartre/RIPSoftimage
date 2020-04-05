@@ -30,6 +30,7 @@ public:
   bool IsConstant() { return _isConstant;};
   
   void WriteSample(const void* datas, uint32_t numElements, const UsdTimeCode& timeCode);
+  void WriteSample(const TfToken& token, const UsdTimeCode& timeCode);
   void WriteSample(const UsdTimeCode& timeCode);
   void WriteInterpolation();
   void SetSourceType(X2UDataType type, X2UDataPrecision precision);

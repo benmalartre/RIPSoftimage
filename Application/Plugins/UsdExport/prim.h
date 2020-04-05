@@ -11,12 +11,20 @@ public:
 
   virtual void Init(UsdStageRefPtr& stage) = 0;
   virtual void WriteSample(double t )= 0;
-  virtual void InitDisplayColor() = 0;
+  virtual void InitDisplayColorAttribute() = 0;
 
   inline X2UExportAttribute& GetAttribute(std::string name) {
     return _attributes[name];
   };
   inline UsdPrim GetPrim() { return _prim; };
+
+  void InitExtentAttribute();
+  void InitTransformAttribute();
+  void InitVisibilityAttribute();
+
+  void WriteExtentSample(double t);
+  void WriteTransformSample(double t);
+  void WriteVisibilitySample(double t);
 
 protected:
   CRef                    _ref;

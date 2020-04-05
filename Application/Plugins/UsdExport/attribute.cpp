@@ -814,7 +814,17 @@ void X2UExportAttribute::WriteSample(const void* datas, uint32_t numElements, co
   }
 
    _hash = hash;
+}
 
+void X2UExportAttribute::WriteSample(const TfToken& token, const UsdTimeCode& timeCode)
+{
+  uint64_t hash = token.Hash();
+
+  if (hash != _hash)
+  {
+    _dstAttribute.Set(token, timeCode);
+    _hash = hash;
+  }
 }
 
 void X2UExportAttribute::WriteSample(const UsdTimeCode& timeCode)

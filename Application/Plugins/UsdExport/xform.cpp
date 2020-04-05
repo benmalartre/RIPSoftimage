@@ -18,34 +18,10 @@ void X2UExportXform::Init(UsdStageRefPtr& stage)
   X3DObject obj(_ref);
 
   // xform attribute
-  {
-    GfMatrix4d dstMatrix;
-    GetLocalTransformAtTime(obj, dstMatrix);
-    _xformOp = xform.AddTransformOp();
-    UsdAttribute xfoAttr = _xformOp.GetAttr();
-
-    _attributes["xform"] =
-      X2UExportAttribute(
-        xfoAttr,
-        X2U_DATA_MATRIX4,
-        X2U_PRECISION_DOUBLE,
-        false);
-
-    // set default value
-    _attributes["xform"].WriteSample((const void*)&dstMatrix, 1, UsdTimeCode::Default());
-  }
+  InitTransformAttribute();
 
   // visibility attribute
-  {
-    /*
-    MATH::CTransformation xfo = obj.GetKinematics().GetLocal().GetTransform();
-    MATH::CMatrix4 srcMatrix = xfo.GetMatrix4();
-    GfMatrix4d dstMatrix;
-    X2UConvertMatrix4DoubleToDouble(srcMatrix, dstMatrix);
-    _xformOp = xform.AddTransformOp();
-    _xformOp.Set<GfMatrix4d>(dstMatrix);
-    */
-  }
+  InitVisibilityAttribute();
 
 }
 
@@ -55,15 +31,13 @@ void X2UExportXform::WriteSample(double t)
   X3DObject obj(_ref);
 
   // xform
-  {
-    GfMatrix4d dstMatrix;
-    GetLocalTransformAtTime(obj, dstMatrix, t);
-    X2UExportAttribute& item = GetAttribute("xform");
-    item.WriteSample((const void*)&dstMatrix, 1, timeCode);
-  }
+  WriteTransformSample(t);
+
+  // visibility
+  WriteVisibilitySample(t);
 }
 
-void X2UExportXform::InitDisplayColor()
+void X2UExportXform::InitDisplayColorAttribute()
 {
  
 }

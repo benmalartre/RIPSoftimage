@@ -16,12 +16,59 @@ X2UExportCurve::~X2UExportCurve()
 
 void X2UExportCurve::Init(UsdStageRefPtr& stage)
 {
-  UsdGeomBasisCurves curves = UsdGeomBasisCurves::Define(stage, SdfPath(_fullname));
-  _prim = curves.GetPrim();
+  UsdGeomBasisCurves crv = UsdGeomBasisCurves::Define(stage, SdfPath(_fullname));
+  _prim = crv.GetPrim();
 
   X3DObject obj(_ref);
 
+  // xform attribute
+  InitTransformAttribute();
+
+  // visibility attribute
+  InitVisibilityAttribute();
+
+
+  // points attribute
+
+  /*
+  // points attribute
+  {
+    CDoubleArray points;
+    accessor.GetVertexPositions(points);
+    size_t numPoints = accessor.GetVertexCount();
+
+    _bbox = ComputeBoundingBox<double>(&points[0], numPoints);
+
+    _attributes["points"] =
+      X2UExportAttribute(
+        mesh.CreatePointsAttr(VtValue(), true),
+        X2U_DATA_VECTOR3,
+        X2U_PRECISION_DOUBLE,
+        true);
+
+    // set default value
+    _attributes["points"].WriteSample((const void*)&points[0],
+      numPoints, UsdTimeCode::Default());
+  }
+  */
+
+  crv.CreatePointsAttr();
+  crv.CreateCurveVertexCountsAttr();
+  crv.CreateWrapAttr();
+
   NurbsCurveList curveList = obj.GetActivePrimitive().GetGeometry();
+  CNurbsCurveRefArray curves = curveList.GetCurves();
+  size_t numCurves = curves.GetCount();
+
+  crv.CreateCurveVertexCountsAttr();
+  for (size_t i = 0; i < curves.GetCount(); ++i)
+  {
+    NurbsCurve curve(curves[i]);
+    CKnotArray knots = curve.GetKnots();
+    CControlPointRefArray points = curve.GetControlPoints();
+
+    //crv.CreatePointsAttr()
+  }
   /*
   NurbsCurve curve = curveList.GetCurves().GetItem(0);
   CControlPointRefArray cpArray = curve.GetControlPoints();
@@ -194,7 +241,7 @@ void X2UExportCurve::WriteSample(double t)
   */
 }
 
-void X2UExportCurve::InitDisplayColor()
+void X2UExportCurve::InitDisplayColorAttribute()
 {
  
 }

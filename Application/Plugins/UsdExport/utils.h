@@ -7,19 +7,21 @@
 
 static const GfVec3f UNDEFINED_COLOR = { 1.f,0.25f,0.5f};
 
-bool IsModelReferenced(const Model& model);
-bool IsModelInstanced(const Model& model);
+bool X2UIsModelReferenced(const Model& model);
+bool X2UIsModelInstanced(const Model& model);
 
-GfVec3f GetDisplayColorFromShadingNetwork(const X3DObject& obj);
-GfVec3f GetDisplayColorFromWireframeColor(const X3DObject& obj);
+bool X2UGetObjectVisibility(const CRef& ref, double t = DBL_MAX);
 
-void GetObjectBoundingBox(const X3DObject& obj, GfBBox3d& bbox);
+GfVec3f X2UGetDisplayColorFromShadingNetwork(const X3DObject& obj);
+GfVec3f X2UGetDisplayColorFromWireframeColor(const X3DObject& obj);
 
-void GetLocalTransformAtTime(const X3DObject& obj, GfMatrix4d& ioMatrix, double t = DBL_MAX);
-void GetGlobalTransformAtTime(const X3DObject& obj, GfMatrix4d& ioMatrix, double t = DBL_MAX);
+void X2UGetObjectBoundingBox(const X3DObject& obj, GfBBox3d& bbox);
+
+void X2UGetLocalTransformAtTime(const X3DObject& obj, GfMatrix4d& ioMatrix, double t = DBL_MAX);
+void X2UGetGlobalTransformAtTime(const X3DObject& obj, GfMatrix4d& ioMatrix, double t = DBL_MAX);
 
 template<typename T>
-GfBBox3d ComputeBoundingBox(T* points, size_t numPoints)
+GfBBox3d X2UComputeBoundingBox(T* points, size_t numPoints)
 {
   GfVec3d bboxMin(
     std::numeric_limits<double>::max(),

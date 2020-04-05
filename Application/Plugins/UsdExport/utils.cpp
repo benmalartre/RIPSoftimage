@@ -3,21 +3,35 @@
 #include <xsi_oglmaterial.h>
 
 
-bool IsModelReferenced(Model& model)
+bool X2UIsModelReferenced(Model& model)
 {
   siModelKind kind = model.GetModelKind();
   if (kind == siModelKind_Reference)return true;
   else return false;
 }
 
-bool IsModelInstanced(Model& model)
+bool X2UIsModelInstanced(Model& model)
 {
   siModelKind kind = model.GetModelKind();
   if (kind == siModelKind_Instance)return true;
   else return false;
 }
 
-GfVec3f GetDisplayColorFromShadingNetwork(const X3DObject& obj)
+bool X2UGetObjectVisibility(const CRef& ref, double t)
+{
+  X3DObject obj(ref);
+  Property visibilityProp;
+  bool visibility = true;
+  obj.GetPropertyFromName(L"Visibility", visibilityProp);
+  if(visibilityProp.IsValid())
+  {
+    visibility = visibilityProp.GetParameterValue(L"ViewVis", t);
+  }
+
+  return visibility;
+}
+
+GfVec3f X2UGetDisplayColorFromShadingNetwork(const X3DObject& obj)
 {
   Material material = obj.GetMaterial();
   if (material.IsValid()) 
@@ -34,7 +48,7 @@ GfVec3f GetDisplayColorFromShadingNetwork(const X3DObject& obj)
   return UNDEFINED_COLOR;
 }
 
-GfVec3f GetDisplayColorFromWireframeColor(const X3DObject& obj)
+GfVec3f X2UGetDisplayColorFromWireframeColor(const X3DObject& obj)
 {
   Property displayProp;
   SceneItem item(obj);
@@ -51,7 +65,7 @@ GfVec3f GetDisplayColorFromWireframeColor(const X3DObject& obj)
   return UNDEFINED_COLOR;
 }
 
-void GetObjectBoundingBox(const X3DObject& obj, GfBBox3d& bbox) 
+void X2UGetObjectBoundingBox(const X3DObject& obj, GfBBox3d& bbox) 
 {
   GfVec3d bboxMin, bboxMax;
   obj.GetBoundingBox(
@@ -65,14 +79,14 @@ void GetObjectBoundingBox(const X3DObject& obj, GfBBox3d& bbox)
   bbox.SetRange(GfRange3d(bboxMin, bboxMax));
 }
 
-void GetLocalTransformAtTime(const X3DObject& obj, GfMatrix4d& ioMatrix, double t)
+void X2UGetLocalTransformAtTime(const X3DObject& obj, GfMatrix4d& ioMatrix, double t)
 {
   MATH::CTransformation xfo = obj.GetKinematics().GetLocal().GetTransform(t);
   MATH::CMatrix4 srcMatrix = xfo.GetMatrix4();
   X2UConvertMatrix4DoubleToDouble(srcMatrix, ioMatrix);
 }
 
-void GetGlobalTransformAtTime(const X3DObject& obj, GfMatrix4d& ioMatrix, double t)
+void X2UGetGlobalTransformAtTime(const X3DObject& obj, GfMatrix4d& ioMatrix, double t)
 {
   MATH::CTransformation xfo = obj.GetKinematics().GetGlobal().GetTransform(t);
   MATH::CMatrix4 srcMatrix = xfo.GetMatrix4();

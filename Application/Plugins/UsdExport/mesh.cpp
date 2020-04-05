@@ -26,31 +26,14 @@ void X2UExportMesh::Init(UsdStageRefPtr& stage)
     siSubdivisionRuleType::siCatmullClark
   );
 
-  // xform attribute
-  {
-    GfMatrix4d dstMatrix;
-    GetLocalTransformAtTime(obj, dstMatrix);
-    _xformOp = mesh.AddTransformOp();
-    UsdAttribute xfoAttr = _xformOp.GetAttr();
-
-    _attributes["xform"] =
-      X2UExportAttribute(
-        xfoAttr,
-        X2U_DATA_MATRIX4,
-        X2U_PRECISION_DOUBLE,
-        false);
-
-    // set default value
-    _attributes["xform"].WriteSample((const void*)&dstMatrix, 1, UsdTimeCode::Default());
-  }
-
+ 
   // points attribute
   {
     CDoubleArray points;
     accessor.GetVertexPositions(points);
     size_t numPoints = accessor.GetVertexCount();
     
-    _bbox = ComputeBoundingBox<double>(&points[0], numPoints);
+    _bbox = X2UComputeBoundingBox<double>(&points[0], numPoints);
 
     _attributes["points"] =
       X2UExportAttribute(
@@ -103,28 +86,23 @@ void X2UExportMesh::Init(UsdStageRefPtr& stage)
   }
   
 
-  // extent attribute
-  {
-    _attributes["extent"] =
-      X2UExportAttribute(
-        mesh.CreateExtentAttr(VtValue(), true),
-        X2U_DATA_VECTOR3,
-        X2U_PRECISION_DOUBLE,
-        true);
+  // xform attribute
+  InitTransformAttribute();
 
-    // set default value
-    _attributes["extent"].WriteSample((const void*)&_bbox.GetRange().GetMin(), 
-      2, UsdTimeCode::Default());
-  }
+  // visibility attribute
+  InitVisibilityAttribute();
+
+  // extent attribute
+  InitExtentAttribute();
   
   // display color
-  InitDisplayColor();
+  InitDisplayColorAttribute();
 
   // normals
-  InitNormals();
+  InitNormalsAttribute();
 
   // uvs
-  InitUVs();
+  InitUVsAttribute();
  
 }
 
@@ -140,12 +118,7 @@ void X2UExportMesh::WriteSample(double t)
   );
 
   // xform
-  {
-    GfMatrix4d dstMatrix;
-    GetLocalTransformAtTime(obj, dstMatrix, t);
-    X2UExportAttribute& item = GetAttribute("xform");
-    item.WriteSample((const void*)&dstMatrix, 1, timeCode);
-  }
+  WriteTransformSample(t);
 
   // points
   {
@@ -153,7 +126,7 @@ void X2UExportMesh::WriteSample(double t)
     accessor.GetVertexPositions(points);
     
     size_t numPoints = accessor.GetVertexCount();
-    _bbox = ComputeBoundingBox<double>(&points[0], numPoints);
+    _bbox = X2UComputeBoundingBox<double>(&points[0], numPoints);
     X2UExportAttribute& item = GetAttribute("points");
     item.WriteSample((const void*)&points[0], numPoints, timeCode);
   }
@@ -177,10 +150,7 @@ void X2UExportMesh::WriteSample(double t)
   }
 
   // extent 
-  {
-    X2UExportAttribute& item = GetAttribute("extent");
-    item.WriteSample((const void*)&_bbox.GetRange().GetMin()[0], 2, timeCode);
-  }
+  WriteExtentSample(t);
 
   // displayColor
   {
@@ -235,7 +205,7 @@ void X2UExportMesh::WriteSample(double t)
   }
 }
 
-void X2UExportMesh::InitDisplayColor()
+void X2UExportMesh::InitDisplayColorAttribute()
 {
   _haveColors = false;
   X3DObject xsiObj(_ref);
@@ -300,7 +270,7 @@ void X2UExportMesh::InitDisplayColor()
     Property displayProp;
     if (xsiObj.GetPropertyFromName(L"Display", displayProp) == CStatus::OK) {
       VtArray<GfVec3f> dstColors(1);
-      dstColors[0] = GetDisplayColorFromShadingNetwork(xsiObj);
+      dstColors[0] = X2UGetDisplayColorFromShadingNetwork(xsiObj);
       UsdAttribute dstColorAttr = UsdGeomMesh(_prim).CreateDisplayColorAttr();
 
       _attributes["displayColor"] =
@@ -316,7 +286,7 @@ void X2UExportMesh::InitDisplayColor()
   }
 }
 
-void X2UExportMesh::InitNormals()
+void X2UExportMesh::InitNormalsAttribute()
 {
   _haveNormals = false;
   X3DObject xsiObj(_ref);
@@ -345,7 +315,7 @@ void X2UExportMesh::InitNormals()
   }
 }
 
-void X2UExportMesh::InitUVs()
+void X2UExportMesh::InitUVsAttribute()
 {
   _haveUVs = false;
   X3DObject xsiObj(_ref);
