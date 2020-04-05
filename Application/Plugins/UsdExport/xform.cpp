@@ -1,7 +1,8 @@
 #include "xform.h"
 #include "utils.h"
 
-X2UExportXform::X2UExportXform()
+X2UExportXform::X2UExportXform(std::string path, const CRef& ref)
+  : X2UExportPrim(path, ref)
 {
 }
 
@@ -9,12 +10,9 @@ X2UExportXform::~X2UExportXform()
 { 
 }
 
-void X2UExportXform::Init(UsdStageRefPtr& stage, std::string path, const CRef& ref)
+void X2UExportXform::Init(UsdStageRefPtr& stage)
 {
-  UsdGeomXform xform = UsdGeomXform::Define(stage, SdfPath(path));
-  _type = X2U_XFORM;
-  _ref = ref;
-  _fullname = path;
+  UsdGeomXform xform = UsdGeomXform::Define(stage, SdfPath(_fullname));
   _prim = xform.GetPrim();
 
   X3DObject obj(_ref);

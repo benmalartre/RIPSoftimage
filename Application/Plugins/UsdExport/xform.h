@@ -6,10 +6,10 @@
 // Xform 
 class X2UExportXform final : public X2UExportPrim {
 public:
-  X2UExportXform();
+  X2UExportXform(std::string path, const CRef& ref);
   ~X2UExportXform();
 
-  void Init(UsdStageRefPtr& stage, std::string path, const CRef& ref) override;
+  void Init(UsdStageRefPtr& stage) override;
   void WriteSample(double t) override;
   void InitDisplayColor() override;
 };

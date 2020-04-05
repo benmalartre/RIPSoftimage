@@ -7,6 +7,9 @@
 
 static const GfVec3f UNDEFINED_COLOR = { 1.f,0.25f,0.5f};
 
+bool IsModelReferenced(const Model& model);
+bool IsModelInstanced(const Model& model);
+
 GfVec3f GetDisplayColorFromShadingNetwork(const X3DObject& obj);
 GfVec3f GetDisplayColorFromWireframeColor(const X3DObject& obj);
 

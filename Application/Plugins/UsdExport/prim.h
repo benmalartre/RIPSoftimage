@@ -3,36 +3,24 @@
 #include "common.h"
 #include "attribute.h"
 
-// Prim type
-enum X2UExportPrimType {
-  X2U_XFORM,
-  X2U_MESH,
-  X2U_POINT,
-  X2U_CURVE,
-  X2U_CAMERA,
-  X2U_LIGHT
-};
-
 // Prim base class
 class X2UExportPrim {
 public:
-  X2UExportPrim();
+  X2UExportPrim(std::string path, const CRef& ref);
   virtual ~X2UExportPrim();
 
-  virtual void Init(UsdStageRefPtr& stage, std::string path, const CRef& ref) = 0;
+  virtual void Init(UsdStageRefPtr& stage) = 0;
   virtual void WriteSample(double t )= 0;
   virtual void InitDisplayColor() = 0;
 
-  inline X2UExportPrimType GetType() { return _type; };
-  inline X3DObject GetXSI3DObject() { return X3DObject(_ref); };
   inline X2UExportAttribute& GetAttribute(std::string name) {
     return _attributes[name];
   };
+  inline UsdPrim GetPrim() { return _prim; };
 
 protected:
   CRef                    _ref;
   UsdPrim                 _prim;
-  X2UExportPrimType       _type;
   std::string             _fullname;
   X2UExportAttributeMap   _attributes;
   GfBBox3d                _bbox;

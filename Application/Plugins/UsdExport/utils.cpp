@@ -2,6 +2,21 @@
 #include <xsi_material.h>
 #include <xsi_oglmaterial.h>
 
+
+bool IsModelReferenced(Model& model)
+{
+  siModelKind kind = model.GetModelKind();
+  if (kind == siModelKind_Reference)return true;
+  else return false;
+}
+
+bool IsModelInstanced(Model& model)
+{
+  siModelKind kind = model.GetModelKind();
+  if (kind == siModelKind_Instance)return true;
+  else return false;
+}
+
 GfVec3f GetDisplayColorFromShadingNetwork(const X3DObject& obj)
 {
   Material material = obj.GetMaterial();

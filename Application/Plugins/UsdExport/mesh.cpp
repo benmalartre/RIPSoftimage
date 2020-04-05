@@ -1,8 +1,9 @@
 #include "mesh.h"
 #include "utils.h"
 
-X2UExportMesh::X2UExportMesh()
-  : _haveNormals(false)
+X2UExportMesh::X2UExportMesh(std::string path, const CRef& ref)
+  : X2UExportPrim(path, ref)
+  , _haveNormals(false)
   , _haveColors(false)
   , _haveUVs(false)
 {
@@ -12,12 +13,9 @@ X2UExportMesh::~X2UExportMesh()
 {
 }
 
-void X2UExportMesh::Init(UsdStageRefPtr& stage, std::string path, const CRef& ref)
+void X2UExportMesh::Init(UsdStageRefPtr& stage)
 {
-  UsdGeomMesh mesh = UsdGeomMesh::Define(stage, SdfPath(path));
-  _type = X2U_MESH;
-  _ref = ref;
-  _fullname = path;
+  UsdGeomMesh mesh = UsdGeomMesh::Define(stage, SdfPath(_fullname));
   _prim = mesh.GetPrim();
 
   X3DObject obj(_ref);

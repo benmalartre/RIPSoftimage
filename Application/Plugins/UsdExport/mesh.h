@@ -6,10 +6,10 @@
 // Mesh 
 class X2UExportMesh final : public X2UExportPrim {
 public:
-  X2UExportMesh();
+  X2UExportMesh(std::string path, const CRef& ref);
   ~X2UExportMesh();
 
-  void Init(UsdStageRefPtr& stage, std::string path, const CRef& ref) override;
+  void Init(UsdStageRefPtr& stage) override;
   void WriteSample(double t) override;
   void InitDisplayColor() override;
   void InitNormals();

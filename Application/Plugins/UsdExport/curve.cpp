@@ -1,8 +1,9 @@
 #include "curve.h"
 #include "utils.h"
 
-X2UExportCurve::X2UExportCurve()
-  : _haveNormals(false)
+X2UExportCurve::X2UExportCurve(std::string path, const CRef& ref)
+  : X2UExportPrim(path, ref)
+  , _haveNormals(false)
   , _haveWidths(false)
   , _haveColors(false)
   , _haveUVs(false)
@@ -13,12 +14,9 @@ X2UExportCurve::~X2UExportCurve()
 { 
 }
 
-void X2UExportCurve::Init(UsdStageRefPtr& stage, std::string path, const CRef& ref)
+void X2UExportCurve::Init(UsdStageRefPtr& stage)
 {
-  UsdGeomBasisCurves curves = UsdGeomBasisCurves::Define(stage, SdfPath(path));
-  _type = X2U_CURVE;
-  _ref = ref;
-  _fullname = path;
+  UsdGeomBasisCurves curves = UsdGeomBasisCurves::Define(stage, SdfPath(_fullname));
   _prim = curves.GetPrim();
 
   X3DObject obj(_ref);
