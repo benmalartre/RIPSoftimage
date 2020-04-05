@@ -106,12 +106,16 @@ void X2UExportModel::_Recurse(const CRef& ref, const std::string& parentPath)
 
 void X2UExportModel::_WriteSample(double t)
 {
+  _rootXform->WriteSample(t);
   UsdTimeCode timeCode(t);
   for (auto& prim : _prims)
   {
     prim->WriteSample(t);
   }
-  for (X2UExportModel& model : _models)model._WriteSample(t);
+  for (X2UExportModel& model : _models)
+  {
+    model._WriteSample(t);
+  }
 }
 
 /*
