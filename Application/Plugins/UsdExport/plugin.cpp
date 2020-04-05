@@ -25,19 +25,6 @@ SICALLBACK XSIUnloadPlugin( const PluginRegistrar& in_reg )
 }
 
 
-void HandleMesh(UsdStageRefPtr& stage, const  X3DObject& xsiObject, double time)
-{
-  Application app;
-  Geometry geom = xsiObject.GetActivePrimitive().GetGeometry(time);
-  app.LogMessage(L"Polymesh Full Name : " + xsiObject.GetFullName());
-  app.LogMessage(L"Polymesh Num Points : " +CString(geom.GetPoints().GetCount()));
-}
-
-void Handle3DObject(UsdStageRefPtr& stage, const X3DObject& xsiObject)
-{
-  Application app;
-}
-
 SICALLBACK UsdExport_Init( CRef& in_ctxt )
 {
   Context ctxt( in_ctxt );

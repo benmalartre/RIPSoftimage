@@ -26,7 +26,6 @@ public:
   inline void SetHash(uint64_t hash) { _hash = hash; };
   inline uint64_t GetHash() { return _hash; };
   inline bool FromICE() { return _fromICE; };
-  void Set(const VtValue& value, const UsdTimeCode& timeCode);
   void SetVariability(SdfVariability variability);
   bool IsConstant() { return _isConstant;};
   
@@ -39,10 +38,6 @@ public:
   void _GetSourceAttributeSpecs();
 
 private:
-  
-  siICENodeDataType               _ICEDataType;
-  siICENodeContextType            _ICEContextType;
-  siICENodeStructureType          _ICEStructureType;
   X2UDataType                     _srcDataType;
   X2UDataPrecision                _srcDataPrecision;
   SdfValueTypeName                _dstDataType;
@@ -53,7 +48,10 @@ private:
   X2UPrimvarInterpolation         _primvarInterpolation;
   bool                            _primvarIsIndexed;
   bool                            _isConstant;
-  bool                            _fromICE;                               
+  bool                            _fromICE;    
+  siICENodeDataType               _ICEDataType;
+  siICENodeContextType            _ICEContextType;
+  siICENodeStructureType          _ICEStructureType;
   uint64_t                        _hash;
 };
 

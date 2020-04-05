@@ -70,14 +70,10 @@ void X2UExportCurve::Init(UsdStageRefPtr& stage, std::string path, const CRef& r
     accessor.GetPolygonVerticesCount(faceVertexCounts);
     size_t numFaceVertexCounts = faceVertexCounts.GetCount();
 
-    VtArray<int> vtArray(numFaceVertexCounts);
-    X2UCopyData<LONG, int>(
-      (LONG*)&faceVertexCounts[0], vtArray.data(), numFaceVertexCounts);
-
     _attributes["faceVertexCounts"] =
       X2UExportAttribute(
         mesh.CreateFaceVertexCountsAttr(VtValue(vtArray), true),
-        X2U_DATA_LONG,
+        X2U_DATA_INT,
         X2U_PRECISION_SINGLE,
         true);
   }
@@ -89,14 +85,10 @@ void X2UExportCurve::Init(UsdStageRefPtr& stage, std::string path, const CRef& r
     accessor.GetVertexIndices(faceVertexIndices);
     size_t numFaceVertexIndices = faceVertexIndices.GetCount();
 
-    VtArray<int> vtArray(numFaceVertexIndices);
-    X2UCopyData<LONG, int>(
-      (LONG*)&faceVertexIndices[0], vtArray.data(), numFaceVertexIndices);
-
     _attributes["faceVertexIndices"] =
       X2UExportAttribute(
         mesh.CreateFaceVertexIndicesAttr(VtValue(vtArray), true),
-        X2U_DATA_LONG,
+        X2U_DATA_INT,
         X2U_PRECISION_SINGLE,
         true);
   }

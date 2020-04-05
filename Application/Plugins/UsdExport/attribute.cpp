@@ -62,7 +62,9 @@ void X2UExportAttribute::_GetSourceAttributeSpecs()
 
 void X2UExportAttribute::SetVariability(SdfVariability variability)
 {
-  //_dstAttribute.SetInterpolation()
+  if (variability == SdfVariability::SdfVariabilityUniform)
+    _isConstant = true;
+  else _isConstant = false;
 }
 
 void X2UExportAttribute::SetSourceType(X2UDataType type, X2UDataPrecision precision)
@@ -75,11 +77,6 @@ void X2UExportAttribute::SetSourceAttribute(const ICEAttribute& attribute)
 {
   _srcAttribute = attribute;
   _GetSourceAttributeSpecs();
-}
-
-void X2UExportAttribute::Set(const VtValue& value, const UsdTimeCode& timeCode)
-{
-  _dstAttribute.Set(value, timeCode);
 }
 
 
@@ -103,35 +100,57 @@ void X2UExportAttribute::WriteSample(const void* datas, uint32_t numElements, co
         break;
       }
 
-      case X2U_DATA_LONG:
-      {
-        VtArray<int> vtArray(numElements);
-        X2UCopyData<LONG, int>((LONG*)datas, vtArray.data(), numElements);
-        _dstAttribute.Set(VtValue(vtArray), timeCode);
-        break;
-      }
-
       case X2U_DATA_INT:
       {
-        VtArray<int> vtArray(numElements);
-        X2UCopyData<int, int>((int*)datas, vtArray.data(), numElements);
-        _dstAttribute.Set(VtValue(vtArray), timeCode);
+        TfToken typeNameToken = _dstAttribute.GetTypeName().GetAsToken();
+        if (typeNameToken == SdfValueTypeNames->Int64Array)
+        {
+          VtArray<int64_t> vtArray(numElements);
+          X2UCopyData<int, int64_t>((int*)datas, vtArray.data(), numElements);
+          _dstAttribute.Set(VtValue(vtArray), timeCode);
+        }
+        else if (typeNameToken == SdfValueTypeNames->IntArray)
+        {
+          VtArray<int> vtArray(numElements);
+          X2UCopyData<int, int>((int*)datas, vtArray.data(), numElements);
+          _dstAttribute.Set(VtValue(vtArray), timeCode);
+        }
         break;
       }
 
       case X2U_DATA_FLOAT:
       {
-        VtArray<float> vtArray(numElements);
-        X2UCopyData<float, float>((float*)datas, vtArray.data(), numElements);
-        _dstAttribute.Set(VtValue(vtArray), timeCode);
+        TfToken typeNameToken = _dstAttribute.GetTypeName().GetAsToken();
+        if (typeNameToken == SdfValueTypeNames->DoubleArray)
+        {
+          VtArray<double> vtArray(numElements);
+          X2UCopyData<float, double>((float*)datas, vtArray.data(), numElements);
+          _dstAttribute.Set(VtValue(vtArray), timeCode);
+        }
+        else if (typeNameToken == SdfValueTypeNames->FloatArray)
+        {
+          VtArray<float> vtArray(numElements);
+          X2UCopyData<float, float>((float*)datas, vtArray.data(), numElements);
+          _dstAttribute.Set(VtValue(vtArray), timeCode);
+        }
         break;
       }
 
       case X2U_DATA_DOUBLE:
       {
-        VtArray<double> vtArray(numElements);
-        X2UCopyData<double, double>((double*)datas, vtArray.data(), numElements);
-        _dstAttribute.Set(VtValue(vtArray), timeCode);
+        TfToken typeNameToken = _dstAttribute.GetTypeName().GetAsToken();
+        if (typeNameToken == SdfValueTypeNames->DoubleArray)
+        {
+          VtArray<double> vtArray(numElements);
+          X2UCopyData<double, double>((double*)datas, vtArray.data(), numElements);
+          _dstAttribute.Set(VtValue(vtArray), timeCode);
+        }
+        else if (typeNameToken == SdfValueTypeNames->FloatArray)
+        {
+          VtArray<float> vtArray(numElements);
+          X2UCopyData<double, float>((double*)datas, vtArray.data(), numElements);
+          _dstAttribute.Set(VtValue(vtArray), timeCode);
+        }
         break;
       }
 
@@ -409,16 +428,6 @@ void X2UExportAttribute::WriteSample(const void* datas, uint32_t numElements, co
         /*
         VtArray<bool> vtArray(numElements);
         X2UCopyData<bool, bool>((bool*)datas, vtArray.data(), numElements);
-        */
-        _dstAttribute.Set(VtValue(), timeCode);
-        break;
-      }
-
-      case X2U_DATA_LONG:
-      {
-        /*
-        VtArray<int> vtArray(numElements);
-        X2UCopyData<LONG, int>((LONG*)datas, vtArray.data(), numElements);
         */
         _dstAttribute.Set(VtValue(), timeCode);
         break;

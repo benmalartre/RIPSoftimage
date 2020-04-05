@@ -76,7 +76,7 @@ void X2UExportMesh::Init(UsdStageRefPtr& stage, std::string path, const CRef& re
     _attributes["faceVertexCounts"] =
       X2UExportAttribute(
         mesh.CreateFaceVertexCountsAttr(VtValue(), true),
-        X2U_DATA_LONG,
+        X2U_DATA_INT,
         X2U_PRECISION_SINGLE,
         true);
 
@@ -95,7 +95,7 @@ void X2UExportMesh::Init(UsdStageRefPtr& stage, std::string path, const CRef& re
     _attributes["faceVertexIndices"] =
       X2UExportAttribute(
         mesh.CreateFaceVertexIndicesAttr(VtValue(), true),
-        X2U_DATA_LONG,
+        X2U_DATA_INT,
         X2U_PRECISION_SINGLE,
         true);
 
