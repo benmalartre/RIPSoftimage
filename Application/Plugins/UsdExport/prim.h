@@ -29,8 +29,6 @@ public:
     return _attributes[name];
   };
 
- 
-
 protected:
   CRef                    _ref;
   UsdPrim                 _prim;
@@ -43,5 +41,4 @@ protected:
 
 typedef std::shared_ptr<X2UExportPrim> X2UExportPrimSharedPtr;
 typedef std::vector<X2UExportPrimSharedPtr> X2UExportPrimSharedPtrList;
-//typedef std::vector<X2UExportPrim> X2UExportPrimList;
 

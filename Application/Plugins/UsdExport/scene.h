@@ -2,13 +2,13 @@
 
 #include "common.h"
 #include "prim.h"
-#include "mesh.h"
-#include "curve.h"
 
 // Scene
 class X2UExportScene {
   public:
-    void Init(const std::string& folder, const std::string& filename, const CRef& root);
+    X2UExportScene(const std::string& folder, const std::string& filename, const CRef& root, bool isModel = false);
+    ~X2UExportScene();
+    void Init();
     void TimeInfos();
     void Process();
     void WriteSample(double t);
@@ -18,6 +18,9 @@ class X2UExportScene {
 
   private:
     X3DObject                       _root;
+    std::string                     _rootName;
+    UsdPrim                         _rootPrim;
+    bool                            _isModel;
     X2UExportTimeInfos              _timeInfos;
     X2UExportPrimSharedPtrList      _prims;
     UsdStageRefPtr                  _stage;

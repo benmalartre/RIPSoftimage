@@ -1,14 +1,48 @@
 #include "scene.h"
+#include "xform.h"
+#include "mesh.h"
+#include "curve.h"
+
+X2UExportScene::X2UExportScene(const std::string& folder, const std::string& filename,
+  const CRef& root, bool isModel)
+  : _folder(folder)
+  , _filename(filename)
+  , _root(root)
+  , _isModel(isModel)
+{
+  _rootName = "/";
+  _rootName += X3DObject(root).GetName().GetAsciiString();
+}
+
+X2UExportScene::~X2UExportScene()
+{
+}
 
 void X2UExportScene::Save()
 {
-  _stage->SetStartTimeCode(_timeInfos.startFrame);
-  _stage->SetEndTimeCode(_timeInfos.endFrame);
-  _stage->Save();
   for (X2UExportScene& model : _models)
   {
     model.Save();
   }
+
+  if (!_isModel)
+  {
+    _stage->SetStartTimeCode(_timeInfos.startFrame);
+    _stage->SetEndTimeCode(_timeInfos.endFrame);
+  }
+  _stage->SetDefaultPrim(_rootPrim);
+  _stage->Save();
+}
+
+
+void X2UExportScene::Init()
+{
+  if (!_isModel)TimeInfos();
+
+  // Create Usd stage for writing
+  _stage = UsdStage::CreateNew(_folder + "/" + _filename);
+  UsdGeomXform rootXform = UsdGeomXform::Define(_stage, SdfPath(_rootName));
+  _rootPrim = rootXform.GetPrim();
 }
 
 
@@ -36,10 +70,11 @@ void X2UExportScene::Recurse(const CRef& ref, const std::string& parentPath)
     CString type = obj.GetType();
     if (type == L"#model")
     {
-      X2UExportScene modelScene;
+      
       std::string modelFileName = ref.GetAsText().GetAsciiString();
       modelFileName += ".usda";
-      modelScene.Init(_folder, modelFileName, ref);
+      X2UExportScene modelScene(_folder, modelFileName, ref, true);
+      modelScene.Init();
 
       std::string modelPath = "";
 
@@ -56,21 +91,20 @@ void X2UExportScene::Recurse(const CRef& ref, const std::string& parentPath)
       std::string objPath = parentPath + "/" + obj.GetName().GetAsciiString();
       if (type == L"null")
       {
-        UsdGeomXform xform = UsdGeomXform::Define(_stage, SdfPath(objPath));
-        //_prims.push_back({ ref, xform.GetPrim(),  X2U_XFORM, objPath });
+        X2UExportXform* xform = new X2UExportXform();;
+        xform->Init(_stage, objPath, ref);
+        _prims.push_back(X2UExportXformSharedPtr(xform));
       }
       else if (type == L"polymsh")
       {
         X2UExportMesh* mesh = new X2UExportMesh();;
         mesh->Init(_stage, objPath, ref);
-
         _prims.push_back(X2UExportMeshSharedPtr(mesh));
       }
       else if (type == L"crvlist")
       {
         X2UExportCurve* curve = new X2UExportCurve();;
         curve->Init(_stage, objPath, ref);
-
         _prims.push_back(X2UExportCurveSharedPtr(curve));
       }
       else if (type == L"pointcloud")
@@ -93,20 +127,6 @@ void X2UExportScene::Recurse(const CRef& ref, const std::string& parentPath)
   }
 }
 
-void X2UExportScene::Init(const std::string& folder, const std::string& filename, const CRef& root)
-{
-  _root = root;
-
-  TimeInfos();
-
-  // Create Usd stage for writing
-  _folder = folder;
-  _filename = filename;
-
-  _stage = UsdStage::CreateNew(_folder + "/" + _filename);
-
-}
-
 void X2UExportScene::WriteSample(double t)
 {
   UsdTimeCode timeCode(t);
@@ -118,10 +138,8 @@ void X2UExportScene::WriteSample(double t)
 
 void X2UExportScene::Process()
 {
- 
-
   // first build usd structure
-  std::string rootPath = "";
+  std::string rootPath = _rootName;
   CRefArray children = _root.GetChildren();
   for (int j = 0; j < children.GetCount(); ++j)
   {
