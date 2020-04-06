@@ -1,0 +1,25 @@
+#usda 1.0
+(
+    defaultPrim = "Scene_Root"
+    endTimeCode = 24
+    startTimeCode = 1
+)
+
+
+over "RefTest" (
+    prepend references = @./Test.usda@
+)
+{
+	over "Cube_VertexColored"
+	{
+		token subdivisionScheme = "none"
+		color3f[] primvars:displayColor = [(0.124, 0.7, 1)]
+	}
+	
+	over "Cube_Default"
+	{
+		token subdivisionScheme = "none"
+		color3f[] primvars:displayColor = [(0.124, 0.7, 1)]
+	}
+}
+

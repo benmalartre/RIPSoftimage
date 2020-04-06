@@ -27,6 +27,11 @@ void X2UExportMesh::Init(UsdStageRefPtr& stage)
   );
 
  
+  // scheme attribute (test)
+  //{
+  //  UsdGeomMesh(_prim).CreateSubdivisionSchemeAttr(VtValue(UsdGeomTokens->none));
+  //}
+
   // points attribute
   {
     CDoubleArray points;
@@ -299,6 +304,9 @@ void X2UExportMesh::InitNormalsAttribute()
     // create attribute
     UsdAttribute dstNormalsAttr = 
       UsdGeomMesh(_prim).CreateNormalsAttr(VtValue(), true);
+    UsdGeomMesh(_prim).SetNormalsInterpolation(UsdGeomTokens->faceVarying);
+    //UsdGeomPrimvar dstNormalPrimvar(dstNormalsAttr);
+    //dstNormalPrimvar.SetInterpolation(UsdGeomTokens->faceVarying);
 
     // store in attribute map
     _attributes["normals"] =
@@ -390,12 +398,19 @@ bool X2UExportMesh::_GetNodesNormals(const PolygonMesh& mesh, VtArray<GfVec3f>& 
   CLongArray nodeIndices;
   accessor.GetNodeIndices(nodeIndices);
 
-  size_t numElements = normals.GetCount() / 3;
-  ioArray.resize(numElements);
-  memcpy((void*)ioArray.data(), &normals[0], numElements * 3 * sizeof(float));
+  size_t numNormals = normals.GetCount() / 3;
+  ioArray.resize(numNormals);
+  for (size_t i = 0; i < numNormals; i++)
+  {
+    size_t nodeIndex = nodeIndices[i];
+    ioArray[i] = GfVec3f(
+      normals[nodeIndex * 3],
+      normals[nodeIndex * 3 + 1],
+      normals[nodeIndex * 3 + 2]
+    );
+  }
   
   return true;
-
 }
 
 bool X2UExportMesh::_GetNodesUVs(const PolygonMesh& mesh, VtArray<GfVec2f>& ioArray)

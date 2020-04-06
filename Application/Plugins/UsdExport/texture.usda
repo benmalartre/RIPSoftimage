@@ -1,6 +1,6 @@
 #usda 1.0
 (
-	endTimeCode = 24
+    endTimeCode = 24
     startTimeCode = 1
     upAxis = "Y"
 )
@@ -9,27 +9,15 @@ def Xform "TexModel" (
     kind = "component"
 )
 {
-    def Mesh "card"
-    {
-        float3[] extent = [(-430, -145, 0), (430, 145, 0)]
-        int[] faceVertexCounts = [4]
-        int[] faceVertexIndices = [0, 1, 2, 3]
-        rel material:binding = </TexModel/boardMat>
-        point3f[] points = [(-400, -250, 0), (400, -250, 0), (400, 250, 0), (-400, 250, 0)]
-        texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1)] (
-            interpolation = "varying"
-        )
-    }
-
-    def Material "boardMat"
+    def Material "material"
     {
         token inputs:frame:stPrimvarName = "st"
-        token outputs:surface.connect = </TexModel/boardMat/PBRShader.outputs:surface>
+        token outputs:surface.connect = </TexModel/material/PBRShader.outputs:surface>
 
         def Shader "PBRShader"
         {
             uniform token info:id = "UsdPreviewSurface"
-            color3f inputs:diffuseColor.connect = </TexModel/boardMat/diffuseTexture.outputs:rgb>
+            color3f inputs:diffuseColor.connect = </TexModel/material/diffuseTexture.outputs:rgb>
             float inputs:metallic = 0
             float inputs:roughness = 0.4
             token outputs:surface
@@ -38,7 +26,7 @@ def Xform "TexModel" (
         def Shader "stReader"
         {
             uniform token info:id = "UsdPrimvarReader_float2"
-            token inputs:varname.connect = </TexModel/boardMat.inputs:frame:stPrimvarName>
+            token inputs:varname.connect = </TexModel/material.inputs:frame:stPrimvarName>
             float2 outputs:result
         }
 
@@ -46,7 +34,7 @@ def Xform "TexModel" (
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @texture.jpg@
-            float2 inputs:st.connect = </TexModel/boardMat/stReader.outputs:result>
+            float2 inputs:st.connect = </TexModel/material/stReader.outputs:result>
             float3 outputs:rgb
         }
     }
@@ -56,6 +44,6 @@ over "refSphere" (
     prepend references = @./Test.usda@
 )
 {
-    rel material:binding = </TexModel/boardMat>
+    rel material:binding = </TexModel/material>
 }
 
