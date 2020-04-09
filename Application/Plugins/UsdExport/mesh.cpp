@@ -62,7 +62,7 @@ void X2UExportMesh::Init(UsdStageRefPtr& stage)
     _attributes["faceVertexCounts"] =
       X2UExportAttribute(
         mesh.CreateFaceVertexCountsAttr(VtValue(), true),
-        X2U_DATA_INT,
+        X2U_DATA_LONG,
         X2U_PRECISION_SINGLE,
         true);
 
@@ -81,7 +81,7 @@ void X2UExportMesh::Init(UsdStageRefPtr& stage)
     _attributes["faceVertexIndices"] =
       X2UExportAttribute(
         mesh.CreateFaceVertexIndicesAttr(VtValue(), true),
-        X2U_DATA_INT,
+        X2U_DATA_LONG,
         X2U_PRECISION_SINGLE,
         true);
 
@@ -101,7 +101,7 @@ void X2UExportMesh::Init(UsdStageRefPtr& stage)
   InitExtentAttribute();
   
   // display color
-  InitDisplayColorAttribute();
+  InitColorAttribute();
 
   // normals
   InitNormalsAttribute();
@@ -158,33 +158,7 @@ void X2UExportMesh::WriteSample(double t)
   WriteExtentSample(t);
 
   // displayColor
-  {
-    X2UExportAttribute& item = GetAttribute("displayColor");
-    if (_haveColors)
-    {
-      if (item.FromICE())
-      {
-        item.SetSourceAttribute(mesh.GetICEAttributeFromName("Color"));
-        item.WriteSample(timeCode);
-      }
-      else
-      {
-        VtArray<GfVec3f> colors;
-        if(_GetNodesColors(mesh, colors))
-        {
-          item.WriteSample((void*)colors.data(), colors.size(), timeCode);
-        }
-      }
-    }
-   
-    else
-    {
-      /*
-      GfVec4f color(_displayColorR, _displayColorG, _displayColorB, 1.f);
-      item.WriteSample(&color[0], 1, timeCode);
-      */
-    }
-  }
+  WriteColorSample(mesh, t);
 
   // normals
   {
@@ -210,14 +184,15 @@ void X2UExportMesh::WriteSample(double t)
   }
 }
 
-void X2UExportMesh::InitDisplayColorAttribute()
+void X2UExportMesh::InitColorAttribute()
 {
   _haveColors = false;
   X3DObject xsiObj(_ref);
   Primitive xsiPrim = xsiObj.GetActivePrimitive();
+  Geometry xsiGeom = xsiPrim.GetGeometry();
 
   // check for color from ICE Attribute
-  ICEAttribute srcColorAttr = xsiPrim.GetICEAttributeFromName(L"Color");
+  ICEAttribute srcColorAttr = xsiGeom.GetICEAttributeFromName(L"Color");
   if (srcColorAttr.IsDefined())
   {
     // create attribute
@@ -233,11 +208,11 @@ void X2UExportMesh::InitDisplayColorAttribute()
     _attributes["displayColor"] =
       X2UExportAttribute(
         dstColorAttr,
-        srcColorAttr
+        L"Color"
       );
 
     // set default value
-    _attributes["displayColor"].WriteSample((const void*)&colors[0], colors.GetCount(), UsdTimeCode::Default());
+    _attributes["displayColor"].WriteSample((const void*)&colors[0], numElements, UsdTimeCode::Default());
   
     _haveColors = true;
   }
@@ -352,6 +327,34 @@ void X2UExportMesh::InitUVsAttribute()
     _attributes["uvs"].WriteSample((const void*)dstUVs.data(), dstUVs.size(), UsdTimeCode::Default());
 
     _haveUVs = true;
+  }
+}
+
+void X2UExportMesh::WriteColorSample(const PolygonMesh& mesh, double t)
+{
+  X2UExportAttribute& item = GetAttribute("displayColor");
+  if (_haveColors)
+  {
+    if (item.FromICE())
+    {
+      item.WriteSample(mesh, UsdTimeCode(t));
+    }
+    else
+    {
+      VtArray<GfVec3f> colors;
+      if (_GetNodesColors(mesh, colors))
+      {
+        item.WriteSample((void*)colors.data(), colors.size(), UsdTimeCode(t));
+      }
+    }
+  }
+
+  else
+  {
+    /*
+    GfVec4f color(_displayColorR, _displayColorG, _displayColorB, 1.f);
+    item.WriteSample(&color[0], 1, timeCode);
+    */
   }
 }
 

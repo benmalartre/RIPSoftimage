@@ -11,7 +11,6 @@ XSIPLUGINCALLBACK CStatus PointCacheOp_Define( CRef& in_ctxt )
 	CRef oPDef;
 	Factory oFactory = Application().GetFactory();
 	oCustomOperator = ctxt.GetSource();
-
 	oPDef = oFactory.CreateParamDef(L"CacheFile",CValue::siString ,L"");
 	oCustomOperator.AddParameter(oPDef,oParam);
 	oPDef = oFactory.CreateParamDef(L"CacheStartFrame",CValue::siInt4,siPersistable|siReadOnly,L"CacheStartFrame",L"CacheStartFrame",1l,-10000l,10000l,-1000l,1000l);
@@ -32,7 +31,6 @@ XSIPLUGINCALLBACK CStatus PointCacheOp_Define( CRef& in_ctxt )
 	oCustomOperator.AddParameter(oPDef,oParam);
 	oPDef = oFactory.CreateParamDef(L"HermiteBias",CValue::siFloat,siPersistable|siAnimatable,L"HermiteBias",L"HermiteBias",0l,-1l,1l,-1l ,1l);
 	oCustomOperator.AddParameter(oPDef,oParam);
-
 	oCustomOperator.PutAlwaysEvaluate(true);
 	oCustomOperator.PutDebug(0);
 	return CStatus::OK;
@@ -75,7 +73,9 @@ CStatus CPointCacheOp::Update(OperatorContext& in_ctxt)
 	CVector3Array inPos(inPoints.GetPositionArray());
 	long nbP = inPoints.GetCount();
 	CString inFilePath( in_ctxt.GetParameterValue(L"CacheFile"));
+  if (inFilePath == L"")return CStatus::OK;
 	inFilePath = CUtils::ResolvePath(inFilePath);
+
 
 	// Initialize Pointers
 	if(_position == NULL)CreatePointers(nbP);
@@ -267,7 +267,6 @@ void CPointCacheOp::DeletePointers()
 //////////////////////////////////////////////////////////////////////////////
 // Entry Points
 //////////////////////////////////////////////////////////////////////////////
-
 XSIPLUGINCALLBACK CStatus PointCacheOp_Init( CRef& in_ctx )
 {
 	Context ctx(in_ctx) ;	
@@ -287,8 +286,9 @@ XSIPLUGINCALLBACK CStatus PointCacheOp_Term( CRef& in_ctx)
 	return CStatus::OK;
 }
 
-XSIPLUGINCALLBACK CStatus bPointCacheOp_Update(CRef&	in_ctx)
+XSIPLUGINCALLBACK CStatus PointCacheOp_Update(CRef&	in_ctx)
 {
+  Application().LogMessage("POINT CACHE OP UPDATE");
 	OperatorContext ctx(in_ctx) ;
 	CValue::siPtrType pUserData = ctx.GetUserData();
 	CPointCacheOp* pThis = (CPointCacheOp*)pUserData;	

@@ -78,7 +78,7 @@ struct X2UExportTimeInfos {
 enum X2UDataType {
   X2U_DATA_NULL,
   X2U_DATA_BOOL,
-  X2U_DATA_INT,
+  X2U_DATA_LONG,
   X2U_DATA_FLOAT,
   X2U_DATA_DOUBLE,
   X2U_DATA_VECTOR2,
@@ -118,8 +118,8 @@ static size_t X2UGetDataSize(X2UDataType type, X2UDataPrecision precision)
   {
   case X2U_DATA_BOOL:
     return sizeof(bool);
-  case X2U_DATA_INT:
-    return sizeof(int);
+  case X2U_DATA_LONG:
+    return sizeof(LONG);
   case X2U_DATA_FLOAT:
     return sizeof(float);
   case X2U_DATA_DOUBLE:
@@ -177,6 +177,9 @@ static X2UDataType X2UDataTypeFromICEType(siICENodeDataType type)
   {
   case siICENodeDataBool:
     return X2U_DATA_BOOL;
+
+  case siICENodeDataLong:
+    return X2U_DATA_LONG;
 
   case siICENodeDataFloat:
     return X2U_DATA_FLOAT;

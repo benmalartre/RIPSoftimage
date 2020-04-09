@@ -21,7 +21,6 @@ public:
 
   void Init(UsdStageRefPtr& stage) override;
   void WriteSample(double t) override;
-  void InitDisplayColorAttribute() override;
 
   void InitFromNurbsCurve();
   //void InitFromStrands();

@@ -36,20 +36,3 @@ void X2UExportXform::WriteSample(double t)
   // visibility
   WriteVisibilitySample(t);
 }
-
-void X2UExportXform::InitDisplayColorAttribute()
-{
- 
-}
-
-/*
-void X2UExportCurve::GetNormals()
-{
-  _haveNormals = false;
-}
-
-void X2UExportCurve::GetUVs()
-{
-  _haveUVs = false;
-}
-*/

@@ -5,6 +5,7 @@
 #include "xform.h"
 #include "mesh.h"
 #include "curve.h"
+#include "points.h"
 
 // Model
 class X2UExportModel {

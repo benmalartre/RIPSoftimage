@@ -241,11 +241,17 @@ void X2UExportCurve::WriteSample(double t)
   */
 }
 
-void X2UExportCurve::InitDisplayColorAttribute()
+/*
+void X2UExportCurve::InitColorAttribute()
 {
  
 }
 
+void X2UExportCurve::WriteColorSample(double t)
+{
+
+}
+*/
 /*
 void X2UExportCurve::GetNormals()
 {

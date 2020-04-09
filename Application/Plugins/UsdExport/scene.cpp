@@ -69,6 +69,7 @@ void X2UExportScene::Process()
   for (double t = _timeInfos.startFrame; t <= _timeInfos.endFrame; t += _timeInfos.sampleRate)
   {
     playControl.PutParameterValue("Current", t);
+    Application().ExecuteCommand(L"Refresh", CValueArray(), CValue());
     _WriteSample(t);
   }
 }

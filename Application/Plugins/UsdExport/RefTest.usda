@@ -13,7 +13,10 @@ over "RefTest" (
 	over "Cube_VertexColored"
 	{
 		token subdivisionScheme = "none"
-		color3f[] primvars:displayColor = [(0.124, 0.7, 1)]
+		color3f[] primvars:displayColor = [(1,0, 0)](
+			elementSize = 1
+			interpolation = "constant"
+		)
 	}
 	
 	over "Cube_Default"

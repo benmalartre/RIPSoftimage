@@ -86,3 +86,39 @@ void X2UExportPrim::WriteVisibilitySample(double t)
   else item.WriteSample(UsdGeomTokens->invisible, UsdTimeCode(t));
 }
 
+bool X2UExportPrim::InitAttributeFromICE(
+  const Geometry& geom,
+  const CString& iceAttrName,
+  const CString& usdAttrName,
+  SdfValueTypeName usdDataType
+)
+{
+  ICEAttribute iceAttr = geom.GetICEAttributeFromName(iceAttrName);
+
+  if (iceAttr.IsValid())
+  {
+    UsdAttribute usdAttr = _prim.CreateAttribute(TfToken(usdAttrName.GetAsciiString()), usdDataType);
+
+    _attributes[usdAttrName.GetAsciiString()] =
+      X2UExportAttribute(
+        usdAttr,
+        iceAttrName
+      );
+    return true;
+  }
+    
+  else return false;
+}
+
+void X2UExportPrim::WriteSampleFromICE(const Geometry& geom, UsdTimeCode t, const std::string& attrName, size_t numElements)
+{
+  auto it = _attributes.find(attrName);
+  if (it != _attributes.end())
+  {
+    X2UExportAttribute attr = it->second;
+    if(numElements)it->second.WriteSample(geom, t);
+    else it->second.WriteEmptySample(t);
+  }
+}
+
+

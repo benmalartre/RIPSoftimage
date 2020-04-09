@@ -11,7 +11,6 @@ public:
 
   void Init(UsdStageRefPtr& stage) override;
   void WriteSample(double t) override;
-  void InitDisplayColorAttribute() override;
 };
 
 typedef std::shared_ptr<X2UExportXform> X2UExportXformSharedPtr;
