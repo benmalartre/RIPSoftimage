@@ -45,11 +45,8 @@ SICALLBACK UsdExport_Execute( CRef& in_ctxt )
 
   Application app;
  
-<<<<<<< HEAD
   std::string folder = "E:/Projects/RnD/USD_BUILD/assets";
-=======
-  std::string folder = "E:/Projects/Softimage/XSIWorkgroup/Application/Plugins/UsdExport";
->>>>>>> 48678e15845f92630eb30401ac68da8c9b23c42b
+
   std::string filename = "Test.usda";
 
   X2UExportScene exportScene(folder, filename, app.GetActiveSceneRoot().GetRef());

@@ -185,17 +185,7 @@ void X2UExportMesh::WriteSample(double t)
 void X2UExportMesh::InitColorAttribute()
 {
   _haveColors = false;
-<<<<<<< HEAD
   Geometry xsiGeom = _xPrim.GetGeometry();
-=======
-<<<<<<< HEAD
-  Geometry xsiGeom = _xPrim.GetGeometry();
-=======
-  X3DObject xsiObj(_ref);
-  Primitive xsiPrim = xsiObj.GetActivePrimitive();
-  Geometry xsiGeom = xsiPrim.GetGeometry();
->>>>>>> 33340c508fdb6d0031fe4ee59c86f29fc1234688
->>>>>>> 48678e15845f92630eb30401ac68da8c9b23c42b
 
   // check for color from ICE Attribute
   ICEAttribute srcColorAttr = xsiGeom.GetICEAttributeFromName(L"Color");
