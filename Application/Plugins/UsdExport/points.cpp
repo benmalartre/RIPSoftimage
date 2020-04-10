@@ -17,6 +17,11 @@ void X2UExportPoints::Init(UsdStageRefPtr& stage)
   _prim = points.GetPrim();
 
 <<<<<<< HEAD
+
+  Geometry geom = _xPrim.GetGeometry();
+  CRefArray iceAttributes = geom.GetICEAttributes();
+=======
+<<<<<<< HEAD
   Geometry geom = _xPrim.GetGeometry();
 
   CRefArray iceAttributes = geom.GetICEAttributes();
@@ -24,11 +29,28 @@ void X2UExportPoints::Init(UsdStageRefPtr& stage)
   X3DObject obj(_ref);
   Geometry geom = obj.GetActivePrimitive().GetGeometry();
 >>>>>>> 33340c508fdb6d0031fe4ee59c86f29fc1234688
+>>>>>>> 48678e15845f92630eb30401ac68da8c9b23c42b
 
   // get num points
   _GetNumPoints(geom);
 
   // points
+<<<<<<< HEAD
+  InitAttributeFromICE(geom, "PointPosition", "points", SdfValueTypeNames->Vector3fArray);
+  WriteSampleFromICE(geom, UsdTimeCode::Default(), "points");
+
+  // velocities
+  InitAttributeFromICE(geom, "PointVelocity", "velocities", SdfValueTypeNames->Vector3fArray);
+  WriteSampleFromICE(geom, UsdTimeCode::Default(), "velocities");
+
+  // ids
+  InitAttributeFromICE(geom, "ID", "ids", SdfValueTypeNames->Int64Array);
+  WriteSampleFromICE(geom, UsdTimeCode::Default(), "ids");
+
+  // widths
+  InitAttributeFromICE(geom, "Size", "widths", SdfValueTypeNames->FloatArray);
+  WriteSampleFromICE(geom, UsdTimeCode::Default(), "widths");
+=======
 <<<<<<< HEAD
   InitAttributeFromICE(geom, L"PointPosition", "points", SdfValueTypeNames->Vector3fArray);
   WriteSampleFromICE(geom, UsdTimeCode::Default(), "points");
@@ -65,6 +87,7 @@ void X2UExportPoints::Init(UsdStageRefPtr& stage)
   InitAttributeFromICE(geom, "Size", "widths", SdfValueTypeNames->FloatArray);
   WriteSampleFromICE(geom, UsdTimeCode::Default(), "widths", _numPoints);
 >>>>>>> 33340c508fdb6d0031fe4ee59c86f29fc1234688
+>>>>>>> 48678e15845f92630eb30401ac68da8c9b23c42b
 
   // colors
   InitColorAttribute(geom);
@@ -80,9 +103,12 @@ void X2UExportPoints::Init(UsdStageRefPtr& stage)
   InitVisibilityAttribute();
 
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
 
 =======
 >>>>>>> 33340c508fdb6d0031fe4ee59c86f29fc1234688
+>>>>>>> 48678e15845f92630eb30401ac68da8c9b23c42b
 }
 
 void X2UExportPoints::WriteSample(double t)
@@ -90,11 +116,22 @@ void X2UExportPoints::WriteSample(double t)
   
   UsdTimeCode timeCode(t);
 <<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+>>>>>>> 48678e15845f92630eb30401ac68da8c9b23c42b
   Geometry geom = _xPrim.GetGeometry(t, siConstructionModeSecondaryShape);
 
   bool topoChanged = _GetNumPoints(geom);
 
   WriteSampleFromICE(geom, timeCode, "points");
+<<<<<<< HEAD
+  WriteSampleFromICE(geom, timeCode, "velocities");
+  WriteSampleFromICE(geom, timeCode, "accelerations");
+  WriteSampleFromICE(geom, timeCode, "ids");
+  WriteSampleFromICE(geom, timeCode, "widths");
+  WriteSampleFromICE(geom, timeCode, "colors");
+=======
   //WriteSampleFromICE(geom, timeCode, "velocities");
   //WriteSampleFromICE(geom, timeCode, "accelerations");
   WriteSampleFromICE(geom, timeCode, "ids");
@@ -112,6 +149,7 @@ void X2UExportPoints::WriteSample(double t)
   WriteSampleFromICE(geom, timeCode, "widths", _numPoints);
   WriteSampleFromICE(geom, timeCode, "colors", _numPoints);
 >>>>>>> 33340c508fdb6d0031fe4ee59c86f29fc1234688
+>>>>>>> 48678e15845f92630eb30401ac68da8c9b23c42b
 
   // extent attribute
   _ComputeBoundingBox(geom);
@@ -123,10 +161,13 @@ void X2UExportPoints::WriteSample(double t)
   // visibility attribute
   WriteVisibilitySample(t);
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
 
 =======
   
 >>>>>>> 33340c508fdb6d0031fe4ee59c86f29fc1234688
+>>>>>>> 48678e15845f92630eb30401ac68da8c9b23c42b
 }
 
 bool X2UExportPoints::_GetNumPoints(const Geometry& geom)
@@ -134,8 +175,12 @@ bool X2UExportPoints::_GetNumPoints(const Geometry& geom)
 <<<<<<< HEAD
   ICEAttribute nbPointsAttr = geom.GetICEAttributeFromName(L"NbPoints");
 =======
+<<<<<<< HEAD
+  ICEAttribute nbPointsAttr = geom.GetICEAttributeFromName(L"NbPoints");
+=======
   ICEAttribute nbPointsAttr = geom.GetICEAttributeFromName("NbPoints");
 >>>>>>> 33340c508fdb6d0031fe4ee59c86f29fc1234688
+>>>>>>> 48678e15845f92630eb30401ac68da8c9b23c42b
   CICEAttributeDataArrayLong nbPoints;
   nbPointsAttr.GetDataArray(nbPoints);
   bool topoChanged = false;
@@ -149,11 +194,16 @@ void X2UExportPoints::_ComputeBoundingBox(const Geometry& geom)
   if (_numPoints)
   {
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 48678e15845f92630eb30401ac68da8c9b23c42b
     ICEAttribute pointPositionAttr = geom.GetICEAttributeFromName(L"PointPosition");
     CICEAttributeDataArrayVector3f pointPositions;
     pointPositionAttr.GetDataArray(pointPositions);
 
     _bbox = X2UComputeBoundingBox<float>(&pointPositions[0][0], _numPoints);
+<<<<<<< HEAD
+=======
 =======
     ICEAttribute pointPositionAttr = geom.GetICEAttributeFromName("PointPosition");
     CICEAttributeDataArrayVector3f pointPositions;
@@ -161,6 +211,7 @@ void X2UExportPoints::_ComputeBoundingBox(const Geometry& geom)
 
     _bbox = X2UComputeBoundingBox<float>((float*)&pointPositions[0], _numPoints);
 >>>>>>> 33340c508fdb6d0031fe4ee59c86f29fc1234688
+>>>>>>> 48678e15845f92630eb30401ac68da8c9b23c42b
   }
   else
     _bbox = GfBBox3d(GfRange3d(GfVec3d(0), GfVec3d(0)));
@@ -170,12 +221,17 @@ void X2UExportPoints::_ComputeBoundingBox(const Geometry& geom)
 void X2UExportPoints::InitColorAttribute(const Geometry& geom)
 {
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 48678e15845f92630eb30401ac68da8c9b23c42b
 
   CRefArray attributes = geom.GetICEAttributes();
   int iceAttrIndex;
   ICEAttribute iceAttr = X2UGetICEAttributeFromArray(attributes, L"Color", iceAttrIndex);
   bool havePointColor = false;
   if (iceAttrIndex>=0)
+<<<<<<< HEAD
+=======
 =======
   ICEAttribute pointColorAttr = geom.GetICEAttributeFromName(L"Color");
   UsdGeomPrimvar displayColorPrimvar =
@@ -203,6 +259,7 @@ void X2UExportPoints::InitColorAttribute(const Geometry& geom)
   bool havePointColor = false;
   if (pointColorAttr.IsValid())
 >>>>>>> 33340c508fdb6d0031fe4ee59c86f29fc1234688
+>>>>>>> 48678e15845f92630eb30401ac68da8c9b23c42b
   {
     UsdGeomPrimvar displayColorPrimvar =
       UsdGeomGprim(_prim).CreateDisplayColorPrimvar(UsdGeomTokens->vertex);
@@ -214,9 +271,14 @@ void X2UExportPoints::InitColorAttribute(const Geometry& geom)
         displayColorAttr,
 <<<<<<< HEAD
         iceAttrIndex
+
+=======
+<<<<<<< HEAD
+        iceAttrIndex
 =======
         L"Color"
 >>>>>>> 33340c508fdb6d0031fe4ee59c86f29fc1234688
+>>>>>>> 48678e15845f92630eb30401ac68da8c9b23c42b
       );
     
     // set default value
@@ -226,8 +288,12 @@ void X2UExportPoints::InitColorAttribute(const Geometry& geom)
 <<<<<<< HEAD
       iceAttr.GetDataArray(colors);
 =======
+<<<<<<< HEAD
+      iceAttr.GetDataArray(colors);
+=======
       pointColorAttr.GetDataArray(colors);
 >>>>>>> 33340c508fdb6d0031fe4ee59c86f29fc1234688
+>>>>>>> 48678e15845f92630eb30401ac68da8c9b23c42b
       size_t numElements = colors.GetCount();
       _attributes["colors"].WriteSample((const void*)&colors[0], numElements, UsdTimeCode::Default());
     }
@@ -240,16 +306,23 @@ void X2UExportPoints::InitColorAttribute(const Geometry& geom)
   {
     Property displayProp;
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 48678e15845f92630eb30401ac68da8c9b23c42b
 
     if (_xObj.GetPropertyFromName(L"Display", displayProp) == CStatus::OK) {
       VtArray<GfVec3f> dstColors(1);
       dstColors[0] = X2UGetDisplayColorFromShadingNetwork(_xObj);
+<<<<<<< HEAD
+
+=======
 =======
     X3DObject xsiObj(_ref);
     if (xsiObj.GetPropertyFromName(L"Display", displayProp) == CStatus::OK) {
       VtArray<GfVec3f> dstColors(1);
       dstColors[0] = X2UGetDisplayColorFromShadingNetwork(xsiObj);
 >>>>>>> 33340c508fdb6d0031fe4ee59c86f29fc1234688
+>>>>>>> 48678e15845f92630eb30401ac68da8c9b23c42b
       UsdAttribute dstColorAttr = UsdGeomMesh(_prim).CreateDisplayColorAttr();
 
       _attributes["colors"] =
@@ -265,9 +338,12 @@ void X2UExportPoints::InitColorAttribute(const Geometry& geom)
     havePointColor = true;
   }
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
  
 =======
   */
 >>>>>>> 33340c508fdb6d0031fe4ee59c86f29fc1234688
+>>>>>>> 48678e15845f92630eb30401ac68da8c9b23c42b
 }
 

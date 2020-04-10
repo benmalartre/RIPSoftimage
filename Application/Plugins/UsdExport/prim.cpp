@@ -94,24 +94,18 @@ bool X2UExportPrim::InitAttributeFromICE(
   SdfValueTypeName usdDataType
 )
 {
-<<<<<<< HEAD
+
   CRefArray attributes = geom.GetICEAttributes();
   int iceAttrIndex;
   ICEAttribute iceAttr = X2UGetICEAttributeFromArray(attributes, iceAttrName, iceAttrIndex);
 
   if (iceAttrIndex >= 0)
-=======
-  ICEAttribute iceAttr = geom.GetICEAttributeFromName(iceAttrName);
-
-  if (iceAttr.IsValid())
->>>>>>> 33340c508fdb6d0031fe4ee59c86f29fc1234688
   {
     UsdAttribute usdAttr = _prim.CreateAttribute(TfToken(usdAttrName.GetAsciiString()), usdDataType);
 
     _attributes[usdAttrName.GetAsciiString()] =
       X2UExportAttribute(
         usdAttr,
-<<<<<<< HEAD
         iceAttrIndex
       );
     return true;
@@ -124,28 +118,12 @@ bool X2UExportPrim::InitAttributeFromICE(
 }
 
 void X2UExportPrim::WriteSampleFromICE(const Geometry& geom, UsdTimeCode t, const std::string& attrName)
-=======
-        iceAttrName
-      );
-    return true;
-  }
-    
-  else return false;
-}
-
-void X2UExportPrim::WriteSampleFromICE(const Geometry& geom, UsdTimeCode t, const std::string& attrName, size_t numElements)
->>>>>>> 33340c508fdb6d0031fe4ee59c86f29fc1234688
 {
   auto it = _attributes.find(attrName);
   if (it != _attributes.end())
   {
     X2UExportAttribute attr = it->second;
-<<<<<<< HEAD
     it->second.WriteSample(geom, t);
-=======
-    if(numElements)it->second.WriteSample(geom, t);
-    else it->second.WriteEmptySample(t);
->>>>>>> 33340c508fdb6d0031fe4ee59c86f29fc1234688
   }
 }
 
