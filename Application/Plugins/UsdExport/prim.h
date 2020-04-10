@@ -31,7 +31,11 @@ public:
     const CString& usdAttrName,
     SdfValueTypeName usdDataType
   );
+<<<<<<< HEAD
   void WriteSampleFromICE(const Geometry& geom, UsdTimeCode t, const std::string& attrName);
+=======
+  void WriteSampleFromICE(const Geometry& geom, UsdTimeCode t, const std::string& attrName, size_t numElements);
+>>>>>>> 33340c508fdb6d0031fe4ee59c86f29fc1234688
 
 protected:
   X3DObject               _xObj;

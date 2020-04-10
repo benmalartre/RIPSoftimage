@@ -17,6 +17,7 @@ public:
   );
 
   X2UExportAttribute(
+<<<<<<< HEAD
     const UsdAttribute& dstAttr,
     const CString& srcAttrName,
     bool isArray=true
@@ -26,6 +27,10 @@ public:
     const UsdAttribute& dstAttr,
     const int srcAttrIndex,
     bool isArray = true
+=======
+    const UsdAttribute& dstAttr, 
+    const CString& srcAttrName
+>>>>>>> 33340c508fdb6d0031fe4ee59c86f29fc1234688
   );
 
   ~X2UExportAttribute();
@@ -49,7 +54,10 @@ private:
   X2UDataPrecision                _srcDataPrecision;
   SdfValueTypeName                _dstDataType;
   CString                         _srcAttributeName;
+<<<<<<< HEAD
   int                             _srcAttributeIndex;
+=======
+>>>>>>> 33340c508fdb6d0031fe4ee59c86f29fc1234688
   UsdAttribute                    _dstAttribute;
   bool                            _isArray;
   bool                            _isPrimvar;

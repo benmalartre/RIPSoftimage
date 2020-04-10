@@ -30,8 +30,12 @@ X2UExportAttribute::X2UExportAttribute(
 
 X2UExportAttribute::X2UExportAttribute(
   const UsdAttribute& dstAttr, 
+<<<<<<< HEAD
   const CString& srcAttrName,
   bool isArray)
+=======
+  const CString& srcAttrName)
+>>>>>>> 33340c508fdb6d0031fe4ee59c86f29fc1234688
   : _dstAttribute(dstAttr)
   , _srcAttributeName(srcAttrName)
   , _fromICE(true)
@@ -52,11 +56,14 @@ X2UExportAttribute::X2UExportAttribute(
 {
 }
 
+<<<<<<< HEAD
 X2UExportAttribute::~X2UExportAttribute()
 {
 
 }
 
+=======
+>>>>>>> 33340c508fdb6d0031fe4ee59c86f29fc1234688
 void X2UExportAttribute::SetVariability(SdfVariability variability)
 {
   if (variability == SdfVariability::SdfVariabilityUniform)
@@ -821,9 +828,13 @@ void X2UExportAttribute::WriteSample(const Geometry& geom, const UsdTimeCode& ti
 {
   //if (_isArray)
   {
+<<<<<<< HEAD
     CRefArray attributes = geom.GetICEAttributes();
     ICEAttribute srcAttribute = attributes[_srcAttributeIndex];
     if (srcAttribute.GetElementCount() == 0)return;
+=======
+    ICEAttribute srcAttribute = geom.GetICEAttributeFromName(_srcAttributeName);
+>>>>>>> 33340c508fdb6d0031fe4ee59c86f29fc1234688
     _srcDataType = X2UDataTypeFromICEType(srcAttribute.GetDataType());
     _srcDataPrecision = X2U_PRECISION_SINGLE;
 
