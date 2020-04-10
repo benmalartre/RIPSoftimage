@@ -11,9 +11,10 @@ public:
 
   void Init(UsdStageRefPtr& stage) override;
   void WriteSample(double t) override;
-  void InitDisplayColorAttribute() override;
+  void InitColorAttribute();
   void InitNormalsAttribute();
   void InitUVsAttribute();
+  void WriteColorSample(const PolygonMesh& mesh, double t);
 
   bool _GetNodesColors(const PolygonMesh& geom, VtArray<GfVec3f>& ioArray);
   bool _GetNodesNormals(const PolygonMesh& geom, VtArray<GfVec3f>& ioArray);

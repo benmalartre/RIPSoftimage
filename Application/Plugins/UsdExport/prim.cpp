@@ -4,8 +4,9 @@
 
 X2UExportPrim::X2UExportPrim(std::string path, const CRef& ref)
   : _fullname(path)
-  , _ref(ref)
 {
+  _xObj = X3DObject(ref);
+  _xPrim = _xObj.GetActivePrimitive();
 }
 
 X2UExportPrim::~X2UExportPrim()
@@ -31,7 +32,7 @@ void X2UExportPrim::InitExtentAttribute()
 void X2UExportPrim::InitTransformAttribute()
 {
   GfMatrix4d dstMatrix;
-  X2UGetLocalTransformAtTime(X3DObject(_ref), dstMatrix);
+  X2UGetLocalTransformAtTime(_xObj, dstMatrix);
   _xformOp = UsdGeomGprim(_prim).AddTransformOp();
   UsdAttribute xfoAttr = _xformOp.GetAttr();
 
@@ -48,7 +49,7 @@ void X2UExportPrim::InitTransformAttribute()
 
 void X2UExportPrim::InitVisibilityAttribute()
 {
-  bool visibility = X2UGetObjectVisibility(_ref);
+  bool visibility = X2UGetObjectVisibility(_xObj);
   UsdAttribute visibilityAttr = UsdGeomGprim(_prim).CreateVisibilityAttr();
 
   _attributes["visibility"] =
@@ -73,16 +74,56 @@ void X2UExportPrim::WriteExtentSample(double t)
 void X2UExportPrim::WriteTransformSample(double t)
 {
   GfMatrix4d dstMatrix;
-  X2UGetLocalTransformAtTime(X3DObject(_ref), dstMatrix, t);
+  X2UGetLocalTransformAtTime(_xObj, dstMatrix, t);
   X2UExportAttribute& item = GetAttribute("xform");
   item.WriteSample((const void*)&dstMatrix, 1, UsdTimeCode(t));
 }
 
 void X2UExportPrim::WriteVisibilitySample(double t)
 {
-  bool visibility = X2UGetObjectVisibility(_ref);
+  bool visibility = X2UGetObjectVisibility(_xObj);
   X2UExportAttribute& item = GetAttribute("visibility");
   if(visibility)item.WriteSample(UsdGeomTokens->inherited, UsdTimeCode(t));
   else item.WriteSample(UsdGeomTokens->invisible, UsdTimeCode(t));
 }
+
+bool X2UExportPrim::InitAttributeFromICE(
+  const Geometry& geom,
+  const CString& iceAttrName,
+  const CString& usdAttrName,
+  SdfValueTypeName usdDataType
+)
+{
+  CRefArray attributes = geom.GetICEAttributes();
+  int iceAttrIndex;
+  ICEAttribute iceAttr = X2UGetICEAttributeFromArray(attributes, iceAttrName, iceAttrIndex);
+
+  if (iceAttrIndex >= 0)
+  {
+    UsdAttribute usdAttr = _prim.CreateAttribute(TfToken(usdAttrName.GetAsciiString()), usdDataType);
+
+    _attributes[usdAttrName.GetAsciiString()] =
+      X2UExportAttribute(
+        usdAttr,
+        iceAttrIndex
+      );
+    return true;
+  }
+  else
+  {
+    LOG(iceAttrName + " NOT FOUND !!!");
+    return false;
+  }
+}
+
+void X2UExportPrim::WriteSampleFromICE(const Geometry& geom, UsdTimeCode t, const std::string& attrName)
+{
+  auto it = _attributes.find(attrName);
+  if (it != _attributes.end())
+  {
+    X2UExportAttribute attr = it->second;
+    it->second.WriteSample(geom, t);
+  }
+}
+
 

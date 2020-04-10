@@ -86,8 +86,9 @@ void X2UExportModel::_Recurse(const CRef& ref, const std::string& parentPath)
       }
       else if (type == L"pointcloud")
       {
-        UsdGeomPoints points = UsdGeomPoints::Define(_stage, SdfPath(objPath));
-        //_prims.push_back({ ref, points.GetPrim(), X2U_POINT, objPath });
+        X2UExportPoints* point = new X2UExportPoints(objPath, ref);;
+        point->Init(_stage);
+        _prims.push_back(X2UExportPointSharedPtr(point));
       }
       else if (type == L"camera")
       {

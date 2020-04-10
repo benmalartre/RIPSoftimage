@@ -10,7 +10,7 @@ static const GfVec3f UNDEFINED_COLOR = { 1.f,0.25f,0.5f};
 bool X2UIsModelReferenced(const Model& model);
 bool X2UIsModelInstanced(const Model& model);
 
-bool X2UGetObjectVisibility(const CRef& ref, double t = DBL_MAX);
+bool X2UGetObjectVisibility(const X3DObject& obj, double t = DBL_MAX);
 
 GfVec3f X2UGetDisplayColorFromShadingNetwork(const X3DObject& obj);
 GfVec3f X2UGetDisplayColorFromWireframeColor(const X3DObject& obj);
@@ -19,6 +19,10 @@ void X2UGetObjectBoundingBox(const X3DObject& obj, GfBBox3d& bbox);
 
 void X2UGetLocalTransformAtTime(const X3DObject& obj, GfMatrix4d& ioMatrix, double t = DBL_MAX);
 void X2UGetGlobalTransformAtTime(const X3DObject& obj, GfMatrix4d& ioMatrix, double t = DBL_MAX);
+void X2UGetLocalTransform(const X3DObject& obj, GfMatrix4d& ioMatrix);
+void X2UGetGlobalTransform(const X3DObject& obj, GfMatrix4d& ioMatrix);
+
+ICEAttribute X2UGetICEAttributeFromArray(CRefArray& attributes, const CString& name, int& index);
 
 template<typename T>
 GfBBox3d X2UComputeBoundingBox(T* points, size_t numPoints)

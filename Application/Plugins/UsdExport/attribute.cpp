@@ -3,21 +3,21 @@
 
 X2UExportAttribute::X2UExportAttribute()
   : _dstAttribute()
-  , _srcAttribute()
+  , _srcAttributeName("")
   , _fromICE(false)
   , _hash(0)
 {
 }
 
 X2UExportAttribute::X2UExportAttribute(
-  UsdAttribute& dst,
+  const UsdAttribute& dstAttr,
   X2UDataType type,
   X2UDataPrecision precision,
   bool isArray,
   bool isPrimvar,
   X2UPrimvarInterpolation interpolation
 )
-  : _dstAttribute(dst)
+  : _dstAttribute(dstAttr)
   , _srcDataType(type)
   , _srcDataPrecision(precision)
   , _isArray(isArray)
@@ -26,38 +26,35 @@ X2UExportAttribute::X2UExportAttribute(
   , _hash(0)
   , _fromICE(false)
 {
-  _GetDestinationAttributeSpecs();
 }
 
 X2UExportAttribute::X2UExportAttribute(
-  UsdAttribute& dst, 
-  ICEAttribute& src)
-  : _dstAttribute(dst)
-  , _srcAttribute(src)
+  const UsdAttribute& dstAttr, 
+  const CString& srcAttrName,
+  bool isArray)
+  : _dstAttribute(dstAttr)
+  , _srcAttributeName(srcAttrName)
   , _fromICE(true)
+  , _isArray(isArray)
   , _hash(0)
 {
-  _GetSourceAttributeSpecs();
-  _GetDestinationAttributeSpecs();
+}
+
+X2UExportAttribute::X2UExportAttribute(
+  const UsdAttribute& dstAttr,
+  const int srcAttrIndex,
+  bool isArray)
+  : _dstAttribute(dstAttr)
+  , _srcAttributeIndex(srcAttrIndex)
+  , _fromICE(true)
+  , _isArray(isArray)
+  , _hash(0)
+{
 }
 
 X2UExportAttribute::~X2UExportAttribute()
 {
 
-}
-
-void X2UExportAttribute::_GetDestinationAttributeSpecs()
-{
-
-}
-
-void X2UExportAttribute::_GetSourceAttributeSpecs()
-{
-  if(_srcAttribute.IsDefined())
-  {
-    _srcDataType = X2UDataTypeFromICEType(_srcAttribute.GetDataType());
-    _srcDataPrecision = X2U_PRECISION_SINGLE;
-  }
 }
 
 void X2UExportAttribute::SetVariability(SdfVariability variability)
@@ -72,13 +69,6 @@ void X2UExportAttribute::SetSourceType(X2UDataType type, X2UDataPrecision precis
   _srcDataType = type;
   _srcDataPrecision = precision;
 }
-
-void X2UExportAttribute::SetSourceAttribute(const ICEAttribute& attribute)
-{
-  _srcAttribute = attribute;
-  _GetSourceAttributeSpecs();
-}
-
 
 void X2UExportAttribute::WriteSample(const void* datas, uint32_t numElements, const UsdTimeCode& timeCode)
 {
@@ -100,19 +90,19 @@ void X2UExportAttribute::WriteSample(const void* datas, uint32_t numElements, co
         break;
       }
 
-      case X2U_DATA_INT:
+      case X2U_DATA_LONG:
       {
         TfToken typeNameToken = _dstAttribute.GetTypeName().GetAsToken();
         if (typeNameToken == SdfValueTypeNames->Int64Array)
         {
           VtArray<int64_t> vtArray(numElements);
-          X2UCopyData<int, int64_t>((int*)datas, vtArray.data(), numElements);
+          X2UCopyData<LONG, int64_t>((LONG*)datas, vtArray.data(), numElements);
           _dstAttribute.Set(VtValue(vtArray), timeCode);
         }
         else if (typeNameToken == SdfValueTypeNames->IntArray)
         {
           VtArray<int> vtArray(numElements);
-          X2UCopyData<int, int>((int*)datas, vtArray.data(), numElements);
+          X2UCopyData<LONG, int>((LONG*)datas, vtArray.data(), numElements);
           _dstAttribute.Set(VtValue(vtArray), timeCode);
         }
         break;
@@ -433,7 +423,7 @@ void X2UExportAttribute::WriteSample(const void* datas, uint32_t numElements, co
         break;
       }
 
-      case X2U_DATA_INT:
+      case X2U_DATA_LONG:
       {
         /*
         VtArray<int> vtArray(numElements);
@@ -827,11 +817,100 @@ void X2UExportAttribute::WriteSample(const TfToken& token, const UsdTimeCode& ti
   }
 }
 
-void X2UExportAttribute::WriteSample(const UsdTimeCode& timeCode)
+void X2UExportAttribute::WriteSample(const Geometry& geom, const UsdTimeCode& timeCode)
 {
   //if (_isArray)
   {
-    
+    CRefArray attributes = geom.GetICEAttributes();
+    ICEAttribute srcAttribute = attributes[_srcAttributeIndex];
+    if (srcAttribute.GetElementCount() == 0)return;
+    _srcDataType = X2UDataTypeFromICEType(srcAttribute.GetDataType());
+    _srcDataPrecision = X2U_PRECISION_SINGLE;
+
+    switch (_srcDataType)
+    {
+    case X2U_DATA_BOOL:
+    {
+      CICEAttributeDataArrayBool datas;
+      srcAttribute.GetDataArray(datas);
+      WriteSample((void*)&datas, datas.GetCount(), timeCode);
+      break;
+    }
+
+    case X2U_DATA_LONG:
+    {
+      CICEAttributeDataArrayLong datas;
+      srcAttribute.GetDataArray(datas);
+      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      break;
+    }
+
+    case X2U_DATA_FLOAT:
+    {
+      CICEAttributeDataArrayFloat datas;
+      srcAttribute.GetDataArray(datas);
+      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      break;
+    }
+      
+    case X2U_DATA_VECTOR2:
+    {
+      CICEAttributeDataArrayVector2f datas;
+      srcAttribute.GetDataArray(datas);
+      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      break;
+    }
+
+    case X2U_DATA_VECTOR3:
+    {
+      CICEAttributeDataArrayVector3f datas;
+      srcAttribute.GetDataArray(datas);
+      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      break;
+    }
+
+    case X2U_DATA_VECTOR4:
+    {
+      CICEAttributeDataArrayVector4f datas;
+      srcAttribute.GetDataArray(datas);
+      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      break;
+    }
+
+    case X2U_DATA_COLOR4:
+    {
+      CICEAttributeDataArrayColor4f datas;
+      srcAttribute.GetDataArray(datas);
+      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      break;
+    }
+
+    case X2U_DATA_MATRIX3:
+    {
+      CICEAttributeDataArrayMatrix3f datas;
+      srcAttribute.GetDataArray(datas);
+      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      break;
+    }
+
+    case X2U_DATA_MATRIX4:
+    {
+      CICEAttributeDataArrayMatrix3f datas;
+      srcAttribute.GetDataArray(datas);
+      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      break;
+    }
+    }
+  }
+}
+
+void X2UExportAttribute::WriteEmptySample(const UsdTimeCode& timeCode)
+{
+  LOG("WRITE FUCKIN EMPTY SAMPLE FOR " + _srcAttributeName);
+  /*
+  //if (_isArray)
+  {
+
     // get ICE data array
     _srcDataType = X2UDataTypeFromICEType(_srcAttribute.GetDataType());
     _srcDataPrecision = X2U_PRECISION_SINGLE;
@@ -842,7 +921,7 @@ void X2UExportAttribute::WriteSample(const UsdTimeCode& timeCode)
     {
       CICEAttributeDataArrayBool datas;
       _srcAttribute.GetDataArray(datas);
-      //WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      WriteSample((void*)&datas, datas.GetCount(), timeCode);
       break;
     }
     case X2U_DATA_FLOAT:
@@ -852,7 +931,7 @@ void X2UExportAttribute::WriteSample(const UsdTimeCode& timeCode)
       WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
       break;
     }
-      
+
     case X2U_DATA_VECTOR2:
     {
       CICEAttributeDataArrayVector2f datas;
@@ -902,6 +981,7 @@ void X2UExportAttribute::WriteSample(const UsdTimeCode& timeCode)
     }
     }
   }
+  */
 }
 
 void X2UExportAttribute::WriteInterpolation()

@@ -17,8 +17,9 @@ bool X2UIsModelInstanced(Model& model)
   else return false;
 }
 
-bool X2UGetObjectVisibility(const CRef& ref, double t)
+bool X2UGetObjectVisibility(const X3DObject& obj, double t)
 {
+  /*
   X3DObject obj(ref);
   Property visibilityProp;
   bool visibility = true;
@@ -29,6 +30,7 @@ bool X2UGetObjectVisibility(const CRef& ref, double t)
   }
 
   return visibility;
+  */ return true;
 }
 
 GfVec3f X2UGetDisplayColorFromShadingNetwork(const X3DObject& obj)
@@ -91,4 +93,34 @@ void X2UGetGlobalTransformAtTime(const X3DObject& obj, GfMatrix4d& ioMatrix, dou
   MATH::CTransformation xfo = obj.GetKinematics().GetGlobal().GetTransform(t);
   MATH::CMatrix4 srcMatrix = xfo.GetMatrix4();
   X2UConvertMatrix4DoubleToDouble(srcMatrix, ioMatrix);
+}
+
+void X2UGetLocalTransform(const X3DObject& obj, GfMatrix4d& ioMatrix)
+{
+  MATH::CTransformation xfo = obj.GetKinematics().GetLocal().GetTransform();
+  MATH::CMatrix4 srcMatrix = xfo.GetMatrix4();
+  X2UConvertMatrix4DoubleToDouble(srcMatrix, ioMatrix);
+}
+
+void X2UGetGlobalTransform(const X3DObject& obj, GfMatrix4d& ioMatrix)
+{
+  MATH::CTransformation xfo = obj.GetKinematics().GetGlobal().GetTransform();
+  MATH::CMatrix4 srcMatrix = xfo.GetMatrix4();
+  X2UConvertMatrix4DoubleToDouble(srcMatrix, ioMatrix);
+}
+
+
+ICEAttribute X2UGetICEAttributeFromArray(CRefArray& attributes, const CString& name, int& index)
+{
+  for (int i = 0; i < attributes.GetCount(); ++i)
+  {
+    ICEAttribute attribute(attributes[i]);
+    if (attribute.GetName() == name)
+    {
+      index = i;
+      return attribute;
+    }
+  }
+  index = -1;
+  return ICEAttribute();
 }

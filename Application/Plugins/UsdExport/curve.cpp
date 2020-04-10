@@ -19,8 +19,6 @@ void X2UExportCurve::Init(UsdStageRefPtr& stage)
   UsdGeomBasisCurves crv = UsdGeomBasisCurves::Define(stage, SdfPath(_fullname));
   _prim = crv.GetPrim();
 
-  X3DObject obj(_ref);
-
   // xform attribute
   InitTransformAttribute();
 
@@ -56,7 +54,7 @@ void X2UExportCurve::Init(UsdStageRefPtr& stage)
   crv.CreateCurveVertexCountsAttr();
   crv.CreateWrapAttr();
 
-  NurbsCurveList curveList = obj.GetActivePrimitive().GetGeometry();
+  NurbsCurveList curveList = _xPrim.GetGeometry();// DBL_MAX, siConstructionModeSecondaryShape);
   CNurbsCurveRefArray curves = curveList.GetCurves();
   size_t numCurves = curves.GetCount();
 
@@ -157,8 +155,7 @@ void X2UExportCurve::Init(UsdStageRefPtr& stage)
 void X2UExportCurve::WriteSample(double t)
 {
   UsdTimeCode timeCode(t);
-  X3DObject obj(_ref);
-  LOG("WRITE SAMPLE FOR CURVE : " + obj.GetFullName());
+  LOG("WRITE SAMPLE FOR CURVE : " + _xObj.GetFullName());
   /*
   PolygonMesh mesh = obj.GetActivePrimitive().GetGeometry(t);
   CGeometryAccessor accessor = mesh.GetGeometryAccessor2
@@ -241,11 +238,17 @@ void X2UExportCurve::WriteSample(double t)
   */
 }
 
-void X2UExportCurve::InitDisplayColorAttribute()
+/*
+void X2UExportCurve::InitColorAttribute()
 {
  
 }
 
+void X2UExportCurve::WriteColorSample(double t)
+{
+
+}
+*/
 /*
 void X2UExportCurve::GetNormals()
 {

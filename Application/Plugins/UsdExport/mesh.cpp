@@ -18,8 +18,7 @@ void X2UExportMesh::Init(UsdStageRefPtr& stage)
   UsdGeomMesh mesh = UsdGeomMesh::Define(stage, SdfPath(_fullname));
   _prim = mesh.GetPrim();
 
-  X3DObject obj(_ref);
-  PolygonMesh xsiMesh = obj.GetActivePrimitive().GetGeometry();
+  PolygonMesh xsiMesh = _xPrim.GetGeometry(DBL_MAX, siConstructionModeModeling);
   CGeometryAccessor accessor = xsiMesh.GetGeometryAccessor2
   (
     siConstructionMode::siConstructionModeModeling,
@@ -62,7 +61,7 @@ void X2UExportMesh::Init(UsdStageRefPtr& stage)
     _attributes["faceVertexCounts"] =
       X2UExportAttribute(
         mesh.CreateFaceVertexCountsAttr(VtValue(), true),
-        X2U_DATA_INT,
+        X2U_DATA_LONG,
         X2U_PRECISION_SINGLE,
         true);
 
@@ -81,7 +80,7 @@ void X2UExportMesh::Init(UsdStageRefPtr& stage)
     _attributes["faceVertexIndices"] =
       X2UExportAttribute(
         mesh.CreateFaceVertexIndicesAttr(VtValue(), true),
-        X2U_DATA_INT,
+        X2U_DATA_LONG,
         X2U_PRECISION_SINGLE,
         true);
 
@@ -101,7 +100,7 @@ void X2UExportMesh::Init(UsdStageRefPtr& stage)
   InitExtentAttribute();
   
   // display color
-  InitDisplayColorAttribute();
+  InitColorAttribute();
 
   // normals
   InitNormalsAttribute();
@@ -114,8 +113,7 @@ void X2UExportMesh::Init(UsdStageRefPtr& stage)
 void X2UExportMesh::WriteSample(double t)
 {
   UsdTimeCode timeCode(t);
-  X3DObject obj(_ref);
-  PolygonMesh mesh = obj.GetActivePrimitive().GetGeometry(t);
+  PolygonMesh mesh = _xPrim.GetGeometry(t);
   CGeometryAccessor accessor = mesh.GetGeometryAccessor2
   (
     siConstructionMode::siConstructionModeSecondaryShape,
@@ -158,33 +156,7 @@ void X2UExportMesh::WriteSample(double t)
   WriteExtentSample(t);
 
   // displayColor
-  {
-    X2UExportAttribute& item = GetAttribute("displayColor");
-    if (_haveColors)
-    {
-      if (item.FromICE())
-      {
-        item.SetSourceAttribute(mesh.GetICEAttributeFromName("Color"));
-        item.WriteSample(timeCode);
-      }
-      else
-      {
-        VtArray<GfVec3f> colors;
-        if(_GetNodesColors(mesh, colors))
-        {
-          item.WriteSample((void*)colors.data(), colors.size(), timeCode);
-        }
-      }
-    }
-   
-    else
-    {
-      /*
-      GfVec4f color(_displayColorR, _displayColorG, _displayColorB, 1.f);
-      item.WriteSample(&color[0], 1, timeCode);
-      */
-    }
-  }
+  WriteColorSample(mesh, t);
 
   // normals
   {
@@ -210,14 +182,13 @@ void X2UExportMesh::WriteSample(double t)
   }
 }
 
-void X2UExportMesh::InitDisplayColorAttribute()
+void X2UExportMesh::InitColorAttribute()
 {
   _haveColors = false;
-  X3DObject xsiObj(_ref);
-  Primitive xsiPrim = xsiObj.GetActivePrimitive();
+  Geometry xsiGeom = _xPrim.GetGeometry();
 
   // check for color from ICE Attribute
-  ICEAttribute srcColorAttr = xsiPrim.GetICEAttributeFromName(L"Color");
+  ICEAttribute srcColorAttr = xsiGeom.GetICEAttributeFromName(L"Color");
   if (srcColorAttr.IsDefined())
   {
     // create attribute
@@ -233,11 +204,11 @@ void X2UExportMesh::InitDisplayColorAttribute()
     _attributes["displayColor"] =
       X2UExportAttribute(
         dstColorAttr,
-        srcColorAttr
+        L"Color"
       );
 
     // set default value
-    _attributes["displayColor"].WriteSample((const void*)&colors[0], colors.GetCount(), UsdTimeCode::Default());
+    _attributes["displayColor"].WriteSample((const void*)&colors[0], numElements, UsdTimeCode::Default());
   
     _haveColors = true;
   }
@@ -246,7 +217,7 @@ void X2UExportMesh::InitDisplayColorAttribute()
   if (!_haveColors)
   {
     VtArray<GfVec3f> dstColors;
-    PolygonMesh xsiMesh = xsiPrim.GetGeometry();
+    PolygonMesh xsiMesh(xsiGeom);
     if(_GetNodesColors(xsiMesh, dstColors))
     {
       // create attribute
@@ -273,9 +244,9 @@ void X2UExportMesh::InitDisplayColorAttribute()
   if (!_haveColors)
   {
     Property displayProp;
-    if (xsiObj.GetPropertyFromName(L"Display", displayProp) == CStatus::OK) {
+    if (_xObj.GetPropertyFromName(L"Display", displayProp) == CStatus::OK) {
       VtArray<GfVec3f> dstColors(1);
-      dstColors[0] = X2UGetDisplayColorFromShadingNetwork(xsiObj);
+      dstColors[0] = X2UGetDisplayColorFromShadingNetwork(_xObj);
       UsdAttribute dstColorAttr = UsdGeomMesh(_prim).CreateDisplayColorAttr();
 
       _attributes["displayColor"] =
@@ -294,11 +265,9 @@ void X2UExportMesh::InitDisplayColorAttribute()
 void X2UExportMesh::InitNormalsAttribute()
 {
   _haveNormals = false;
-  X3DObject xsiObj(_ref);
-  Primitive xsiPrim = xsiObj.GetActivePrimitive();
 
   VtArray<GfVec3f> dstNormals;
-  PolygonMesh xsiMesh = xsiPrim.GetGeometry();
+  PolygonMesh xsiMesh = _xPrim.GetGeometry();
   if (_GetNodesNormals(xsiMesh, dstNormals))
   {
     // create attribute
@@ -326,11 +295,9 @@ void X2UExportMesh::InitNormalsAttribute()
 void X2UExportMesh::InitUVsAttribute()
 {
   _haveUVs = false;
-  X3DObject xsiObj(_ref);
-  Primitive xsiPrim = xsiObj.GetActivePrimitive();
 
   VtArray<GfVec2f> dstUVs;
-  PolygonMesh xsiMesh = xsiPrim.GetGeometry();
+  PolygonMesh xsiMesh = _xPrim.GetGeometry();
   if (_GetNodesUVs(xsiMesh, dstUVs))
   {
     // create uv primvar
@@ -352,6 +319,34 @@ void X2UExportMesh::InitUVsAttribute()
     _attributes["uvs"].WriteSample((const void*)dstUVs.data(), dstUVs.size(), UsdTimeCode::Default());
 
     _haveUVs = true;
+  }
+}
+
+void X2UExportMesh::WriteColorSample(const PolygonMesh& mesh, double t)
+{
+  X2UExportAttribute& item = GetAttribute("displayColor");
+  if (_haveColors)
+  {
+    if (item.FromICE())
+    {
+      item.WriteSample(mesh, UsdTimeCode(t));
+    }
+    else
+    {
+      VtArray<GfVec3f> colors;
+      if (_GetNodesColors(mesh, colors))
+      {
+        item.WriteSample((void*)colors.data(), colors.size(), UsdTimeCode(t));
+      }
+    }
+  }
+
+  else
+  {
+    /*
+    GfVec4f color(_displayColorR, _displayColorG, _displayColorB, 1.f);
+    item.WriteSample(&color[0], 1, timeCode);
+    */
   }
 }
 

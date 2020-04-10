@@ -15,8 +15,6 @@ void X2UExportXform::Init(UsdStageRefPtr& stage)
   UsdGeomXform xform = UsdGeomXform::Define(stage, SdfPath(_fullname));
   _prim = xform.GetPrim();
 
-  X3DObject obj(_ref);
-
   // xform attribute
   InitTransformAttribute();
 
@@ -28,7 +26,6 @@ void X2UExportXform::Init(UsdStageRefPtr& stage)
 void X2UExportXform::WriteSample(double t)
 {
   UsdTimeCode timeCode(t);
-  X3DObject obj(_ref);
 
   // xform
   WriteTransformSample(t);
@@ -36,20 +33,3 @@ void X2UExportXform::WriteSample(double t)
   // visibility
   WriteVisibilitySample(t);
 }
-
-void X2UExportXform::InitDisplayColorAttribute()
-{
- 
-}
-
-/*
-void X2UExportCurve::GetNormals()
-{
-  _haveNormals = false;
-}
-
-void X2UExportCurve::GetUVs()
-{
-  _haveUVs = false;
-}
-*/

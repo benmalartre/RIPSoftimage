@@ -19,6 +19,7 @@ void X2UExportScene::Save()
 
   _stage->SetStartTimeCode(_timeInfos.startFrame);
   _stage->SetEndTimeCode(_timeInfos.endFrame);
+  _stage->SetFramesPerSecond(_timeInfos.framesPerSecond);
  
   _stage->SetDefaultPrim(_rootXform->GetPrim());
   _stage->Save();
@@ -47,8 +48,36 @@ void X2UExportScene::TimeInfos()
   // The PlayControl property set is stored with scene data under the project
   Property playControl = project.GetProperties().GetItem(L"Play Control");
 
-  _timeInfos.startFrame = 1;// playControl.GetParameterValue(L"In");
-  _timeInfos.endFrame = 24;// playControl.GetParameterValue(L"Out");
+  _timeInfos.startFrame = playControl.GetParameterValue(L"In");
+  _timeInfos.endFrame = playControl.GetParameterValue(L"Out");
+  switch ((int)playControl.GetParameterValue(L"Format"))
+  {
+  case 13:
+    _timeInfos.framesPerSecond = 23.976;
+    break;
+  case 7:
+    _timeInfos.framesPerSecond = 24.0; // FILM
+    break;
+  case 8:
+    _timeInfos.framesPerSecond = 25.0; // PAL
+    break;
+  case 10:
+    _timeInfos.framesPerSecond = 29.97; // NTSC
+    break;
+  case 19:
+    _timeInfos.framesPerSecond = 30;
+    break;
+  case 25:
+    _timeInfos.framesPerSecond = 59.94;
+    break;
+  case 11:
+    _timeInfos.framesPerSecond = playControl.GetParameterValue(L"Rate");
+    break;
+  default:
+    _timeInfos.framesPerSecond = 24.0; // FILM
+    break;
+  }
+  
   _timeInfos.sampleRate = 1;
 }
 
@@ -69,6 +98,7 @@ void X2UExportScene::Process()
   for (double t = _timeInfos.startFrame; t <= _timeInfos.endFrame; t += _timeInfos.sampleRate)
   {
     playControl.PutParameterValue("Current", t);
+    Application().ExecuteCommand(L"Refresh", CValueArray(), CValue());
     _WriteSample(t);
   }
 }

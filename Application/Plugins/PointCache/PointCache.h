@@ -32,7 +32,14 @@ using namespace XSI::MATH;
 class CPointCacheOp  
 {  
 public:
-	CPointCacheOp(){_position = NULL;_previous = NULL;_next = NULL;_previous2 = NULL;_next2 = NULL;_blobdatas = NULL;};
+  CPointCacheOp()
+    : _position(NULL)
+    , _previous(NULL)
+    , _next(NULL)
+    , _previous2(NULL)
+    , _next2(NULL)
+    , _blobdatas(NULL) {};
+
 	~CPointCacheOp(){};
 
 	CStatus Update(OperatorContext&);

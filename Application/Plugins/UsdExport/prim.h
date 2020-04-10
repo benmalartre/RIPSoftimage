@@ -11,7 +11,6 @@ public:
 
   virtual void Init(UsdStageRefPtr& stage) = 0;
   virtual void WriteSample(double t )= 0;
-  virtual void InitDisplayColorAttribute() = 0;
 
   inline X2UExportAttribute& GetAttribute(std::string name) {
     return _attributes[name];
@@ -26,8 +25,17 @@ public:
   void WriteTransformSample(double t);
   void WriteVisibilitySample(double t);
 
+  bool InitAttributeFromICE(
+    const Geometry& geom,
+    const CString& iceAttrName,
+    const CString& usdAttrName,
+    SdfValueTypeName usdDataType
+  );
+  void WriteSampleFromICE(const Geometry& geom, UsdTimeCode t, const std::string& attrName);
+
 protected:
-  CRef                    _ref;
+  X3DObject               _xObj;
+  Primitive               _xPrim;
   UsdPrim                 _prim;
   std::string             _fullname;
   X2UExportAttributeMap   _attributes;

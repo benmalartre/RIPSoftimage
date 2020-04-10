@@ -8,7 +8,7 @@ public:
   X2UExportAttribute();
 
   X2UExportAttribute(
-    UsdAttribute& dst,
+    const UsdAttribute& dst,
     X2UDataType type,
     X2UDataPrecision precision,
     bool isArray,
@@ -17,8 +17,15 @@ public:
   );
 
   X2UExportAttribute(
-    UsdAttribute& attr, 
-    ICEAttribute& attribute
+    const UsdAttribute& dstAttr,
+    const CString& srcAttrName,
+    bool isArray=true
+  );
+
+  X2UExportAttribute(
+    const UsdAttribute& dstAttr,
+    const int srcAttrIndex,
+    bool isArray = true
   );
 
   ~X2UExportAttribute();
@@ -31,18 +38,18 @@ public:
   
   void WriteSample(const void* datas, uint32_t numElements, const UsdTimeCode& timeCode);
   void WriteSample(const TfToken& token, const UsdTimeCode& timeCode);
-  void WriteSample(const UsdTimeCode& timeCode);
+  void WriteSample(const Geometry& geom, const UsdTimeCode& timeCode);
+  void WriteEmptySample(const UsdTimeCode& timeCode);
   void WriteInterpolation();
   void SetSourceType(X2UDataType type, X2UDataPrecision precision);
-  void SetSourceAttribute(const ICEAttribute& attribute);
-  void _GetDestinationAttributeSpecs();
-  void _GetSourceAttributeSpecs();
+  const CString& GetSourceAttributeName() { return _srcAttributeName; };
 
 private:
   X2UDataType                     _srcDataType;
   X2UDataPrecision                _srcDataPrecision;
   SdfValueTypeName                _dstDataType;
-  ICEAttribute                    _srcAttribute;
+  CString                         _srcAttributeName;
+  int                             _srcAttributeIndex;
   UsdAttribute                    _dstAttribute;
   bool                            _isArray;
   bool                            _isPrimvar;
