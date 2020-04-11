@@ -18,7 +18,7 @@ void X2UExportMesh::Init(UsdStageRefPtr& stage)
   UsdGeomMesh mesh = UsdGeomMesh::Define(stage, SdfPath(_fullname));
   _prim = mesh.GetPrim();
 
-  PolygonMesh xsiMesh = _xPrim.GetGeometry(DBL_MAX, siConstructionModeModeling);
+  PolygonMesh xsiMesh = _xPrim.GetGeometry();
   CGeometryAccessor accessor = xsiMesh.GetGeometryAccessor2
   (
     siConstructionMode::siConstructionModeModeling,
@@ -123,6 +123,9 @@ void X2UExportMesh::WriteSample(double t)
   // xform
   WriteTransformSample(t);
 
+  // xform
+  WriteVisibilitySample(t);
+
   // points
   {
     CDoubleArray points;
@@ -188,8 +191,10 @@ void X2UExportMesh::InitColorAttribute()
   Geometry xsiGeom = _xPrim.GetGeometry();
 
   // check for color from ICE Attribute
-  ICEAttribute srcColorAttr = xsiGeom.GetICEAttributeFromName(L"Color");
-  if (srcColorAttr.IsDefined())
+  CRefArray iceAttributes = xsiGeom.GetICEAttributes();
+  int iceAttrIndex;
+  ICEAttribute srcColorAttr = X2UGetICEAttributeFromArray(iceAttributes, L"Color", iceAttrIndex);
+  if(iceAttrIndex >= 0)
   {
     // create attribute
     UsdGeomPrimvar dstColorPrimvar = UsdGeomMesh(_prim).CreateDisplayColorPrimvar(UsdGeomTokens->vertex);
@@ -204,7 +209,7 @@ void X2UExportMesh::InitColorAttribute()
     _attributes["displayColor"] =
       X2UExportAttribute(
         dstColorAttr,
-        L"Color"
+        iceAttrIndex
       );
 
     // set default value

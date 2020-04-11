@@ -19,18 +19,15 @@ bool X2UIsModelInstanced(Model& model)
 
 bool X2UGetObjectVisibility(const X3DObject& obj, double t)
 {
-  /*
-  X3DObject obj(ref);
   Property visibilityProp;
   bool visibility = true;
-  obj.GetPropertyFromName(L"Visibility", visibilityProp);
+  SceneItem(obj).GetPropertyFromName(L"Visibility", visibilityProp);
   if(visibilityProp.IsValid())
   {
     visibility = visibilityProp.GetParameterValue(L"ViewVis", t);
   }
 
   return visibility;
-  */ return true;
 }
 
 GfVec3f X2UGetDisplayColorFromShadingNetwork(const X3DObject& obj)
