@@ -27,6 +27,8 @@
 #include <xsi_iceattributedataarray.h>
 #include <xsi_matrix4.h>
 #include <xsi_matrix4f.h>
+#include <xsi_uitoolkit.h>
+#include <xsi_progressbar.h>
 
 #include <pxr/pxr.h>
 #include <pxr/base/tf/hash.h>

@@ -83,6 +83,9 @@ void X2UExportScene::TimeInfos()
 
 void X2UExportScene::Process()
 {
+  Application app;
+  UIToolkit kit = app.GetUIToolkit();
+ 
   // first build usd structure
   std::string rootPath = _rootName;
   CRefArray children = _root.GetChildren();
@@ -95,10 +98,27 @@ void X2UExportScene::Process()
   Project project = Application().GetActiveProject();
   Property playControl = project.GetProperties().GetItem(L"Play Control");
 
+  ProgressBar progressBar = kit.GetProgressBar();
+  progressBar.PutMaximum((_timeInfos.endFrame - _timeInfos.startFrame)/_timeInfos.sampleRate);
+  progressBar.PutStep(1);
+  progressBar.PutVisible(true);
+  progressBar.PutCaption(L"Exporting to USD");
+
+  /*
+  while (!bar.IsCancelPressed() && bar.GetValue() < bar.GetMaximum())
+  {
+    CValue newVal(bar.Increment());
+    bar.PutStatusText(L"Frame " + newVal.GetAsText());
+  }
+  */
+
   for (double t = _timeInfos.startFrame; t <= _timeInfos.endFrame; t += _timeInfos.sampleRate)
   {
+    progressBar.Increment();
     playControl.PutParameterValue("Current", t);
     Application().ExecuteCommand(L"Refresh", CValueArray(), CValue());
     _WriteSample(t);
+    if (progressBar.IsCancelPressed()) break;
+    else progressBar.PutStatusText(L"Frame " + CString(t));
   }
 }
