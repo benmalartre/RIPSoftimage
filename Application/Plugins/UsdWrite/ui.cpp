@@ -26,27 +26,31 @@ SICALLBACK UsdWriteUI_Define(CRef& in_ctxt)
 SICALLBACK UsdWriteUI_DefineLayout(CRef& in_ctxt)
 {
   Context ctxt(in_ctxt);
-  PPGLayout oLayout;
-  PPGItem oItem;
-  oLayout = ctxt.GetSource();
-  oLayout.Clear();
-  oLayout.AddTab(L"Main");
-  oLayout.AddGroup(L"File System");
-  oLayout.AddItem(L"Folder");
-  oLayout.AddItem(L"FileName");
-  oLayout.EndGroup();
-  oLayout.AddGroup(L"Time");
-  oLayout.AddItem(L"TimeMode");
-  oLayout.AddItem(L"StartFrame");
-  oLayout.AddItem(L"EndFrame");
-  oLayout.EndGroup();
-  oLayout.AddGroup(L"Export Options");
-  oLayout.AddItem(L"ExportPolygonMeshes", L"Meshes");
-  oLayout.AddItem(L"ExportPointClouds", L"Points");
-  oLayout.AddItem(L"ExportCurves", L"Curves");
-  oLayout.AddItem(L"ExportCameras", L"Cameras");
-  oLayout.AddItem(L"ExportLights", L"Lights");
-  oLayout.EndGroup();
+  PPGLayout layout;
+  PPGItem item;
+  layout = ctxt.GetSource();
+  layout.Clear();
+  layout.AddTab(L"Main");
+  layout.AddGroup(L"File System");
+  layout.AddItem(L"Folder");
+  layout.AddItem(L"FileName");
+  layout.EndGroup();
+  layout.AddGroup(L"Time");
+  layout.AddItem(L"TimeMode");
+  layout.AddItem(L"StartFrame");
+  layout.AddItem(L"EndFrame");
+  layout.EndGroup();
+  layout.AddGroup(L"Export Options");
+  layout.AddItem(L"ExportPolygonMeshes", L"Meshes");
+  layout.AddItem(L"ExportPointClouds", L"Points");
+  layout.AddItem(L"ExportCurves", L"Curves");
+  layout.AddItem(L"ExportCameras", L"Cameras");
+  layout.AddItem(L"ExportLights", L"Lights");
+  layout.EndGroup();
+
+  layout.AddGroup(L"");
+  layout.AddButton(L"Write", L"Write");
+  layout.EndGroup();
   return CStatus::OK;
 }
 
@@ -95,6 +99,14 @@ SICALLBACK UsdWriteUI_PPGEvent(const CRef& in_ctxt)
     {
       CustomProperty prop(props[i]);
       app.LogMessage(L"Button pressed: " + buttonPressed.GetAsText() + CString(" while inspecting ") + prop.GetFullName());
+      if (buttonPressed.GetAsText().IsEqualNoCase(L"Write"))
+      {
+        LOG("FUCKIN PRESSED :D!!");
+        CValueArray args;
+        //args.Add(CValue(L"This Is A Fuckin Test..."));
+        Application().ExecuteCommand(L"UsdWrite", args, CValue());
+      }
+        
     }
   }
   else if (eventID == PPGEventContext::siTabChange)

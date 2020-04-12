@@ -31,10 +31,17 @@ SICALLBACK XSIUnloadPlugin( const PluginRegistrar& in_reg )
 SICALLBACK UsdWrite_Init( CRef& in_ctxt )
 {
   Context ctxt( in_ctxt );
-  Command oCmd;
-  oCmd = ctxt.GetSource();
-  oCmd.PutDescription(L"");
-  oCmd.EnableReturnValue(true);
+  Command cmd;
+  cmd = ctxt.GetSource();
+  cmd.PutDescription(L"Export to Pixar Universal Scene Description file format");
+
+  X2UTimeInfos infos;
+ 
+  ArgumentArray args;
+  args = cmd.GetArguments();
+  args.Add(L"Folder");// No default value 
+  args.Add(L"StartFrame", 1);
+  args.Add(L"EndFrame", 100);
 
   return CStatus::OK;
 }
@@ -43,7 +50,13 @@ SICALLBACK UsdWrite_Execute( CRef& in_ctxt )
 {
   Context ctxt( in_ctxt );
   CValueArray args = ctxt.GetAttribute(L"Arguments");
-
+  
+  LOG("### ARGUMENTS : ");
+  for (size_t i = 0; i < args.GetCount(); ++i) {
+    LOG(args[i].GetAsText());
+  }
+  LOG("########################################################");
+ 
   Application app;
   Model root = app.GetActiveSceneRoot();
 
