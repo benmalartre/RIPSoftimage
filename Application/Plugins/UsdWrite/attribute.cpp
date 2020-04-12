@@ -1,7 +1,7 @@
 #include "attribute.h"
 #include "utils.h"
 
-X2UExportAttribute::X2UExportAttribute()
+X2UAttribute::X2UAttribute()
   : _dstAttribute()
   , _srcAttributeName("")
   , _fromICE(false)
@@ -9,7 +9,7 @@ X2UExportAttribute::X2UExportAttribute()
 {
 }
 
-X2UExportAttribute::X2UExportAttribute(
+X2UAttribute::X2UAttribute(
   const UsdAttribute& dstAttr,
   X2UDataType type,
   X2UDataPrecision precision,
@@ -28,7 +28,7 @@ X2UExportAttribute::X2UExportAttribute(
 {
 }
 
-X2UExportAttribute::X2UExportAttribute(
+X2UAttribute::X2UAttribute(
   const UsdAttribute& dstAttr, 
   const CString& srcAttrName,
   bool isArray)
@@ -40,7 +40,7 @@ X2UExportAttribute::X2UExportAttribute(
 {
 }
 
-X2UExportAttribute::X2UExportAttribute(
+X2UAttribute::X2UAttribute(
   const UsdAttribute& dstAttr,
   const int srcAttrIndex,
   bool isArray)
@@ -52,25 +52,25 @@ X2UExportAttribute::X2UExportAttribute(
 {
 }
 
-X2UExportAttribute::~X2UExportAttribute()
+X2UAttribute::~X2UAttribute()
 {
 
 }
 
-void X2UExportAttribute::SetVariability(SdfVariability variability)
+void X2UAttribute::SetVariability(SdfVariability variability)
 {
   if (variability == SdfVariability::SdfVariabilityUniform)
     _isConstant = true;
   else _isConstant = false;
 }
 
-void X2UExportAttribute::SetSourceType(X2UDataType type, X2UDataPrecision precision)
+void X2UAttribute::SetSourceType(X2UDataType type, X2UDataPrecision precision)
 {
   _srcDataType = type;
   _srcDataPrecision = precision;
 }
 
-void X2UExportAttribute::WriteSample(const void* datas, uint32_t numElements, const UsdTimeCode& timeCode)
+void X2UAttribute::WriteSample(const void* datas, uint32_t numElements, const UsdTimeCode& timeCode)
 {
   uint64_t hash = ArchHash64((const char*)datas, numElements *  X2UGetDataSize(_srcDataType, _srcDataPrecision));
 
@@ -806,7 +806,7 @@ void X2UExportAttribute::WriteSample(const void* datas, uint32_t numElements, co
    _hash = hash;
 }
 
-void X2UExportAttribute::WriteSample(const TfToken& token, const UsdTimeCode& timeCode)
+void X2UAttribute::WriteSample(const TfToken& token, const UsdTimeCode& timeCode)
 {
   uint64_t hash = token.Hash();
 
@@ -817,7 +817,7 @@ void X2UExportAttribute::WriteSample(const TfToken& token, const UsdTimeCode& ti
   }
 }
 
-void X2UExportAttribute::WriteSample(const Geometry& geom, const UsdTimeCode& timeCode)
+void X2UAttribute::WriteSample(const Geometry& geom, const UsdTimeCode& timeCode)
 {
   //if (_isArray)
   {
@@ -905,7 +905,7 @@ void X2UExportAttribute::WriteSample(const Geometry& geom, const UsdTimeCode& ti
   }
 }
 
-void X2UExportAttribute::WriteEmptySample(const UsdTimeCode& timeCode)
+void X2UAttribute::WriteEmptySample(const UsdTimeCode& timeCode)
 {
   LOG("WRITE FUCKIN EMPTY SAMPLE FOR " + _srcAttributeName);
   /*
@@ -985,7 +985,7 @@ void X2UExportAttribute::WriteEmptySample(const UsdTimeCode& timeCode)
   */
 }
 
-void X2UExportAttribute::WriteInterpolation()
+void X2UAttribute::WriteInterpolation()
 {
   if (_isPrimvar)
   {

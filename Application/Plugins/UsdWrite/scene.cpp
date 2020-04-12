@@ -1,18 +1,18 @@
 #include "scene.h"
 
-X2UExportScene::X2UExportScene(const std::string& folder, const std::string& filename,
+X2UScene::X2UScene(const std::string& folder, const std::string& filename,
   const CRef& root)
-  : X2UExportModel(folder, filename, root)
+  : X2UModel(folder, filename, root)
 {
 }
 
-X2UExportScene::~X2UExportScene()
+X2UScene::~X2UScene()
 {
 }
 
-void X2UExportScene::Save()
+void X2UScene::Save()
 {
-  for (X2UExportModel& model : _models)
+  for (X2UModel& model : _models)
   {
     model.Save();
   }
@@ -26,20 +26,20 @@ void X2UExportScene::Save()
 }
 
 
-void X2UExportScene::Init()
+void X2UScene::Init()
 {
   TimeInfos();
 
   // Create Usd stage for writing
   _stage = UsdStage::CreateNew(_folder + "/" + _filename);
   UsdGeomXform rootXform = UsdGeomXform::Define(_stage, SdfPath(_rootName));
-  _rootXform = X2UExportXformSharedPtr(new X2UExportXform(_rootName, _root));
+  _rootXform = X2UXformSharedPtr(new X2UXform(_rootName, _root));
   _rootXform->Init(_stage);
 }
 
 
 // Get time infos from scene
-void X2UExportScene::TimeInfos()
+void X2UScene::TimeInfos()
 {
   // Get the current project
   Application app;
@@ -81,7 +81,7 @@ void X2UExportScene::TimeInfos()
   _timeInfos.sampleRate = 1;
 }
 
-void X2UExportScene::Process()
+void X2UScene::Process()
 {
   Application app;
   UIToolkit kit = app.GetUIToolkit();

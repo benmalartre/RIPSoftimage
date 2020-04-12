@@ -8,10 +8,10 @@
 #include "points.h"
 
 // Model
-class X2UExportModel {
+class X2UModel {
   public:
-    X2UExportModel(const std::string& folder, const std::string& filename, const CRef& root);
-    ~X2UExportModel();
+    X2UModel(const std::string& folder, const std::string& filename, const CRef& root);
+    ~X2UModel();
     virtual void Init();
     virtual void Save();
 
@@ -22,12 +22,12 @@ class X2UExportModel {
   protected:
     X3DObject                       _root;
     std::string                     _rootName;
-    X2UExportXformSharedPtr         _rootXform;
-    X2UExportPrimSharedPtrList      _prims;
+    X2UXformSharedPtr         _rootXform;
+    X2UPrimSharedPtrList      _prims;
     UsdStageRefPtr                  _stage;
     std::string                     _folder;
     std::string                     _filename;
-    std::vector<X2UExportModel>     _models;
+    std::vector<X2UModel>     _models;
 };
 
-typedef std::vector<X2UExportModel> X2UExportModelList;
+typedef std::vector<X2UModel> X2UModelList;

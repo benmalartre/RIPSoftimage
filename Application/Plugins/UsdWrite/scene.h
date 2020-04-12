@@ -4,10 +4,10 @@
 #include "model.h"
 
 // Scene
-class X2UExportScene : public X2UExportModel{
+class X2UScene : public X2UModel{
   public:
-    X2UExportScene(const std::string& folder, const std::string& filename, const CRef& root);
-    ~X2UExportScene();
+    X2UScene(const std::string& folder, const std::string& filename, const CRef& root);
+    ~X2UScene();
     void Init() override;
     void Save() override;
 
@@ -15,8 +15,8 @@ class X2UExportScene : public X2UExportModel{
     void Process();
 
   private:
-    X2UExportTimeInfos              _timeInfos;
+    X2UTimeInfos              _timeInfos;
 
 };
 
-typedef std::vector<X2UExportScene> X2UExportSceneList;
+typedef std::vector<X2UScene> X2USceneList;

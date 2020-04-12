@@ -4,10 +4,10 @@
 #include "prim.h"
 
 // Points 
-class X2UExportPoints final : public X2UExportPrim {
+class X2UPoints final : public X2UPrim {
 public:
-  X2UExportPoints(std::string path, const CRef& ref);
-  ~X2UExportPoints();
+  X2UPoints(std::string path, const CRef& ref);
+  ~X2UPoints();
 
   void Init(UsdStageRefPtr& stage) override;
   void WriteSample(double t) override;
@@ -29,4 +29,4 @@ private:
 
 };
 
-typedef std::shared_ptr<X2UExportPoints> X2UExportPointSharedPtr;
+typedef std::shared_ptr<X2UPoints> X2UPointSharedPtr;

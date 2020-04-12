@@ -3,11 +3,11 @@
 #include "common.h"
 
 // Attribute
-class X2UExportAttribute {
+class X2UAttribute {
 public:
-  X2UExportAttribute();
+  X2UAttribute();
 
-  X2UExportAttribute(
+  X2UAttribute(
     const UsdAttribute& dst,
     X2UDataType type,
     X2UDataPrecision precision,
@@ -16,19 +16,19 @@ public:
     X2UPrimvarInterpolation primvarInterp=X2U_INTERPOLATION_CONSTANT
   );
 
-  X2UExportAttribute(
+  X2UAttribute(
     const UsdAttribute& dstAttr,
     const CString& srcAttrName,
     bool isArray=true
   );
 
-  X2UExportAttribute(
+  X2UAttribute(
     const UsdAttribute& dstAttr,
     const int srcAttrIndex,
     bool isArray = true
   );
 
-  ~X2UExportAttribute();
+  ~X2UAttribute();
 
   inline void SetHash(uint64_t hash) { _hash = hash; };
   inline uint64_t GetHash() { return _hash; };
@@ -63,4 +63,4 @@ private:
   uint64_t                        _hash;
 };
 
-typedef std::map<std::string, X2UExportAttribute> X2UExportAttributeMap;
+typedef std::map<std::string, X2UAttribute> X2UAttributeMap;

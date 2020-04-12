@@ -1,8 +1,8 @@
 #include "curve.h"
 #include "utils.h"
 
-X2UExportCurve::X2UExportCurve(std::string path, const CRef& ref)
-  : X2UExportPrim(path, ref)
+X2UCurve::X2UCurve(std::string path, const CRef& ref)
+  : X2UPrim(path, ref)
   , _haveNormals(false)
   , _haveWidths(false)
   , _haveColors(false)
@@ -10,11 +10,11 @@ X2UExportCurve::X2UExportCurve(std::string path, const CRef& ref)
 {
 }
 
-X2UExportCurve::~X2UExportCurve()
+X2UCurve::~X2UCurve()
 { 
 }
 
-void X2UExportCurve::Init(UsdStageRefPtr& stage)
+void X2UCurve::Init(UsdStageRefPtr& stage)
 {
   UsdGeomBasisCurves crv = UsdGeomBasisCurves::Define(stage, SdfPath(_fullname));
   _prim = crv.GetPrim();
@@ -152,7 +152,7 @@ void X2UExportCurve::Init(UsdStageRefPtr& stage)
   */
 }
 
-void X2UExportCurve::WriteSample(double t)
+void X2UCurve::WriteSample(double t)
 {
   UsdTimeCode timeCode(t);
   LOG("WRITE SAMPLE FOR CURVE : " + _xObj.GetFullName());

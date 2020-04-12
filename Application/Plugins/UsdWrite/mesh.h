@@ -4,10 +4,10 @@
 #include "prim.h"
 
 // Mesh 
-class X2UExportMesh final : public X2UExportPrim {
+class X2UMesh final : public X2UPrim {
 public:
-  X2UExportMesh(std::string path, const CRef& ref);
-  ~X2UExportMesh();
+  X2UMesh(std::string path, const CRef& ref);
+  ~X2UMesh();
 
   void Init(UsdStageRefPtr& stage) override;
   void WriteSample(double t) override;
@@ -24,7 +24,6 @@ private:
   bool          _haveColors;
   bool          _haveNormals;
   bool          _haveUVs;
-  VtArray<int>  _polygonNodeMapping;
 };
 
-typedef std::shared_ptr<X2UExportMesh> X2UExportMeshSharedPtr;
+typedef std::shared_ptr<X2UMesh> X2UMeshSharedPtr;

@@ -1,6 +1,6 @@
 #include "model.h"
 
-X2UExportModel::X2UExportModel(const std::string& folder, const std::string& filename,
+X2UModel::X2UModel(const std::string& folder, const std::string& filename,
   const CRef& root)
   : _folder(folder)
   , _filename(filename)
@@ -10,13 +10,13 @@ X2UExportModel::X2UExportModel(const std::string& folder, const std::string& fil
   _rootName += X3DObject(root).GetName().GetAsciiString();
 }
 
-X2UExportModel::~X2UExportModel()
+X2UModel::~X2UModel()
 {
 }
 
-void X2UExportModel::Save()
+void X2UModel::Save()
 {
-  for (X2UExportModel& model : _models)
+  for (X2UModel& model : _models)
   {
     model.Save();
   }
@@ -25,16 +25,16 @@ void X2UExportModel::Save()
 }
 
 
-void X2UExportModel::Init()
+void X2UModel::Init()
 {
   // Create Usd stage for writing
   _stage = UsdStage::CreateNew(_folder + "/" + _filename);
-  _rootXform = X2UExportXformSharedPtr(new X2UExportXform(_rootName, _root));
+  _rootXform = X2UXformSharedPtr(new X2UXform(_rootName, _root));
   _rootXform->Init(_stage);
 }
 
 
-void X2UExportModel::_Recurse(const CRef& ref, const std::string& parentPath)
+void X2UModel::_Recurse(const CRef& ref, const std::string& parentPath)
 {
   if (ref.IsA(siX3DObjectID))
   {
@@ -45,7 +45,7 @@ void X2UExportModel::_Recurse(const CRef& ref, const std::string& parentPath)
     {
       std::string modelFileName = ref.GetAsText().GetAsciiString();
       modelFileName += ".usda";
-      X2UExportModel childModel(_folder, modelFileName, ref);
+      X2UModel childModel(_folder, modelFileName, ref);
       childModel.Init();
 
       std::string modelPath = childModel._GetRootName();
@@ -68,27 +68,27 @@ void X2UExportModel::_Recurse(const CRef& ref, const std::string& parentPath)
       std::string objPath = parentPath + "/" + obj.GetName().GetAsciiString();
       if (type == L"null")
       {
-        X2UExportXform* xform = new X2UExportXform(objPath, ref);;
+        X2UXform* xform = new X2UXform(objPath, ref);;
         xform->Init(_stage);
-        _prims.push_back(X2UExportXformSharedPtr(xform));
+        _prims.push_back(X2UXformSharedPtr(xform));
       }
       else if (type == L"polymsh")
       {
-        X2UExportMesh* mesh = new X2UExportMesh(objPath, ref);;
+        X2UMesh* mesh = new X2UMesh(objPath, ref);;
         mesh->Init(_stage);
-        _prims.push_back(X2UExportMeshSharedPtr(mesh));
+        _prims.push_back(X2UMeshSharedPtr(mesh));
       }
       else if (type == L"crvlist")
       {
-        X2UExportCurve* curve = new X2UExportCurve(objPath, ref);;
+        X2UCurve* curve = new X2UCurve(objPath, ref);;
         curve->Init(_stage);
-        _prims.push_back(X2UExportCurveSharedPtr(curve));
+        _prims.push_back(X2UCurveSharedPtr(curve));
       }
       else if (type == L"pointcloud")
       {
-        X2UExportPoints* point = new X2UExportPoints(objPath, ref);;
+        X2UPoints* point = new X2UPoints(objPath, ref);;
         point->Init(_stage);
-        _prims.push_back(X2UExportPointSharedPtr(point));
+        _prims.push_back(X2UPointSharedPtr(point));
       }
       else if (type == L"camera")
       {
@@ -105,7 +105,7 @@ void X2UExportModel::_Recurse(const CRef& ref, const std::string& parentPath)
   }
 }
 
-void X2UExportModel::_WriteSample(double t)
+void X2UModel::_WriteSample(double t)
 {
   _rootXform->WriteSample(t);
   UsdTimeCode timeCode(t);
@@ -113,7 +113,7 @@ void X2UExportModel::_WriteSample(double t)
   {
     prim->WriteSample(t);
   }
-  for (X2UExportModel& model : _models)
+  for (X2UModel& model : _models)
   {
     model._WriteSample(t);
   }

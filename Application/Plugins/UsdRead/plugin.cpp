@@ -139,19 +139,19 @@ static U2XStageManager _stages;
 // Other events would need to be treated too to cover all possible
 // cases where the objects become invalid.
 //
-SICALLBACK UsdPrimitiveSceneOpen_OnEvent(const CRef& in_ref)
+SICALLBACK UsdReadSceneOpen_OnEvent(const CRef& in_ref)
 {
   //_stages.Clear();
   return CStatus::False;
 }
 
-SICALLBACK UsdPrimitiveObjectRemoved_OnEvent(const CRef& in_ref)
+SICALLBACK UsdReadObjectRemoved_OnEvent(const CRef& in_ref)
 {
   //_stages.Clear();
   return CStatus::False;
 }
 
-SICALLBACK UsdPrimitiveNewScene_OnEvent(const CRef& in_ref)
+SICALLBACK UsdReadNewScene_OnEvent(const CRef& in_ref)
 {
   //_stages.Clear();
   return CStatus::False;
@@ -163,12 +163,12 @@ static U2XGLSLProgram GLSL_PROGRAM;
 SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
 {
 	in_reg.PutAuthor(L"benmalartre");
-	in_reg.PutName(L"UsdPrimitive Plugin");
+	in_reg.PutName(L"UsdRead");
 	in_reg.PutVersion(1,0);
 	in_reg.RegisterPrimitive(L"UsdPrimitive");
-  in_reg.RegisterEvent("UsdPrimitiveObjectRemoved", siOnObjectRemoved);
-  in_reg.RegisterEvent("UsdPrimitiveSceneOpen", siOnBeginSceneOpen);
-  in_reg.RegisterEvent("UsdPrimitiveNewScene", siOnBeginNewScene);
+  in_reg.RegisterEvent("UsdReadObjectRemoved", siOnObjectRemoved);
+  in_reg.RegisterEvent("UsdReadSceneOpen", siOnBeginSceneOpen);
+  in_reg.RegisterEvent("UsdReadNewScene", siOnBeginNewScene);
   GL_EXTENSIONS_LOADED = false;
 	return CStatus::OK;
 }

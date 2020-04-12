@@ -1,16 +1,16 @@
 #include "xform.h"
 #include "utils.h"
 
-X2UExportXform::X2UExportXform(std::string path, const CRef& ref)
-  : X2UExportPrim(path, ref)
+X2UXform::X2UXform(std::string path, const CRef& ref)
+  : X2UPrim(path, ref)
 {
 }
 
-X2UExportXform::~X2UExportXform()
+X2UXform::~X2UXform()
 { 
 }
 
-void X2UExportXform::Init(UsdStageRefPtr& stage)
+void X2UXform::Init(UsdStageRefPtr& stage)
 {
   UsdGeomXform xform = UsdGeomXform::Define(stage, SdfPath(_fullname));
   _prim = xform.GetPrim();
@@ -23,7 +23,7 @@ void X2UExportXform::Init(UsdStageRefPtr& stage)
 
 }
 
-void X2UExportXform::WriteSample(double t)
+void X2UXform::WriteSample(double t)
 {
   UsdTimeCode timeCode(t);
 

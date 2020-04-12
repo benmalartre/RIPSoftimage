@@ -14,10 +14,10 @@ enum X2UCurveSourceType {
 };
 
 // Mesh 
-class X2UExportCurve final : public X2UExportPrim {
+class X2UCurve final : public X2UPrim {
 public:
-  X2UExportCurve(std::string path, const CRef& ref);
-  ~X2UExportCurve();
+  X2UCurve(std::string path, const CRef& ref);
+  ~X2UCurve();
 
   void Init(UsdStageRefPtr& stage) override;
   void WriteSample(double t) override;
@@ -34,4 +34,4 @@ private:
   X2UCurveSourceType  _srcType;
 };
 
-typedef std::shared_ptr<X2UExportCurve> X2UExportCurveSharedPtr;
+typedef std::shared_ptr<X2UCurve> X2UCurveSharedPtr;

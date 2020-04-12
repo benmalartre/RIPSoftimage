@@ -2,22 +2,22 @@
 #include "utils.h"
 
 
-X2UExportPrim::X2UExportPrim(std::string path, const CRef& ref)
+X2UPrim::X2UPrim(std::string path, const CRef& ref)
   : _fullname(path)
 {
   _xObj = X3DObject(ref);
   _xPrim = _xObj.GetActivePrimitive();
 }
 
-X2UExportPrim::~X2UExportPrim()
+X2UPrim::~X2UPrim()
 {
 
 }
 
-void X2UExportPrim::InitExtentAttribute()
+void X2UPrim::InitExtentAttribute()
 {
   _attributes["extent"] =
-    X2UExportAttribute(
+    X2UAttribute(
       UsdGeomGprim(_prim).CreateExtentAttr(VtValue(), true),
       X2U_DATA_VECTOR3,
       X2U_PRECISION_DOUBLE,
@@ -29,7 +29,7 @@ void X2UExportPrim::InitExtentAttribute()
     2, UsdTimeCode::Default());
 }
 
-void X2UExportPrim::InitTransformAttribute()
+void X2UPrim::InitTransformAttribute()
 {
   GfMatrix4d dstMatrix;
   X2UGetLocalTransformAtTime(_xObj, dstMatrix);
@@ -37,7 +37,7 @@ void X2UExportPrim::InitTransformAttribute()
   UsdAttribute xfoAttr = _xformOp.GetAttr();
 
   _attributes["xform"] =
-    X2UExportAttribute(
+    X2UAttribute(
       xfoAttr,
       X2U_DATA_MATRIX4,
       X2U_PRECISION_DOUBLE,
@@ -47,47 +47,47 @@ void X2UExportPrim::InitTransformAttribute()
    _attributes["xform"].WriteSample((const void*)&dstMatrix, 1, UsdTimeCode::Default());
 }
 
-void X2UExportPrim::InitVisibilityAttribute()
+void X2UPrim::InitVisibilityAttribute()
 {
   bool visibility = X2UGetObjectVisibility(_xObj);
   UsdAttribute visibilityAttr = UsdGeomGprim(_prim).CreateVisibilityAttr();
 
   _attributes["visibility"] =
-    X2UExportAttribute(
+    X2UAttribute(
       visibilityAttr,
       X2U_DATA_BOOL,
       X2U_PRECISION_SINGLE,
       false);
 
   // set default value
-  X2UExportAttribute& item = GetAttribute("visibility");
+  X2UAttribute& item = GetAttribute("visibility");
   if (visibility)item.WriteSample(UsdGeomTokens->inherited, UsdTimeCode::Default());
   else item.WriteSample(UsdGeomTokens->invisible, UsdTimeCode::Default());
 }
 
-void X2UExportPrim::WriteExtentSample(double t)
+void X2UPrim::WriteExtentSample(double t)
 {
-  X2UExportAttribute& item = GetAttribute("extent");
+  X2UAttribute& item = GetAttribute("extent");
   item.WriteSample((const void*)&_bbox.GetRange().GetMin()[0], 2, UsdTimeCode(t));
 }
 
-void X2UExportPrim::WriteTransformSample(double t)
+void X2UPrim::WriteTransformSample(double t)
 {
   GfMatrix4d dstMatrix;
   X2UGetLocalTransformAtTime(_xObj, dstMatrix, t);
-  X2UExportAttribute& item = GetAttribute("xform");
+  X2UAttribute& item = GetAttribute("xform");
   item.WriteSample((const void*)&dstMatrix, 1, UsdTimeCode(t));
 }
 
-void X2UExportPrim::WriteVisibilitySample(double t)
+void X2UPrim::WriteVisibilitySample(double t)
 {
   bool visibility = X2UGetObjectVisibility(_xObj);
-  X2UExportAttribute& item = GetAttribute("visibility");
+  X2UAttribute& item = GetAttribute("visibility");
   if(visibility)item.WriteSample(UsdGeomTokens->inherited, UsdTimeCode(t));
   else item.WriteSample(UsdGeomTokens->invisible, UsdTimeCode(t));
 }
 
-bool X2UExportPrim::InitAttributeFromICE(
+bool X2UPrim::InitAttributeFromICE(
   const Geometry& geom,
   const CString& iceAttrName,
   const CString& usdAttrName,
@@ -104,7 +104,7 @@ bool X2UExportPrim::InitAttributeFromICE(
     UsdAttribute usdAttr = _prim.CreateAttribute(TfToken(usdAttrName.GetAsciiString()), usdDataType);
 
     _attributes[usdAttrName.GetAsciiString()] =
-      X2UExportAttribute(
+      X2UAttribute(
         usdAttr,
         iceAttrIndex
       );
@@ -117,12 +117,12 @@ bool X2UExportPrim::InitAttributeFromICE(
   }
 }
 
-void X2UExportPrim::WriteSampleFromICE(const Geometry& geom, UsdTimeCode t, const std::string& attrName)
+void X2UPrim::WriteSampleFromICE(const Geometry& geom, UsdTimeCode t, const std::string& attrName)
 {
   auto it = _attributes.find(attrName);
   if (it != _attributes.end())
   {
-    X2UExportAttribute attr = it->second;
+    X2UAttribute attr = it->second;
     it->second.WriteSample(geom, t);
   }
 }

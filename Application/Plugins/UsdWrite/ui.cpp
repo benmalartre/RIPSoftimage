@@ -4,7 +4,7 @@
 #include <xsi_ppglayout.h>
 #include <xsi_ppgeventcontext.h>
 
-SICALLBACK UsdExportUI_Define(CRef& in_ctxt)
+SICALLBACK UsdWriteUI_Define(CRef& in_ctxt)
 {
   Context ctxt(in_ctxt);
   CustomProperty oCustomProperty;
@@ -23,7 +23,7 @@ SICALLBACK UsdExportUI_Define(CRef& in_ctxt)
   return CStatus::OK;
 }
 
-SICALLBACK UsdExportUI_DefineLayout(CRef& in_ctxt)
+SICALLBACK UsdWriteUI_DefineLayout(CRef& in_ctxt)
 {
   Context ctxt(in_ctxt);
   PPGLayout oLayout;
@@ -50,7 +50,7 @@ SICALLBACK UsdExportUI_DefineLayout(CRef& in_ctxt)
   return CStatus::OK;
 }
 
-SICALLBACK UsdExportUI_PPGEvent(const CRef& in_ctxt)
+SICALLBACK UsdWriteUI_PPGEvent(const CRef& in_ctxt)
 {
   Application app;
   PPGEventContext ctxt(in_ctxt);

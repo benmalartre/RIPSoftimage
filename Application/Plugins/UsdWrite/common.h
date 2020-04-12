@@ -71,7 +71,7 @@ using namespace pxr;
 #define LOG(msg) Application().LogMessage(msg);
 
 // Scene time infos
-struct X2UExportTimeInfos {
+struct X2UTimeInfos {
   double startFrame;
   double endFrame;
   double sampleRate;

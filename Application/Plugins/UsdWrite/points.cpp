@@ -1,17 +1,17 @@
 #include "points.h"
 #include "utils.h"
 
-X2UExportPoints::X2UExportPoints(std::string path, const CRef& ref)
-  : X2UExportPrim(path, ref)
+X2UPoints::X2UPoints(std::string path, const CRef& ref)
+  : X2UPrim(path, ref)
   , _numPoints(0)
 {
 }
 
-X2UExportPoints::~X2UExportPoints()
+X2UPoints::~X2UPoints()
 {
 }
 
-void X2UExportPoints::Init(UsdStageRefPtr& stage)
+void X2UPoints::Init(UsdStageRefPtr& stage)
 {
   UsdGeomPoints points = UsdGeomPoints::Define(stage, SdfPath(_fullname));
   _prim = points.GetPrim();
@@ -54,7 +54,7 @@ void X2UExportPoints::Init(UsdStageRefPtr& stage)
 
 }
 
-void X2UExportPoints::WriteSample(double t)
+void X2UPoints::WriteSample(double t)
 {
   
   UsdTimeCode timeCode(t);
@@ -82,7 +82,7 @@ void X2UExportPoints::WriteSample(double t)
 
 }
 
-bool X2UExportPoints::_GetNumPoints(const Geometry& geom)
+bool X2UPoints::_GetNumPoints(const Geometry& geom)
 {
   ICEAttribute nbPointsAttr = geom.GetICEAttributeFromName(L"NbPoints");
 
@@ -94,7 +94,7 @@ bool X2UExportPoints::_GetNumPoints(const Geometry& geom)
   return topoChanged;
 }
 
-void X2UExportPoints::_ComputeBoundingBox(const Geometry& geom)
+void X2UPoints::_ComputeBoundingBox(const Geometry& geom)
 {
   if (_numPoints)
   {
@@ -110,7 +110,7 @@ void X2UExportPoints::_ComputeBoundingBox(const Geometry& geom)
 }
 
 
-void X2UExportPoints::InitColorAttribute(const Geometry& geom)
+void X2UPoints::InitColorAttribute(const Geometry& geom)
 {
 
 
@@ -127,7 +127,7 @@ void X2UExportPoints::InitColorAttribute(const Geometry& geom)
     UsdAttribute displayColorAttr = displayColorPrimvar.GetAttr();
 
     _attributes["colors"] =
-      X2UExportAttribute(
+      X2UAttribute(
         displayColorAttr,
         L"Color"
       );

@@ -1,19 +1,19 @@
 #include "mesh.h"
 #include "utils.h"
 
-X2UExportMesh::X2UExportMesh(std::string path, const CRef& ref)
-  : X2UExportPrim(path, ref)
+X2UMesh::X2UMesh(std::string path, const CRef& ref)
+  : X2UPrim(path, ref)
   , _haveNormals(false)
   , _haveColors(false)
   , _haveUVs(false)
 {
 }
 
-X2UExportMesh::~X2UExportMesh()
+X2UMesh::~X2UMesh()
 {
 }
 
-void X2UExportMesh::Init(UsdStageRefPtr& stage)
+void X2UMesh::Init(UsdStageRefPtr& stage)
 {
   UsdGeomMesh mesh = UsdGeomMesh::Define(stage, SdfPath(_fullname));
   _prim = mesh.GetPrim();
@@ -40,7 +40,7 @@ void X2UExportMesh::Init(UsdStageRefPtr& stage)
     _bbox = X2UComputeBoundingBox<double>(&points[0], numPoints);
 
     _attributes["points"] =
-      X2UExportAttribute(
+      X2UAttribute(
         mesh.CreatePointsAttr(VtValue(), true),
         X2U_DATA_VECTOR3,
         X2U_PRECISION_DOUBLE,
@@ -59,7 +59,7 @@ void X2UExportMesh::Init(UsdStageRefPtr& stage)
     size_t numFaceVertexCounts = faceVertexCounts.GetCount();
     
     _attributes["faceVertexCounts"] =
-      X2UExportAttribute(
+      X2UAttribute(
         mesh.CreateFaceVertexCountsAttr(VtValue(), true),
         X2U_DATA_LONG,
         X2U_PRECISION_SINGLE,
@@ -78,7 +78,7 @@ void X2UExportMesh::Init(UsdStageRefPtr& stage)
     size_t numFaceVertexIndices = faceVertexIndices.GetCount();
   
     _attributes["faceVertexIndices"] =
-      X2UExportAttribute(
+      X2UAttribute(
         mesh.CreateFaceVertexIndicesAttr(VtValue(), true),
         X2U_DATA_LONG,
         X2U_PRECISION_SINGLE,
@@ -110,7 +110,7 @@ void X2UExportMesh::Init(UsdStageRefPtr& stage)
  
 }
 
-void X2UExportMesh::WriteSample(double t)
+void X2UMesh::WriteSample(double t)
 {
   UsdTimeCode timeCode(t);
   PolygonMesh mesh = _xPrim.GetGeometry(t);
@@ -133,7 +133,7 @@ void X2UExportMesh::WriteSample(double t)
     
     size_t numPoints = accessor.GetVertexCount();
     _bbox = X2UComputeBoundingBox<double>(&points[0], numPoints);
-    X2UExportAttribute& item = GetAttribute("points");
+    X2UAttribute& item = GetAttribute("points");
     item.WriteSample((const void*)&points[0], numPoints, timeCode);
   }
 
@@ -142,7 +142,7 @@ void X2UExportMesh::WriteSample(double t)
     CLongArray faceVertexIndices;
     accessor.GetVertexIndices(faceVertexIndices);
     size_t numFaceVertexIndices = faceVertexIndices.GetCount();
-    X2UExportAttribute& item = GetAttribute("faceVertexIndices");
+    X2UAttribute& item = GetAttribute("faceVertexIndices");
     item.WriteSample((const void*)&faceVertexIndices[0], numFaceVertexIndices, timeCode);
   }
 
@@ -151,7 +151,7 @@ void X2UExportMesh::WriteSample(double t)
     CLongArray faceVertexCounts;
     accessor.GetPolygonVerticesCount(faceVertexCounts);
     size_t numFaceVertexCounts = faceVertexCounts.GetCount();
-    X2UExportAttribute& item = GetAttribute("faceVertexCounts");
+    X2UAttribute& item = GetAttribute("faceVertexCounts");
     item.WriteSample((const void*)&faceVertexCounts[0], numFaceVertexCounts, timeCode);
   }
 
@@ -163,7 +163,7 @@ void X2UExportMesh::WriteSample(double t)
 
   // normals
   {
-    X2UExportAttribute& item = GetAttribute("normals");
+    X2UAttribute& item = GetAttribute("normals");
     VtArray<GfVec3f> normals;
     if (_GetNodesNormals(mesh, normals))
     {
@@ -175,7 +175,7 @@ void X2UExportMesh::WriteSample(double t)
   {
     if (_haveUVs)
     {
-      X2UExportAttribute& item = GetAttribute("uvs");
+      X2UAttribute& item = GetAttribute("uvs");
       VtArray<GfVec2f> uvs;
       if (_GetNodesUVs(mesh, uvs))
       {
@@ -185,7 +185,7 @@ void X2UExportMesh::WriteSample(double t)
   }
 }
 
-void X2UExportMesh::InitColorAttribute()
+void X2UMesh::InitColorAttribute()
 {
   _haveColors = false;
   Geometry xsiGeom = _xPrim.GetGeometry();
@@ -207,7 +207,7 @@ void X2UExportMesh::InitColorAttribute()
     
     // store in attribute map
     _attributes["displayColor"] =
-      X2UExportAttribute(
+      X2UAttribute(
         dstColorAttr,
         iceAttrIndex
       );
@@ -232,7 +232,7 @@ void X2UExportMesh::InitColorAttribute()
       
       // store in attribute map
       _attributes["displayColor"] =
-        X2UExportAttribute(
+        X2UAttribute(
           dstColorAttr,
           X2U_DATA_VECTOR3,
           X2U_PRECISION_SINGLE,
@@ -255,7 +255,7 @@ void X2UExportMesh::InitColorAttribute()
       UsdAttribute dstColorAttr = UsdGeomMesh(_prim).CreateDisplayColorAttr();
 
       _attributes["displayColor"] =
-        X2UExportAttribute(
+        X2UAttribute(
           dstColorAttr,
           X2U_DATA_COLOR4,
           X2U_PRECISION_SINGLE,
@@ -267,7 +267,7 @@ void X2UExportMesh::InitColorAttribute()
   }
 }
 
-void X2UExportMesh::InitNormalsAttribute()
+void X2UMesh::InitNormalsAttribute()
 {
   _haveNormals = false;
 
@@ -284,7 +284,7 @@ void X2UExportMesh::InitNormalsAttribute()
 
     // store in attribute map
     _attributes["normals"] =
-      X2UExportAttribute(
+      X2UAttribute(
         dstNormalsAttr,
         X2U_DATA_VECTOR3,
         X2U_PRECISION_SINGLE,
@@ -297,7 +297,7 @@ void X2UExportMesh::InitNormalsAttribute()
   }
 }
 
-void X2UExportMesh::InitUVsAttribute()
+void X2UMesh::InitUVsAttribute()
 {
   _haveUVs = false;
 
@@ -314,7 +314,7 @@ void X2UExportMesh::InitUVsAttribute()
 
     // store in attribute map
     _attributes["uvs"] =
-      X2UExportAttribute(
+      X2UAttribute(
         dstUVsAttr,
         X2U_DATA_VECTOR2,
         X2U_PRECISION_SINGLE,
@@ -327,9 +327,9 @@ void X2UExportMesh::InitUVsAttribute()
   }
 }
 
-void X2UExportMesh::WriteColorSample(const PolygonMesh& mesh, double t)
+void X2UMesh::WriteColorSample(const PolygonMesh& mesh, double t)
 {
-  X2UExportAttribute& item = GetAttribute("displayColor");
+  X2UAttribute& item = GetAttribute("displayColor");
   if (_haveColors)
   {
     if (item.FromICE())
@@ -356,7 +356,7 @@ void X2UExportMesh::WriteColorSample(const PolygonMesh& mesh, double t)
 }
 
 
-bool X2UExportMesh::_GetNodesColors(const PolygonMesh& mesh, VtArray<GfVec3f>& ioArray)
+bool X2UMesh::_GetNodesColors(const PolygonMesh& mesh, VtArray<GfVec3f>& ioArray)
 {
   // geometry accessor
   CGeometryAccessor accessor = mesh.GetGeometryAccessor();
@@ -386,7 +386,7 @@ bool X2UExportMesh::_GetNodesColors(const PolygonMesh& mesh, VtArray<GfVec3f>& i
   return false;
 }
 
-bool X2UExportMesh::_GetNodesNormals(const PolygonMesh& mesh, VtArray<GfVec3f>& ioArray)
+bool X2UMesh::_GetNodesNormals(const PolygonMesh& mesh, VtArray<GfVec3f>& ioArray)
 {
   // geometry accessor
   CGeometryAccessor accessor = mesh.GetGeometryAccessor();
@@ -413,7 +413,7 @@ bool X2UExportMesh::_GetNodesNormals(const PolygonMesh& mesh, VtArray<GfVec3f>& 
   return true;
 }
 
-bool X2UExportMesh::_GetNodesUVs(const PolygonMesh& mesh, VtArray<GfVec2f>& ioArray)
+bool X2UMesh::_GetNodesUVs(const PolygonMesh& mesh, VtArray<GfVec2f>& ioArray)
 {
   // geometry accessor
   CGeometryAccessor accessor = mesh.GetGeometryAccessor();
