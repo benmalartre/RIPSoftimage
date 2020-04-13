@@ -71,14 +71,14 @@ using namespace pxr;
 #define LOG(msg) Application().LogMessage(msg);
 
 // Scene time infos
-struct X2UExportTimeInfos {
+struct U2XTimeInfos {
   double startFrame;
   double endFrame;
   double sampleRate;
   double framesPerSecond;
 };
 
-enum X2UDataType {
+enum U2XDataType {
   X2U_DATA_NULL,
   X2U_DATA_BOOL,
   X2U_DATA_LONG,
@@ -95,12 +95,12 @@ enum X2UDataType {
   X2U_DATA_STRING
 };
 
-enum X2UDataPrecision {
+enum U2XDataPrecision {
   X2U_PRECISION_SINGLE,
   X2U_PRECISION_DOUBLE
 };
 
-enum X2UPrimvarInterpolation {
+enum U2XPrimvarInterpolation {
   X2U_INTERPOLATION_CONSTANT,
   X2U_INTERPOLATION_UNIFORM,
   X2U_INTERPOLATION_VARYING,
@@ -108,14 +108,23 @@ enum X2UPrimvarInterpolation {
   X2U_INTERPOLATION_FACEVARYING
 };
 
-enum X2UWriteOptions {
+enum U2XWriteOptions {
   X2U_WRITE_COLORS  = 1,
   X2U_WRITE_NORMALS = 2,
   X2U_WRITE_UVS     = 4,
   X2U_WRITE_CUSTOM  = 8
 };
 
-static size_t X2UGetDataSize(X2UDataType type, X2UDataPrecision precision)
+enum U2XBoundingBoxComponent {
+  BBOX_LOWER_X,
+  BBOX_LOWER_Y,
+  BBOX_LOWER_Z,
+  BBOX_UPPER_X,
+  BBOX_UPPER_Y,
+  BBOX_UPPER_Z
+};
+
+static size_t U2XGetDataSize(U2XDataType type, U2XDataPrecision precision)
 {
   switch (type)
   {
@@ -174,7 +183,7 @@ static size_t X2UGetDataSize(X2UDataType type, X2UDataPrecision precision)
   }
 }
 
-static X2UDataType X2UDataTypeFromICEType(siICENodeDataType type)
+static U2XDataType U2XDataTypeFromICEType(siICENodeDataType type)
 {
   switch (type)
   {
@@ -218,7 +227,7 @@ static X2UDataType X2UDataTypeFromICEType(siICENodeDataType type)
 
 // templated copy data
 template<typename SRC, typename DST>
-void X2UCopyData(const SRC* src, DST* dst, size_t num)
+void U2XCopyData(const SRC* src, DST* dst, size_t num)
 {
   if (sizeof(SRC) == sizeof(DST))
   {
@@ -235,7 +244,7 @@ void X2UCopyData(const SRC* src, DST* dst, size_t num)
 
 // templated cast tuppled data
 template<typename SRC, typename DST>
-void X2UCastTuppledData(const SRC* src, DST* dst, size_t num, int srcN, int dstN)
+void U2XCastTuppledData(const SRC* src, DST* dst, size_t num, int srcN, int dstN)
 {
   int minN = srcN > dstN ? dstN : srcN;
   for (int i = 0; i < num; ++i)

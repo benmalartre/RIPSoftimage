@@ -2,17 +2,17 @@
 
 #include "prim.h"
 
-
 // Mesh 
 class U2XMesh final : public U2XPrim {
 public:
-  U2XMesh(pxr::UsdStageRefPtr& stage, const pxr::SdfPath& path);
+  U2XMesh(const pxr::UsdPrim& prim);
   ~U2XMesh();
 
   void Init() override;
   void Term() override;
   void Update(double t) override;
-  void Draw() override;
+  void Prepare() override;
+  void Draw(GLuint modelUniform) override;
 
 private:
   pxr::VtArray<pxr::GfVec3f>   _points;
@@ -20,7 +20,7 @@ private:
   pxr::VtArray<pxr::GfVec3f>   _colors;
   pxr::VtArray<int>            _counts;
   pxr::VtArray<int>            _indices;
-  pxr::VtArray<int>            _samples;
+  pxr::VtArray<pxr::GfVec3i>   _samples;
+  U2XTopology                  _topology;
+  bool                         _varyingTopology;
 };
-
-typedef std::shared_ptr<U2XMesh> U2XMeshSharedPtr;

@@ -35,7 +35,7 @@ using namespace XSI;
 
 
 static const char *VERTEX_SHADER =
-"#version 330 core                                        \n"
+"#version 330                                             \n"
 "uniform mat4 model;                                      \n"
 "uniform mat4 view;                                       \n"
 "uniform mat4 projection;                                 \n"
@@ -43,91 +43,69 @@ static const char *VERTEX_SHADER =
 "in vec3 position;                                        \n"
 "in vec3 normal;                                          \n"
 "in vec3 color;                                           \n"
-"out vec3 vertex_color;                                   \n"
 "out vec3 vertex_normal;                                  \n"
+"out vec3 vertex_color;                                   \n"
 "void main(){                                             \n"
 "    vertex_normal = (model * vec4(normal, 0.0)).xyz;     \n"
 "    vertex_color = color;                                \n"
-"    vec3 p = vec3(view * model * vec4(position,1.0));    \n"
-"    gl_Position = projection * vec4(p,1.0);              \n"
+"    vec3 p = (view * model * vec4(position, 1.0)).xyz;   \n"
+"    gl_Position = projection * vec4(p, 1.0);             \n"
 "}";
 
 static const char *FRAGMENT_SHADER =
-"#version 330 core                                        \n"
-"in vec3 vertex_color;                                    \n"
+"#version 330                                             \n"
 "in vec3 vertex_normal;                                   \n"
+"in vec3 vertex_color;                                    \n"
 "out vec4 outColor;                                       \n"
 "void main()                                              \n"
 "{                                                        \n"
 " vec3 color = vertex_color + vertex_normal;              \n" 
-"	outColor = vec4(vertex_color,1.0);                      \n"
+"	outColor = vec4(vertex_normal,1.0);                     \n"
 "}";
 
-/*s
-struct U2XStageManager
-{
-  U2XStage& Get(CustomPrimitive& in_prim)
+
+struct U2XPrimitiveManager
+{  
+  U2XStage* Get(CustomPrimitive& in_prim)
   {
-    const ObjectID objectID = in_prim.GetObjectID();
-    const LONG evalID = in_prim.GetEvaluationID();
-    U2XStage& stage = _cache[objectID];
-    
-    pxr::VtArray<pxr::GfVec3f> points;
-    pxr::VtArray<pxr::GfVec3f> colors;
-    //if (stage._lastEvalID != evalID)
-    //{
-      
-      CParameterRefArray& params = in_prim.GetParameters();
-      CString filename = params.GetValue(L"Filename");
-      if (filename != stage._filename)
-      {
-        stage._needReload = true;
-        stage._filename = filename;
-        stage._numQuads = (int)((float)rand()/(float)RAND_MAX) * 5 + 2;
-      }
-      
-      if (stage.GetNumPrims() == 0)
-      {
-        int N = 6;// (int)((float)rand() / (float)RAND_MAX) * 5 + 2;
-        stage._prims.reserve(N);
-        for (int i = 0; i < N; ++i) {
-          U2XPrim* prim = new X2UPrim(stage.Get(), pxr::SdfPath("/"));
-          stage._prims.push_back(new X2U)
-        }
-      }
-      else
-      {
-        pxr::VtArray<pxr::GfVec3f> colors;
-        for (int i = 0; i < stage._prims.size(); ++i) {
-          
-        }
-        
-      }
-      stage._lastEvalID = evalID;
-    //}
-    return stage;
+    auto& it = _cache.find(in_prim.GetObjectID());
+    if (it != _cache.end())return it->second;
+    else return NULL;
+  }
+  void Set(CustomPrimitive& in_prim, U2XStage* stage)
+  {
+    _cache[in_prim.GetObjectID()] = stage;
   }
 
-  void Drop(CustomPrimitive& in_prim)
+  void CheckCache()
   {
-    const ObjectID objectID = in_prim.GetObjectID();
-    _cache.erase(objectID);
+    for (auto& cache : _cache)
+    {
+      ObjectID objectID = cache.first;
+      ProjectItem item = Application().GetObjectFromID(objectID);
+      if (!item.IsValid())
+      {
+        if(cache.second)delete cache.second;
+        _cache.erase(objectID);
+      }
+    }
   }
 
   void Clear()
   {
+    for (auto& cache : _cache)
+      if(cache.second)delete cache.second;
     _cache.clear();
-    glFlush();
   }
 
 private:
   typedef ULONG ObjectID;
 
-  std::map<ObjectID, U2XStage> _cache;
+  std::map<ObjectID, U2XStage*> _cache;
 };
 
-static U2XStageManager _stages;
-*/
+static U2XPrimitiveManager _usdPrimitives;
+static pxr::UsdStageCache _usdStageCache;
 
 ////////////////////////////////////////////////////////////////////////////
 // Event used to evict dead objects from the cache.
@@ -141,19 +119,20 @@ static U2XStageManager _stages;
 //
 SICALLBACK UsdReadSceneOpen_OnEvent(const CRef& in_ref)
 {
-  //_stages.Clear();
+  _usdPrimitives.Clear();
   return CStatus::False;
 }
 
 SICALLBACK UsdReadObjectRemoved_OnEvent(const CRef& in_ref)
 {
-  //_stages.Clear();
+  Context ctxt(in_ref);
+  _usdPrimitives.CheckCache();
   return CStatus::False;
 }
 
 SICALLBACK UsdReadNewScene_OnEvent(const CRef& in_ref)
 {
-  //_stages.Clear();
+  _usdPrimitives.Clear();
   return CStatus::False;
 }
 
@@ -170,6 +149,7 @@ SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
   in_reg.RegisterEvent("UsdReadSceneOpen", siOnBeginSceneOpen);
   in_reg.RegisterEvent("UsdReadNewScene", siOnBeginNewScene);
   GL_EXTENSIONS_LOADED = false;
+  UsdStageCacheContext context(_usdStageCache);
 	return CStatus::OK;
 }
 
@@ -189,10 +169,9 @@ SICALLBACK UsdPrimitive_Define( CRef& in_ctxt )
 	CRef oPDef;
 	Factory oFactory = Application().GetFactory();
 	oCustomPrimitive = ctxt.GetSource();
-  //LOG("CTXT " + CString(ctxt.))
-	oPDef = oFactory.CreateParamDef(L"File",CValue::siString,L"");
+	oPDef = oFactory.CreateParamDef(L"Filename",CValue::siString,L"");
 	oCustomPrimitive.AddParameter(oPDef,oParam);
-  oPDef = oFactory.CreateParamDef(L"Time", CValue::siDouble, L"");
+  oPDef = oFactory.CreateParamDef(L"Time", CValue::siDouble, 1.0);
   oCustomPrimitive.AddParameter(oPDef, oParam);
 
 	return CStatus::OK;
@@ -207,7 +186,8 @@ SICALLBACK UsdPrimitive_DefineLayout( CRef& in_ctxt )
 	PPGItem oItem;
 	oLayout = ctxt.GetSource();
 	oLayout.Clear();
-	oLayout.AddItem(L"File");
+	oLayout.AddItem(L"Filename");
+  oLayout.AddItem(L"Time");
 	return CStatus::OK;
 }
 
@@ -307,108 +287,101 @@ SICALLBACK UsdPrimitive_PPGEvent( const CRef& in_ctxt )
 	return CStatus::OK ;
 }
 
+SICALLBACK UsdPrimitive_BoundingBox(CRef& in_ref)
+{
+  Context ctxt(in_ref);
+  CustomPrimitive prim(ctxt.GetSource());
+  if (!prim.IsValid())return CStatus::Fail;
+
+  U2XStage* stage = _usdPrimitives.Get(prim);
+  if (!stage)
+  {
+    stage = new U2XStage();
+    _usdPrimitives.Set(prim, stage);
+  }
+
+  stage->Update(prim);
+
+  ctxt.PutAttribute("LowerBoundX", U2XGetBoundingBoxComponent(stage->GetBBox(), BBOX_LOWER_X));
+  ctxt.PutAttribute("LowerBoundY", U2XGetBoundingBoxComponent(stage->GetBBox(), BBOX_LOWER_Y));
+  ctxt.PutAttribute("LowerBoundZ", U2XGetBoundingBoxComponent(stage->GetBBox(), BBOX_LOWER_Z));
+  ctxt.PutAttribute("UpperBoundX", U2XGetBoundingBoxComponent(stage->GetBBox(), BBOX_UPPER_X));
+  ctxt.PutAttribute("UpperBoundY", U2XGetBoundingBoxComponent(stage->GetBBox(), BBOX_UPPER_Y));
+  ctxt.PutAttribute("UpperBoundZ", U2XGetBoundingBoxComponent(stage->GetBBox(), BBOX_UPPER_Z));
+  
+  return CStatus::OK;
+
+}
+
+
 SICALLBACK UsdPrimitive_Draw( CRef& in_ctxt )
 {
+  Context ctxt(in_ctxt);
+  CustomPrimitive prim = ctxt.GetSource();
+  U2XStage* stage = _usdPrimitives.Get(prim);
+  if (!stage)return CStatus::Fail;
+
   GLint currentPgm;
   glGetIntegerv(GL_CURRENT_PROGRAM, &currentPgm);
   GLint currentVao;
   glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &currentVao);
-
-  glPointSize(5);
+  GLint currentDepthTest;
+  glGetIntegerv(GL_DEPTH_TEST, &currentDepthTest);
 
   if (!GL_EXTENSIONS_LOADED)
   {
     glewInit();
     GL_EXTENSIONS_LOADED = true;
+
     GLSL_PROGRAM.Build("Simple", VERTEX_SHADER, FRAGMENT_SHADER);
     GLuint pgm = GLSL_PROGRAM.Get();
     // bind shader program
     glUseProgram(pgm);
-    glBindAttribLocation(pgm, 0, "position");
-    glBindAttribLocation(pgm, 1, "normal");
-    glBindAttribLocation(pgm, 2, "color");
+    glBindAttribLocation(pgm, CHANNEL_POSITION, "position");
+    glBindAttribLocation(pgm, CHANNEL_NORMAL, "normal");
+    glBindAttribLocation(pgm, CHANNEL_COLOR, "color");
     glLinkProgram(pgm);
 
   }
-
-  GLint renderMode;
-  glGetIntegerv(GL_RENDER_MODE, &renderMode);
-  if (renderMode == GL_SELECT)LOG("SELECTION RENDER MODE :D!!!");
   
-
-  GLint pgm = GLSL_PROGRAM.Get();
-  glUseProgram(pgm);
-
-  GLfloat model[16];
-  glGetFloatv(GL_MODELVIEW_MATRIX, model);
-  GLfloat proj[16];
-  glGetFloatv(GL_PROJECTION_MATRIX, proj);
-
-  GLuint modelUniform = glGetUniformLocation(pgm, "model");
-  GLuint viewUniform = glGetUniformLocation(pgm, "view");
-  GLuint projUniform = glGetUniformLocation(pgm, "projection");
-
-  // view matrix
-  glUniformMatrix4fv(
-    viewUniform,
-    1,
-    GL_FALSE,
-    model
-  );
-
-  // projection matrix
-  glUniformMatrix4fv(
-    projUniform,
-    1,
-    GL_FALSE,
-    proj
-  );
-
-	Context ctxt( in_ctxt );
-	CustomPrimitive prim = ctxt.GetSource();
-
-  /*
-  U2XStage& stage = _stages.Get(prim);
-  for (int i = 0; i < stage._prims.size(); ++i)
+  if (!stage->NeedReload())
   {
-    // model matrix
+    GLint pgm = GLSL_PROGRAM.Get();
+    
+    glUseProgram(pgm);
+
+    GLfloat model[16];
+    glGetFloatv(GL_MODELVIEW_MATRIX, model);
+    GLfloat proj[16];
+    glGetFloatv(GL_PROJECTION_MATRIX, proj);
+
+    GLuint modelUniform = glGetUniformLocation(pgm, "model");
+    GLuint viewUniform = glGetUniformLocation(pgm, "view");
+    GLuint projUniform = glGetUniformLocation(pgm, "projection");
+
+    glEnable(GL_DEPTH_TEST);
+    // view matrix
     glUniformMatrix4fv(
-      modelUniform,
+      viewUniform,
       1,
       GL_FALSE,
-      &stage._prims[i]->_xfo[0][0]
+      model
     );
 
-    glBindVertexArray(stage._prims[i]->_vao);
-    //glDrawArrays(GL_POINTS, 0, NUM_TEST_POINTS);
-    glDrawElements(GL_TRIANGLES, NUM_TEST_INDICES, GL_UNSIGNED_INT, NULL);
-   
+    // projection matrix
+    glUniformMatrix4fv(
+      projUniform,
+      1,
+      GL_FALSE,
+      proj
+    );
+
+    stage->Draw(GLSL_PROGRAM);
+
+    
   }
-  */
   glBindVertexArray(currentVao);
   glUseProgram(currentPgm);
-
-	return CStatus::OK;
-}
-
-SICALLBACK UsdPrimitive_BoundingBox( CRef& in_ctxt )
-{
-  LOG("CUSTOM PRIMITIVE COMPUTE BOUNDING BOX!!!");
-	Context ctxt( in_ctxt );
-	CustomPrimitive prim = ctxt.GetSource();
-  Geometry geom = prim.GetGeometry();
-
-
-	double lowerx, lowery, lowerz, upperx, uppery, upperz;
-  lowerx = lowery = lowerz = -100.0;
-  upperx = uppery = upperz = 100.0;
-	// TODO: Update the bounding box attributes.
-	ctxt.PutAttribute("LowerBoundX", lowerx);
-	ctxt.PutAttribute("LowerBoundY", lowery);
-	ctxt.PutAttribute("LowerBoundZ", lowerz);
-	ctxt.PutAttribute("UpperBoundX", upperx);
-	ctxt.PutAttribute("UpperBoundX", uppery);
-	ctxt.PutAttribute("UpperBoundX", upperz);
 
 	return CStatus::OK;
 }

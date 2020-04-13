@@ -8,62 +8,34 @@
 #include <pxr/base/gf/matrix4f.h>
 #include <pxr/base/gf/matrix4d.h>
 #include <pxr/usd/usdGeom/bboxCache.h>
+#include <pxr/usd/usdGeom/gprim.h>
 
-
-static const int NUM_TEST_POINTS = 4;
-
-static float TEST_POINTS[NUM_TEST_POINTS * 3] = {
-  -1.f, -1.f, 0.f,
-  -1.f,  1.f, 0.f,
-  1.f,  1.f, 0.f,
-  1.f, -1.f, 0.f
-};
-
-static float TEST_NORMALS[NUM_TEST_POINTS * 3] = {
-  0.f, 0.f, 1.f,
-  0.f, 0.f, 1.f,
-  0.f, 0.f, 1.f,
-  0.f, 0.f, 1.f
-};
-
-static float TEST_COLORS[NUM_TEST_POINTS * 3] = {
-  1.f, 0.f, 0.f,
-  0.f, 1.f, 0.f,
-  0.f, 0.f, 1.f,
-  1.f, 0.f, 1.f
-};
-
-static const int NUM_TEST_INDICES = 6;
-
-static int TEST_INDICES[NUM_TEST_INDICES] = {
-  0, 1, 2,
-  2, 3, 0
-};
+#include "vertexBuffer.h"
+#include "vertexArray.h"
 
 // Prim base class
 class U2XPrim {
 public:
-  U2XPrim(pxr::UsdStageRefPtr& stage, const pxr::SdfPath& path);
+  U2XPrim(const pxr::UsdPrim& prim);
   virtual ~U2XPrim();
 
-  virtual void Init();
-  virtual void Term();
-  virtual void Update(double t);
-  virtual void Draw();
+  virtual void Init()=0;
+  virtual void Term()=0;
+  virtual void Update(double t)=0;
+  virtual void Prepare() = 0;
+  virtual void Draw(GLuint modelUniform)=0;
 
   void GetBoundingBox(pxr::UsdGeomBBoxCache& bboxCache);
+  const float* GetMatrix() { return (const float*)&_xform[0][0]; };
+
+  void GetVisibility(const pxr::UsdTimeCode& timeCode);
+  void GetXform(const pxr::UsdTimeCode& timeCode);
 
 protected:
   pxr::UsdPrim                 _prim;
   pxr::SdfPath                 _path;
   pxr::GfBBox3d                _bbox;
   bool                         _visibility;
-  pxr::GfMatrix4d              _xform;
-  GLuint                       _vao;
-  GLuint                       _ebo;
-  std::vector<GLuint>          _vbos;
+  pxr::GfMatrix4f              _xform;
+  U2XVertexArray               _vao;
 };
-
-typedef std::shared_ptr<U2XPrim> U2XPrimSharedPtr;
-typedef std::vector<U2XPrimSharedPtr> U2XPrimSharedPtrList;
-

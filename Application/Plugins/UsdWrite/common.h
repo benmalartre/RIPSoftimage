@@ -70,14 +70,6 @@ using namespace pxr;
 // softimage log message
 #define LOG(msg) Application().LogMessage(msg);
 
-// Scene time infos
-struct X2UTimeInfos {
-  double startFrame;
-  double endFrame;
-  double sampleRate;
-  double framesPerSecond;
-};
-
 enum X2UDataType {
   X2U_DATA_NULL,
   X2U_DATA_BOOL,

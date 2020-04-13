@@ -41,44 +41,7 @@ void X2UScene::Init()
 // Get time infos from scene
 void X2UScene::TimeInfos()
 {
-  // Get the current project
-  Application app;
-  Project project = app.GetActiveProject();
-
-  // The PlayControl property set is stored with scene data under the project
-  Property playControl = project.GetProperties().GetItem(L"Play Control");
-
-  _timeInfos.startFrame = playControl.GetParameterValue(L"In");
-  _timeInfos.endFrame = playControl.GetParameterValue(L"Out");
-  switch ((int)playControl.GetParameterValue(L"Format"))
-  {
-  case 13:
-    _timeInfos.framesPerSecond = 23.976;
-    break;
-  case 7:
-    _timeInfos.framesPerSecond = 24.0; // FILM
-    break;
-  case 8:
-    _timeInfos.framesPerSecond = 25.0; // PAL
-    break;
-  case 10:
-    _timeInfos.framesPerSecond = 29.97; // NTSC
-    break;
-  case 19:
-    _timeInfos.framesPerSecond = 30;
-    break;
-  case 25:
-    _timeInfos.framesPerSecond = 59.94;
-    break;
-  case 11:
-    _timeInfos.framesPerSecond = playControl.GetParameterValue(L"Rate");
-    break;
-  default:
-    _timeInfos.framesPerSecond = 24.0; // FILM
-    break;
-  }
-  
-  _timeInfos.sampleRate = 1;
+  _timeInfos.InitFromScene();
 }
 
 void X2UScene::Process()

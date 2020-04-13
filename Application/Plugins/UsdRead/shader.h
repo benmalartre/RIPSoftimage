@@ -83,7 +83,7 @@ public:
   size_t Hash(){return _hash;};
 
   /// get GL program id
-  GLuint Get(){return _pgm;};
+  GLuint Get() const {return _pgm;};
 
   /// this object is non-copyable
   U2XGLSLProgram(const U2XGLSLProgram&) = delete;

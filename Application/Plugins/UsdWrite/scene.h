@@ -2,6 +2,7 @@
 
 #include "common.h"
 #include "model.h"
+#include "utils.h"
 
 // Scene
 class X2UScene : public X2UModel{
@@ -15,7 +16,7 @@ class X2UScene : public X2UModel{
     void Process();
 
   private:
-    X2UTimeInfos              _timeInfos;
+    X2UTimeInfos     _timeInfos;
 
 };
 

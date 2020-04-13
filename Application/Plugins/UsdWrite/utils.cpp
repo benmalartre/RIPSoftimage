@@ -2,6 +2,55 @@
 #include <xsi_material.h>
 #include <xsi_oglmaterial.h>
 
+void X2UTimeInfos::InitFromScene()
+{
+  // Get the current project
+  Application app;
+  Project project = app.GetActiveProject();
+
+  // The PlayControl property set is stored with scene data under the project
+  Property playControl = project.GetProperties().GetItem(L"Play Control");
+
+  startFrame = playControl.GetParameterValue(L"In");
+  endFrame = playControl.GetParameterValue(L"Out");
+  switch ((int)playControl.GetParameterValue(L"Format"))
+  {
+  case 13:
+    framesPerSecond = 23.976;
+    break;
+  case 7:
+    framesPerSecond = 24.0; // FILM
+    break;
+  case 8:
+    framesPerSecond = 25.0; // PAL
+    break;
+  case 10:
+    framesPerSecond = 29.97; // NTSC
+    break;
+  case 19:
+    framesPerSecond = 30;
+    break;
+  case 25:
+    framesPerSecond = 59.94;
+    break;
+  case 11:
+    framesPerSecond = playControl.GetParameterValue(L"Rate");
+    break;
+  default:
+    framesPerSecond = 24.0; // FILM
+    break;
+  }
+
+  sampleRate = 1;
+}
+
+void X2UTimeInfos::Set(double start, double end, double rate)
+{
+  startFrame = start;
+  endFrame = end;
+  sampleRate = rate;
+  framesPerSecond = 24;
+}
 
 bool X2UIsModelReferenced(Model& model)
 {

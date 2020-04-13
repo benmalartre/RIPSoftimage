@@ -92,18 +92,13 @@ static void X2UConvertMatrix4DoubleToDouble(const MATH::CMatrix4& src, GfMatrix4
   memcpy((void*)&dst, (void*)&src, 16 * sizeof(double));
 }
 
-template<typename SRC, typename DST>
-void X2UConvertMatrix4(const SRC& src, DST& dst)
-{
-  size_t srcElemSize = sizeof(src.GetValue(0, 0));
-  size_t dstElemSize = sizeof(dst[0][0]);
+/// Scene time infos
+struct X2UTimeInfos {
+  double startFrame;
+  double endFrame;
+  double sampleRate;
+  double framesPerSecond;
 
-  if (srcElemSize == dstElemSize)
-  {
-
-  }
-  for (int i = 0; i < 16; ++i)
-  {
-
-  }
-}
+  void InitFromScene();
+  void Set(double start, double end, double rate);
+};

@@ -1,6 +1,7 @@
 // UsdExportPlugin
 // this is a very simple xsi to usd exporter
 #include "common.h"
+#include "utils.h"
 #include "mesh.h"
 #include "scene.h"
 
@@ -40,8 +41,9 @@ SICALLBACK UsdWrite_Init( CRef& in_ctxt )
   ArgumentArray args;
   args = cmd.GetArguments();
   args.Add(L"Folder");// No default value 
-  args.Add(L"StartFrame", 1);
-  args.Add(L"EndFrame", 100);
+  args.Add(L"Filename");
+  args.Add(L"StartFrame", 1.0);
+  args.Add(L"EndFrame", 100.0);
 
   return CStatus::OK;
 }
@@ -49,14 +51,14 @@ SICALLBACK UsdWrite_Init( CRef& in_ctxt )
 SICALLBACK UsdWrite_Execute( CRef& in_ctxt )
 {
   Context ctxt( in_ctxt );
-  CValueArray args = ctxt.GetAttribute(L"Arguments");
-  
-  LOG("### ARGUMENTS : ");
-  for (size_t i = 0; i < args.GetCount(); ++i) {
-    LOG(args[i].GetAsText());
-  }
-  LOG("########################################################");
- 
+  Command cmd(ctxt.GetSource());
+
+  ArgumentArray args = cmd.GetArguments();
+  LOG("FOLDER : "+ args.GetItem(L"Folder").GetValue().GetAsText());
+  LOG("FILENAME : " + args.GetItem(L"Filename").GetValue().GetAsText());
+  LOG("START FRAME : " + args.GetItem(L"StartFrame").GetValue().GetAsText());
+  LOG("EndFrame : " + args.GetItem(L"EndFrame").GetValue().GetAsText());
+
   Application app;
   Model root = app.GetActiveSceneRoot();
 
