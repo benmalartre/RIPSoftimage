@@ -1,5 +1,9 @@
 #include "window.h"
 #include "explorer.h"
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_win32.h"
+#include "imgui/imgui_impl_opengl3.h"
+#include "utils.h"
 
 
 //////////////////////////////////////////////////////////////////////
@@ -29,7 +33,19 @@ LRESULT	UsdExplorerWindow::Init( XSI::CRef& in_pViewCtx )
 	XSI::ViewContext l_vViewContext = in_pViewCtx;
 	assert ( l_vViewContext.IsValid() );
 
-  CreateU2XWindow((HWND)l_vViewContext.GetParentWindowHandle());
+  Create((HWND)l_vViewContext.GetParentWindowHandle());
+
+  /*
+  IMGUI_CHECKVERSION();
+  ImGui::CreateContext();
+  ImGuiIO &io = ImGui::GetIO();
+  // Setup Platform/Renderer bindings
+  ImGui_ImplWin32_Init((HWND)l_vViewContext.GetParentWindowHandle());
+  ImGui_ImplOpenGL3_Init();
+  // Setup Dear ImGui style
+  ImGui::StyleColorsDark();
+  LOG("IMGUI INITIALIZED!!!");
+  */
   
 	return S_OK;
 }
@@ -41,12 +57,11 @@ LRESULT	UsdExplorerWindow::Init( XSI::CRef& in_pViewCtx )
 //********************************************************************
 LRESULT	UsdExplorerWindow::Term( XSI::CRef& in_pViewCtx )
 {
-  //DestroyU2XWindow();
-  /*
-  DestroyWindow(__gHandle);
-  __gHandle = NULL;
-  UnregisterClass("UsdExplorer", __gInstance);
-  */
+
+  DestroyWindow(_hWnd);
+  _hWnd = NULL;
+  UnregisterClass("U2XWindow", _hInstance);
+  
   
 	return S_OK;
 }
@@ -321,6 +336,23 @@ LRESULT UsdExplorerWindow::Notify ( XSI::CRef& in_pViewCtx )
 	return S_OK;
 }
 
+void UsdExplorerWindow::InitGL()
+{
+}
+
+void UsdExplorerWindow::Draw()
+{
+  // render your GUI
+  ImGui::Begin("Demo window");
+  ImGui::Button("Hello!");
+  ImGui::End();
+
+  // Render dear imgui into screen
+  ImGui::Render();
+  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
+/*
 LRESULT UsdExplorerWindow::SetAttributeValue ( XSI::CString& in_cString, XSI::CValue& in_vValue )
 {
 
@@ -342,7 +374,7 @@ LRESULT UsdExplorerWindow::GetAttributeValue ( XSI::CString& in_cString, XSI::CV
 
 	return S_OK;
 }
-
+*/
 
 
 //********************************************************************
@@ -353,6 +385,7 @@ LRESULT UsdExplorerWindow::GetAttributeValue ( XSI::CString& in_cString, XSI::CV
 //										in the Softimage UI.
 //
 //********************************************************************
+/*
 LRESULT UsdExplorerWindow::SetWindowSize(int ox, int oy, int cx, int cy)
 {
 
@@ -373,7 +406,7 @@ LRESULT UsdExplorerWindow::MouseMove( WPARAM, LPARAM )
 
 void	UsdExplorerWindow::PrintNotification ( char*	in_szMessage )
 {
-  /*
+  
 	// Get the number of items in the list box.
 	int count = (int)SendDlgItemMessage ( l_hWnd, IDC_OUTPUT2,LB_GETCOUNT, 0, 0);
 
@@ -387,9 +420,9 @@ void	UsdExplorerWindow::PrintNotification ( char*	in_szMessage )
 	SendDlgItemMessage ( l_hWnd, IDC_OUTPUT2,LB_ADDSTRING, 0, (LPARAM)in_szMessage);
 
 	SendDlgItemMessage ( l_hWnd, IDC_OUTPUT2,LB_SETCURSEL, count, 0);
-  */
+  
 }
-
+*/
 
 
 

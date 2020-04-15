@@ -1,4 +1,5 @@
 #include "window.h"
+#include "utils.h"
 
 HINSTANCE __gInstance = NULL;
 
@@ -23,10 +24,6 @@ BOOL APIENTRY DllMain(
 
   return TRUE;
 }
-
-HWND __gHandle;
-HDC __hDC = NULL;		// Private GDI Device Context
-HGLRC __hRC = NULL;	// Permanent Rendering Context
 
 //
 // Map of standard Windows message
@@ -252,17 +249,14 @@ Msg2Name Maps [] =
 NULL,0
 };
 
-//
-// Helper function to convert a wide char string into ASCII
-//
-void W2AHelper( LPSTR out_sz, LPCWSTR in_wcs, int in_cch = -1);
 
-void InitGL()
+void U2XWindow::InitGL()
 {
 }
 
-void Draw()
+void U2XWindow::Draw()
 {
+  wglMakeCurrent(_hDC, _hRC);
   glClearColor((float)rand() / (float)RAND_MAX,
     (float)rand() / (float)RAND_MAX,
     (float)rand() / (float)RAND_MAX,
@@ -280,11 +274,12 @@ void Draw()
 
   glEnd();
   //Placer ici tout le code de transformation et de dessin
-  SwapBuffers(__hDC);
+  SwapBuffers(_hDC);
 }
 
-void Reshape(int width, int height)
+void U2XWindow::Reshape(int width, int height)
 {
+  wglMakeCurrent(_hDC, _hRC);
   glViewport(0, 0, width, height);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
@@ -307,19 +302,19 @@ U2XWindow::~U2XWindow()
 
 }
 
-void CreateU2XWindow(HWND hParent)
+void U2XWindow::Create(HWND hParent)
 {
   WNDCLASS WindowClass = {
     0,			                      // style
     U2XWindowOpenProc,						// window proc
     0,								            // additional class memory in bytes
     0,								            // additional window memory in bytes
-    __gInstance,							    // instance
+    _hInstance,							      // instance
     0,								            // icon
     0,								            // cursor
     0,								            // bg color
     NULL,							            // menu
-    "UsdExplorer"						      // name window class
+    "U2XWindow"						        // name window class
   };
   if (!RegisterClass(&WindowClass))
   {
@@ -327,9 +322,9 @@ void CreateU2XWindow(HWND hParent)
     exit(1);
   }
 
-  __gHandle = CreateWindow
-  ("UsdExplorer",
-    "Fenêtre OpenGL",
+  _hWnd = CreateWindow
+  ("U2XWindow",
+    "U2X OpenGL Window",
     WS_CHILD | WS_VISIBLE | WS_BORDER,
     0,		            // x
     0,		            // y
@@ -337,15 +332,33 @@ void CreateU2XWindow(HWND hParent)
     800,	            // height
     hParent,	        // parent
     0,		            // child id
-    __gInstance,	    // instance
-    NULL	            // WM_CREATE
+    _hInstance,	      // instance
+    this	            // user data
   );
-  if (!__gHandle)
+  if (!_hWnd)
   {
     MessageBox(NULL, "OpenGl handle is NULL", "exit(1)", NULL);
     exit(1);
   }
-  ShowWindow(__gHandle, SW_SHOW);
+  ShowWindow(_hWnd, SW_SHOW);
+}
+
+void U2XWindow::CreateContext(HWND hwnd)
+{
+  _hDC = GetDC(hwnd);
+  SetupPixelFormat(_hDC);
+  _hRC = wglCreateContext(_hDC);
+  if (!_hRC) SendMessage(hwnd, WM_CLOSE, 0, 0);
+  wglMakeCurrent(_hDC, _hRC);
+  InitGL();
+}
+
+void U2XWindow::DestroyContext(HWND hwnd)
+{
+  wglMakeCurrent(NULL, NULL);
+  if (_hRC) wglDeleteContext(_hRC);
+  ReleaseDC(hwnd, _hDC);
+  PostQuitMessage(0);
 }
 
 //********************************************************************
@@ -360,7 +373,7 @@ LRESULT	U2XWindow::Init( XSI::CRef& in_pViewCtx )
 	XSI::ViewContext l_vViewContext = in_pViewCtx;
 	assert ( l_vViewContext.IsValid() );
 
-  CreateU2XWindow((HWND)l_vViewContext.GetParentWindowHandle());
+  Create((HWND)l_vViewContext.GetParentWindowHandle());
   
 	return S_OK;
 }
@@ -372,9 +385,9 @@ LRESULT	U2XWindow::Init( XSI::CRef& in_pViewCtx )
 //********************************************************************
 LRESULT	U2XWindow::Term( XSI::CRef& in_pViewCtx )
 {
-  DestroyWindow(__gHandle);
-  __gHandle = NULL;
-  UnregisterClass("UsdExplorer", __gInstance);
+  DestroyWindow(_hWnd);
+  _hWnd = NULL;
+  UnregisterClass("U2XWindow", _hInstance);
   
 	return S_OK;
 }
@@ -684,7 +697,7 @@ LRESULT U2XWindow::GetAttributeValue ( XSI::CString& in_cString, XSI::CValue& ou
 LRESULT U2XWindow::SetWindowSize(int ox, int oy, int cx, int cy)
 {
   //MessageBox(NULL, "FUCK", "fuck", NULL);
-	SetWindowPos( __gHandle,NULL,ox,oy,cx,cy,SWP_NOZORDER); 
+	SetWindowPos( _hWnd, NULL, ox, oy, cx, cy, SWP_NOZORDER); 
   Reshape(cx, cy);
 	return S_OK;
 }
@@ -773,37 +786,31 @@ void SetupPixelFormat(HDC hDC)
   }
 }
 
-LRESULT CALLBACK U2XWindowOpenProc(HWND hOgl, UINT Message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK U2XWindowOpenProc(HWND hWnd, UINT Message, WPARAM wParam, LPARAM lParam)
 {
-  
+  U2XWindow* window = (U2XWindow*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
   switch (Message)
   {
   case WM_DESTROY:
-    wglMakeCurrent(NULL, NULL);
-    if (__hRC) wglDeleteContext(__hRC);
-    ReleaseDC(hOgl, __hDC);
-    PostQuitMessage(0);
+    window->DestroyContext(hWnd);
     break;
 
   case WM_CREATE:
-    __hDC = GetDC(hOgl);
-    SetupPixelFormat(__hDC);
-    __hRC = wglCreateContext(__hDC);
-    if (!__hRC) SendMessage(hOgl, WM_CLOSE, 0, 0);
-    wglMakeCurrent(__hDC, __hRC);
-    InitGL();
+    window = (U2XWindow *)((CREATESTRUCT *)lParam)->lpCreateParams;
+    SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)window);
+    window->CreateContext(hWnd);
     break;
 
   case WM_SIZE:
-    Reshape( LOWORD(lParam), HIWORD(lParam) );
+    window->Reshape( LOWORD(lParam), HIWORD(lParam) );
     break;
 
   case WM_PAINT:
-    Draw();
+    window->Draw();
     break;
 
   default:
-    return DefWindowProc(hOgl, Message, wParam, lParam);
+    return DefWindowProc(hWnd, Message, wParam, lParam);
     break;
   }
   return FALSE;

@@ -32,7 +32,7 @@
 // Standard Win32 dialog callback
 //
 LRESULT CALLBACK U2XWindowOpenProc(HWND hOgl, UINT Message, WPARAM wParam, LPARAM lParam);
-void CreateU2XWindow(HWND hParent);
+void SetupPixelFormat(HDC hDC);
 
 class U2XWindow
 {
@@ -59,13 +59,21 @@ public:
 	virtual LRESULT MouseMove( WPARAM, LPARAM );
 
 
-private:
+  virtual void Create(HWND hwnd);
+  virtual void CreateContext(HWND hwnd);
+  virtual void DestroyContext(HWND hwnd);
+  virtual void InitGL();
+  virtual void Draw();
+  virtual void Reshape(int width, int height);
+
+protected:
 
 	void	PrintNotification ( char*	in_szMessage );
 
-
-private:
-	HWND	l_hWnd;
+	HWND      _hWnd;
+  HINSTANCE _hInstance;
+  HDC       _hDC;
+  HGLRC     _hRC;
 };
 
 typedef struct tagMsg2Name {
