@@ -54,11 +54,12 @@ public:
   };
 
   // state
-  inline bool GetNeedReallocate(){return _needReallocate;};
+  inline bool GetNeedReallocate() { return _needReallocate; };
+
   inline void SetNeedReallocate(bool needReallocate) {
     _needReallocate = needReallocate;
   };
-  inline bool GetNeedUpdate(){return _needUpdate;};
+  inline bool GetNeedUpdate() { return _needUpdate; };
   inline void SetNeedUpdate(bool needUpdate) {
     _needUpdate = needUpdate;
   };
@@ -78,8 +79,8 @@ public:
   // allocate
   void Reallocate();
   void Populate();
-  void Bind() const;
-  void Unbind() const;
+  void Bind();
+  void Unbind();
 
   // draw
   void Draw();

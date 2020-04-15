@@ -80,10 +80,8 @@ void U2XVertexBuffer::Reallocate()
     GL_DYNAMIC_DRAW
   );
 
-  glVertexAttribPointer(_channel, _elementSize / sizeof(float), GL_FLOAT, GL_FALSE, 0, NULL);
-  glEnableVertexAttribArray(_channel);
-
   _needReallocate = false;
+  _needUpdate = true;
 }
 
 void U2XVertexBuffer::Populate(const void* datas)
@@ -97,6 +95,14 @@ void U2XVertexBuffer::Populate(const void* datas)
   );
   _needUpdate = false;
 }
+
+void U2XVertexBuffer::Bind()
+{
+  glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+  glVertexAttribPointer(_channel, _elementSize / sizeof(float), GL_FLOAT, GL_FALSE, 0, NULL);
+  glEnableVertexAttribArray(_channel);
+}
+
 
 bool U2XVertexBuffer::CheckTopoMatchDatas(const U2XTopology* topo)
 {
@@ -122,11 +128,11 @@ void U2XVertexBuffer::ComputeOutputDatas(const U2XTopology* topo,
 {
   if(topo->type == U2XTopology::Type::POINTS)
   {
-    //memcpy(result, topo->samples, _numInputElements * _elementSize);
+    memcpy(result, topo->samples, _numInputElements * _elementSize);
   }
   else if(topo->type == U2XTopology::Type::LINES)
   {
-    //memcpy(result, &topo->GetSamples()[0], _numInputElements * _elementSize);
+    memcpy(result, &topo->samples[0], _numInputElements * _elementSize);
   }
   else if(topo->type == U2XTopology::Type::TRIANGLES)
   {

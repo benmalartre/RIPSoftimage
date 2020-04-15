@@ -12,7 +12,7 @@ public:
   void Term() override;
   void Update(double t) override;
   void Prepare() override;
-  void Draw(GLuint modelUniform) override;
+  void Draw() override;
 
 private:
   pxr::VtArray<pxr::GfVec3f>   _points;
@@ -22,5 +22,7 @@ private:
   pxr::VtArray<int>            _indices;
   pxr::VtArray<pxr::GfVec3i>   _samples;
   U2XTopology                  _topology;
-  bool                         _varyingTopology;
+  bool                         _haveNormals;
+  bool                         _haveColors;
+  bool                         _haveUVs;
 };

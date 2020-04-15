@@ -19,17 +19,10 @@
 #include <boost/functional/hash.hpp>
 #include <iostream>
 
+#include "attribute.h"
 #include "topology.h"
 
 class U2XVertexBuffer;
-
-enum U2XAttributeInterpolation : short {
-  INTERPOLATION_CONSTANT,
-  INTERPOLATION_UNIFORM,
-  INTERPOLATION_VARYING,
-  INTERPOLATION_VERTEX,
-  INTERPOLATION_FACEVARYING
-};
 
 enum U2XAttributeChannel : short {
   CHANNEL_POSITION,
@@ -86,7 +79,7 @@ public:
   inline void SetNeedReallocate(bool needReallocate) {
     _needReallocate = needReallocate;
   };
-  inline bool GetNeedUpdate(){return true;};//_needUpdate;};
+  inline bool GetNeedUpdate() { return  _needUpdate; };
   inline void SetNeedUpdate(bool needUpdate) {
     _needUpdate = needUpdate;
   };
@@ -118,6 +111,7 @@ public:
   // opengl
   void Reallocate();
   void Populate(const void* triangulatedDatas);
+  void Bind();
   GLuint Get() const {return _vbo;};
 
 private: 

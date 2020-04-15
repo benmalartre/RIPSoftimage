@@ -22,14 +22,11 @@ using namespace XSI;
 static CStringArray U2XGetNamesFromObjectNamesList(const CString& objectNames)
 {
   CString strippedNames = objectNames;
-  LOG(strippedNames);
   ULONG npos = strippedNames.FindString(L"(");
   if (npos != UINT_MAX)
     strippedNames = strippedNames.GetSubString(npos + 1, strippedNames.Length() - npos);
-  LOG(strippedNames);
   npos = strippedNames.ReverseFindString(L")");
   if (npos != UINT_MAX)strippedNames = strippedNames.GetSubString(0, npos);
-  LOG(strippedNames);
 
   CStringArray result = strippedNames.Split(L",");
   return result;

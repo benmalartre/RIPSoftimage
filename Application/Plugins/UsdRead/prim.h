@@ -12,6 +12,8 @@
 
 #include "vertexBuffer.h"
 #include "vertexArray.h"
+#include "attribute.h"
+
 
 // Prim base class
 class U2XPrim {
@@ -23,19 +25,30 @@ public:
   virtual void Term()=0;
   virtual void Update(double t)=0;
   virtual void Prepare() = 0;
-  virtual void Draw(GLuint modelUniform)=0;
+  virtual void Draw()=0;
 
+  const pxr::UsdPrim& Get() { return _prim; };
   void GetBoundingBox(pxr::UsdGeomBBoxCache& bboxCache);
+  void SetMatrix(const pxr::GfMatrix4d& m) {
+    _xform = pxr::GfMatrix4f(m);
+  };
   const float* GetMatrix() { return (const float*)&_xform[0][0]; };
 
   void GetVisibility(const pxr::UsdTimeCode& timeCode);
   void GetXform(const pxr::UsdTimeCode& timeCode);
+  U2XAttributeType HasAttribute(const pxr::TfToken& name);
+  U2XAttribute CreateAttribute(const pxr::TfToken& name, U2XAttributeType type);
+  void GetAttributeValue(U2XAttribute& attr, const pxr::UsdTimeCode& timeCode);
 
 protected:
   pxr::UsdPrim                 _prim;
   pxr::SdfPath                 _path;
   pxr::GfBBox3d                _bbox;
-  bool                         _visibility;
   pxr::GfMatrix4f              _xform;
+  bool                         _visibility;
+  bool                         _pointsVarying;
+  bool                         _topoVarying;
+  bool                         _haveAuthoredColors;
+  bool                         _haveAuthoredOpacities;
   U2XVertexArray               _vao;
 };

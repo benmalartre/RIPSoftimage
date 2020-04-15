@@ -22,7 +22,7 @@ U2XVertexArray::U2XVertexArray()
 // destructor
 U2XVertexArray::~U2XVertexArray()
 {
-  for (auto buffer : _buffers)
+  for (auto& buffer : _buffers)
     if (buffer.second)delete buffer.second;
   _buffers.clear();
   if(_vao)glDeleteVertexArrays(1, &_vao);
@@ -32,7 +32,7 @@ U2XVertexArray::~U2XVertexArray()
 void 
 U2XVertexArray::UpdateState()
 {
-  for(auto elem: _buffers)
+  for(const auto& elem: _buffers)
   {
     U2XVertexBuffer* buffer = elem.second;
     if(buffer->GetNeedUpdate())
@@ -49,7 +49,7 @@ U2XVertexArray::Reallocate()
 {
   if(!_vao)glGenVertexArrays(1, &_vao);
 
-  Bind();
+  //Bind();
 
   for(auto& elem: _buffers)
   {
@@ -57,7 +57,7 @@ U2XVertexArray::Reallocate()
     if (!buffer->GetNumInputElements())continue;
     buffer->Reallocate();
   }
-  Unbind();
+  //Unbind();
   _needReallocate = false;
   _needUpdate = true;
 }
@@ -65,23 +65,21 @@ U2XVertexArray::Reallocate()
 void 
 U2XVertexArray::Populate()
 {
-  Bind();
+  //Bind();
   for(auto& elem: _buffers)
   {
     U2XVertexBuffer* buffer = elem.second;
     if (!buffer->GetNumInputElements())continue;
-    if (buffer->GetNeedReallocate())buffer->Reallocate();
     if(buffer->GetNeedUpdate())
     {
       pxr::VtArray<char> datas(buffer->ComputeOutputSize());
 
       buffer->ComputeOutputDatas(_topology, datas.data());
       buffer->Populate(datas.cdata());
-      _needReallocate = false;
-      _needUpdate = false;
     }
   }
-  Unbind();
+  _needUpdate = false;
+  //Unbind();
 }
 
 // draw
@@ -95,13 +93,20 @@ U2XVertexArray::Draw()
 
 // allocate
 void 
-U2XVertexArray::Bind() const
+U2XVertexArray::Bind()
 {
+
   glBindVertexArray(_vao);
+
+  for (auto& elem : _buffers)
+  {
+    U2XVertexBuffer* buffer = elem.second;
+    buffer->Bind();
+  }
 }
 
 void 
-U2XVertexArray::Unbind() const 
+U2XVertexArray::Unbind() 
 {
   glBindVertexArray(0);
 }
@@ -126,6 +131,7 @@ U2XVertexArray::SetBuffer(U2XAttributeChannel channel, U2XVertexBuffer* buffer)
   {
     U2XVertexBuffer* old = _buffers[channel];
     if (old)delete old;
+    buffer->SetNeedReallocate(true);
   }
   _buffers[channel] = buffer;
 }

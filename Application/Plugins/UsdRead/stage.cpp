@@ -1,4 +1,5 @@
 #include <GL/glew.h>
+#include "common.h"
 #include "stage.h"
 #include "prim.h"
 #include "mesh.h"
@@ -11,17 +12,22 @@
 #include <pxr/usd/usdGeom/points.h>
 #include <pxr/usd/usdGeom/basisCurves.h>
 #include <pxr/usd/usdGeom/bboxCache.h>
+#include <pxr/usd/usdGeom/metrics.h>
 
 
 U2XStage::U2XStage()
-  :_filename(""), _lastEvalID(-1), _needReload(true), _time(DBL_MAX)
+  :_filename(""), _lastEvalID(-1), _isLoaded(false), _time(DBL_MAX)
 {
+  TfTokenVector purposes = { UsdGeomTokens->default_, UsdGeomTokens->render };
+  _bboxCache = new pxr::UsdGeomBBoxCache(pxr::UsdTimeCode::Default(), purposes);
+  _xformCache = new pxr::UsdGeomXformCache(pxr::UsdTimeCode::Default());
 }
 
 U2XStage::~U2XStage()
 {
-  LOG("DELETE FUCKIN STAGE :D");
   Clear();
+  delete _bboxCache;
+  delete _xformCache;
 }
 
 
@@ -29,7 +35,7 @@ void U2XStage::SetFilename(const CString& filename)
 {
   _rawFilename = filename;
   _filename = pxr::ArchNormPath(_rawFilename.GetAsciiString(), false);
-  _needReload = true;
+  _isLoaded = false;
   Clear();
   
   if (pxr::UsdStage::IsSupportedFile(_filename) &&
@@ -39,9 +45,17 @@ void U2XStage::SetFilename(const CString& filename)
     //_stage = pxr::UsdStage::Open(rootLayer);
     _stage = pxr::UsdStage::Open(_filename);
     _root = _stage->GetPseudoRoot();
+    _upAxis = pxr::UsdGeomGetStageUpAxis(_stage);
+    if (_upAxis == pxr::UsdGeomTokens->z)
+    {
+      pxr::UsdGeomXformable xformable(_stage->GetDefaultPrim());
+      pxr::UsdGeomXformOp rotateOp = xformable.AddRotateXOp();
+      rotateOp.Set(-90.f);
+    }
+    
     Recurse(_root);
 
-    _needReload = false;
+    _isLoaded = true;
   }
 }
 
@@ -49,10 +63,14 @@ void U2XStage::SetTime(double time)
 {
   if (time != _time)
   {
-    _time = time;
-    for (auto& prim : _prims)prim->Update(_time);
-   
+    _xformCache->SetTime(pxr::UsdTimeCode(time));
+    for (auto& prim : _prims)
+    {
+      prim->Update(time);
+      prim->SetMatrix(_xformCache->GetLocalToWorldTransform(prim->Get()));
+    }
     ComputeBoundingBox(pxr::UsdTimeCode(time));
+    _time = time;
   }
 }
 
@@ -61,8 +79,8 @@ void U2XStage::ComputeBoundingBox(const pxr::UsdTimeCode& timeCode)
   TfTokenVector purposes = { UsdGeomTokens->default_, UsdGeomTokens->render };
   if (_root.IsValid())
   {
-    pxr::UsdGeomBBoxCache bboxCache(timeCode, purposes);
-    _bbox = bboxCache.ComputeWorldBound(_root);
+    _bboxCache->SetTime(timeCode);
+    _bbox = _bboxCache->ComputeWorldBound(_root);
   }
 }
 
@@ -83,9 +101,9 @@ void U2XStage::Recurse(const pxr::UsdPrim& prim)
 {
   if (prim.IsA<pxr::UsdGeomMesh>())
   {
-    ////LOG("MESH : " + CString(prim.GetPath().GetText()));
     U2XMesh* mesh = new U2XMesh(prim);
     mesh->Init();
+    mesh->SetMatrix(_xformCache->GetLocalToWorldTransform(prim));
     _prims.push_back(mesh);
   }
   else if (prim.IsA<pxr::UsdGeomPoints>())
@@ -108,36 +126,34 @@ void U2XStage::Update(CustomPrimitive& prim)
   const LONG evalID = prim.GetEvaluationID();
   if (_lastEvalID != evalID)
   {
-
-    //CParameterRefArray& params = in_prim.GetParameters();
-    //data.halfWidth = params.GetValue(kWidthName);
-    //data.halfHeight = params.GetValue(kHeightName);
-    //data.halfLength = params.GetValue(kLengthName);
+    CParameterRefArray& params = prim.GetParameters();
 
     // check filename
-    CString filename = prim.GetParameterValue(L"Filename");
-    if (!HasFilename(filename) || _needReload)
+    CString filename = params.GetValue(L"Filename");
+    if (!HasFilename(filename) || !_isLoaded)
     {
       SetFilename(filename);
     }
-
-    double time = prim.GetParameterValue(L"Time");
-    SetTime(time);
-
-    ComputeBoundingBox(pxr::UsdTimeCode(time));
+    if (_isLoaded)
+    {
+      double time = params.GetValue(L"Time");
+      SetTime(time);
+    }
     _lastEvalID = evalID;
   }
 }
 
-void U2XStage::Draw(const U2XGLSLProgram& glslProgram)
+void U2XStage::Draw()
 {
-
-  GLint pgm = glslProgram.Get();
-  GLuint modelUniform = glGetUniformLocation(pgm, "model");
+  GLint pgm = GLSL_PROGRAM->Get();
+  GLint modelUniform = glGetUniformLocation(pgm, "model");
+  //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   for (int i = 0; i < _prims.size(); ++i)
   {
+    /// model matrix
+    glUniformMatrix4fv(modelUniform, 1, GL_FALSE, _prims[i]->GetMatrix());
+
     _prims[i]->Prepare();
-    _prims[i]->Draw(modelUniform);
+    _prims[i]->Draw();
   }
-  
 }

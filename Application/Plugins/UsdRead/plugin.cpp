@@ -59,8 +59,8 @@ static const char *FRAGMENT_SHADER =
 "out vec4 outColor;                                       \n"
 "void main()                                              \n"
 "{                                                        \n"
-" vec3 color = vertex_color + vertex_normal;              \n" 
-"	outColor = vec4(vertex_normal,1.0);                     \n"
+" vec3 color = vertex_color * vertex_normal;              \n" 
+"	outColor = vec4(color, 1.0);                     \n"
 "}";
 
 
@@ -136,8 +136,8 @@ SICALLBACK UsdReadNewScene_OnEvent(const CRef& in_ref)
   return CStatus::False;
 }
 
-static bool GL_EXTENSIONS_LOADED;
-static U2XGLSLProgram GLSL_PROGRAM;
+bool GL_EXTENSIONS_LOADED;
+U2XGLSLProgram* GLSL_PROGRAM;
 
 SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
 {
@@ -148,6 +148,7 @@ SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
   in_reg.RegisterEvent("UsdReadObjectRemoved", siOnObjectRemoved);
   in_reg.RegisterEvent("UsdReadSceneOpen", siOnBeginSceneOpen);
   in_reg.RegisterEvent("UsdReadNewScene", siOnBeginNewScene);
+  in_reg.RegisterCustomDisplay(L"UsdExplorer");
   GL_EXTENSIONS_LOADED = false;
   UsdStageCacheContext context(_usdStageCache);
 	return CStatus::OK;
@@ -155,8 +156,10 @@ SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
 
 SICALLBACK XSIUnloadPlugin( const PluginRegistrar& in_reg )
 {
+  delete GLSL_PROGRAM;
 	CString strPluginName;
 	strPluginName = in_reg.GetName();
+  
 	Application().LogMessage(strPluginName + L" has been unloaded.",siVerboseMsg);
 	return CStatus::OK;
 }
@@ -332,9 +335,9 @@ SICALLBACK UsdPrimitive_Draw( CRef& in_ctxt )
   {
     glewInit();
     GL_EXTENSIONS_LOADED = true;
-
-    GLSL_PROGRAM.Build("Simple", VERTEX_SHADER, FRAGMENT_SHADER);
-    GLuint pgm = GLSL_PROGRAM.Get();
+    GLSL_PROGRAM = new U2XGLSLProgram();
+    GLSL_PROGRAM->Build("Simple", VERTEX_SHADER, FRAGMENT_SHADER);
+    GLuint pgm = GLSL_PROGRAM->Get();
     // bind shader program
     glUseProgram(pgm);
     glBindAttribLocation(pgm, CHANNEL_POSITION, "position");
@@ -344,41 +347,36 @@ SICALLBACK UsdPrimitive_Draw( CRef& in_ctxt )
 
   }
   
-  if (!stage->NeedReload())
+  if (stage->IsLoaded())
   {
-    GLint pgm = GLSL_PROGRAM.Get();
-    
+    GLint pgm = GLSL_PROGRAM->Get();
     glUseProgram(pgm);
 
-    GLfloat model[16];
-    glGetFloatv(GL_MODELVIEW_MATRIX, model);
+    GLfloat view[16];
+    glGetFloatv(GL_MODELVIEW_MATRIX, view);
     GLfloat proj[16];
     glGetFloatv(GL_PROJECTION_MATRIX, proj);
+
 
     GLuint modelUniform = glGetUniformLocation(pgm, "model");
     GLuint viewUniform = glGetUniformLocation(pgm, "view");
     GLuint projUniform = glGetUniformLocation(pgm, "projection");
 
+    /*
+    glDepthFunc(GL_LESS);
     glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_TRUE);
+    glDisable(GL_CULL_FACE);
+    glDisable(GL_BLEND);
+    */
     // view matrix
-    glUniformMatrix4fv(
-      viewUniform,
-      1,
-      GL_FALSE,
-      model
-    );
+    glUniformMatrix4fv(viewUniform, 1, GL_FALSE, view);
 
     // projection matrix
-    glUniformMatrix4fv(
-      projUniform,
-      1,
-      GL_FALSE,
-      proj
-    );
+    glUniformMatrix4fv(projUniform, 1, GL_FALSE, proj);
 
-    stage->Draw(GLSL_PROGRAM);
+    stage->Draw();
 
-    
   }
   glBindVertexArray(currentVao);
   glUseProgram(currentPgm);

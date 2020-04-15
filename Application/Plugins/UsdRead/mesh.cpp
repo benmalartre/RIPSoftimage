@@ -24,13 +24,15 @@ void U2XMesh::Init()
   pxr::UsdAttribute faceVertexCountsAttr = mesh.GetFaceVertexCountsAttr();
   pxr::UsdAttribute faceVertexIndicesAttr = mesh.GetFaceVertexIndicesAttr();
 
+  _pointsVarying = false;
+  if (pointsAttr.GetNumTimeSamples() > 1)_pointsVarying = true;
+  _topoVarying = false;
+  if (faceVertexIndicesAttr.GetNumTimeSamples() > 1)_topoVarying = true;
+
   pointsAttr.Get(&_points, timeCode);
   if(!_points.size()) pointsAttr.Get(&_points, pxr::UsdTimeCode::EarliestTime());
   faceVertexCountsAttr.Get(&_counts, timeCode);
   faceVertexIndicesAttr.Get(&_indices, timeCode);
-
-  if (faceVertexIndicesAttr.GetNumTimeSamples() > 0)
-    _varyingTopology = true;
 
   U2XTriangulateMesh(_counts, _indices, _samples);
 
@@ -44,6 +46,7 @@ void U2XMesh::Init()
   _vao.SetHaveChannel(CHANNEL_POSITION);
   _vao.SetHaveChannel(CHANNEL_NORMAL);
 
+  size_t hash;
   // points
   U2XVertexBuffer* pointsBuffer =
     _vao.CreateBuffer(
@@ -53,8 +56,11 @@ void U2XMesh::Init()
       INTERPOLATION_VERTEX);
   _vao.SetBuffer(CHANNEL_POSITION, pointsBuffer);
   pointsBuffer->SetRawInputDatas((const char*)&_points[0], _points.size());
+  pointsBuffer->ComputeHash((const char*)&_points[0]);
 
   // normals
+  pxr::UsdAttribute normalsAttr = mesh.GetNormalsAttr();
+
   U2XComputeVertexNormals(_points, _counts, _indices, _samples, _normals);
   U2XVertexBuffer* normalsBuffer =
     _vao.CreateBuffer(
@@ -64,8 +70,57 @@ void U2XMesh::Init()
       INTERPOLATION_VERTEX);
   _vao.SetBuffer(CHANNEL_NORMAL, normalsBuffer);
   normalsBuffer->SetRawInputDatas((const char*)&_normals[0], _normals.size());
- 
- 
+  normalsBuffer->ComputeHash((const char*)&_normals[0]);
+
+  // colors
+  pxr::TfToken colorAttrName("displayColor");
+  U2XAttributeType attrType = HasAttribute(colorAttrName);
+  
+  if (attrType == ATTR_PRIMVAR)
+  {
+    U2XAttribute colorAttribute = CreateAttribute(colorAttrName, attrType);
+    const pxr::UsdAttribute& attr = colorAttribute.Get();
+
+    attr.Get<pxr::VtArray<pxr::GfVec3f>>(&_colors, pxr::UsdTimeCode::Default());
+    if (_colors.size())
+    {
+      _vao.SetHaveChannel(CHANNEL_COLOR);
+
+      U2XVertexBuffer* colorsBuffer =
+        _vao.CreateBuffer(
+          CHANNEL_COLOR,
+          _colors.size(),
+          _samples.size(),
+          colorAttribute.GetInterpolation());
+      _vao.SetBuffer(CHANNEL_COLOR, colorsBuffer);
+      colorsBuffer->SetRawInputDatas((const char*)&_colors[0][0], _colors.size());
+      colorsBuffer->ComputeHash((const char*)&_colors[0][0]);
+    }
+    /*
+    U2XAttribute colorAttribute = CreateAttribute(colorAttrName, attrType);
+
+    const VtValue& values = colorAttribute.Get(pxr::UsdTimeCode::EarliestTime());
+    if (values.IsHolding<pxr::VtArray<pxr::GfVec3f>>())
+    {
+      const pxr::VtArray<pxr::GfVec3f>& colors = values.UncheckedGet<pxr::VtArray<GfVec3f>>();
+
+      if (colors.size())
+      {
+        _vao.SetHaveChannel(CHANNEL_COLOR);
+
+        U2XVertexBuffer* colorsBuffer =
+          _vao.CreateBuffer(
+            CHANNEL_COLOR,
+            colors.size(),
+            _samples.size(),
+            colorAttribute.GetInterpolation());
+        _vao.SetBuffer(CHANNEL_COLOR, colorsBuffer);
+        colorsBuffer->SetRawInputDatas((const char*)&colors[0][0], colors.size());
+        colorsBuffer->ComputeHash((const char*)&colors[0][0]);
+      }
+      */
+
+  }
 }
 
 void U2XMesh::Term()
@@ -75,21 +130,66 @@ void U2XMesh::Term()
 
 void U2XMesh::Update(double t)
 {
+  
   pxr::UsdTimeCode timeCode(t);
   GetVisibility(timeCode);
-  GetXform(timeCode);
 
+  
   pxr::UsdGeomMesh mesh(_prim);
-  pxr::UsdAttribute pointsAttr = mesh.GetPointsAttr();
-  pointsAttr.Get(&_points, timeCode);
+  size_t hash;
 
-  U2XVertexBuffer* pointsBuffer = _vao.GetBuffer(CHANNEL_POSITION);
-  if (_points.size() != pointsBuffer->GetNumInputElements())
-    pointsBuffer->SetNeedReallocate(true);
-  pointsBuffer->SetRawInputDatas((const char*)&_points[0], _points.size());
-  size_t hash = pointsBuffer->ComputeHash((const char*)&_points[0]);
+  // points
+  if (_pointsVarying)
+  {
+    pxr::UsdAttribute pointsAttr = mesh.GetPointsAttr();
+    bool pointsPositionUpdated = false;
+    
+    pointsAttr.Get(&_points, timeCode);
 
-  if (hash != pointsBuffer->GetHash())pointsBuffer->SetNeedUpdate(true);
+    U2XVertexBuffer* pointsBuffer = _vao.GetBuffer(CHANNEL_POSITION);
+    if (_points.size() != pointsBuffer->GetNumInputElements())
+      pointsBuffer->SetNeedReallocate(true);
+    pointsBuffer->SetRawInputDatas((const char*)&_points[0], _points.size());
+    hash = pointsBuffer->GetHash();
+    if (hash != pointsBuffer->ComputeHash((const char*)&_points[0]))
+    {
+      pointsBuffer->SetNeedUpdate(true);
+      pointsPositionUpdated = true;
+    }
+
+    if (pointsPositionUpdated)
+    {
+      // normals
+      U2XComputeVertexNormals(_points, _counts, _indices, _samples, _normals);
+      U2XVertexBuffer* normalsBuffer = _vao.GetBuffer(CHANNEL_NORMAL);
+      if (_normals.size() != normalsBuffer->GetNumInputElements())
+        normalsBuffer->SetNeedReallocate(true);
+      normalsBuffer->SetRawInputDatas((const char*)&_normals[0], _normals.size());
+      hash = normalsBuffer->GetHash();
+
+      if (hash != normalsBuffer->ComputeHash((const char*)&_normals[0]))
+      {
+        normalsBuffer->SetNeedUpdate(true);
+      }
+    }
+
+    /*
+    // colors
+    U2XComputeVertexColors(_points, _colors);
+    U2XVertexBuffer* colorsBuffer = _vao.GetBuffer(CHANNEL_COLOR);
+    if (_colors.size() != colorsBuffer->GetNumInputElements())
+      colorsBuffer->SetNeedReallocate(true);
+    colorsBuffer->SetRawInputDatas((const char*)&_colors[0], _colors.size());
+    hash = colorsBuffer->GetHash();
+
+    if (hash != colorsBuffer->ComputeHash((const char*)&_colors[0]))
+    {
+      colorsBuffer->SetNeedUpdate(true);
+    }
+    */
+   
+  }
+  
   _vao.UpdateState();
 }
 
@@ -99,17 +199,7 @@ void U2XMesh::Prepare()
   if(_vao.GetNeedUpdate())_vao.Populate();
 }
 
-void U2XMesh::Draw(GLuint modelUniform)
+void U2XMesh::Draw()
 {
- 
-  //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  // model matrix
-  glUniformMatrix4fv(
-    modelUniform,
-    1,
-    GL_FALSE,
-    GetMatrix()
-  );
-
   _vao.Draw();
 }
