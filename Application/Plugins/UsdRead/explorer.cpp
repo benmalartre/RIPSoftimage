@@ -3,8 +3,7 @@
 #include "explorer.h"
 #include "utils.h"
 
-extern HINSTANCE __gInstance;
-extern ImFontAtlas* _gAtlas;
+extern ImFontAtlas* U2X_SHARED_ATLAS;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -33,13 +32,7 @@ LRESULT	UsdExplorerWindow::Init( XSI::CRef& in_pViewCtx )
 	XSI::ViewContext l_vViewContext = in_pViewCtx;
 	assert ( l_vViewContext.IsValid() );
 
-  if (U2X_HIDDEN_WINDOW == NULL)
-  {
-    U2X_HIDDEN_WINDOW = new U2XWindow();
-    U2X_HIDDEN_WINDOW->Create(U2XGetSoftimageWindow(), true);
-    U2X_HIDDEN_WINDOW->InitGL();
-  }
-  
+  GetSharedContext();
   Create((HWND)l_vViewContext.GetParentWindowHandle(), false);
   InitGL();
   
@@ -54,9 +47,10 @@ LRESULT	UsdExplorerWindow::Init( XSI::CRef& in_pViewCtx )
 LRESULT	UsdExplorerWindow::Term( XSI::CRef& in_pViewCtx )
 {
   TermGL();
-  DestroyWindow(_hWnd);
-  _hWnd = NULL;
-  UnregisterClass(_className.c_str(), _hInstance);
+
+  //DestroyWindow(_hWnd);
+  //_hWnd = NULL;
+  //UnregisterClass(_className.c_str(), _hInstance);
   
   
 	return S_OK;
@@ -338,7 +332,7 @@ void UsdExplorerWindow::InitGL()
 {
   glewInit();
 
-  _ctxt = ImGui::CreateContext(_gAtlas);
+  _ctxt = ImGui::CreateContext(U2X_SHARED_ATLAS);
   ImGui::SetCurrentContext(_ctxt);
   ImGuiIO& io = ImGui::GetIO();
 

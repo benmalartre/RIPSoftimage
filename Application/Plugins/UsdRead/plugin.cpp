@@ -29,6 +29,7 @@
 #include "stage.h"
 #include "window.h"
 
+
 using namespace XSI::MATH; 
 using namespace XSI; 
 
@@ -140,8 +141,6 @@ SICALLBACK UsdReadNewScene_OnEvent(const CRef& in_ref)
 bool GL_EXTENSIONS_LOADED;
 U2XGLSLProgram* GLSL_PROGRAM;
 
-U2XWindow* U2X_HIDDEN_WINDOW;
-
 SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
 {
 	in_reg.PutAuthor(L"benmalartre");
@@ -164,6 +163,7 @@ SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
 
 SICALLBACK XSIUnloadPlugin( const PluginRegistrar& in_reg )
 {
+  if (U2X_HIDDEN_WINDOW)delete U2X_HIDDEN_WINDOW;
   delete GLSL_PROGRAM;
 	CString strPluginName;
 	strPluginName = in_reg.GetName();

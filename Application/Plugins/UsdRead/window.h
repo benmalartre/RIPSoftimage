@@ -34,13 +34,17 @@
 #include "utils.h"
 
 
+class U2XWindow;
+
 extern HGLRC U2X_SHARED_CONTEXT;
-extern ImFontAtlas* _gAtlas;
+extern U2XWindow* U2X_HIDDEN_WINDOW;
+extern ImFontAtlas* U2X_SHARED_ATLAS;
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 void SetupPixelFormat(HDC hDC);
 void CreateFontAtlas();
 void DeleteFontAtlas();
+void GetSharedContext();
 
 // Get Softimage Main Window
 //
@@ -55,23 +59,17 @@ bool CALLBACK U2XEnumWindowsCallback(HWND hWnd, LPARAM lParam);
 HWND U2XGetSoftimageWindow();
 
 //
-// Standard Win32 dialog callback
+// Window Callback
 //
-LRESULT CALLBACK U2XWindowOpenProc(HWND hOgl, UINT Message, WPARAM wParam, LPARAM lParam);
+LRESULT CALLBACK U2XWindowCallback(HWND hOgl, UINT Message, WPARAM wParam, LPARAM lParam);
 
 class U2XWindow
 {
 public:
   U2XWindow();
-	virtual ~U2XWindow();
+  virtual ~U2XWindow();
 
-	virtual char*	GetName() { return "U2XWindow"; };
-		
-	//
-	// window
-	//
-
-  virtual LRESULT SetWindowSize(int ox, int oy, int cx, int cy);
+  virtual char*	GetName() { return "U2XWindow"; };
 
   virtual void FillBackground();
  

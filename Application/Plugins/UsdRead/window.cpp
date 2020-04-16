@@ -4,36 +4,14 @@
 #include "imgui/imgui_impl_win32.h"
 #include "imgui/imgui_impl_opengl3.h"
 
-HINSTANCE __gInstance = NULL;
+
 HGLRC U2X_SHARED_CONTEXT = (HGLRC)0;
-ImFontAtlas* _gAtlas = NULL;
-
-BOOL APIENTRY DllMain(
-  HANDLE hModule,
-  DWORD  ul_reason_for_call,
-  LPVOID lpReserved
-)
-{
-  switch (ul_reason_for_call)
-  {
-  case DLL_PROCESS_ATTACH:
-  case DLL_THREAD_ATTACH:
-  case DLL_THREAD_DETACH:
-  case DLL_PROCESS_DETACH:
-    break;
-  }
-
-  __gInstance = (HINSTANCE)hModule;
-
-  InitCommonControls();
-
-  return TRUE;
-}
+U2XWindow* U2X_HIDDEN_WINDOW = NULL;
+ImFontAtlas* U2X_SHARED_ATLAS = NULL;
 
 //
 // Softimage Main Window
 //
-HWND U2X_SOFTIMAGE_WINDOW = (HWND)0;
 BOOL U2XIsMainWindow(HWND hWnd)
 {
   return GetWindow(hWnd, GW_OWNER) == (HWND)0 && IsWindowVisible(hWnd);
@@ -47,31 +25,40 @@ bool CALLBACK U2XEnumWindowsCallback(HWND hWnd, LPARAM lParam)
   if (data.processId != processId || !U2XIsMainWindow(hWnd))
     return true;
   data.hWnd = hWnd;
-  U2X_SOFTIMAGE_WINDOW = hWnd;
   return false;
 }
 
 HWND U2XGetSoftimageWindow()
 {
-  if (!U2X_SOFTIMAGE_WINDOW)
-  {
-    U2XHandleData data;
-    data.processId = GetCurrentProcessId();
-    data.hWnd = 0;
-    EnumWindows((WNDENUMPROC)U2XEnumWindowsCallback, (LPARAM)&data);
-  }
-  return U2X_SOFTIMAGE_WINDOW;
+  U2XHandleData data;
+  data.processId = GetCurrentProcessId();
+  data.hWnd = 0;
+  EnumWindows((WNDENUMPROC)U2XEnumWindowsCallback, (LPARAM)&data);
+  return data.hWnd;
 }
 
+//
+// Shared Font Atlas
+//
 void CreateFontAtlas()
 {
-  _gAtlas = new ImFontAtlas();
-  _gAtlas->AddFontDefault();
+  U2X_SHARED_ATLAS = new ImFontAtlas();
+  U2X_SHARED_ATLAS->AddFontDefault();
 }
 
 void DeleteFontAtlas()
 {
-  if (_gAtlas)delete _gAtlas;
+  if (U2X_SHARED_ATLAS)delete U2X_SHARED_ATLAS;
+}
+
+void GetSharedContext()
+{
+  if (U2X_HIDDEN_WINDOW == NULL)
+  {
+    U2X_HIDDEN_WINDOW = new U2XWindow();
+    U2X_HIDDEN_WINDOW->Create(U2XGetSoftimageWindow(), true);
+    U2X_HIDDEN_WINDOW->InitGL();
+  }
 }
 
 void U2XWindow::InitGL()
@@ -84,7 +71,7 @@ void U2XWindow::InitGL()
   CreateFontAtlas();
 
   // hidden context
-  _ctxt = ImGui::CreateContext(_gAtlas);
+  _ctxt = ImGui::CreateContext(U2X_SHARED_ATLAS);
   ImGui::SetCurrentContext(_ctxt);
 
   // init Win32
@@ -131,17 +118,11 @@ void U2XWindow::Draw()
 
 void U2XWindow::Reshape(int width, int height)
 {
-  /*
-  wglMakeCurrent(_hDC, _hRC);
-  glViewport(0, 0, width, height);
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  */
 }
 
 void U2XWindow::FillBackground()
 {
-  /*
+ 
   ImVec2 vMin = ImGui::GetWindowContentRegionMin();
   ImVec2 vMax = ImGui::GetWindowContentRegionMax();
 
@@ -151,17 +132,12 @@ void U2XWindow::FillBackground()
   vMax.y += ImGui::GetWindowPos().y;
 
   ImGui::GetForegroundDrawList()->AddRect(vMin, vMax, IM_COL32(rand(), rand(), 0, 255));
-  */
+ 
 }
 
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
-
 U2XWindow::U2XWindow()
 {
-
 }
 
 U2XWindow::~U2XWindow()
@@ -176,16 +152,16 @@ void U2XWindow::Create(HWND hParent, bool shared)
   _className = "U2XWindow" +std::to_string((int)hParent);
   _shared = shared;
   WNDCLASS WindowClass = {
-    0,			                      // style
-    U2XWindowOpenProc,						// window proc
-    0,								            // additional class memory in bytes
-    0,								            // additional window memory in bytes
-    _hInstance,							      // instance
-    0,								            // icon
-    0,								            // cursor
-    0,								            // bg color
-    NULL,							            // menu
-    _className.c_str()						// name window class
+    0,                            // style
+    U2XWindowCallback,            // window proc
+    0,                            // additional class memory in bytes
+    0,                            // additional window memory in bytes
+    _hInstance,                   // instance
+    0,                            // icon
+    0,                            // cursor
+    0,                            // bg color
+    NULL,                         // menu
+    _className.c_str()            // name window class
   };
   if (!RegisterClass(&WindowClass))
   {
@@ -197,18 +173,18 @@ void U2XWindow::Create(HWND hParent, bool shared)
   if (_shared)style = WS_CHILD | WS_DISABLED;
   else style = WS_CHILD | WS_VISIBLE | WS_BORDER;
 
-  _hWnd = CreateWindow
-  (_className.c_str(),
+  _hWnd = CreateWindow(
+    _className.c_str(),
     "U2X OpenGL Window",
     style,
-    0,		            // x
-    0,		            // y
-    400,	            // width
-    800,	            // height
-    hParent,	        // parent
-    0,		            // child id
-    _hInstance,	      // instance
-    this	            // user data
+    0,                // x
+    0,                // y
+    400,              // width
+    800,              // height
+    hParent,          // parent
+    0,                // child id
+    _hInstance,       // instance
+    this              // user data
   );
   if (!_hWnd)
   {
@@ -226,14 +202,8 @@ void U2XWindow::CreateContext(HWND hwnd)
   SetupPixelFormat(_hDC);
   _hRC = wglCreateContext(_hDC);
   if (!_hRC) SendMessage(hwnd, WM_CLOSE, 0, 0);
-  if (_shared)
-  {
-    U2X_SHARED_CONTEXT = _hRC;
-  }
-  else
-  {
-    wglShareLists(U2X_SHARED_CONTEXT, _hRC);
-  }
+  if (_shared)U2X_SHARED_CONTEXT = _hRC;
+  else wglShareLists(U2X_SHARED_CONTEXT, _hRC);
   wglMakeCurrent(_hDC, _hRC);
 }
 
@@ -244,23 +214,6 @@ void U2XWindow::DestroyContext(HWND hwnd)
   ReleaseDC(hwnd, _hDC);
   PostQuitMessage(0);
 }
-
-
-//********************************************************************
-//
-// @mfunc	CCustomUI::SetWindowSize | It is important to handle this 
-//										message or else the window
-//										will end up in the wrong place
-//										in the Softimage UI.
-//
-//********************************************************************
-LRESULT U2XWindow::SetWindowSize(int ox, int oy, int cx, int cy)
-{
-	SetWindowPos( _hWnd, NULL, ox, oy, cx, cy, SWP_NOZORDER); 
-  Reshape(cx, cy);
-	return S_OK;
-}
-
 
 void SetupPixelFormat(HDC hDC)
 {
@@ -312,7 +265,7 @@ void SetupPixelFormat(HDC hDC)
   }
 }
 
-LRESULT CALLBACK U2XWindowOpenProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK U2XWindowCallback(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
   if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
     return true;

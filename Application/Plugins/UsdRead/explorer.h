@@ -8,7 +8,7 @@
 #include "imgui/imgui.h"
 
 extern bool GL_EXTENSIONS_LOADED;
-extern U2XWindow* U2X_HIDDEN_WINDOW;
+
 
 class UsdExplorerWindow : public U2XWindow
 {
