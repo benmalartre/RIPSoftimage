@@ -1,10 +1,10 @@
+#include <GL/glew.h>
 #include "window.h"
 #include "explorer.h"
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_win32.h"
-#include "imgui/imgui_impl_opengl3.h"
 #include "utils.h"
 
+extern HINSTANCE __gInstance;
+extern ImFontAtlas* _gAtlas;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -33,19 +33,15 @@ LRESULT	UsdExplorerWindow::Init( XSI::CRef& in_pViewCtx )
 	XSI::ViewContext l_vViewContext = in_pViewCtx;
 	assert ( l_vViewContext.IsValid() );
 
-  Create((HWND)l_vViewContext.GetParentWindowHandle());
-
-  /*
-  IMGUI_CHECKVERSION();
-  ImGui::CreateContext();
-  ImGuiIO &io = ImGui::GetIO();
-  // Setup Platform/Renderer bindings
-  ImGui_ImplWin32_Init((HWND)l_vViewContext.GetParentWindowHandle());
-  ImGui_ImplOpenGL3_Init();
-  // Setup Dear ImGui style
-  ImGui::StyleColorsDark();
-  LOG("IMGUI INITIALIZED!!!");
-  */
+  if (U2X_HIDDEN_WINDOW == NULL)
+  {
+    U2X_HIDDEN_WINDOW = new U2XWindow();
+    U2X_HIDDEN_WINDOW->Create(U2XGetSoftimageWindow(), true);
+    U2X_HIDDEN_WINDOW->InitGL();
+  }
+  
+  Create((HWND)l_vViewContext.GetParentWindowHandle(), false);
+  InitGL();
   
 	return S_OK;
 }
@@ -57,15 +53,16 @@ LRESULT	UsdExplorerWindow::Init( XSI::CRef& in_pViewCtx )
 //********************************************************************
 LRESULT	UsdExplorerWindow::Term( XSI::CRef& in_pViewCtx )
 {
-
+  TermGL();
   DestroyWindow(_hWnd);
   _hWnd = NULL;
-  UnregisterClass("U2XWindow", _hInstance);
+  UnregisterClass(_className.c_str(), _hInstance);
   
   
 	return S_OK;
 }
 
+/*
 //********************************************************************
 //
 // @mfunc	CCustomUI::Notify | Handles Softimage notifications
@@ -335,21 +332,83 @@ LRESULT UsdExplorerWindow::Notify ( XSI::CRef& in_pViewCtx )
 
 	return S_OK;
 }
+*/
 
 void UsdExplorerWindow::InitGL()
 {
+  glewInit();
+
+  _ctxt = ImGui::CreateContext(_gAtlas);
+  ImGui::SetCurrentContext(_ctxt);
+  ImGuiIO& io = ImGui::GetIO();
+
+  //Init Win32
+  ImGui_ImplWin32_Init(_hWnd);
+
+  //Init OpenGL Imgui Implementation
+  const char* glsl_version = "#version 130";
+  ImGui_ImplOpenGL3_Init(glsl_version);
+
+  // Setup style
+  ImGui::StyleColorsClassic();
+
+}
+
+void UsdExplorerWindow::TermGL()
+{
+  //ImGui::PopID();
+  ImGui::SetCurrentContext(_ctxt);
+  ImGui_ImplOpenGL3_Shutdown();
+  ImGui_ImplWin32_Shutdown(_hWnd);
+  if (_ctxt)ImGui::DestroyContext(_ctxt);
+  
 }
 
 void UsdExplorerWindow::Draw()
 {
-  // render your GUI
-  ImGui::Begin("Demo window");
-  ImGui::Button("Hello!");
-  ImGui::End();
+  RECT rect;
+  GetWindowRect(_hWnd, &rect);
 
-  // Render dear imgui into screen
+  wglMakeCurrent(_hDC, _hRC);
+
+  ImGui::SetCurrentContext(_ctxt);
+
+  ImGui_ImplOpenGL3_NewFrame();
+  ImGui_ImplWin32_NewFrame(_hWnd);
+  
+  ImGui::NewFrame();
+  
+  //show Main Window
+  ImGui::ShowDemoWindow();
+
+  //bool opened;
+  //int flags = 0;
+  //flags |= ImGuiWindowFlags_NoResize;
+  //flags |= ImGuiWindowFlags_NoTitleBar;
+  //flags |= ImGuiWindowFlags_NoMove;
+  //
+  //ImGui::PushID((int)_hWnd);
+  //ImGui::Begin(_className.c_str(), &opened, flags);
+  //
+  //ImGui::SetWindowSize(ImVec2(rect.right - rect.left, rect.bottom - rect.top), ImGuiCond_Always);
+  //ImGui::SetWindowPos(ImVec2(0,0), ImGuiCond_Always);
+  //
+  //FillBackground();
+  //
+  //ImGui::End();
+  //ImGui::PopID();
+  ImGui::EndFrame();
+
+  // Rendering
   ImGui::Render();
+  glViewport(0, 0, rect.right - rect.left, rect.bottom - rect.top);
+  glClearColor(0.5,0.5,0.5,1.0);
+  glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+  
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+ 
+  SwapBuffers(_hDC);
+
 }
 
 /*
@@ -425,11 +484,6 @@ void	UsdExplorerWindow::PrintNotification ( char*	in_szMessage )
 */
 
 
-
-
-
-
-
 //********************************************************************
 //
 // @mfunc	NotificationTest_Init | Called by Softimage when the plugin
@@ -446,7 +500,7 @@ XSIPLUGINCALLBACK void	UsdExplorer_Init(XSI::CRef in_pViewCtx)
   XSI::ViewContext l_vViewContext = in_pViewCtx;
   assert(l_vViewContext.IsValid());
 
-  U2XWindow* l_pCustomUI = new U2XWindow();
+  UsdExplorerWindow* l_pCustomUI = new UsdExplorerWindow();
 
   l_vViewContext.PutUserData((void*)l_pCustomUI);
   l_vViewContext.SetFlags(XSI::siWindowNotifications | XSI::siWindowSize | XSI::siWindowPaint);
@@ -476,7 +530,7 @@ XSIPLUGINCALLBACK void	UsdExplorer_Term(XSI::CRef in_pViewCtx)
   XSI::ViewContext l_vViewContext = in_pViewCtx;
   assert(l_vViewContext.IsValid());
 
-  U2XWindow* l_pCustomUI = (U2XWindow*)((void*)l_vViewContext.GetUserData());
+  UsdExplorerWindow* l_pCustomUI = (UsdExplorerWindow*)((void*)l_vViewContext.GetUserData());
 
   assert(l_pCustomUI != NULL);
 
@@ -507,20 +561,21 @@ XSIPLUGINCALLBACK void	UsdExplorer_Notify(XSI::CRef in_pViewCtx)
   XSI::ViewContext l_vViewContext = in_pViewCtx;
   assert(l_vViewContext.IsValid());
 
-  U2XWindow* l_pCustomUI = (U2XWindow*)((void*)l_vViewContext.GetUserData());
+  UsdExplorerWindow* l_pCustomUI = (UsdExplorerWindow*)((void*)l_vViewContext.GetUserData());
 
   assert(l_pCustomUI != NULL);
 
 
-  l_pCustomUI->Notify(in_pViewCtx);
+  //l_pCustomUI->Notify(in_pViewCtx);
 }
 
+/*
 XSIPLUGINCALLBACK void			UsdExplorer_SetAttributeValue(XSI::CRef in_pViewCtx, XSI::CString in_sAttribName, XSI::CValue in_vValue)
 {
   XSI::ViewContext l_vViewContext = in_pViewCtx;
   assert(l_vViewContext.IsValid());
 
-  U2XWindow* l_pCustomUI = (U2XWindow*)((void*)l_vViewContext.GetUserData());
+  UsdExplorerWindow* l_pCustomUI = (UsdExplorerWindow*)((void*)l_vViewContext.GetUserData());
   assert(l_pCustomUI != NULL);
 
   l_pCustomUI->SetAttributeValue(in_sAttribName, in_vValue);
@@ -533,7 +588,7 @@ XSIPLUGINCALLBACK XSI::CValue	UsdExplorer_GetAttributeValue(XSI::CRef in_pViewCt
   XSI::ViewContext l_vViewContext = in_pViewCtx;
   assert(l_vViewContext.IsValid());
 
-  U2XWindow* l_pCustomUI = (U2XWindow*)((void*)l_vViewContext.GetUserData());
+  UsdExplorerWindow* l_pCustomUI = (UsdExplorerWindow*)((void*)l_vViewContext.GetUserData());
   assert(l_pCustomUI != NULL);
 
   XSI::CValue l_val;
@@ -541,3 +596,4 @@ XSIPLUGINCALLBACK XSI::CValue	UsdExplorer_GetAttributeValue(XSI::CRef in_pViewCt
 
   return l_val;
 }
+*/

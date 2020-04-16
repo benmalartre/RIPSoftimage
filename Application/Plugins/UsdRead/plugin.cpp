@@ -27,6 +27,7 @@
 #include "shader.h"
 #include "prim.h"
 #include "stage.h"
+#include "window.h"
 
 using namespace XSI::MATH; 
 using namespace XSI; 
@@ -139,6 +140,8 @@ SICALLBACK UsdReadNewScene_OnEvent(const CRef& in_ref)
 bool GL_EXTENSIONS_LOADED;
 U2XGLSLProgram* GLSL_PROGRAM;
 
+U2XWindow* U2X_HIDDEN_WINDOW;
+
 SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
 {
 	in_reg.PutAuthor(L"benmalartre");
@@ -148,8 +151,13 @@ SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
   in_reg.RegisterEvent("UsdReadObjectRemoved", siOnObjectRemoved);
   in_reg.RegisterEvent("UsdReadSceneOpen", siOnBeginSceneOpen);
   in_reg.RegisterEvent("UsdReadNewScene", siOnBeginNewScene);
+
   in_reg.RegisterCustomDisplay(L"UsdExplorer");
+
+
   GL_EXTENSIONS_LOADED = false;
+  U2X_HIDDEN_WINDOW = NULL;
+
   UsdStageCacheContext context(_usdStageCache);
 	return CStatus::OK;
 }

@@ -14,6 +14,7 @@
 #endif
 #include <windows.h>
 #include <tchar.h>
+#include <vector>
 
 // Using XInput library for gamepad (with recent Windows SDK this may leads to executables which won't run on Windows 7)
 #ifndef IMGUI_IMPL_WIN32_DISABLE_GAMEPAD
@@ -53,6 +54,7 @@
 //  2016-11-12: Inputs: Only call Win32 ::SetCursor(NULL) when io.MouseDrawCursor is set.
 
 // Win32 Data
+static std::vector<HWND>    g_hWnds;
 static HWND                 g_hWnd = NULL;
 static INT64                g_Time = 0;
 static INT64                g_TicksPerSecond = 0;
@@ -69,6 +71,7 @@ bool    ImGui_ImplWin32_Init(void* hwnd)
         return false;
 
     // Setup back-end capabilities flags
+    g_hWnds.push_back((HWND)hwnd);
     g_hWnd = (HWND)hwnd;
     ImGuiIO& io = ImGui::GetIO();
     io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;         // We can honor GetMouseCursor() values (optional)
@@ -103,9 +106,21 @@ bool    ImGui_ImplWin32_Init(void* hwnd)
     return true;
 }
 
+void    ImGui_ImplWin32_Shutdown(void* hwnd)
+{
+  for (std::vector<HWND>::iterator it = g_hWnds.begin();it <g_hWnds.end();++it)
+    if (*(it) == (HWND)hwnd) g_hWnds.erase(it);
+}
+
 void    ImGui_ImplWin32_Shutdown()
 {
     g_hWnd = (HWND)0;
+}
+
+void ImGui_ImplWin32_SetCurrentWindow(void* hwnd)
+{
+  for (std::vector<HWND>::iterator it = g_hWnds.begin(); it <g_hWnds.end(); ++it)
+    if (*(it) == (HWND)hwnd) g_hWnd = *it;
 }
 
 static bool ImGui_ImplWin32_UpdateMouseCursor()
@@ -211,8 +226,9 @@ static void ImGui_ImplWin32_UpdateGamepads()
 #endif // #ifndef IMGUI_IMPL_WIN32_DISABLE_GAMEPAD
 }
 
-void    ImGui_ImplWin32_NewFrame()
+void    ImGui_ImplWin32_NewFrame(void* hwnd)
 {
+    ImGui_ImplWin32_SetCurrentWindow(hwnd);
     ImGuiIO& io = ImGui::GetIO();
     IM_ASSERT(io.Fonts->IsBuilt() && "Font atlas not built! It is generally built by the renderer back-end. Missing call to renderer _NewFrame() function? e.g. ImGui_ImplOpenGL3_NewFrame().");
 

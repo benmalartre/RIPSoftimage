@@ -4,7 +4,11 @@
 #include <xsi_ref.h>
 #include <xsi_decl.h>
 #include "window.h"
+#include "imgui/imgui_internal.h"
+#include "imgui/imgui.h"
 
+extern bool GL_EXTENSIONS_LOADED;
+extern U2XWindow* U2X_HIDDEN_WINDOW;
 
 class UsdExplorerWindow : public U2XWindow
 {
@@ -14,14 +18,13 @@ public:
 
 	virtual char*	GetName() override{ return "UsdExplorerWindow"; };
 		
-  
-	virtual LRESULT	Init( XSI::CRef& in_pViewCtx ) override;
-	virtual LRESULT	Term( XSI::CRef& in_pViewCtx ) override;
-	virtual LRESULT Notify ( XSI::CRef& in_pViewCtx ) override;
+	virtual LRESULT	Init( XSI::CRef& in_pViewCtx );
+	virtual LRESULT	Term( XSI::CRef& in_pViewCtx );
 
   virtual void InitGL() override;
+  virtual void TermGL() override;
   virtual void Draw() override;
-  
+
   /*
 	virtual LRESULT SetAttributeValue ( XSI::CString& in_cString, XSI::CValue& in_vValue );
 	virtual LRESULT GetAttributeValue ( XSI::CString& in_cString, XSI::CValue& out_vValue );
