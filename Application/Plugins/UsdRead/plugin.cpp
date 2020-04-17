@@ -153,7 +153,6 @@ SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
 
   in_reg.RegisterCustomDisplay(L"UsdExplorer");
 
-
   GL_EXTENSIONS_LOADED = false;
   U2X_HIDDEN_WINDOW = NULL;
 

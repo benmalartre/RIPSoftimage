@@ -5,9 +5,36 @@
 #include "imgui/imgui_impl_opengl3.h"
 
 
+HINSTANCE __gInstance = NULL;
+
+BOOL APIENTRY DllMain(HANDLE hModule,
+  DWORD  ul_reason_for_call,
+  LPVOID lpReserved
+)
+{
+  switch (ul_reason_for_call)
+  {
+  case DLL_PROCESS_ATTACH:
+  case DLL_THREAD_ATTACH:
+  case DLL_THREAD_DETACH:
+  case DLL_PROCESS_DETACH:
+    break;
+  }
+
+  __gInstance = (HINSTANCE)hModule;
+
+  InitCommonControls();
+
+  return TRUE;
+}
+
+HWND U2X_SOFTIMAGE_WINDOW = (HWND)0;
 HGLRC U2X_SHARED_CONTEXT = (HGLRC)0;
 U2XWindow* U2X_HIDDEN_WINDOW = NULL;
 ImFontAtlas* U2X_SHARED_ATLAS = NULL;
+
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 
 //
 // Softimage Main Window
@@ -34,6 +61,7 @@ HWND U2XGetSoftimageWindow()
   data.processId = GetCurrentProcessId();
   data.hWnd = 0;
   EnumWindows((WNDENUMPROC)U2XEnumWindowsCallback, (LPARAM)&data);
+  U2X_SOFTIMAGE_WINDOW = data.hWnd;
   return data.hWnd;
 }
 
@@ -77,7 +105,7 @@ void U2XWindow::InitGL()
   // init Win32
   ImGui_ImplWin32_Init(_hWnd);
 
-  // init OpenGL Imgui Implementation
+  // init OpenGL Imgui Implementation 
   const char* glsl_version = "#version 130";
   ImGui_ImplOpenGL3_Init(glsl_version);
 
@@ -87,6 +115,7 @@ void U2XWindow::InitGL()
 
 void U2XWindow::TermGL()
 {
+ 
   DeleteFontAtlas();
   ImGui::SetCurrentContext(_ctxt);
   ImGui_ImplOpenGL3_Shutdown();
@@ -94,26 +123,43 @@ void U2XWindow::TermGL()
   if (_ctxt)ImGui::DestroyContext(_ctxt);
 }
 
-
-void U2XWindow::Draw()
+void U2XWindow::BeginDraw()
 {
+ 
   wglMakeCurrent(_hDC, _hRC);
-  // fake render to initialize shared data
-  ImGuiIO& io = ImGui::GetIO();
-  io.DisplaySize.x = 32;
-  io.DisplaySize.y = 32;
-  
+  GetWindowRect(_hWnd, &_rect);
+  ImGui::SetCurrentContext(_ctxt);
+
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplWin32_NewFrame(_hWnd);
 
   ImGui::NewFrame();
 
+}
+
+void U2XWindow::Draw()
+{
+  BeginDraw();
+  // draw here
+  EndDraw();
+}
+
+void U2XWindow::EndDraw()
+{
   ImGui::EndFrame();
+
+  // Rendering
   ImGui::Render();
+
+  glViewport(0, 0, _rect.right - _rect.left, _rect.bottom - _rect.top);
+  glClearColor(0.5, 0.5, 0.5, 1.0);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
   SwapBuffers(_hDC);
+  
+
 }
 
 void U2XWindow::Reshape(int width, int height)
@@ -144,19 +190,20 @@ U2XWindow::~U2XWindow()
 {
   DestroyWindow(_hWnd);
   _hWnd = NULL;
-  UnregisterClass(_className.c_str(), _hInstance);
+  if(_className != "")UnregisterClass(_className.c_str(), __gInstance);
 }
 
 void U2XWindow::Create(HWND hParent, bool shared)
 {
   _className = "U2XWindow" +std::to_string((int)hParent);
+  
   _shared = shared;
   WNDCLASS WindowClass = {
     0,                            // style
     U2XWindowCallback,            // window proc
     0,                            // additional class memory in bytes
     0,                            // additional window memory in bytes
-    _hInstance,                   // instance
+    __gInstance,                  // instance
     0,                            // icon
     0,                            // cursor
     0,                            // bg color
@@ -170,8 +217,8 @@ void U2XWindow::Create(HWND hParent, bool shared)
   }
 
   DWORD style;
-  if (_shared)style = WS_CHILD | WS_DISABLED;
-  else style = WS_CHILD | WS_VISIBLE | WS_BORDER;
+  if (_shared)style = WS_CHILDWINDOW | WS_DISABLED;
+  else style = WS_CHILDWINDOW | WS_VISIBLE | WS_CLIPSIBLINGS;
 
   _hWnd = CreateWindow(
     _className.c_str(),
@@ -183,7 +230,7 @@ void U2XWindow::Create(HWND hParent, bool shared)
     800,              // height
     hParent,          // parent
     0,                // child id
-    _hInstance,       // instance
+    __gInstance,      // instance
     this              // user data
   );
   if (!_hWnd)
@@ -267,10 +314,12 @@ void SetupPixelFormat(HDC hDC)
 
 LRESULT CALLBACK U2XWindowCallback(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+
   if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
     return true;
 
   U2XWindow* window = (U2XWindow*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
+
   switch (msg)
   {
   case WM_DESTROY:
@@ -287,13 +336,14 @@ LRESULT CALLBACK U2XWindowCallback(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lP
     window->Reshape( LOWORD(lParam), HIWORD(lParam) );
     break;
 
+  case WM_SETREDRAW:
+    LOG("SET REDRAW...");
+    return false;
+   
   case WM_PAINT:
     window->Draw();
-    break;
-
-  default:
-    return DefWindowProc(hWnd, msg, wParam, lParam);
-    break;
+    return false;
   }
-  return FALSE;
+  return DefWindowProc(hWnd, msg, wParam, lParam);
+  
 }

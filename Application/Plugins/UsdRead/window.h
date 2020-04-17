@@ -39,7 +39,6 @@ class U2XWindow;
 extern HGLRC U2X_SHARED_CONTEXT;
 extern U2XWindow* U2X_HIDDEN_WINDOW;
 extern ImFontAtlas* U2X_SHARED_ATLAS;
-extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 void SetupPixelFormat(HDC hDC);
 void CreateFontAtlas();
@@ -70,6 +69,7 @@ public:
   virtual ~U2XWindow();
 
   virtual char*	GetName() { return "U2XWindow"; };
+  virtual HWND Get() { return _hWnd; };
 
   virtual void FillBackground();
  
@@ -78,7 +78,9 @@ public:
   virtual void DestroyContext(HWND hwnd);
   virtual void InitGL();
   virtual void TermGL();
+  virtual void BeginDraw();
   virtual void Draw();
+  virtual void EndDraw();
   virtual void Reshape(int width, int height);
 
 protected:
@@ -90,4 +92,5 @@ protected:
   ImGuiWindowFlags  _flags;
   ImGuiContext*     _ctxt;
   bool              _shared;
+  RECT              _rect;
 };

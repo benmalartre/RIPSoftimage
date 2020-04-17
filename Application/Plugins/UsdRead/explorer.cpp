@@ -5,9 +5,6 @@
 
 extern ImFontAtlas* U2X_SHARED_ATLAS;
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 
 UsdExplorerWindow::UsdExplorerWindow()
 {
@@ -20,49 +17,27 @@ UsdExplorerWindow::~UsdExplorerWindow()
 }
 
 
-//********************************************************************
-//
-// @mfunc	X2UCustomGLWindow::Init | Creates the dialog has a child of the
-//								window handle specified by the view
-//								context.
-//
-//********************************************************************
-LRESULT	UsdExplorerWindow::Init( XSI::CRef& in_pViewCtx )
+LRESULT	UsdExplorerWindow::Init( XSI::CRef& in_ctxt )
 {
-	XSI::ViewContext l_vViewContext = in_pViewCtx;
-	assert ( l_vViewContext.IsValid() );
+	XSI::ViewContext viewContext = in_ctxt;
+	assert (viewContext.IsValid() );
 
   GetSharedContext();
-  Create((HWND)l_vViewContext.GetParentWindowHandle(), false);
+  Create((HWND)viewContext.GetParentWindowHandle(), false);
   InitGL();
   
 	return S_OK;
 }
 
-//********************************************************************
-//
-// @mfunc	CCustomUI::Term | Destroys the dialog
-//
-//********************************************************************
-LRESULT	UsdExplorerWindow::Term( XSI::CRef& in_pViewCtx )
+LRESULT	UsdExplorerWindow::Term( XSI::CRef& in_ctxt)
 {
   TermGL();
-
-  //DestroyWindow(_hWnd);
-  //_hWnd = NULL;
-  //UnregisterClass(_className.c_str(), _hInstance);
-  
   
 	return S_OK;
 }
 
-/*
-//********************************************************************
-//
-// @mfunc	CCustomUI::Notify | Handles Softimage notifications
-//
-//********************************************************************
-LRESULT UsdExplorerWindow::Notify ( XSI::CRef& in_pViewCtx )
+
+LRESULT UsdExplorerWindow::Notify ( XSI::CRef& in_ctxt)
 {
 	using namespace XSI;
 
@@ -70,68 +45,46 @@ LRESULT UsdExplorerWindow::Notify ( XSI::CRef& in_pViewCtx )
 	// Convert the CRef into a ViewContext
 	//
 
-	XSI::ViewContext l_vViewContext = in_pViewCtx;
-	assert ( l_vViewContext.IsValid() );
+	XSI::ViewContext viewContext = in_ctxt;
+	assert ( viewContext.IsValid() );
 
 	//
 	// Retrieve the notification information from the view context
 	//
 
-	XSI::siEventID in_eNotifcation;
-	void*	in_pData;
+	XSI::siEventID notification;
+	void*	data;
 
-	l_vViewContext.GetNotificationData ( in_eNotifcation, &in_pData );
+	viewContext.GetNotificationData (notification, &data );
 
-	switch ( in_eNotifcation )
-	{
-	case siOnSelectionChange:
-		{
-			//
-			// The selection list has changed. Cast the notification data
-			// into a CSelectionChangeNotification pointer to get at the
-			// details.
-			//
+	switch (notification)
+  {
+	  case siOnSelectionChange:
+    {
+    //
+    // The selection list has changed. Cast the notification data
+    // into a CSelectionChangeNotification pointer to get at the
+    // details.
+    //
 
-			XSI::CSelectionChangeNotification* l_pSelection = (XSI::CSelectionChangeNotification*)in_pData;
+    XSI::CSelectionChangeNotification* selection = (XSI::CSelectionChangeNotification*)data;
 
-			XSI::CString	l_szMessage;
-			l_szMessage = L"XSI_SELECTION_CHANGED_CV";
-			l_szMessage += L" [ ";
 
-			//
-			// Build a string of all objects that are in the selection list
-			//
+    //
+    // Build a string of all objects that are in the selection list
+    //
 
-			for (int c=0;c<l_pSelection->GetSelectionList().GetCount();c++)
-			{
-				XSI::CRef&	l_pCRef = l_pSelection->GetSelectionList().GetItem(c);
+    for (int c=0;c<selection->GetSelectionList().GetCount();c++)
+    {
+      XSI::CRef&	cref = selection->GetSelectionList().GetItem(c);
+      XSI::SIObject object (cref);
+      XSI::CString	name = object.GetFullName();
+    }
 
-				XSI::SIObject mySIObject ( l_pCRef );
-				
-				XSI::CString	Name = mySIObject.GetFullName();
+    break;
+    }
 
-				if ( c != 0 )
-					l_szMessage += L",";
-
-				l_szMessage += Name;;
-
-			}
-
-			l_szMessage += L" ]";
-
-			//
-			// And print it
-			//
-
-			char *l_szMessChar = new char [ l_szMessage.Length() + 1 ];
-			//W2AHelper ( l_szMessChar, l_szMessage.GetWideString() );
-			//PrintNotification ( l_szMessChar );
-			delete [] l_szMessChar;
-
-			break;
-			
-		}
-
+    /*
 	case siOnTimeChange:
 		{
 			//
@@ -320,13 +273,12 @@ LRESULT UsdExplorerWindow::Notify ( XSI::CRef& in_pViewCtx )
 			break;
 
 		}
-
+    */
 	}
-
 
 	return S_OK;
 }
-*/
+
 
 void UsdExplorerWindow::InitGL()
 {
@@ -360,17 +312,8 @@ void UsdExplorerWindow::TermGL()
 
 void UsdExplorerWindow::Draw()
 {
-  RECT rect;
-  GetWindowRect(_hWnd, &rect);
-
-  wglMakeCurrent(_hDC, _hRC);
-
-  ImGui::SetCurrentContext(_ctxt);
-
-  ImGui_ImplOpenGL3_NewFrame();
-  ImGui_ImplWin32_NewFrame(_hWnd);
   
-  ImGui::NewFrame();
+  BeginDraw();
   
   //show Main Window
   ImGui::ShowDemoWindow();
@@ -391,17 +334,7 @@ void UsdExplorerWindow::Draw()
   //
   //ImGui::End();
   //ImGui::PopID();
-  ImGui::EndFrame();
-
-  // Rendering
-  ImGui::Render();
-  glViewport(0, 0, rect.right - rect.left, rect.bottom - rect.top);
-  glClearColor(0.5,0.5,0.5,1.0);
-  glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-  
-  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
- 
-  SwapBuffers(_hDC);
+  EndDraw();
 
 }
 
@@ -429,165 +362,95 @@ LRESULT UsdExplorerWindow::GetAttributeValue ( XSI::CString& in_cString, XSI::CV
 }
 */
 
-
-//********************************************************************
-//
-// @mfunc	CCustomUI::SetWindowSize | It is important to handle this 
-//										message or else the window
-//										will end up in the wrong place
-//										in the Softimage UI.
-//
-//********************************************************************
-/*
 LRESULT UsdExplorerWindow::SetWindowSize(int ox, int oy, int cx, int cy)
 {
 
-	return S_OK;
+  SetWindowPos(_hWnd, NULL, ox, oy, cx, cy, SWP_NOZORDER);
+
+  return S_OK;
 }
 
-LRESULT UsdExplorerWindow::Paint( WPARAM, LPARAM )
+
+LRESULT UsdExplorerWindow::Paint(WPARAM, LPARAM)
 {
-  //Draw();
-	return S_OK;
+  LOG("PAAAAAAAAAAAAAAAAAAAAAAAAIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII!!!");
+  Draw();
+  return S_OK;
 }
 
-LRESULT UsdExplorerWindow::MouseMove( WPARAM, LPARAM )
-{
-
-	return S_OK;
-}
-
-void	UsdExplorerWindow::PrintNotification ( char*	in_szMessage )
-{
-  
-	// Get the number of items in the list box.
-	int count = (int)SendDlgItemMessage ( l_hWnd, IDC_OUTPUT2,LB_GETCOUNT, 0, 0);
-
-	if ( count > 500 )
-	{
-		SendDlgItemMessage ( l_hWnd, IDC_OUTPUT2,LB_RESETCONTENT,0,0 );
-		count = 0;
-	}
-
-
-	SendDlgItemMessage ( l_hWnd, IDC_OUTPUT2,LB_ADDSTRING, 0, (LPARAM)in_szMessage);
-
-	SendDlgItemMessage ( l_hWnd, IDC_OUTPUT2,LB_SETCURSEL, count, 0);
-  
-}
-*/
-
-
-//********************************************************************
-//
-// @mfunc	NotificationTest_Init | Called by Softimage when the plugin
-//									is first initialized
-//
-//********************************************************************
-XSIPLUGINCALLBACK void	UsdExplorer_Init(XSI::CRef in_pViewCtx)
-{
-  //
-  // Make sure the CRef passed to us is in fact a ViewContext object
-  //
-
-  assert(in_pViewCtx.IsA(XSI::siViewContextID));
-  XSI::ViewContext l_vViewContext = in_pViewCtx;
-  assert(l_vViewContext.IsValid());
-
-  UsdExplorerWindow* l_pCustomUI = new UsdExplorerWindow();
-
-  l_vViewContext.PutUserData((void*)l_pCustomUI);
-  l_vViewContext.SetFlags(XSI::siWindowNotifications | XSI::siWindowSize | XSI::siWindowPaint);
-
-  //
-  // Initialize our custom view
-  //
-
-  l_pCustomUI->Init(in_pViewCtx);
-
-
-}
-
-//********************************************************************
-//
-// @mfunc	NotificationTest_Init | Called by Softimage when the plugin
-//									is terminated (when the parent 
-//									window is destroyed.
-//
-//********************************************************************
-XSIPLUGINCALLBACK void	UsdExplorer_Term(XSI::CRef in_pViewCtx)
-{
-  //
-  // Terminate our custom view
-  //
-
-  XSI::ViewContext l_vViewContext = in_pViewCtx;
-  assert(l_vViewContext.IsValid());
-
-  UsdExplorerWindow* l_pCustomUI = (UsdExplorerWindow*)((void*)l_vViewContext.GetUserData());
-
-  assert(l_pCustomUI != NULL);
-
-  l_pCustomUI->Term(in_pViewCtx);
-
-  delete l_pCustomUI;
-  l_pCustomUI = NULL;
-
-}
-
-
-//********************************************************************
-//
-// @mfunc	NotificationTest_Notify | Called by Softimage when something
-//									occurs in the scene. Like a
-//									parameter change or selection  
-//									change.
-//
-//********************************************************************
-XSIPLUGINCALLBACK void	UsdExplorer_Notify(XSI::CRef in_pViewCtx)
+LRESULT UsdExplorerWindow::MouseMove(WPARAM, LPARAM)
 {
 
-  //
-  // We are being notified by XSI that something has 
-  // changed. Pass this info to the custom view
-  //
-
-  XSI::ViewContext l_vViewContext = in_pViewCtx;
-  assert(l_vViewContext.IsValid());
-
-  UsdExplorerWindow* l_pCustomUI = (UsdExplorerWindow*)((void*)l_vViewContext.GetUserData());
-
-  assert(l_pCustomUI != NULL);
-
-
-  //l_pCustomUI->Notify(in_pViewCtx);
+  return S_OK;
 }
 
-/*
-XSIPLUGINCALLBACK void			UsdExplorer_SetAttributeValue(XSI::CRef in_pViewCtx, XSI::CString in_sAttribName, XSI::CValue in_vValue)
+
+XSIPLUGINCALLBACK void	UsdExplorer_Init(XSI::CRef in_ctxt)
 {
-  XSI::ViewContext l_vViewContext = in_pViewCtx;
-  assert(l_vViewContext.IsValid());
+  assert(in_ctxt.IsA(XSI::siViewContextID));
+  XSI::ViewContext viewContext = in_ctxt;
+  assert(viewContext.IsValid());
 
-  UsdExplorerWindow* l_pCustomUI = (UsdExplorerWindow*)((void*)l_vViewContext.GetUserData());
-  assert(l_pCustomUI != NULL);
+  UsdExplorerWindow* explorer = new UsdExplorerWindow();
 
-  l_pCustomUI->SetAttributeValue(in_sAttribName, in_vValue);
+  viewContext.PutUserData((void*)explorer);
+  viewContext.SetFlags(XSI::siWindowNotifications | XSI::siWindowSize | XSI::siWindowPaint);
+
+  explorer->Init(in_ctxt);
+}
+
+XSIPLUGINCALLBACK void UsdExplorer_Term(XSI::CRef in_ctxt)
+{
+  XSI::ViewContext viewContext = in_ctxt;
+  assert(viewContext.IsValid());
+
+  UsdExplorerWindow* explorer = (UsdExplorerWindow*)((void*)viewContext.GetUserData());
+
+  assert(explorer != NULL);
+
+  explorer->Term(in_ctxt);
+
+  delete explorer;
+  explorer = NULL;
+}
+
+
+XSIPLUGINCALLBACK void UsdExplorer_Notify(XSI::CRef in_ctxt)
+{
+  XSI::ViewContext viewContext = in_ctxt;
+  assert(viewContext.IsValid());
+
+  UsdExplorerWindow* explorer = (UsdExplorerWindow*)((void*)viewContext.GetUserData());
+
+  assert(explorer != NULL);
+
+  explorer->Notify(in_ctxt);
+}
+
+
+XSIPLUGINCALLBACK void UsdExplorer_SetAttributeValue(XSI::CRef in_ctxt, XSI::CString name, XSI::CValue value)
+{
+  XSI::ViewContext viewContext = in_ctxt;
+  assert(viewContext.IsValid());
+
+  UsdExplorerWindow* explorer = (UsdExplorerWindow*)((void*)viewContext.GetUserData());
+  assert(explorer != NULL);
+
+  //explorer->SetAttributeValue(name, value);
 
 }
 
-XSIPLUGINCALLBACK XSI::CValue	UsdExplorer_GetAttributeValue(XSI::CRef in_pViewCtx, XSI::CString in_sAttribName)
+XSIPLUGINCALLBACK XSI::CValue	UsdExplorer_GetAttributeValue(XSI::CRef in_ctxt, XSI::CString name)
 {
 
-  XSI::ViewContext l_vViewContext = in_pViewCtx;
-  assert(l_vViewContext.IsValid());
+  XSI::ViewContext viewContext = in_ctxt;
+  assert(viewContext.IsValid());
 
-  UsdExplorerWindow* l_pCustomUI = (UsdExplorerWindow*)((void*)l_vViewContext.GetUserData());
-  assert(l_pCustomUI != NULL);
+  UsdExplorerWindow* explorer = (UsdExplorerWindow*)((void*)viewContext.GetUserData());
+  assert(explorer != NULL);
 
-  XSI::CValue l_val;
-  l_pCustomUI->GetAttributeValue(in_sAttribName, l_val);
+  XSI::CValue value;
+  //explorer->GetAttributeValue(name, value);
 
-  return l_val;
+  return value;
 }
-*/
