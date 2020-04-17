@@ -310,9 +310,9 @@ void UsdExplorerWindow::TermGL()
   
 }
 
-void UsdExplorerWindow::Draw()
+bool UsdExplorerWindow::Draw()
 {
-  
+  if(!_active)return false;
   BeginDraw();
   
   //show Main Window
@@ -335,7 +335,7 @@ void UsdExplorerWindow::Draw()
   //ImGui::End();
   //ImGui::PopID();
   EndDraw();
-
+  return true;
 }
 
 /*

@@ -28,7 +28,7 @@ public:
 
   virtual void InitGL() override;
   virtual void TermGL() override;
-  virtual void Draw() override;
+  virtual bool Draw() override;
 
   /*
 	virtual LRESULT SetAttributeValue ( XSI::CString& in_cString, XSI::CValue& in_vValue );

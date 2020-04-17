@@ -71,6 +71,8 @@ public:
   virtual char*	GetName() { return "U2XWindow"; };
   virtual HWND Get() { return _hWnd; };
 
+  virtual bool IsActive() { return _active; };
+  virtual void Activate(bool state);
   virtual void FillBackground();
  
   virtual void Create(HWND hwnd, bool shared=false);
@@ -79,7 +81,7 @@ public:
   virtual void InitGL();
   virtual void TermGL();
   virtual void BeginDraw();
-  virtual void Draw();
+  virtual bool Draw();
   virtual void EndDraw();
   virtual void Reshape(int width, int height);
 
@@ -93,4 +95,6 @@ protected:
   ImGuiContext*     _ctxt;
   bool              _shared;
   RECT              _rect;
+  bool              _active;
+  bool              _initialized;
 };

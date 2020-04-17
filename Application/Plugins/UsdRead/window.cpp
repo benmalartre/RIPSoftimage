@@ -137,11 +137,12 @@ void U2XWindow::BeginDraw()
 
 }
 
-void U2XWindow::Draw()
+bool U2XWindow::Draw()
 {
   BeginDraw();
   // draw here
   EndDraw();
+  return true;
 }
 
 void U2XWindow::EndDraw()
@@ -160,6 +161,12 @@ void U2XWindow::EndDraw()
   SwapBuffers(_hDC);
   
 
+}
+
+void U2XWindow::Activate(bool state)
+{
+  if(_initialized)_active = state;
+  else { _initialized = true; _active = true; };
 }
 
 void U2XWindow::Reshape(int width, int height)
@@ -182,7 +189,7 @@ void U2XWindow::FillBackground()
 }
 
 
-U2XWindow::U2XWindow()
+U2XWindow::U2XWindow() : _initialized(false), _active(true)
 {
 }
 
@@ -315,9 +322,10 @@ void SetupPixelFormat(HDC hDC)
 LRESULT CALLBACK U2XWindowCallback(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 
+  
   if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
     return true;
-
+    
   U2XWindow* window = (U2XWindow*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 
   switch (msg)
@@ -336,13 +344,20 @@ LRESULT CALLBACK U2XWindowCallback(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lP
     window->Reshape( LOWORD(lParam), HIWORD(lParam) );
     break;
 
-  case WM_SETREDRAW:
-    LOG("SET REDRAW...");
-    return false;
+
+  case WM_SETFOCUS:
+    window->Activate(true);
+    RedrawWindow(hWnd, NULL, NULL, RDW_FRAME | RDW_INVALIDATE);
+    break;
+
+  case WM_KILLFOCUS:
+    window->Activate(false);
+    RedrawWindow(hWnd, NULL, NULL, RDW_FRAME | RDW_INVALIDATE);
+    break;
    
   case WM_PAINT:
-    window->Draw();
-    return false;
+    if(window->Draw())return false;
+    break;
   }
   return DefWindowProc(hWnd, msg, wParam, lParam);
   
