@@ -68,18 +68,18 @@ HWND U2XGetSoftimageWindow()
 //
 // Shared Font Atlas
 //
-void CreateFontAtlas()
+void U2XCreateFontAtlas()
 {
   U2X_SHARED_ATLAS = new ImFontAtlas();
   U2X_SHARED_ATLAS->AddFontDefault();
 }
 
-void DeleteFontAtlas()
+void U2XDeleteFontAtlas()
 {
   if (U2X_SHARED_ATLAS)delete U2X_SHARED_ATLAS;
 }
 
-void GetSharedContext()
+void U2XGetSharedContext()
 {
   if (U2X_HIDDEN_WINDOW == NULL)
   {
@@ -89,6 +89,19 @@ void GetSharedContext()
   }
 }
 
+void U2XSetWindowStyle()
+{
+  ImGuiStyle* style = &ImGui::GetStyle();
+
+  // window
+  style->Alpha = 1.f;
+  style->WindowPadding = ImVec2(0, 0);
+  style->WindowRounding = 0.f;
+
+  // colors
+  ImGui::StyleColorsLight();
+}
+
 void U2XWindow::InitGL()
 {
   wglMakeCurrent(_hDC, _hRC);
@@ -96,11 +109,14 @@ void U2XWindow::InitGL()
 
   // Setup Dear ImGui binding
   IMGUI_CHECKVERSION();
-  CreateFontAtlas();
+  U2XCreateFontAtlas();
 
   // hidden context
   _ctxt = ImGui::CreateContext(U2X_SHARED_ATLAS);
   ImGui::SetCurrentContext(_ctxt);
+
+  // style
+  U2XSetWindowStyle();
 
   // init Win32
   ImGui_ImplWin32_Init(_hWnd);
@@ -116,7 +132,7 @@ void U2XWindow::InitGL()
 void U2XWindow::TermGL()
 {
  
-  DeleteFontAtlas();
+  U2XDeleteFontAtlas();
   ImGui::SetCurrentContext(_ctxt);
   ImGui_ImplOpenGL3_Shutdown();
   ImGui_ImplWin32_Shutdown(_hWnd);
@@ -224,8 +240,8 @@ void U2XWindow::Create(HWND hParent, bool shared)
   }
 
   DWORD style;
-  if (_shared)style = WS_CHILDWINDOW | WS_DISABLED;
-  else style = WS_CHILDWINDOW | WS_VISIBLE | WS_CLIPSIBLINGS;
+  if (_shared)style = WS_CHILD| WS_DISABLED;
+  else style = WS_CHILD | WS_VISIBLE ;
 
   _hWnd = CreateWindow(
     _className.c_str(),
@@ -253,7 +269,7 @@ void U2XWindow::Create(HWND hParent, bool shared)
 void U2XWindow::CreateContext(HWND hwnd)
 {
   _hDC = GetDC(hwnd);
-  SetupPixelFormat(_hDC);
+  U2XSetupPixelFormat(_hDC);
   _hRC = wglCreateContext(_hDC);
   if (!_hRC) SendMessage(hwnd, WM_CLOSE, 0, 0);
   if (_shared)U2X_SHARED_CONTEXT = _hRC;
@@ -269,7 +285,7 @@ void U2XWindow::DestroyContext(HWND hwnd)
   PostQuitMessage(0);
 }
 
-void SetupPixelFormat(HDC hDC)
+void U2XSetupPixelFormat(HDC hDC)
 {
   PIXELFORMATDESCRIPTOR pfd =
   {
@@ -321,8 +337,7 @@ void SetupPixelFormat(HDC hDC)
 
 LRESULT CALLBACK U2XWindowCallback(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-
-  
+  if (msg == WM_MOUSEWHEEL)LOG("FUCKIN MOUSE WHEEL...");
   if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
     return true;
     
@@ -340,10 +355,13 @@ LRESULT CALLBACK U2XWindowCallback(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lP
     window->CreateContext(hWnd);
     break;
 
+  case WM_MOUSEHWHEEL:
+    LOG("MOUSE FUCKIN WHEEL!!!");
+    break;
+
   case WM_SIZE:
     window->Reshape( LOWORD(lParam), HIWORD(lParam) );
     break;
-
 
   case WM_SETFOCUS:
     window->Activate(true);
@@ -352,7 +370,6 @@ LRESULT CALLBACK U2XWindowCallback(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lP
 
   case WM_KILLFOCUS:
     window->Activate(false);
-    RedrawWindow(hWnd, NULL, NULL, RDW_FRAME | RDW_INVALIDATE);
     break;
    
   case WM_PAINT:

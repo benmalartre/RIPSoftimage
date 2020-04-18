@@ -1,4 +1,6 @@
 #include <GL/glew.h>
+#include "scene.h"
+#include "stage.h"
 #include "window.h"
 #include "explorer.h"
 #include "utils.h"
@@ -6,9 +8,22 @@
 extern ImFontAtlas* U2X_SHARED_ATLAS;
 
 
-UsdExplorerWindow::UsdExplorerWindow()
+UsdExplorerWindow::UsdExplorerWindow() 
+  : U2XWindow()
+  , _locked(false)
+  , _root(NULL)
 {
+  _flags = 
+    ImGuiWindowFlags_NoCollapse |
+    ImGuiWindowFlags_NoMove |
+    ImGuiWindowFlags_NoDecoration|
+    ImGuiWindowFlags_NoResize |
+    ImGuiWindowFlags_NoTitleBar;
 
+  _selectBaseFlags =
+    ImGuiTreeNodeFlags_OpenOnArrow |
+    ImGuiTreeNodeFlags_OpenOnDoubleClick |
+    ImGuiTreeNodeFlags_SpanFullWidth;
 }
 
 UsdExplorerWindow::~UsdExplorerWindow()
@@ -22,7 +37,7 @@ LRESULT	UsdExplorerWindow::Init( XSI::CRef& in_ctxt )
 	XSI::ViewContext viewContext = in_ctxt;
 	assert (viewContext.IsValid() );
 
-  GetSharedContext();
+  U2XGetSharedContext();
   Create((HWND)viewContext.GetParentWindowHandle(), false);
   InitGL();
   
@@ -40,7 +55,7 @@ LRESULT	UsdExplorerWindow::Term( XSI::CRef& in_ctxt)
 LRESULT UsdExplorerWindow::Notify ( XSI::CRef& in_ctxt)
 {
 	using namespace XSI;
-
+  
 	//
 	// Convert the CRef into a ViewContext
 	//
@@ -61,26 +76,28 @@ LRESULT UsdExplorerWindow::Notify ( XSI::CRef& in_ctxt)
   {
 	  case siOnSelectionChange:
     {
-    //
-    // The selection list has changed. Cast the notification data
-    // into a CSelectionChangeNotification pointer to get at the
-    // details.
-    //
-
-    XSI::CSelectionChangeNotification* selection = (XSI::CSelectionChangeNotification*)data;
-
-
-    //
-    // Build a string of all objects that are in the selection list
-    //
-
-    for (int c=0;c<selection->GetSelectionList().GetCount();c++)
+    if (!_locked)
     {
-      XSI::CRef&	cref = selection->GetSelectionList().GetItem(c);
-      XSI::SIObject object (cref);
-      XSI::CString	name = object.GetFullName();
-    }
+      XSI::CSelectionChangeNotification* selection = (XSI::CSelectionChangeNotification*)data;
 
+      for (int c = 0; c<selection->GetSelectionList().GetCount(); c++)
+      {
+        XSI::CRef&	cRef = selection->GetSelectionList().GetItem(c);
+        XSI::SIObject object(cRef);
+        XSI::CString	name = object.GetFullName();
+        if (CString(object.GetType().GetAsciiString()) == CString("UsdPrimitive"))
+        {
+          X3DObject xObj(cRef);
+          Primitive xPrim = xObj.GetActivePrimitive();
+          U2XStage* stage = U2X_PRIMITIVES.Get(CustomPrimitive(xPrim));
+          if (stage)
+          {
+            _stage = stage->Get();
+            RecurseStage();
+          }
+        }
+      }
+    }
     break;
     }
 
@@ -133,10 +150,11 @@ LRESULT UsdExplorerWindow::Notify ( XSI::CRef& in_ctxt)
 			
 			break;
 		}
+    */
 	case siOnWindowEvent:
 		{
 
-			XSI::CWindowNotification* lpWindowEvent = (XSI::CWindowNotification*)in_pData;
+			XSI::CWindowNotification* lpWindowEvent = (XSI::CWindowNotification*)data;
 
 			switch (lpWindowEvent->GetWindowState())
 			{
@@ -147,16 +165,16 @@ LRESULT UsdExplorerWindow::Notify ( XSI::CRef& in_ctxt)
 					lpWindowEvent->GetPosition (x,y,w,h);
 					char l_szMessage[MAX_PATH];
 					sprintf ( l_szMessage, "XSI_WINDOW_SIZE: (%d,%d) (%d, %d)",x,y,w,h);
-					PrintNotification(l_szMessage);
+					LOG(l_szMessage);
                     break;
 				}
-			case siWindowPaint: PrintNotification ( "XSI_WINDOW_PAINT"); break;
-			case siWindowSetFocus: PrintNotification ( "XSI_WINDOW_SETFOCUS"); break;
-			case siWindowLostFocus: PrintNotification ( "XSI_WINDOW_LOSTFOCUS");break;
+			case siWindowPaint: LOG ( "XSI_WINDOW_PAINT"); break;
+			case siWindowSetFocus: LOG ( "XSI_WINDOW_SETFOCUS"); break;
+			case siWindowLostFocus: LOG ( "XSI_WINDOW_LOSTFOCUS");break;
 			}
 			break;
 		}
-
+    /*
 	case siOnObjectRemoved:
 		{
 			//
@@ -288,15 +306,15 @@ void UsdExplorerWindow::InitGL()
   ImGui::SetCurrentContext(_ctxt);
   ImGuiIO& io = ImGui::GetIO();
 
-  //Init Win32
+  // init Win32
   ImGui_ImplWin32_Init(_hWnd);
 
-  //Init OpenGL Imgui Implementation
+  // init OpenGL Imgui Implementation
   const char* glsl_version = "#version 130";
   ImGui_ImplOpenGL3_Init(glsl_version);
 
-  // Setup style
-  ImGui::StyleColorsClassic();
+  // style
+  U2XSetWindowStyle();
 
 }
 
@@ -310,14 +328,65 @@ void UsdExplorerWindow::TermGL()
   
 }
 
+void UsdExplorerWindow::DrawItem(UsdExplorerItem* current)
+{
+  ImGuiTreeNodeFlags itemFlags = _selectBaseFlags;
+  if (current->_selected) itemFlags |= ImGuiTreeNodeFlags_Selected;
+
+  // parent
+  if (current->_items.size())
+  {
+    bool currentOpen =
+      ImGui::TreeNodeEx(
+        current->_prim.GetPath().GetText(),
+        itemFlags,
+        current->_prim.GetName().GetText());
+
+    if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())current->_selected = true;
+
+    if (currentOpen)
+    {
+      for (const auto item : current->_items)
+        DrawItem(item);
+      ImGui::TreePop();
+    }
+  }
+  // leaf
+  else
+  {
+    itemFlags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
+
+    ImGui::TreeNodeEx(
+      current->_prim.GetPath().GetText(), 
+      itemFlags, 
+      current->_prim.GetName().GetText());
+
+    if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())current->_selected = true;
+  }
+}
+
 bool UsdExplorerWindow::Draw()
 {
   if(!_active)return false;
   BeginDraw();
   
+  
   //show Main Window
-  ImGui::ShowDemoWindow();
+  //
+  if (_stage)
+  {
+    
 
+    ImGui::Begin("UsdExplorer", NULL, _flags);
+    ImGui::SetWindowPos(ImVec2(0, 0));
+    ImGui::SetWindowSize(ImVec2(GetWidth(), GetHeight()));
+
+    DrawItem(_root);
+
+    ImGui::End();
+  }
+  else ImGui::ShowDemoWindow();
+ 
   //bool opened;
   //int flags = 0;
   //flags |= ImGuiWindowFlags_NoResize;
@@ -336,6 +405,30 @@ bool UsdExplorerWindow::Draw()
   //ImGui::PopID();
   EndDraw();
   return true;
+}
+
+
+void UsdExplorerWindow::RecurseStage()
+{
+  if (_root)delete _root;
+  _root = new UsdExplorerItem();
+  _root->_expanded = true;
+  _root->_prim = _stage->GetPseudoRoot();
+  _root->_visible = true;
+  RecursePrim(_root);
+
+}
+
+void UsdExplorerWindow::RecursePrim(UsdExplorerItem* currentItem)
+{
+  for (const auto& childPrim: currentItem->_prim.GetChildren())
+  {
+    UsdExplorerItem* childItem = currentItem->AddItem();
+    childItem->_expanded = true;
+    childItem->_prim = childPrim;
+    childItem->_visible = true;
+    RecursePrim(childItem);
+  }
 }
 
 /*
@@ -362,29 +455,9 @@ LRESULT UsdExplorerWindow::GetAttributeValue ( XSI::CString& in_cString, XSI::CV
 }
 */
 
-LRESULT UsdExplorerWindow::SetWindowSize(int ox, int oy, int cx, int cy)
-{
-
-  SetWindowPos(_hWnd, NULL, ox, oy, cx, cy, SWP_NOZORDER);
-
-  return S_OK;
-}
-
-
-LRESULT UsdExplorerWindow::Paint(WPARAM, LPARAM)
-{
-  LOG("PAAAAAAAAAAAAAAAAAAAAAAAAIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII!!!");
-  Draw();
-  return S_OK;
-}
-
-LRESULT UsdExplorerWindow::MouseMove(WPARAM, LPARAM)
-{
-
-  return S_OK;
-}
-
-
+//
+// Softimage Plugin Callbacks
+//
 XSIPLUGINCALLBACK void	UsdExplorer_Init(XSI::CRef in_ctxt)
 {
   assert(in_ctxt.IsA(XSI::siViewContextID));
@@ -394,7 +467,7 @@ XSIPLUGINCALLBACK void	UsdExplorer_Init(XSI::CRef in_ctxt)
   UsdExplorerWindow* explorer = new UsdExplorerWindow();
 
   viewContext.PutUserData((void*)explorer);
-  viewContext.SetFlags(XSI::siWindowNotifications | XSI::siWindowSize | XSI::siWindowPaint);
+  viewContext.SetFlags(XSI::siWindowNotifications | XSI::siWindowSize | XSI::siWindowPaint );
 
   explorer->Init(in_ctxt);
 }
@@ -426,7 +499,6 @@ XSIPLUGINCALLBACK void UsdExplorer_Notify(XSI::CRef in_ctxt)
 
   explorer->Notify(in_ctxt);
 }
-
 
 XSIPLUGINCALLBACK void UsdExplorer_SetAttributeValue(XSI::CRef in_ctxt, XSI::CString name, XSI::CValue value)
 {

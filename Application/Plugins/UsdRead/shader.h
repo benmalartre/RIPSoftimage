@@ -7,6 +7,41 @@
 
 #include <GL/glew.h>
 
+static const char *VERTEX_SHADER =
+"#version 330                                             \n"
+"uniform mat4 model;                                      \n"
+"uniform mat4 view;                                       \n"
+"uniform mat4 projection;                                 \n"
+"                                                         \n"
+"in vec3 position;                                        \n"
+"in vec3 normal;                                          \n"
+"in vec3 color;                                           \n"
+"out vec3 vertex_position;                                \n"
+"out vec3 vertex_normal;                                  \n"
+"out vec3 vertex_color;                                   \n"
+"void main(){                                             \n"
+"    vertex_normal = (model * vec4(normal, 0.0)).xyz;     \n"
+"    vertex_color = color;                                \n"
+"    vertex_position = (model * vec4(position, 1.0)).xyz; \n"
+"    gl_Position = projection * view * vec4(vertex_position, 1.0);        \n"
+"}";
+
+static const char* FRAGMENT_SHADER =
+"#version 330                                             \n"
+"uniform mat4 model;                                      \n"
+"uniform mat4 view;                                       \n"
+"uniform vec3 light;                                      \n"
+"in vec3 vertex_position;                                 \n"
+"in vec3 vertex_normal;                                   \n"
+"in vec3 vertex_color;                                    \n"
+"out vec4 outColor;                                       \n"
+"void main()                                              \n"
+"{                                                        \n"
+" vec3 light_dir = normalize(light);                      \n"
+" float NdotL = (dot(vertex_normal, light_dir) + 1.0) * 0.5;\n"
+"	outColor = vec4(vertex_color * NdotL ,1.0);             \n"
+"}";
+
 
 enum U2XGLSLShaderType
 {

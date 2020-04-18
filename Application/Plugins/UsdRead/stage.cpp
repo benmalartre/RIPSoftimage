@@ -14,9 +14,10 @@
 #include <pxr/usd/usdGeom/bboxCache.h>
 #include <pxr/usd/usdGeom/metrics.h>
 
+int U2X_STAGE_ID = 0;
 
 U2XStage::U2XStage()
-  :_filename(""), _lastEvalID(-1), _isLoaded(false), _time(DBL_MAX)
+  : _lastEvalID(-1), _isLoaded(false), _time(DBL_MAX)
 {
   TfTokenVector purposes = { UsdGeomTokens->default_, UsdGeomTokens->render };
   _bboxCache = new pxr::UsdGeomBBoxCache(pxr::UsdTimeCode::Default(), purposes);
@@ -30,21 +31,89 @@ U2XStage::~U2XStage()
   delete _xformCache;
 }
 
-
-void U2XStage::SetFilename(const CString& filename)
+bool U2XStage::HasFilename(const CString& filename, size_t index)
 {
-  _rawFilename = filename;
-  _filename = pxr::ArchNormPath(_rawFilename.GetAsciiString(), false);
-  _isLoaded = false;
-  Clear();
-  
-  if (pxr::UsdStage::IsSupportedFile(_filename) &&
-    pxr::ArchGetFileLength(_filename.c_str()) != -1)
+  if (_rawFilenames.size() == 0 | _rawFilenames.size() > index) return false;
+  else return (_rawFilenames[index] == filename);
+}
+
+void U2XStage::SetFilename(const CString& filename, size_t index)
+{
+  if ((index + 1) > _rawFilenames.size())
   {
-    //pxr::SdfLayerRefPtr rootLayer = pxr::SdfLayer::FindOrOpen(_filename);
-    //_stage = pxr::UsdStage::Open(rootLayer);
-    _stage = pxr::UsdStage::Open(_filename);
+    _rawFilenames.resize(index + 1);
+    _filenames.resize(index + 1);
+  }
+
+  _rawFilenames[index] = filename;
+  _filenames[index] = pxr::ArchNormPath(filename.GetAsciiString(), false);
+
+  Reload();
+}
+
+void U2XStage::SetFilenames(const CStringArray& filenames)
+{
+  size_t numFiles = filenames.GetCount();
+  _rawFilenames.resize(numFiles);
+  _filenames.resize(numFiles);
+
+  for (int i = 0; i < numFiles; ++i)
+  {
+    CString filename = filenames[i];
+    _rawFilenames[i] = filename;
+    _filenames[i] = pxr::ArchNormPath(filename.GetAsciiString(), false);
+  }
+
+  Reload();
+}
+
+bool U2XStage::Reload()
+{
+  _isLoaded = false;
+
+  Clear();
+  _layers.clear();
+
+  _stage = pxr::UsdStage::Open(_filenames[0]);
+  /*
+  bool successfullyOpened = false;
+  for (int i = 0; i < _filenames.size(); ++i)
+  {
+    std::string layerFilename = _filenames[i];
+    if (pxr::UsdStage::IsSupportedFile(layerFilename) &&
+      pxr::ArchGetFileLength(layerFilename.c_str()) != -1)
+    {
+      if (i == 0)
+      {
+        _rootLayer = SdfLayer::CreateAnonymous("U2XStage"+std::to_string(U2X_STAGE_ID));
+        U2X_STAGE_ID++;
+
+        pxr::SdfLayerRefPtr baseLayer = SdfLayer::FindOrOpen(layerFilename);
+        _layers.push_back(baseLayer);
+        _rootLayer->InsertSubLayerPath(baseLayer->GetIdentifier());
+
+        successfullyOpened = true;
+      }
+      else
+      {
+        pxr::SdfLayerRefPtr subLayer = pxr::SdfLayer::FindOrOpen(layerFilename);
+        _layers.push_back(subLayer);
+        _rootLayer->InsertSubLayerPath(subLayer->GetIdentifier());
+      }
+    }
+  }
+  */
+  if (_stage)
+  {
+    //_stage = pxr::UsdStage::Open(_rootLayer->GetIdentifier());
+    //_stage->SetStartTimeCode(1);
+    //_stage->SetEndTimeCode(100);
+
+
+    //pxr::SdfLayerHandleVector usedLayers = _stage->GetUsedLayers();
     _root = _stage->GetPseudoRoot();
+
+   // pxr::UsdStageRefPtr tmpStage = pxr::UsdStage::Open(_rootLayer);
     _upAxis = pxr::UsdGeomGetStageUpAxis(_stage);
     if (_upAxis == pxr::UsdGeomTokens->z)
     {
@@ -52,11 +121,12 @@ void U2XStage::SetFilename(const CString& filename)
       pxr::UsdGeomXformOp rotateOp = xformable.AddRotateXOp();
       rotateOp.Set(-90.f);
     }
-    
+
     Recurse(_root);
 
     _isLoaded = true;
   }
+  return _isLoaded;
 }
 
 void U2XStage::SetTime(double time)
@@ -66,7 +136,7 @@ void U2XStage::SetTime(double time)
     _xformCache->SetTime(pxr::UsdTimeCode(time));
     for (auto& prim : _prims)
     {
-      prim->Update(time);
+      //prim->Update(time);
       prim->SetMatrix(_xformCache->GetLocalToWorldTransform(prim->Get()));
     }
     ComputeBoundingBox(pxr::UsdTimeCode(time));
@@ -120,19 +190,20 @@ void U2XStage::Recurse(const pxr::UsdPrim& prim)
   }
 }
 
-void U2XStage::Update(CustomPrimitive& prim)
+void U2XStage::Update(XSI::CustomPrimitive& prim)
 {
   const LONG objectID = prim.GetObjectID();
   const LONG evalID = prim.GetEvaluationID();
   if (_lastEvalID != evalID)
   {
+    // get parameters
     CParameterRefArray& params = prim.GetParameters();
 
     // check filename
     CString filename = params.GetValue(L"Filename");
-    if (!HasFilename(filename) || !_isLoaded)
+    if (!HasFilename(filename, 0) || !_isLoaded)
     {
-      SetFilename(filename);
+      SetFilename(filename, 0);
     }
     if (_isLoaded)
     {
@@ -147,6 +218,8 @@ void U2XStage::Draw()
 {
   GLint pgm = GLSL_PROGRAM->Get();
   GLint modelUniform = glGetUniformLocation(pgm, "model");
+
+
   //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   for (int i = 0; i < _prims.size(); ++i)
   {

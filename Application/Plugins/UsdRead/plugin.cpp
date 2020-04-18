@@ -27,6 +27,7 @@
 #include "shader.h"
 #include "prim.h"
 #include "stage.h"
+#include "scene.h"
 #include "window.h"
 
 
@@ -34,109 +35,6 @@ using namespace XSI::MATH;
 using namespace XSI; 
 
 #define LOG(msg) Application().LogMessage(msg);
-
-
-static const char *VERTEX_SHADER =
-"#version 330                                             \n"
-"uniform mat4 model;                                      \n"
-"uniform mat4 view;                                       \n"
-"uniform mat4 projection;                                 \n"
-"                                                         \n"
-"in vec3 position;                                        \n"
-"in vec3 normal;                                          \n"
-"in vec3 color;                                           \n"
-"out vec3 vertex_normal;                                  \n"
-"out vec3 vertex_color;                                   \n"
-"void main(){                                             \n"
-"    vertex_normal = (model * vec4(normal, 0.0)).xyz;     \n"
-"    vertex_color = color;                                \n"
-"    vec3 p = (view * model * vec4(position, 1.0)).xyz;   \n"
-"    gl_Position = projection * vec4(p, 1.0);             \n"
-"}";
-
-static const char *FRAGMENT_SHADER =
-"#version 330                                             \n"
-"in vec3 vertex_normal;                                   \n"
-"in vec3 vertex_color;                                    \n"
-"out vec4 outColor;                                       \n"
-"void main()                                              \n"
-"{                                                        \n"
-" vec3 color = vertex_color * vertex_normal;              \n" 
-"	outColor = vec4(color, 1.0);                     \n"
-"}";
-
-
-struct U2XPrimitiveManager
-{  
-  U2XStage* Get(CustomPrimitive& in_prim)
-  {
-    auto& it = _cache.find(in_prim.GetObjectID());
-    if (it != _cache.end())return it->second;
-    else return NULL;
-  }
-  void Set(CustomPrimitive& in_prim, U2XStage* stage)
-  {
-    _cache[in_prim.GetObjectID()] = stage;
-  }
-
-  void CheckCache()
-  {
-    for (auto& cache : _cache)
-    {
-      ObjectID objectID = cache.first;
-      ProjectItem item = Application().GetObjectFromID(objectID);
-      if (!item.IsValid())
-      {
-        if(cache.second)delete cache.second;
-        _cache.erase(objectID);
-      }
-    }
-  }
-
-  void Clear()
-  {
-    for (auto& cache : _cache)
-      if(cache.second)delete cache.second;
-    _cache.clear();
-  }
-
-private:
-  typedef ULONG ObjectID;
-
-  std::map<ObjectID, U2XStage*> _cache;
-};
-
-static U2XPrimitiveManager _usdPrimitives;
-static pxr::UsdStageCache _usdStageCache;
-
-////////////////////////////////////////////////////////////////////////////
-// Event used to evict dead objects from the cache.
-//
-// Currently crudely empty the cache. A more refined version would
-// analyze the data provided in each event to only invalidate
-// the affected objects.
-//
-// Other events would need to be treated too to cover all possible
-// cases where the objects become invalid.
-//
-SICALLBACK UsdReadSceneOpen_OnEvent(const CRef& in_ref)
-{
-  _usdPrimitives.Clear();
-  return CStatus::False;
-}
-
-SICALLBACK UsdReadObjectRemoved_OnEvent(const CRef& in_ref)
-{
-  Context ctxt(in_ref);
-  _usdPrimitives.CheckCache();
-  return CStatus::False;
-}
-
-SICALLBACK UsdReadNewScene_OnEvent(const CRef& in_ref)
-{
-  _usdPrimitives.Clear();
-  return CStatus::False;
-}
 
 bool GL_EXTENSIONS_LOADED;
 U2XGLSLProgram* GLSL_PROGRAM;
@@ -147,16 +45,18 @@ SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
 	in_reg.PutName(L"UsdRead");
 	in_reg.PutVersion(1,0);
 	in_reg.RegisterPrimitive(L"UsdPrimitive");
+  in_reg.RegisterEvent("UsdReadObjectAdded", siOnObjectAdded);
   in_reg.RegisterEvent("UsdReadObjectRemoved", siOnObjectRemoved);
   in_reg.RegisterEvent("UsdReadSceneOpen", siOnBeginSceneOpen);
   in_reg.RegisterEvent("UsdReadNewScene", siOnBeginNewScene);
+  in_reg.RegisterEvent("UsdReadTimeChange", siOnTimeChange);
 
   in_reg.RegisterCustomDisplay(L"UsdExplorer");
 
   GL_EXTENSIONS_LOADED = false;
   U2X_HIDDEN_WINDOW = NULL;
 
-  UsdStageCacheContext context(_usdStageCache);
+  UsdStageCacheContext context(U2X_USDSTAGE_CACHE);
 	return CStatus::OK;
 }
 
@@ -303,11 +203,11 @@ SICALLBACK UsdPrimitive_BoundingBox(CRef& in_ref)
   CustomPrimitive prim(ctxt.GetSource());
   if (!prim.IsValid())return CStatus::Fail;
 
-  U2XStage* stage = _usdPrimitives.Get(prim);
+  U2XStage* stage = U2X_PRIMITIVES.Get(prim);
   if (!stage)
   {
     stage = new U2XStage();
-    _usdPrimitives.Set(prim, stage);
+    U2X_PRIMITIVES.Set(prim, stage);
   }
 
   stage->Update(prim);
@@ -328,7 +228,7 @@ SICALLBACK UsdPrimitive_Draw( CRef& in_ctxt )
 {
   Context ctxt(in_ctxt);
   CustomPrimitive prim = ctxt.GetSource();
-  U2XStage* stage = _usdPrimitives.Get(prim);
+  U2XStage* stage = U2X_PRIMITIVES.Get(prim);
   if (!stage)return CStatus::Fail;
 
   GLint currentPgm;
@@ -368,9 +268,10 @@ SICALLBACK UsdPrimitive_Draw( CRef& in_ctxt )
     GLuint modelUniform = glGetUniformLocation(pgm, "model");
     GLuint viewUniform = glGetUniformLocation(pgm, "view");
     GLuint projUniform = glGetUniformLocation(pgm, "projection");
-
-    /*
+    GLint lightUniform = glGetUniformLocation(pgm, "light");
+    
     glDepthFunc(GL_LESS);
+    /*
     glEnable(GL_DEPTH_TEST);
     glDepthMask(GL_TRUE);
     glDisable(GL_CULL_FACE);
@@ -381,6 +282,10 @@ SICALLBACK UsdPrimitive_Draw( CRef& in_ctxt )
 
     // projection matrix
     glUniformMatrix4fv(projUniform, 1, GL_FALSE, proj);
+
+    // light position
+    pxr::GfVec3f lightDir(5.0, 10.0, -3.0);
+    glUniform3fv(lightUniform, 1, &lightDir[0]);
 
     stage->Draw();
 

@@ -40,10 +40,11 @@ extern HGLRC U2X_SHARED_CONTEXT;
 extern U2XWindow* U2X_HIDDEN_WINDOW;
 extern ImFontAtlas* U2X_SHARED_ATLAS;
 
-void SetupPixelFormat(HDC hDC);
-void CreateFontAtlas();
-void DeleteFontAtlas();
-void GetSharedContext();
+void U2XSetupPixelFormat(HDC hDC);
+void U2XSetWindowStyle();
+void U2XCreateFontAtlas();
+void U2XDeleteFontAtlas();
+void U2XGetSharedContext();
 
 // Get Softimage Main Window
 //
@@ -70,7 +71,12 @@ public:
 
   virtual char*	GetName() { return "U2XWindow"; };
   virtual HWND Get() { return _hWnd; };
-
+  virtual size_t GetWidth() {
+    return _rect.right - _rect.left;
+  };
+  virtual size_t GetHeight() {
+    return _rect.bottom - _rect.top;
+  };
   virtual bool IsActive() { return _active; };
   virtual void Activate(bool state);
   virtual void FillBackground();

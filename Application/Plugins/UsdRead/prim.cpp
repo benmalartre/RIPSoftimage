@@ -50,7 +50,6 @@ U2XAttributeType U2XPrim::HasAttribute(const pxr::TfToken& name)
 
 U2XAttribute U2XPrim::CreateAttribute(const pxr::TfToken& name, U2XAttributeType type) 
 {
-  LOG("CREATE ATTRIBUTE : " + CString(name.GetText()));
   if (type == ATTR_PRIMVAR)
   {
     return U2XAttribute(pxr::UsdGeomGprim(_prim).GetPrimvar(name).GetAttr(), ATTR_PRIMVAR);
