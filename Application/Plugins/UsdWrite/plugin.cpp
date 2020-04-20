@@ -40,10 +40,10 @@ SICALLBACK UsdWrite_Init( CRef& in_ctxt )
  
   ArgumentArray args;
   args = cmd.GetArguments();
-  args.Add(L"Folder");// No default value 
-  args.Add(L"Filename");
-  args.Add(L"StartFrame", 1.0);
-  args.Add(L"EndFrame", 100.0);
+  args.Add(kFolder, "");
+  args.Add(kFilename, "");
+  args.Add(kStartFrame, 1.0);
+  args.Add(kEndFrame, 100.0);
 
   return CStatus::OK;
 }
@@ -54,22 +54,28 @@ SICALLBACK UsdWrite_Execute( CRef& in_ctxt )
   Command cmd(ctxt.GetSource());
 
   ArgumentArray args = cmd.GetArguments();
-  LOG("FOLDER : "+ args.GetItem(L"Folder").GetValue().GetAsText());
-  LOG("FILENAME : " + args.GetItem(L"Filename").GetValue().GetAsText());
-  LOG("START FRAME : " + args.GetItem(L"StartFrame").GetValue().GetAsText());
-  LOG("EndFrame : " + args.GetItem(L"EndFrame").GetValue().GetAsText());
+  CString folder = args.GetItem(kFolder).GetValue();
+  CString filename = args.GetItem(kFilename).GetValue();
+  double startFrame = args.GetItem(kStartFrame).GetValue();
+  double endFrame = args.GetItem(kEndFrame).GetValue();
 
   Application app;
   Model root = app.GetActiveSceneRoot();
 
-  std::string folder = "E:/Projects/RnD/USD_BUILD/assets";
+  // ensure folder exists
+  if (X2UCheckFolder(folder) && X2UCheckFilename(filename))
+  {
+    X2UScene exportScene(
+      (std::string)folder.GetAsciiString(),
+      (std::string) filename.GetAsciiString(),
+      root.GetRef()
+    );
+    exportScene.Init();
+    exportScene.Process();
+    exportScene.Save();
+  }
 
-  std::string filename = "Test.usda";
-
-  X2UScene exportScene(folder, filename, root.GetRef());
-  exportScene.Init();
-  exportScene.Process();
-  exportScene.Save();
+  
 
   // Return a value by setting this attribute:
   ctxt.PutAttribute( L"ReturnValue", true );

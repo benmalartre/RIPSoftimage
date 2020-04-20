@@ -102,3 +102,6 @@ struct X2UTimeInfos {
   void InitFromScene();
   void Set(double start, double end, double rate);
 };
+
+bool X2UCheckFolder(const CString& folder);
+bool X2UCheckFilename(const CString& filename);

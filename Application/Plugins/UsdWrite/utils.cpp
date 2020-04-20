@@ -1,6 +1,7 @@
 #include "utils.h"
 #include <xsi_material.h>
 #include <xsi_oglmaterial.h>
+#include <sys/stat.h>
 
 void X2UTimeInfos::InitFromScene()
 {
@@ -169,4 +170,19 @@ ICEAttribute X2UGetICEAttributeFromArray(CRefArray& attributes, const CString& n
   }
   index = -1;
   return ICEAttribute();
+}
+
+bool X2UCheckFolder(const CString& folder)
+{
+  if (folder == "")return false;
+
+  const char* path = folder.GetAsciiString();
+  struct stat info;
+  if (stat(path, &info) != 0)return false;
+  return info.st_mode & S_IFDIR;
+}
+
+bool X2UCheckFilename(const CString& filename)
+{
+  return true;
 }

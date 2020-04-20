@@ -33,6 +33,7 @@ public:
     _xform = pxr::GfMatrix4f(m);
   };
   const float* GetMatrix() { return (const float*)&_xform[0][0]; };
+  const float* GetNormalMatrix() { return (const float*)&_normalMatrix[0][0]; };
 
   void GetVisibility(const pxr::UsdTimeCode& timeCode);
   void GetXform(const pxr::UsdTimeCode& timeCode);
@@ -45,6 +46,7 @@ protected:
   pxr::SdfPath                 _path;
   pxr::GfBBox3d                _bbox;
   pxr::GfMatrix4f              _xform;
+  pxr::GfMatrix4f              _normalMatrix;
   bool                         _visibility;
   bool                         _pointsVarying;
   bool                         _topoVarying;

@@ -7,7 +7,6 @@
 #include <pxr/usd/usd/stageCacheContext.h>
 #include <pxr/usd/usdGeom/bboxCache.h>
 #include <pxr/usd/sdf/path.h>
-#include <pxr/usd/sdf/layer.h>
 #include <pxr/base/gf/bbox3d.h>
 #include <pxr/base/gf/matrix4f.h>
 #include <pxr/base/gf/matrix4d.h>
@@ -32,12 +31,9 @@ public:
   void SetLastEvalID(LONG evalID) { _lastEvalID = evalID; };
   bool IsLoaded() { return _isLoaded; };
   bool HasFilename(const XSI::CString& filename, size_t index);
-  void SetFilename(const XSI::CString& filename, size_t index);
   void SetFilenames(const XSI::CStringArray& filenames);
-  bool Reload();
-
   void SetTime(double time);
-  void Load();
+  void Reload();
   void Clear();
   void ComputeBoundingBox(const pxr::UsdTimeCode& timeCode);
   void Recurse(const pxr::UsdPrim& prim);
@@ -59,5 +55,6 @@ protected:
   pxr::GfBBox3d                     _bbox;
   pxr::UsdGeomBBoxCache*            _bboxCache;
   pxr::UsdGeomXformCache*           _xformCache;
+  pxr::GfMatrix4f                   _invXform;
 };
 

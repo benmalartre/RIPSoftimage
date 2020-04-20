@@ -33,22 +33,8 @@ U2XStage::~U2XStage()
 
 bool U2XStage::HasFilename(const CString& filename, size_t index)
 {
-  if (_rawFilenames.size() == 0 | _rawFilenames.size() > index) return false;
+  if (_rawFilenames.size() == 0 | index >= _rawFilenames.size()) return false;
   else return (_rawFilenames[index] == filename);
-}
-
-void U2XStage::SetFilename(const CString& filename, size_t index)
-{
-  if ((index + 1) > _rawFilenames.size())
-  {
-    _rawFilenames.resize(index + 1);
-    _filenames.resize(index + 1);
-  }
-
-  _rawFilenames[index] = filename;
-  _filenames[index] = pxr::ArchNormPath(filename.GetAsciiString(), false);
-
-  Reload();
 }
 
 void U2XStage::SetFilenames(const CStringArray& filenames)
@@ -67,66 +53,40 @@ void U2XStage::SetFilenames(const CStringArray& filenames)
   Reload();
 }
 
-bool U2XStage::Reload()
+void U2XStage::Reload()
 {
   _isLoaded = false;
-
   Clear();
-  _layers.clear();
+  _rootLayer = pxr::SdfLayer::CreateAnonymous("U2XStage" + std::to_string(U2X_STAGE_ID));
+  U2X_STAGE_ID++;
 
-  _stage = pxr::UsdStage::Open(_filenames[0]);
-  /*
-  bool successfullyOpened = false;
-  for (int i = 0; i < _filenames.size(); ++i)
+  for (size_t i = 0; i < _filenames.size(); ++i)
   {
-    std::string layerFilename = _filenames[i];
-    if (pxr::UsdStage::IsSupportedFile(layerFilename) &&
-      pxr::ArchGetFileLength(layerFilename.c_str()) != -1)
+    std::string filename = _filenames[i];
+    if (pxr::UsdStage::IsSupportedFile(filename) &&
+      pxr::ArchGetFileLength(filename.c_str()) != -1)
     {
-      if (i == 0)
-      {
-        _rootLayer = SdfLayer::CreateAnonymous("U2XStage"+std::to_string(U2X_STAGE_ID));
-        U2X_STAGE_ID++;
-
-        pxr::SdfLayerRefPtr baseLayer = SdfLayer::FindOrOpen(layerFilename);
-        _layers.push_back(baseLayer);
-        _rootLayer->InsertSubLayerPath(baseLayer->GetIdentifier());
-
-        successfullyOpened = true;
-      }
-      else
-      {
-        pxr::SdfLayerRefPtr subLayer = pxr::SdfLayer::FindOrOpen(layerFilename);
-        _layers.push_back(subLayer);
-        _rootLayer->InsertSubLayerPath(subLayer->GetIdentifier());
-      }
+      pxr::SdfLayerRefPtr subLayer = SdfLayer::FindOrOpen(filename);
+      _layers.push_back(subLayer);
+      _rootLayer->InsertSubLayerPath(subLayer->GetIdentifier());
     }
   }
-  */
-  if (_stage)
+
+  //pxr::SdfLayerRefPtr rootLayer = pxr::SdfLayer::FindOrOpen(_filename);
+  //_stage = pxr::UsdStage::Open(rootLayer);
+  _stage = pxr::UsdStage::Open(_rootLayer->GetIdentifier());
+  _root = _stage->GetPseudoRoot();
+  _upAxis = pxr::UsdGeomGetStageUpAxis(_stage);
+  if (_upAxis == pxr::UsdGeomTokens->z)
   {
-    //_stage = pxr::UsdStage::Open(_rootLayer->GetIdentifier());
-    //_stage->SetStartTimeCode(1);
-    //_stage->SetEndTimeCode(100);
-
-
-    //pxr::SdfLayerHandleVector usedLayers = _stage->GetUsedLayers();
-    _root = _stage->GetPseudoRoot();
-
-   // pxr::UsdStageRefPtr tmpStage = pxr::UsdStage::Open(_rootLayer);
-    _upAxis = pxr::UsdGeomGetStageUpAxis(_stage);
-    if (_upAxis == pxr::UsdGeomTokens->z)
-    {
-      pxr::UsdGeomXformable xformable(_stage->GetDefaultPrim());
-      pxr::UsdGeomXformOp rotateOp = xformable.AddRotateXOp();
-      rotateOp.Set(-90.f);
-    }
-
-    Recurse(_root);
-
-    _isLoaded = true;
+    pxr::UsdGeomXformable xformable(_stage->GetDefaultPrim());
+    pxr::UsdGeomXformOp rotateOp = xformable.AddRotateXOp();
+    rotateOp.Set(-90.f);
   }
-  return _isLoaded;
+
+  Recurse(_root);
+
+  _isLoaded = true;
 }
 
 void U2XStage::SetTime(double time)
@@ -136,7 +96,7 @@ void U2XStage::SetTime(double time)
     _xformCache->SetTime(pxr::UsdTimeCode(time));
     for (auto& prim : _prims)
     {
-      //prim->Update(time);
+      prim->Update(time);
       prim->SetMatrix(_xformCache->GetLocalToWorldTransform(prim->Get()));
     }
     ComputeBoundingBox(pxr::UsdTimeCode(time));
@@ -160,12 +120,9 @@ void U2XStage::Clear()
     if (prim)delete prim;
   }
   _prims.clear();
+  _layers.clear();
 }
 
-void U2XStage::Load()
-{
-
-}
 
 void U2XStage::Recurse(const pxr::UsdPrim& prim)
 {
@@ -190,20 +147,26 @@ void U2XStage::Recurse(const pxr::UsdPrim& prim)
   }
 }
 
-void U2XStage::Update(XSI::CustomPrimitive& prim)
+void U2XStage::Update(CustomPrimitive& prim)
 {
   const LONG objectID = prim.GetObjectID();
   const LONG evalID = prim.GetEvaluationID();
   if (_lastEvalID != evalID)
   {
-    // get parameters
+    // get inverse xform
+    X3DObject parent = prim.GetParent3DObject();
+    KinematicState kineState = parent.GetKinematics().GetGlobal();
+    pxr::GfMatrix4d xfo = *(pxr::GfMatrix4d*)&kineState.GetTransform().GetMatrix4();
+    _invXform = pxr::GfMatrix4f(xfo.GetInverse());
     CParameterRefArray& params = prim.GetParameters();
 
     // check filename
     CString filename = params.GetValue(L"Filename");
     if (!HasFilename(filename, 0) || !_isLoaded)
     {
-      SetFilename(filename, 0);
+      CStringArray filenames;
+      filenames.Add(filename);
+      SetFilenames(filenames);
     }
     if (_isLoaded)
     {
@@ -218,14 +181,20 @@ void U2XStage::Draw()
 {
   GLint pgm = GLSL_PROGRAM->Get();
   GLint modelUniform = glGetUniformLocation(pgm, "model");
-
+  GLint normalMatrixUniform = glGetUniformLocation(pgm, "normalMatrix");
+  
+  // light position
+  GLint lightUniform = glGetUniformLocation(pgm, "light");
+  pxr::GfVec3f lightDir(5.0, 10.0, 6.0);
+  lightDir = _invXform.Transform(lightDir);
+  glUniform3fv(lightUniform, 1, &lightDir[0]);
 
   //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   for (int i = 0; i < _prims.size(); ++i)
   {
     /// model matrix
     glUniformMatrix4fv(modelUniform, 1, GL_FALSE, _prims[i]->GetMatrix());
-
+    glUniformMatrix4fv(normalMatrixUniform, 1, GL_FALSE, _prims[i]->GetNormalMatrix());
     _prims[i]->Prepare();
     _prims[i]->Draw();
   }

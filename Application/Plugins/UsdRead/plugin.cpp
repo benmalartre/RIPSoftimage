@@ -237,6 +237,8 @@ SICALLBACK UsdPrimitive_Draw( CRef& in_ctxt )
   glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &currentVao);
   GLint currentDepthTest;
   glGetIntegerv(GL_DEPTH_TEST, &currentDepthTest);
+  GLint currentDepthFunc;
+  glGetIntegerv(GL_DEPTH_FUNC, &currentDepthFunc);
 
   if (!GL_EXTENSIONS_LOADED)
   {
@@ -268,7 +270,6 @@ SICALLBACK UsdPrimitive_Draw( CRef& in_ctxt )
     GLuint modelUniform = glGetUniformLocation(pgm, "model");
     GLuint viewUniform = glGetUniformLocation(pgm, "view");
     GLuint projUniform = glGetUniformLocation(pgm, "projection");
-    GLint lightUniform = glGetUniformLocation(pgm, "light");
     
     glDepthFunc(GL_LESS);
     /*
@@ -283,15 +284,16 @@ SICALLBACK UsdPrimitive_Draw( CRef& in_ctxt )
     // projection matrix
     glUniformMatrix4fv(projUniform, 1, GL_FALSE, proj);
 
-    // light position
-    pxr::GfVec3f lightDir(5.0, 10.0, -3.0);
-    glUniform3fv(lightUniform, 1, &lightDir[0]);
-
     stage->Draw();
 
   }
   glBindVertexArray(currentVao);
   glUseProgram(currentPgm);
+  glBindVertexArray(currentVao);
+  
+  if (currentDepthTest)glEnable(GL_DEPTH_TEST);
+  else glDisable(GL_DEPTH_TEST);
+  glDepthFunc(currentDepthFunc);
 
 	return CStatus::OK;
 }

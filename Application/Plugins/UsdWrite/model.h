@@ -20,13 +20,13 @@ class X2UModel {
     inline std::string _GetRootName() { return _rootName; }
 
   protected:
-    X3DObject                       _root;
-    std::string                     _rootName;
+    X3DObject                 _root;
+    std::string               _rootName;
     X2UXformSharedPtr         _rootXform;
     X2UPrimSharedPtrList      _prims;
-    UsdStageRefPtr                  _stage;
-    std::string                     _folder;
-    std::string                     _filename;
+    UsdStageRefPtr            _stage;
+    std::string               _folder;
+    std::string               _filename;
     std::vector<X2UModel>     _models;
 };
 

@@ -67,6 +67,18 @@
 using namespace XSI;
 using namespace pxr;
 
+extern CString kFolder;
+extern CString kFilename;
+extern CString kTimeMode;
+extern CString kExportMeshes;
+extern CString kExportPoints;
+extern CString kExportCurves;
+extern CString kExportCameras;
+extern CString kExportLights;
+extern CString kStartFrame;
+extern CString kEndFrame;
+extern CString kWrite;
+
 // softimage log message
 #define LOG(msg) Application().LogMessage(msg);
 

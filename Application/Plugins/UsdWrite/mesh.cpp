@@ -187,6 +187,7 @@ void X2UMesh::WriteSample(double t)
 
 void X2UMesh::InitColorAttribute()
 {
+  LOG("INIT COLOR ATTRIBUTE");
   _haveColors = false;
   Geometry xsiGeom = _xPrim.GetGeometry();
 
@@ -194,7 +195,7 @@ void X2UMesh::InitColorAttribute()
   CRefArray iceAttributes = xsiGeom.GetICEAttributes();
   int iceAttrIndex;
   ICEAttribute srcColorAttr = X2UGetICEAttributeFromArray(iceAttributes, L"Color", iceAttrIndex);
-  if(iceAttrIndex >= 0)
+  if(iceAttrIndex >= 0 && ICEAttribute(iceAttributes.GetItem(iceAttrIndex)).IsDefined())
   {
     // create attribute
     UsdGeomPrimvar dstColorPrimvar = UsdGeomMesh(_prim).CreateDisplayColorPrimvar(UsdGeomTokens->vertex);
@@ -214,7 +215,6 @@ void X2UMesh::InitColorAttribute()
 
     // set default value
     _attributes["displayColor"].WriteSample((const void*)&colors[0], numElements, UsdTimeCode::Default());
-  
     _haveColors = true;
   }
   
@@ -240,7 +240,6 @@ void X2UMesh::InitColorAttribute()
 
       // set default value
       _attributes["displayColor"].WriteSample((const void*)dstColors.data(), dstColors.size(), UsdTimeCode::Default());
-
       _haveColors = true;
     }
   }
@@ -248,22 +247,19 @@ void X2UMesh::InitColorAttribute()
   // fallback to diffuse color
   if (!_haveColors)
   {
-    Property displayProp;
-    if (_xObj.GetPropertyFromName(L"Display", displayProp) == CStatus::OK) {
-      VtArray<GfVec3f> dstColors(1);
-      dstColors[0] = X2UGetDisplayColorFromShadingNetwork(_xObj);
-      UsdAttribute dstColorAttr = UsdGeomMesh(_prim).CreateDisplayColorAttr();
+    VtArray<GfVec3f> dstColors(1);
+    dstColors[0] = X2UGetDisplayColorFromShadingNetwork(_xObj);
+    UsdAttribute dstColorAttr = UsdGeomMesh(_prim).CreateDisplayColorAttr();
 
-      _attributes["displayColor"] =
-        X2UAttribute(
-          dstColorAttr,
-          X2U_DATA_COLOR4,
-          X2U_PRECISION_SINGLE,
-          true);
+    _attributes["displayColor"] =
+      X2UAttribute(
+        dstColorAttr,
+        X2U_DATA_COLOR4,
+        X2U_PRECISION_SINGLE,
+        true);
 
-      // set default value
-      _attributes["displayColor"].WriteSample((const void*)dstColors.data(), dstColors.size(), UsdTimeCode::Default());
-    }
+    // set default value
+    _attributes["displayColor"].WriteSample((const void*)dstColors.data(), dstColors.size(), UsdTimeCode::Default());
   }
 }
 

@@ -39,7 +39,7 @@ protected:
   Primitive               _xPrim;
   UsdPrim                 _prim;
   std::string             _fullname;
-  X2UAttributeMap   _attributes;
+  X2UAttributeMap         _attributes;
   GfBBox3d                _bbox;
   UsdGeomXformOp          _xformOp;
 };

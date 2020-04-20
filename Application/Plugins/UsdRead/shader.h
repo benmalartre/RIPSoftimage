@@ -12,6 +12,7 @@ static const char *VERTEX_SHADER =
 "uniform mat4 model;                                      \n"
 "uniform mat4 view;                                       \n"
 "uniform mat4 projection;                                 \n"
+"uniform mat4 normalMatrix;                               \n"
 "                                                         \n"
 "in vec3 position;                                        \n"
 "in vec3 normal;                                          \n"
@@ -20,7 +21,9 @@ static const char *VERTEX_SHADER =
 "out vec3 vertex_normal;                                  \n"
 "out vec3 vertex_color;                                   \n"
 "void main(){                                             \n"
-"    vertex_normal = (model * vec4(normal, 0.0)).xyz;     \n"
+"    vertex_normal = normalize(mat3(normalMatrix) * normal); \n"
+/*"    vertex_normal = normalize(mat3(transpose(inverse(model))) * normal); \n"*/
+/*"    vertex_normal = normalize((model * vec4(normal, 0.0)).xyz); \n"*/
 "    vertex_color = color;                                \n"
 "    vertex_position = (model * vec4(position, 1.0)).xyz; \n"
 "    gl_Position = projection * view * vec4(vertex_position, 1.0);        \n"
@@ -39,7 +42,11 @@ static const char* FRAGMENT_SHADER =
 "{                                                        \n"
 " vec3 light_dir = normalize(light);                      \n"
 " float NdotL = (dot(vertex_normal, light_dir) + 1.0) * 0.5;\n"
-"	outColor = vec4(vertex_color * NdotL ,1.0);             \n"
+/*" float NdotL = max(dot(vertex_normal, light_dir), 0.0);  \n"*/
+/*"	outColor = vec4(vertex_color * NdotL ,1.0);             \n"*/
+//" if(NdotL >0.5) outColor = vec4(vertex_color,1.0); \n"
+//" else outColor = vec4(vertex_color * 0.1, 1.0); \n"
+" outColor = vec4(vertex_normal, 1.0); \n"
 "}";
 
 
