@@ -189,9 +189,9 @@ void U2XStage::Draw()
   lightDir = _invXform.Transform(lightDir);
   glUniform3fv(lightUniform, 1, &lightDir[0]);
 
-  //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   for (int i = 0; i < _prims.size(); ++i)
   {
+    if (!_prims[i]->IsVisible())continue;
     /// model matrix
     glUniformMatrix4fv(modelUniform, 1, GL_FALSE, _prims[i]->GetMatrix());
     glUniformMatrix4fv(normalMatrixUniform, 1, GL_FALSE, _prims[i]->GetNormalMatrix());

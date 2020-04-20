@@ -19,13 +19,9 @@ void U2XPrim::GetBoundingBox(pxr::UsdGeomBBoxCache& bboxCache)
 
 void U2XPrim::GetVisibility(const pxr::UsdTimeCode& timeCode)
 {
-  pxr::UsdAttribute visibilityAttr = pxr::UsdGeomGprim(_prim).GetVisibilityAttr();
-  pxr::TfToken visibility;
-  if (visibilityAttr.IsValid())
-  {
-    visibilityAttr.Get(&visibility);
-  }
-  _visibility = true;
+  pxr::TfToken visibility = pxr::UsdGeomGprim(_prim).ComputeVisibility(timeCode);
+  if (visibility != pxr::UsdGeomTokens->invisible)_visibility = true;
+  else _visibility = false;
 }
 
 void U2XPrim::GetXform(const pxr::UsdTimeCode& timeCode)
@@ -37,7 +33,6 @@ void U2XPrim::GetXform(const pxr::UsdTimeCode& timeCode)
     _xform = pxr::GfMatrix4f(xform);
     _normalMatrix = _xform.GetInverse().GetTranspose();
   }
-    
 
 }
 

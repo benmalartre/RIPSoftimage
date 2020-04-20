@@ -133,16 +133,36 @@ void U2XMesh::Update(double t)
   
   pxr::UsdTimeCode timeCode(t);
   GetVisibility(timeCode);
+  bool pointsPositionUpdated = false;
+  bool topoUpdated = false;
 
-  
   pxr::UsdGeomMesh mesh(_prim);
   size_t hash;
+  // topo
+  if (_topoVarying)
+  {
+    pxr::UsdAttribute faceVertexCountsAttr = mesh.GetFaceVertexCountsAttr();
+    pxr::UsdAttribute faceVertexIndicesAttr = mesh.GetFaceVertexIndicesAttr();
+
+    faceVertexCountsAttr.Get(&_counts, timeCode);
+    faceVertexIndicesAttr.Get(&_indices, timeCode);
+
+    U2XTriangulateMesh(_counts, _indices, _samples);
+
+    _topology.numElements = _samples.size();
+    _topology.samples = (const int*)&_samples[0][0];
+    _vao.SetTopologyPtr(&_topology);
+
+    _vao.SetNeedReallocate(true);
+    _vao.SetNumElements(_samples.size());
+    pointsPositionUpdated = true;
+    topoUpdated = true;
+  }
 
   // points
-  if (_pointsVarying)
+  if (_pointsVarying || topoUpdated)
   {
     pxr::UsdAttribute pointsAttr = mesh.GetPointsAttr();
-    bool pointsPositionUpdated = false;
     
     pointsAttr.Get(&_points, timeCode);
 
@@ -156,8 +176,9 @@ void U2XMesh::Update(double t)
       pointsBuffer->SetNeedUpdate(true);
       pointsPositionUpdated = true;
     }
+    if (topoUpdated)pointsBuffer->SetNumOutputElements(_vao.GetNumElements());
 
-    if (pointsPositionUpdated)
+    if (pointsPositionUpdated || topoUpdated)
     {
       // normals
       U2XComputeVertexNormals(_points, _counts, _indices, _samples, _normals);
@@ -171,22 +192,26 @@ void U2XMesh::Update(double t)
       {
         normalsBuffer->SetNeedUpdate(true);
       }
+      if (topoUpdated)normalsBuffer->SetNumOutputElements(_vao.GetNumElements());
     }
 
-    /*
-    // colors
-    U2XComputeVertexColors(_points, _colors);
-    U2XVertexBuffer* colorsBuffer = _vao.GetBuffer(CHANNEL_COLOR);
-    if (_colors.size() != colorsBuffer->GetNumInputElements())
-      colorsBuffer->SetNeedReallocate(true);
-    colorsBuffer->SetRawInputDatas((const char*)&_colors[0], _colors.size());
-    hash = colorsBuffer->GetHash();
-
-    if (hash != colorsBuffer->ComputeHash((const char*)&_colors[0]))
+    if (topoUpdated || _colorsVarying)
     {
-      colorsBuffer->SetNeedUpdate(true);
+      // colors
+      U2XComputeVertexColors(_points, _colors);
+      U2XVertexBuffer* colorsBuffer = _vao.GetBuffer(CHANNEL_COLOR);
+      if (_colors.size() != colorsBuffer->GetNumInputElements())
+        colorsBuffer->SetNeedReallocate(true);
+      colorsBuffer->SetRawInputDatas((const char*)&_colors[0], _colors.size());
+      hash = colorsBuffer->GetHash();
+
+      if (hash != colorsBuffer->ComputeHash((const char*)&_colors[0]))
+      {
+        colorsBuffer->SetNeedUpdate(true);
+      }
+      if (topoUpdated)colorsBuffer->SetNumOutputElements(_vao.GetNumElements());
     }
-    */
+    
    
   }
   

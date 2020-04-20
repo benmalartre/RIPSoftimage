@@ -35,6 +35,7 @@ public:
   const float* GetMatrix() { return (const float*)&_xform[0][0]; };
   const float* GetNormalMatrix() { return (const float*)&_normalMatrix[0][0]; };
 
+  bool IsVisible() { return _visibility; };
   void GetVisibility(const pxr::UsdTimeCode& timeCode);
   void GetXform(const pxr::UsdTimeCode& timeCode);
   U2XAttributeType HasAttribute(const pxr::TfToken& name);
@@ -50,6 +51,7 @@ protected:
   bool                         _visibility;
   bool                         _pointsVarying;
   bool                         _topoVarying;
+  bool                         _colorsVarying;
   bool                         _haveAuthoredColors;
   bool                         _haveAuthoredOpacities;
   U2XVertexArray               _vao;

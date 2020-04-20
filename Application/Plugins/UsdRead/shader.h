@@ -44,9 +44,9 @@ static const char* FRAGMENT_SHADER =
 " float NdotL = (dot(vertex_normal, light_dir) + 1.0) * 0.5;\n"
 /*" float NdotL = max(dot(vertex_normal, light_dir), 0.0);  \n"*/
 /*"	outColor = vec4(vertex_color * NdotL ,1.0);             \n"*/
-//" if(NdotL >0.5) outColor = vec4(vertex_color,1.0); \n"
-//" else outColor = vec4(vertex_color * 0.1, 1.0); \n"
-" outColor = vec4(vertex_normal, 1.0); \n"
+" if(NdotL >0.5) outColor = vec4(vertex_color,1.0); \n"
+" else outColor = vec4(vertex_color * 0.1, 1.0); \n"
+//" outColor = vec4(vertex_normal, 1.0); \n"
 "}";
 
 
