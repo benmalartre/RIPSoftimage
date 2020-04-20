@@ -4,7 +4,6 @@
 U2XPrim::U2XPrim(const pxr::UsdPrim& prim)
   : _prim(prim)
   , _xform(pxr::GfMatrix4f(1))
-  , _normalMatrix(pxr::GfMatrix4f(1))
 {
 }
 
@@ -31,9 +30,7 @@ void U2XPrim::GetXform(const pxr::UsdTimeCode& timeCode)
   if (pxr::UsdGeomXformable(_prim).GetLocalTransformation(&xform, &resetXformStack, timeCode))
   {
     _xform = pxr::GfMatrix4f(xform);
-    _normalMatrix = _xform.GetInverse().GetTranspose();
   }
-
 }
 
 
