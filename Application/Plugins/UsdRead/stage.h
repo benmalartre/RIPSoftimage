@@ -36,7 +36,7 @@ public:
   void Reload();
   void Clear();
   void ComputeBoundingBox(const pxr::UsdTimeCode& timeCode);
-  void Recurse(const pxr::UsdPrim& prim);
+  void Recurse(const pxr::UsdPrim& prim, U2XPrim* parent);
   void Update(XSI::CustomPrimitive& prim);
   void Draw();
 

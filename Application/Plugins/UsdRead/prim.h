@@ -18,7 +18,7 @@
 // Prim base class
 class U2XPrim {
 public:
-  U2XPrim(const pxr::UsdPrim& prim);
+  U2XPrim(const pxr::UsdPrim& prim, U2XPrim* parent);
   virtual ~U2XPrim();
 
   virtual void Init()=0;
@@ -38,13 +38,14 @@ public:
   };
   
   bool IsVisible() { return _visibility; };
-  void GetVisibility(const pxr::UsdTimeCode& timeCode);
+  void GetVisibility(const pxr::UsdTimeCode& timeCode, bool init=false);
   void GetXform(const pxr::UsdTimeCode& timeCode);
   U2XAttributeType HasAttribute(const pxr::TfToken& name);
   U2XAttribute CreateAttribute(const pxr::TfToken& name, U2XAttributeType type);
   void GetAttributeValue(U2XAttribute& attr, const pxr::UsdTimeCode& timeCode);
 
 protected:
+  U2XPrim *                    _parent;
   pxr::UsdPrim                 _prim;
   pxr::SdfPath                 _path;
   pxr::GfBBox3d                _bbox;
@@ -53,6 +54,7 @@ protected:
   bool                         _pointsVarying;
   bool                         _topoVarying;
   bool                         _colorsVarying;
+  bool                         _visibilityVarying;
   bool                         _haveAuthoredColors;
   bool                         _haveAuthoredOpacities;
   U2XVertexArray               _vao;

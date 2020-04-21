@@ -2,6 +2,7 @@
 #include "common.h"
 #include "stage.h"
 #include "prim.h"
+#include "xform.h"
 #include "mesh.h"
 #include "utils.h"
 #include "shader.h"
@@ -84,7 +85,7 @@ void U2XStage::Reload()
     rotateOp.Set(-90.f);
   }
 
-  Recurse(_root);
+  Recurse(_root, NULL);
 
   _isLoaded = true;
 }
@@ -124,14 +125,16 @@ void U2XStage::Clear()
 }
 
 
-void U2XStage::Recurse(const pxr::UsdPrim& prim)
+void U2XStage::Recurse(const pxr::UsdPrim& prim, U2XPrim* parent)
 {
+  U2XPrim* current = NULL;
   if (prim.IsA<pxr::UsdGeomMesh>())
   {
-    U2XMesh* mesh = new U2XMesh(prim);
+    U2XMesh* mesh = new U2XMesh(prim, parent);
     mesh->Init();
     mesh->SetMatrix(_xformCache->GetLocalToWorldTransform(prim));
     _prims.push_back(mesh);
+    current = mesh;
   }
   else if (prim.IsA<pxr::UsdGeomPoints>())
   {
@@ -139,11 +142,15 @@ void U2XStage::Recurse(const pxr::UsdPrim& prim)
   }
   if (prim.IsA<pxr::UsdGeomXform>())
   {
-    //LOG("XFORM : " + CString(prim.GetPath().GetText()));
+    U2XXform* xform = new U2XXform(prim, parent);
+    xform->Init();
+    xform->SetMatrix(_xformCache->GetLocalToWorldTransform(prim));
+    _prims.push_back(xform);
+    current = xform;
   }
   for (const auto& child : prim.GetChildren())
   {
-    Recurse(child);
+    Recurse(child, current);
   }
 }
 
@@ -188,13 +195,16 @@ void U2XStage::Draw()
   pxr::GfVec3f lightDir(5.0, 10.0, 6.0);
   lightDir = _invXform.Transform(lightDir);
   glUniform3fv(lightUniform, 1, &lightDir[0]);
+  pxr::GfMatrix4f identity(1);
+
+  glUniformMatrix4fv(normalMatrixUniform, 1, GL_FALSE, &identity[0][0]);// _prims[i]->GetNormalMatrix());
 
   for (int i = 0; i < _prims.size(); ++i)
   {
     if (!_prims[i]->IsVisible())continue;
     /// model matrix
     glUniformMatrix4fv(modelUniform, 1, GL_FALSE, _prims[i]->GetMatrix());
-    glUniformMatrix4fv(normalMatrixUniform, 1, GL_FALSE, _prims[i]->GetNormalMatrix());
+    
     _prims[i]->Prepare();
     _prims[i]->Draw();
   }

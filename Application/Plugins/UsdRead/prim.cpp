@@ -1,9 +1,10 @@
 #include "prim.h"
 #include "utils.h"
 
-U2XPrim::U2XPrim(const pxr::UsdPrim& prim)
+U2XPrim::U2XPrim(const pxr::UsdPrim& prim, U2XPrim* parent)
   : _prim(prim)
   , _xform(pxr::GfMatrix4f(1))
+  , _parent(parent)
 {
 }
 
@@ -16,11 +17,34 @@ void U2XPrim::GetBoundingBox(pxr::UsdGeomBBoxCache& bboxCache)
   _bbox = bboxCache.ComputeWorldBound(_prim);
 }
 
-void U2XPrim::GetVisibility(const pxr::UsdTimeCode& timeCode)
+void U2XPrim::GetVisibility(const pxr::UsdTimeCode& timeCode, bool init)
 {
-  pxr::TfToken visibility = pxr::UsdGeomGprim(_prim).ComputeVisibility(timeCode);
-  if (visibility != pxr::UsdGeomTokens->invisible)_visibility = true;
-  else _visibility = false;
+ 
+  if (init || !_parent)
+  {
+    pxr::UsdAttribute visibilityAttr = pxr::UsdGeomImageable(_prim).GetVisibilityAttr();
+    if (visibilityAttr.GetNumTimeSamples() > 1)_visibilityVarying = true;
+    else _visibilityVarying = false;
+
+    pxr::TfToken visibility = pxr::UsdGeomImageable(_prim).ComputeVisibility(timeCode);
+    if (visibility != pxr::UsdGeomTokens->invisible)_visibility = true;
+    else _visibility = false;
+  }
+  else
+  {
+    if (_visibilityVarying)
+    {
+      pxr::UsdAttribute visibilityAttr = pxr::UsdGeomImageable(_prim).GetVisibilityAttr();
+      TfToken visibility;
+      visibilityAttr.Get(&visibility, timeCode);
+      if (visibility == pxr::UsdGeomTokens->invisible)_visibility = false;
+      else {
+        _visibility = _parent->_visibility;
+      }
+    }
+    else _visibility = _parent->_visibility;
+  }
+
 }
 
 void U2XPrim::GetXform(const pxr::UsdTimeCode& timeCode)

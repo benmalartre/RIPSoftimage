@@ -2,8 +2,8 @@
 #include "utils.h"
 #include <pxr/usd/usdGeom/mesh.h>
 
-U2XMesh::U2XMesh(const pxr::UsdPrim& prim)
-  : U2XPrim(prim)
+U2XMesh::U2XMesh(const pxr::UsdPrim& prim, U2XPrim* parent)
+  : U2XPrim(prim, parent)
 {
 
 }
@@ -16,7 +16,7 @@ U2XMesh::~U2XMesh()
 void U2XMesh::Init()
 {
   pxr::UsdTimeCode timeCode(pxr::UsdTimeCode::Default());
-  GetVisibility(timeCode);
+  GetVisibility(timeCode, true);
   GetXform(timeCode);
 
   pxr::UsdGeomMesh mesh(_prim);
@@ -141,6 +141,7 @@ void U2XMesh::Update(double t)
   // topo
   if (_topoVarying)
   {
+    LOG("TOPO VARYING FOR : " + CString(_prim.GetName().GetText()));
     pxr::UsdAttribute faceVertexCountsAttr = mesh.GetFaceVertexCountsAttr();
     pxr::UsdAttribute faceVertexIndicesAttr = mesh.GetFaceVertexIndicesAttr();
 
