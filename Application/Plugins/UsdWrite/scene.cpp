@@ -84,4 +84,7 @@ void X2UScene::Process()
     if (progressBar.IsCancelPressed()) break;
     else progressBar.PutStatusText(L"Frame " + CString(t));
   }
+
+  // write prototypes
+  _WritePrototypes();
 }

@@ -3,6 +3,8 @@
 #include "common.h"
 #include "attribute.h"
 
+typedef std::map<ULONG, SdfPath> X2UObjectPathMap;
+
 // Prim base class
 class X2UPrim {
 public:
@@ -11,11 +13,14 @@ public:
 
   virtual void Init(UsdStageRefPtr& stage) = 0;
   virtual void WriteSample(double t )= 0;
+  virtual void Term(UsdStageRefPtr& stage, const X2UObjectPathMap& objPathMap) {};
 
   inline X2UAttribute& GetAttribute(std::string name) {
     return _attributes[name];
   };
+  inline ULONG GetID() { return _xID; };
   inline UsdPrim GetPrim() { return _prim; };
+  inline SdfPath GetPath() { return _prim.GetPath(); };
 
   void InitExtentAttribute();
   void InitTransformAttribute();
@@ -35,7 +40,9 @@ public:
   void WriteSampleFromICE(const Geometry& geom, UsdTimeCode t, const std::string& attrName);
 
 protected:
+  X2UPrim *               _parent;
   X3DObject               _xObj;
+  ULONG                   _xID;
   Primitive               _xPrim;
   UsdPrim                 _prim;
   std::string             _fullname;

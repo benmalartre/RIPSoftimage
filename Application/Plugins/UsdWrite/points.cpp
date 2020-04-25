@@ -129,8 +129,9 @@ void X2UPoints::InitColorAttribute(const Geometry& geom)
     _attributes["colors"] =
       X2UAttribute(
         displayColorAttr,
-        L"Color"
+        iceAttrIndex
       );
+
 
     // set default value
     if (_numPoints && pointColorAttr.IsDefined())

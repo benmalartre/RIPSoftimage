@@ -1,6 +1,7 @@
 #include "utils.h"
 #include <xsi_material.h>
 #include <xsi_oglmaterial.h>
+#include <xsi_shape.h>
 #include <sys/stat.h>
 
 void X2UTimeInfos::InitFromScene()

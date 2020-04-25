@@ -14,12 +14,9 @@ public:
   void InitColorAttribute(const Geometry& geom);
 
 private:
-  
-  //void _WriteColorSample(const Geometry& geom, double t);
   bool _GetNumPoints(const Geometry& geom);
   void _ComputeBoundingBox(const Geometry& geom);
   size_t  _numPoints;
-  std::map<std::string, ICEAttribute> _iceattributes;
 
   bool _haveIDs;
   bool _haveNormals;

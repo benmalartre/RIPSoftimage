@@ -16,6 +16,7 @@ X2UCurve::~X2UCurve()
 
 void X2UCurve::Init(UsdStageRefPtr& stage)
 {
+  UsdTimeCode timeCode = UsdTimeCode::Default();
   UsdGeomBasisCurves crv = UsdGeomBasisCurves::Define(stage, SdfPath(_fullname));
   _prim = crv.GetPrim();
 
@@ -49,24 +50,65 @@ void X2UCurve::Init(UsdStageRefPtr& stage)
       numPoints, UsdTimeCode::Default());
   }
   */
+  LOG("CURVE WRITE INIT :D");
+  UsdAttribute typeAttr = crv.CreateTypeAttr();
+  UsdAttribute pointsAttr = crv.CreatePointsAttr();
+  UsdAttribute widthsAttr = crv.CreateWidthsAttr();
+  UsdAttribute curveVertexCountsAttr = crv.CreateCurveVertexCountsAttr();
+  UsdAttribute wrapAttr = crv.CreateWrapAttr();
+  UsdAttribute basisAttr = crv.CreateBasisAttr();
 
-  crv.CreatePointsAttr();
-  crv.CreateCurveVertexCountsAttr();
-  crv.CreateWrapAttr();
-
-  NurbsCurveList curveList = _xPrim.GetGeometry();// DBL_MAX, siConstructionModeSecondaryShape);
+  NurbsCurveList curveList = _xPrim.GetGeometry();
   CNurbsCurveRefArray curves = curveList.GetCurves();
   size_t numCurves = curves.GetCount();
 
-  crv.CreateCurveVertexCountsAttr();
+  NurbsCurve curve(curves[0]);
+  LONG degree;
+  curve.GetDegree(degree);
+
+  TfToken curveType;
+  // linear or cubic
+  if (degree == 1) curveType = UsdGeomTokens->linear;
+  else curveType = UsdGeomTokens->cubic;
+  typeAttr.Set(curveType, timeCode);
+
+  // points
+  CControlPointRefArray points = curveList.GetControlPoints();
+  MATH::CVector4Array positions;
+  if (points.GetArray(positions) == CStatus::OK)
+  {
+    VtArray<GfVec3f> _positions(positions.GetCount());
+    for (int i = 0; i < _positions.size(); ++i)
+    {
+      _positions[i] = GfVec3f(
+        positions[i].GetX(),
+        positions[i].GetY(),
+        positions[i].GetZ()
+      );
+    }
+    pointsAttr.Set(_positions, timeCode);
+  }
+  
+  // vertex counts
+  VtArray<int> curveVertexCounts(curves.GetCount());
   for (size_t i = 0; i < curves.GetCount(); ++i)
   {
     NurbsCurve curve(curves[i]);
     CKnotArray knots = curve.GetKnots();
     CControlPointRefArray points = curve.GetControlPoints();
-
+    curveVertexCounts[i] = points.GetCount();
     //crv.CreatePointsAttr()
   }
+  curveVertexCountsAttr.Set(curveVertexCounts, timeCode);
+
+  // widths
+  VtArray<float> widths(1);
+  widths[0] = 0.5;
+  widthsAttr.Set(widths, timeCode);
+  UsdGeomPrimvar widthsPrimVar(widthsAttr);
+  widthsPrimVar.SetInterpolation(UsdGeomTokens->constant);
+
+
   /*
   NurbsCurve curve = curveList.GetCurves().GetItem(0);
   CControlPointRefArray cpArray = curve.GetControlPoints();

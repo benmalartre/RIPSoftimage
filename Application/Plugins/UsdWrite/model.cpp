@@ -1,4 +1,5 @@
 #include "model.h"
+#include "utils.h"
 
 X2UModel::X2UModel(const std::string& folder, const std::string& filename,
   const CRef& root)
@@ -57,11 +58,11 @@ void X2UModel::_Recurse(const CRef& ref, const std::string& parentPath)
       }
 
       // add reference to the file external model file
-      std::string referenceName = parentPath + childModel._GetRootName();
-      UsdPrim refPrim = _stage->OverridePrim(SdfPath(referenceName));
+      childModel.SetPath(parentPath + childModel._GetRootName());      
+      UsdPrim refPrim = _stage->OverridePrim(childModel.GetPath());
       refPrim.GetReferences().AddReference(_folder + "/" + modelFileName);
-
       _models.push_back(childModel);
+      _xObjPathMap[childModel.GetID()] = childModel.GetPath();
     }
     else
     {
@@ -71,24 +72,34 @@ void X2UModel::_Recurse(const CRef& ref, const std::string& parentPath)
         X2UXform* xform = new X2UXform(objPath, ref);;
         xform->Init(_stage);
         _prims.push_back(X2UXformSharedPtr(xform));
+        _xObjPathMap[xform->GetID()] = xform->GetPath();
       }
       else if (type == L"polymsh")
       {
         X2UMesh* mesh = new X2UMesh(objPath, ref);;
         mesh->Init(_stage);
         _prims.push_back(X2UMeshSharedPtr(mesh));
+        _xObjPathMap[mesh->GetID()] = mesh->GetPath();
       }
       else if (type == L"crvlist")
       {
         X2UCurve* curve = new X2UCurve(objPath, ref);;
         curve->Init(_stage);
         _prims.push_back(X2UCurveSharedPtr(curve));
+        _xObjPathMap[curve->GetID()] = curve->GetPath();
       }
       else if (type == L"pointcloud")
       {
+        /*
+        X2UPointCloudContainsInstances(X3DObject(ref));
         X2UPoints* point = new X2UPoints(objPath, ref);;
         point->Init(_stage);
         _prims.push_back(X2UPointSharedPtr(point));
+        */
+        X2UInstancer* instancer = new X2UInstancer(objPath, ref);
+        instancer->Init(_stage);
+        _prims.push_back(X2UInstancerSharedPtr(instancer));
+        _xObjPathMap[instancer->GetID()] = instancer->GetPath();
       }
       else if (type == L"camera")
       {
@@ -119,26 +130,10 @@ void X2UModel::_WriteSample(double t)
   }
 }
 
-/*
-void X2UExportModel::Process()
+void X2UModel::_WritePrototypes()
 {
-  // first build usd structure
-  std::string rootPath = _rootName;
-  CRefArray children = _root.GetChildren();
-  for (int j = 0; j < children.GetCount(); ++j)
+  for (auto& prim : _prims)
   {
-    Recurse(children[j], rootPath);
-  }
-
-  // then loop over time range writing samples
-  Project project = Application().GetActiveProject();
-  Property playControl = project.GetProperties().GetItem(L"Play Control");
-
-  for (double t = _timeInfos.startFrame; t <= _timeInfos.endFrame; t += _timeInfos.sampleRate)
-  {
-    playControl.PutParameterValue("Current", t);
-    for (X2UExportModel& model: _models)model.WriteSample(t);
-    WriteSample(t);
-  }
+    prim->Term(_stage, _xObjPathMap);
+ }
 }
-*/

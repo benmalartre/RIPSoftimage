@@ -39,6 +39,7 @@
 #include <pxr/usd/usdGeom/basisCurves.h>
 #include <pxr/usd/usdGeom/points.h>
 #include <pxr/usd/usdGeom/mesh.h>
+#include <pxr/usd/usdGeom/pointInstancer.h>
 
 #include <pxr/base/gf/vec2i.h>
 #include <pxr/base/gf/vec2f.h>
@@ -63,6 +64,7 @@
 #include <vector>
 #include <map>
 #include <memory>
+#include <typeinfo>
 
 using namespace XSI;
 using namespace pxr;
@@ -201,10 +203,10 @@ static X2UDataType X2UDataTypeFromICEType(siICENodeDataType type)
     return X2U_DATA_VECTOR4;
 
   case siICENodeDataRotation:
-    return X2U_DATA_QUATERNION;
+    return X2U_DATA_ROTATION;
 
   case siICENodeDataQuaternion:
-    return X2U_DATA_ROTATION;
+    return X2U_DATA_QUATERNION;
 
   case siICENodeDataColor4:
     return X2U_DATA_COLOR4;
@@ -245,5 +247,29 @@ void X2UCastTuppledData(const SRC* src, DST* dst, size_t num, int srcN, int dstN
   for (int i = 0; i < num; ++i)
   {
     for(int j=0;j<minN;++j)dst[i][j] = src[i][j];
+  }
+}
+
+// templated copy data
+template<typename SRC, typename DST>
+void X2UCopyRotationData(const SRC* src, DST* dst, size_t num)
+{
+  for (int i = 0; i < num; ++i)
+  {
+    memcpy(&dst[i], &src[i], sizeof(DST));
+  }
+}
+
+// templated cast tuppled data
+template<typename SRC, typename DST>
+void X2UCastRotationData(const SRC* src, DST* dst, size_t num)
+{
+  for (int i = 0; i < num; ++i)
+  {
+    dst[i].SetImaginary(
+      src[i].GetQuaternion().GetX(),
+      src[i].GetQuaternion().GetY(),
+      src[i].GetQuaternion().GetZ());
+    dst[i].SetReal(src[i].GetQuaternion().GetW());
   }
 }

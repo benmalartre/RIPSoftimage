@@ -18,12 +18,6 @@ public:
 
   X2UAttribute(
     const UsdAttribute& dstAttr,
-    const CString& srcAttrName,
-    bool isArray=true
-  );
-
-  X2UAttribute(
-    const UsdAttribute& dstAttr,
     const int srcAttrIndex,
     bool isArray = true
   );

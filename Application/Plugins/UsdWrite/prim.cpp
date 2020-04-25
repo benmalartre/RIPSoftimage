@@ -7,6 +7,7 @@ X2UPrim::X2UPrim(std::string path, const CRef& ref)
 {
   _xObj = X3DObject(ref);
   _xPrim = _xObj.GetActivePrimitive();
+  _xID = _xObj.GetObjectID();
 }
 
 X2UPrim::~X2UPrim()
@@ -110,11 +111,7 @@ bool X2UPrim::InitAttributeFromICE(
       );
     return true;
   }
-  else
-  {
-    LOG(iceAttrName + " NOT FOUND !!!");
-    return false;
-  }
+  else return false;
 }
 
 void X2UPrim::WriteSampleFromICE(const Geometry& geom, UsdTimeCode t, const std::string& attrName)
@@ -123,6 +120,7 @@ void X2UPrim::WriteSampleFromICE(const Geometry& geom, UsdTimeCode t, const std:
   if (it != _attributes.end())
   {
     X2UAttribute attr = it->second;
+    LOG("WRITE SAMPLE FOR " +CString(attrName.c_str()));
     it->second.WriteSample(geom, t);
   }
 }

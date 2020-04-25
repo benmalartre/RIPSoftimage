@@ -21,8 +21,8 @@ static const char *VERTEX_SHADER =
 "out vec3 vertex_normal;                                  \n"
 "out vec3 vertex_color;                                   \n"
 "void main(){                                             \n"
-/*//"    vertex_normal = normalize(mat3(transpose(inverse(model))) * normal); \n"*/
-"   vertex_normal = normal;                               \n"
+"    vertex_normal = normalize(mat3(normalMatrix) * normal); \n"
+//"    vertex_normal = normalize(mat3(transpose(inverse(model))) * normal); \n"
 //"    vertex_normal = normalize((model * vec4(normal, 0.0)).xyz); \n"
 "    vertex_color = color;                                \n"
 "    vertex_position = (model * vec4(position, 1.0)).xyz; \n"

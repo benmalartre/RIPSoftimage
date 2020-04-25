@@ -29,18 +29,6 @@ X2UAttribute::X2UAttribute(
 }
 
 X2UAttribute::X2UAttribute(
-  const UsdAttribute& dstAttr, 
-  const CString& srcAttrName,
-  bool isArray)
-  : _dstAttribute(dstAttr)
-  , _srcAttributeName(srcAttrName)
-  , _fromICE(true)
-  , _isArray(isArray)
-  , _hash(0)
-{
-}
-
-X2UAttribute::X2UAttribute(
   const UsdAttribute& dstAttr,
   const int srcAttrIndex,
   bool isArray)
@@ -73,7 +61,6 @@ void X2UAttribute::SetSourceType(X2UDataType type, X2UDataPrecision precision)
 void X2UAttribute::WriteSample(const void* datas, uint32_t numElements, const UsdTimeCode& timeCode)
 {
   uint64_t hash = ArchHash64((const char*)datas, numElements *  X2UGetDataSize(_srcDataType, _srcDataPrecision));
-
   if (hash != _hash)
   {
     // array value attribute
@@ -331,17 +318,28 @@ void X2UAttribute::WriteSample(const void* datas, uint32_t numElements, const Us
         // single precision
         if (_srcDataPrecision == X2U_PRECISION_SINGLE)
         {
+          
           TfToken typeNameToken = _dstAttribute.GetTypeName().GetAsToken();
-          if (typeNameToken == SdfValueTypeNames->Double4Array)
+          if (typeNameToken == SdfValueTypeNames->Double4Array ||
+            typeNameToken == SdfValueTypeNames->QuatdArray)
           {
-            VtArray<GfVec4d> vtArray(numElements);
-            X2UCastTuppledData<GfVec4f, GfVec4d>((GfVec4f*)datas, vtArray.data(), numElements, 4, 4);
+            VtArray<GfQuatd> vtArray(numElements);
+            X2UCastRotationData<XSI::MATH::CRotationf, GfQuatd>((XSI::MATH::CRotationf*)datas, vtArray.data(), numElements);
             _dstAttribute.Set(VtValue(vtArray), timeCode);
           }
-          else
+          else if (typeNameToken == SdfValueTypeNames->Float4Array ||
+            typeNameToken == SdfValueTypeNames->QuatfArray)
           {
-            VtArray<GfVec4f> vtArray(numElements);
-            X2UCopyData<GfVec4f, GfVec4f>((GfVec4f*)datas, vtArray.data(), numElements);
+            VtArray<GfQuatf> vtArray(numElements);
+            X2UCopyRotationData<XSI::MATH::CRotationf, GfQuatf>((XSI::MATH::CRotationf*)datas, vtArray.data(), numElements);
+            _dstAttribute.Set(VtValue(vtArray), timeCode);
+          }
+          else if (typeNameToken == SdfValueTypeNames->Half4Array ||
+            typeNameToken == SdfValueTypeNames->QuathArray)
+          {
+            XSI::MATH::CRotationf rot;
+            VtArray<GfQuath> vtArray(numElements);
+            X2UCastRotationData<XSI::MATH::CRotationf, GfQuath>((XSI::MATH::CRotationf*)datas, (GfQuath*)vtArray.data(), numElements);
             _dstAttribute.Set(VtValue(vtArray), timeCode);
           }
         }
@@ -349,16 +347,25 @@ void X2UAttribute::WriteSample(const void* datas, uint32_t numElements, const Us
         else
         {
           TfToken typeNameToken = _dstAttribute.GetTypeName().GetAsToken();
-          if (typeNameToken == SdfValueTypeNames->Double4Array)
+          if (typeNameToken == SdfValueTypeNames->Double4Array ||
+            typeNameToken == SdfValueTypeNames->QuatdArray)
           {
             VtArray<GfVec4d> vtArray(numElements);
             X2UCopyData<GfVec4d, GfVec4d>((GfVec4d*)datas, vtArray.data(), numElements);
             _dstAttribute.Set(VtValue(vtArray), timeCode);
           }
-          else
+          else if (typeNameToken == SdfValueTypeNames->Float4Array ||
+            typeNameToken == SdfValueTypeNames->QuatfArray)
           {
             VtArray<GfVec4f> vtArray(numElements);
             X2UCastTuppledData<GfVec4d, GfVec4f>((GfVec4d*)datas, vtArray.data(), numElements, 4, 4);
+            _dstAttribute.Set(VtValue(vtArray), timeCode);
+          }
+          else if (typeNameToken == SdfValueTypeNames->Half4Array ||
+            typeNameToken == SdfValueTypeNames->QuathArray)
+          {
+            VtArray<GfVec4h> vtArray(numElements);
+            X2UCastTuppledData<GfVec4d, GfVec4h>((GfVec4d*)datas, vtArray.data(), numElements,4,4);
             _dstAttribute.Set(VtValue(vtArray), timeCode);
           }
         }
@@ -378,10 +385,18 @@ void X2UAttribute::WriteSample(const void* datas, uint32_t numElements, const Us
             X2UCastTuppledData<GfVec4f, GfVec4d>((GfVec4f*)datas, vtArray.data(), numElements, 4, 4);
             _dstAttribute.Set(VtValue(vtArray), timeCode);
           }
-          else
+          else if (typeNameToken == SdfValueTypeNames->Float4Array ||
+            typeNameToken == SdfValueTypeNames->QuatfArray)
           {
             VtArray<GfVec4f> vtArray(numElements);
             X2UCopyData<GfVec4f, GfVec4f>((GfVec4f*)datas, vtArray.data(), numElements);
+            _dstAttribute.Set(VtValue(vtArray), timeCode);
+          }
+          else if (typeNameToken == SdfValueTypeNames->Half4Array ||
+            typeNameToken == SdfValueTypeNames->QuathArray)
+          {
+            VtArray<GfVec4h> vtArray(numElements);
+            X2UCastTuppledData<GfVec4f, GfVec4h>((GfVec4f*)datas, vtArray.data(), numElements, 4, 4);
             _dstAttribute.Set(VtValue(vtArray), timeCode);
           }
         }
@@ -389,16 +404,25 @@ void X2UAttribute::WriteSample(const void* datas, uint32_t numElements, const Us
         else
         {
           TfToken typeNameToken = _dstAttribute.GetTypeName().GetAsToken();
-          if (typeNameToken == SdfValueTypeNames->Double4Array)
+          if (typeNameToken == SdfValueTypeNames->Double4Array ||
+            typeNameToken == SdfValueTypeNames->QuatdArray)
           {
             VtArray<GfVec4d> vtArray(numElements);
             X2UCopyData<GfVec4d, GfVec4d>((GfVec4d*)datas, vtArray.data(), numElements);
             _dstAttribute.Set(VtValue(vtArray), timeCode);
           }
-          else
+          else if (typeNameToken == SdfValueTypeNames->Float4Array ||
+            typeNameToken == SdfValueTypeNames->QuatfArray)
           {
             VtArray<GfVec4f> vtArray(numElements);
             X2UCastTuppledData<GfVec4d, GfVec4f>((GfVec4d*)datas, vtArray.data(), numElements, 4, 4);
+            _dstAttribute.Set(VtValue(vtArray), timeCode);
+          }
+          else if (typeNameToken == SdfValueTypeNames->Half4Array ||
+            typeNameToken == SdfValueTypeNames->QuathArray)
+          {
+            VtArray<GfVec4h> vtArray(numElements);
+            X2UCastTuppledData<GfVec4d, GfVec4h>((GfVec4d*)datas, vtArray.data(), numElements, 4, 4);
             _dstAttribute.Set(VtValue(vtArray), timeCode);
           }
         }
@@ -881,6 +905,24 @@ void X2UAttribute::WriteSample(const Geometry& geom, const UsdTimeCode& timeCode
     case X2U_DATA_COLOR4:
     {
       CICEAttributeDataArrayColor4f datas;
+      srcAttribute.GetDataArray(datas);
+      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      break;
+    }
+
+    case X2U_DATA_ROTATION:
+    {
+      LOG("WRITE ROTATION SAMPLE !!!");
+      CICEAttributeDataArrayRotationf datas;
+      srcAttribute.GetDataArray(datas);
+      LOG("DATA ARRAY COUNT : " + CString(datas.GetCount()));
+      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      break;
+    }
+
+    case X2U_DATA_QUATERNION:
+    {
+      CICEAttributeDataArrayQuaternionf datas;
       srcAttribute.GetDataArray(datas);
       WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
       break;
