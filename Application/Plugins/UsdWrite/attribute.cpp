@@ -439,63 +439,66 @@ void X2UAttribute::WriteSample(const void* datas, uint32_t numElements, const Us
 
       case X2U_DATA_BOOL:
       {
-        /*
-        VtArray<bool> vtArray(numElements);
-        X2UCopyData<bool, bool>((bool*)datas, vtArray.data(), numElements);
-        */
-        _dstAttribute.Set(VtValue(), timeCode);
+        _dstAttribute.Set(VtValue(*(bool*)datas), timeCode);
         break;
       }
 
       case X2U_DATA_LONG:
       {
-        /*
-        VtArray<int> vtArray(numElements);
-        X2UCopyData<int, int>((int*)datas, vtArray.data(), numElements);
-        */
-        _dstAttribute.Set(VtValue(), timeCode);
+        _dstAttribute.Set(VtValue(*(int*)datas), timeCode);
         break;
       }
 
       case X2U_DATA_FLOAT:
       {
-        /*
-        VtArray<float> vtArray(numElements);
-        X2UCopyData<float, float>((float*)datas, vtArray.data(), numElements);
-        */
-        _dstAttribute.Set(VtValue(), timeCode);
+        LOG("X2U_FLOAT DATA : " + CString(*(float*)datas));
+        TfToken typeNameToken = _dstAttribute.GetTypeName().GetAsToken();
+        LOG("X2U NAME TOKEN : " + CString(typeNameToken.GetText()));
+        if (typeNameToken == SdfValueTypeNames->Float)
+          _dstAttribute.Set(VtValue(*(float*)datas), timeCode);
+        else if (typeNameToken == SdfValueTypeNames->Double)
+          _dstAttribute.Set(VtValue((double)*(float*)datas), timeCode);
         break;
       }
 
       case X2U_DATA_DOUBLE:
       {
-        /*
-        VtArray<double> vtArray(numElements);
-        X2UCopyData<double, double>((double*)datas, vtArray.data(), numElements);
-        */
-        _dstAttribute.Set(VtValue(), timeCode);
+        TfToken typeNameToken = _dstAttribute.GetTypeName().GetAsToken();
+        if (typeNameToken == SdfValueTypeNames->Float)
+          _dstAttribute.Set(VtValue((float)*(double*)datas), timeCode);
+        else if (typeNameToken == SdfValueTypeNames->Double)
+          _dstAttribute.Set(VtValue(*(double*)datas), timeCode);
         break;
       }
 
       case X2U_DATA_VECTOR2:
       {
-        TfToken typeNameToken = _dstAttribute.GetTypeName().GetAsToken();
-        if (typeNameToken == SdfValueTypeNames->Double2)
+        // single precision
+        if (_srcDataPrecision == X2U_PRECISION_SINGLE)
         {
-          /*
-          VtArray<GfVec2d> vtArray(numElements);
-          X2UCastTuppledData<GfVec2f, GfVec2d>((GfVec2f*)datas, vtArray.data(), numElements, 2, 2);
-          */
-          _dstAttribute.Set(VtValue(), timeCode);
+          TfToken typeNameToken = _dstAttribute.GetTypeName().GetAsToken();
+          if (typeNameToken == SdfValueTypeNames->Float2)
+          {
+            _dstAttribute.Set(VtValue(*(GfVec2f*)datas), timeCode);
+          }
+          else if (typeNameToken == SdfValueTypeNames->Double2)
+          {
+            _dstAttribute.Set(VtValue((GfVec2d)*(GfVec2f*)datas), timeCode);
+          }
         }
         else
         {
-          /*
-          VtArray<GfVec2f> vtArray(numElements);
-          X2UCopyData<GfVec2f, GfVec2f>((GfVec2f*)datas, vtArray.data(), numElements);
-          */
-          _dstAttribute.Set(VtValue(), timeCode);
+          TfToken typeNameToken = _dstAttribute.GetTypeName().GetAsToken();
+          if (typeNameToken == SdfValueTypeNames->Float2)
+          {
+            _dstAttribute.Set(VtValue((GfVec2f)*(GfVec2d*)datas), timeCode);
+          }
+          else if (typeNameToken == SdfValueTypeNames->Double2)
+          {
+            _dstAttribute.Set(VtValue(*(GfVec2d*)datas), timeCode);
+          }
         }
+       
         break;
       }
 
@@ -505,50 +508,42 @@ void X2UAttribute::WriteSample(const void* datas, uint32_t numElements, const Us
         if (_srcDataPrecision == X2U_PRECISION_SINGLE)
         {
           TfToken typeNameToken = _dstAttribute.GetTypeName().GetAsToken();
-          if (typeNameToken == SdfValueTypeNames->Vector3d ||
+          if (typeNameToken == SdfValueTypeNames->Vector3f ||
+            typeNameToken == SdfValueTypeNames->Point3f ||
+            typeNameToken == SdfValueTypeNames->Normal3f ||
+            typeNameToken == SdfValueTypeNames->Color3f ||
+            typeNameToken == SdfValueTypeNames->Float3)
+          {
+            _dstAttribute.Set(VtValue(*(GfVec3f*)datas), timeCode);
+          }
+          else if (typeNameToken == SdfValueTypeNames->Vector3d ||
             typeNameToken == SdfValueTypeNames->Point3d ||
             typeNameToken == SdfValueTypeNames->Normal3d ||
             typeNameToken == SdfValueTypeNames->Color3d ||
             typeNameToken == SdfValueTypeNames->Double3)
           {
-            /*
-            VtArray<GfVec3d> vtArray(numElements);
-            X2UCastTuppledData<GfVec3f, GfVec3d>((GfVec3f*)datas, vtArray.data(), numElements, 3, 3);
-            */
-            _dstAttribute.Set(VtValue(), timeCode);
-          }
-          else
-          {
-            /*
-            VtArray<GfVec3f> vtArray(numElements);
-            X2UCopyData<GfVec3f, GfVec3f>((GfVec3f*)datas, vtArray.data(), numElements);
-            */
-            _dstAttribute.Set(VtValue(), timeCode);
+            _dstAttribute.Set(VtValue((GfVec3d)*(GfVec3f*)datas), timeCode);
           }
         }
         // double precision
         else
         {
           TfToken typeNameToken = _dstAttribute.GetTypeName().GetAsToken();
-          if (typeNameToken == SdfValueTypeNames->Vector3d ||
+          if (typeNameToken == SdfValueTypeNames->Vector3f ||
+            typeNameToken == SdfValueTypeNames->Point3f ||
+            typeNameToken == SdfValueTypeNames->Normal3f ||
+            typeNameToken == SdfValueTypeNames->Color3f ||
+            typeNameToken == SdfValueTypeNames->Float3)
+          {
+            _dstAttribute.Set(VtValue((GfVec3f)*(GfVec3d*)datas), timeCode);
+          }
+          else if (typeNameToken == SdfValueTypeNames->Vector3d ||
             typeNameToken == SdfValueTypeNames->Point3d ||
             typeNameToken == SdfValueTypeNames->Normal3d ||
             typeNameToken == SdfValueTypeNames->Color3d ||
             typeNameToken == SdfValueTypeNames->Double3)
           {
-            /*
-            VtArray<GfVec3d> vtArray(numElements);
-            X2UCopyData<GfVec3d, GfVec3d>((GfVec3d*)datas, vtArray.data(), numElements);
-            */
-            _dstAttribute.Set(VtValue(), timeCode);
-          }
-          else
-          {
-            /*
-            VtArray<GfVec3f> vtArray(numElements);
-            X2UCastTuppledData<GfVec3d, GfVec3f>((GfVec3d*)datas, vtArray.data(), numElements, 3, 3);
-            */
-            _dstAttribute.Set(VtValue(), timeCode);
+            _dstAttribute.Set(VtValue(*(GfVec3d*)datas), timeCode);
           }
         }
         break;
@@ -560,44 +555,34 @@ void X2UAttribute::WriteSample(const void* datas, uint32_t numElements, const Us
         if (_srcDataPrecision == X2U_PRECISION_SINGLE)
         {
           TfToken typeNameToken = _dstAttribute.GetTypeName().GetAsToken();
-          if (typeNameToken == SdfValueTypeNames->Color4d ||
-            typeNameToken == SdfValueTypeNames->Double4)
+          if (typeNameToken == SdfValueTypeNames->Float4 ||
+            typeNameToken == SdfValueTypeNames->Quatf ||
+            typeNameToken == SdfValueTypeNames->Color4f)
           {
-            /*
-            VtArray<GfVec4d> vtArray(numElements);
-            X2UCastTuppledData<GfVec4f, GfVec4d>((GfVec4f*)datas, vtArray.data(), numElements, 4, 4);
-            */
-            _dstAttribute.Set(VtValue(), timeCode);
+            _dstAttribute.Set(VtValue(*(GfVec4f*)datas), timeCode);
           }
-          else
+          else if (typeNameToken == SdfValueTypeNames->Double4 ||
+            typeNameToken == SdfValueTypeNames->Quatd ||
+            typeNameToken == SdfValueTypeNames->Color4d)
           {
-            /*
-            VtArray<GfVec4f> vtArray(numElements);
-            X2UCopyData<GfVec4f, GfVec4f>((GfVec4f*)datas, vtArray.data(), numElements);
-            */
-            _dstAttribute.Set(VtValue(), timeCode);
+            _dstAttribute.Set(VtValue((GfVec4d)*(GfVec4f*)datas), timeCode);
           }
         }
         //double precision
         else
         {
           TfToken typeNameToken = _dstAttribute.GetTypeName().GetAsToken();
-          if (typeNameToken == SdfValueTypeNames->Color4d ||
-            typeNameToken == SdfValueTypeNames->Double4)
+          if (typeNameToken == SdfValueTypeNames->Float4 ||
+            typeNameToken == SdfValueTypeNames->Quatf ||
+            typeNameToken == SdfValueTypeNames->Color4f)
           {
-            /*
-            VtArray<GfVec4d> vtArray(numElements);
-            X2UCopyData<GfVec4d, GfVec4d>((GfVec4d*)datas, vtArray.data(), numElements);
-            */
-            _dstAttribute.Set(VtValue(), timeCode);
+            _dstAttribute.Set(VtValue((GfVec4f)*(GfVec4d*)datas), timeCode);
           }
-          else
+          else if (typeNameToken == SdfValueTypeNames->Double4 ||
+            typeNameToken == SdfValueTypeNames->Quatd ||
+            typeNameToken == SdfValueTypeNames->Color4d)
           {
-            /*
-            VtArray<GfVec4f> vtArray(numElements);
-            X2UCastTuppledData<GfVec4d, GfVec4f>((GfVec4d*)datas, vtArray.data(), numElements, 4, 4);
-            */
-            _dstAttribute.Set(VtValue(), timeCode);
+            _dstAttribute.Set(VtValue(*(GfVec4d*)datas), timeCode);
           }
         }
         break;
@@ -822,6 +807,10 @@ void X2UAttribute::WriteSample(const void* datas, uint32_t numElements, const Us
           }
         }
         break;
+      }
+      case X2U_DATA_TOKEN:
+      {
+        _dstAttribute.Set(*(TfToken*)datas, timeCode);
       }
       }
     }

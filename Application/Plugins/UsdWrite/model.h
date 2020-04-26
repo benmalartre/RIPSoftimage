@@ -7,6 +7,7 @@
 #include "curve.h"
 #include "points.h"
 #include "instancer.h"
+#include "camera.h"
 
 struct X2UPrototype {
   ULONG     ID;
@@ -25,7 +26,7 @@ class X2UModel {
     SdfPath GetPath() { return _path; };
     void _Recurse(const CRef& ref, const std::string& parentPath);
     void _WriteSample(double t);
-    void _WritePrototypes();
+    void _Finalize();
     inline std::string _GetRootName() { return _rootName; }
 
   protected:

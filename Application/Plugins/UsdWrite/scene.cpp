@@ -67,14 +67,6 @@ void X2UScene::Process()
   progressBar.PutVisible(true);
   progressBar.PutCaption(L"Exporting to USD");
 
-  /*
-  while (!bar.IsCancelPressed() && bar.GetValue() < bar.GetMaximum())
-  {
-    CValue newVal(bar.Increment());
-    bar.PutStatusText(L"Frame " + newVal.GetAsText());
-  }
-  */
-
   for (double t = _timeInfos.startFrame; t <= _timeInfos.endFrame; t += _timeInfos.sampleRate)
   {
     progressBar.Increment();
@@ -86,5 +78,5 @@ void X2UScene::Process()
   }
 
   // write prototypes
-  _WritePrototypes();
+  _Finalize();
 }

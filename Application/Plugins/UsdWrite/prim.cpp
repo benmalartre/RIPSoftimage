@@ -120,7 +120,6 @@ void X2UPrim::WriteSampleFromICE(const Geometry& geom, UsdTimeCode t, const std:
   if (it != _attributes.end())
   {
     X2UAttribute attr = it->second;
-    LOG("WRITE SAMPLE FOR " +CString(attrName.c_str()));
     it->second.WriteSample(geom, t);
   }
 }

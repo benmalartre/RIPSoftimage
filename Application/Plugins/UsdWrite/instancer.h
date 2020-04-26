@@ -29,17 +29,13 @@ public:
   int AddInstanceShape(const XSI::MATH::CShape& shape);
   void WritePrototypesSample(const UsdTimeCode& timeCode);
   void AddPrototypesRelationship(UsdStageRefPtr& stage, const std::map<ULONG, SdfPath>& objPathMap);
-  void GetPrototypesObjectIDs(CLongArray& ids);
 
 
 private:
   bool _GetNumPoints(const Geometry& geom);
   void _ComputeBoundingBox(const Geometry& geom);
   size_t                          _numPoints;
-  bool                            _haveColors;
-  bool                            _haveNormals;
-  bool                            _haveWidths;
-  bool                            _haveUVs;
+  size_t                          _protoHash;
   std::vector<X2UInstancerShape>  _shapes;
 };
 

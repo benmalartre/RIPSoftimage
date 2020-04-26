@@ -3,10 +3,7 @@
 
 X2UInstancer::X2UInstancer(std::string path, const CRef& ref)
   : X2UPrim(path, ref)
-  , _haveNormals(false)
-  , _haveWidths(false)
-  , _haveColors(false)
-  , _haveUVs(false)
+  , _protoHash(0)
 {
 }
 
@@ -54,11 +51,6 @@ int X2UInstancer::AddInstanceShape(const XSI::MATH::CShape& shape)
       {
         XSI::MATH::CShape::ParameterReference desc = shape.GetReferenceDescription();
         if (desc.m_nObjectID == instancerShape.reference)return index;
-        else
-        {
-          _shapes.push_back({ shapeType, (int)desc.m_nObjectID });
-          return _shapes.size() - 1;
-        }
       }
       else return index;
     }
@@ -70,18 +62,6 @@ int X2UInstancer::AddInstanceShape(const XSI::MATH::CShape& shape)
   else  _shapes.push_back({ shape.GetType(), -1 });
   return _shapes.size() - 1;
 }
-
-void X2UInstancer::GetPrototypesObjectIDs(CLongArray& ids)
-{
-  for (const auto& shape : _shapes)
-  {
-    if (shape.type == XSI::siICEShapeReference)
-    {
-      ids.Add(shape.reference);
-    }
-  }
-}
-
 
 void X2UInstancer::AddPrototypesRelationship(UsdStageRefPtr& stage, const std::map<ULONG, SdfPath>& objPathMap)
 {
@@ -179,6 +159,7 @@ void X2UInstancer::Init(UsdStageRefPtr& stage)
   WriteSampleFromICE(geom, UsdTimeCode::Default(), "scales");
 
   // colors
+  //instancer.CreatePrimvar(TfToken("color"), SdfValueTypeNames->Vector3fArray, UsdGeomTokens->vertex, _numPoints);
   InitAttributeFromICE(geom, "Color", "colors", SdfValueTypeNames->Vector3fArray);
   WriteSampleFromICE(geom, UsdTimeCode::Default(), "colors");
 
@@ -231,7 +212,6 @@ void X2UInstancer::WriteSample(double t)
 
 void X2UInstancer::WritePrototypesSample(const UsdTimeCode& timeCode)
 {
-  static size_t protoHash = 0;
   Geometry geom = _xPrim.GetGeometry(timeCode.GetValue());
   ICEAttribute shapeAttr = geom.GetICEAttributeFromName("Shape");
   if (shapeAttr.IsDefined() && shapeAttr.GetElementCount() > 0)
@@ -244,11 +224,11 @@ void X2UInstancer::WritePrototypesSample(const UsdTimeCode& timeCode)
       protoIndices[i] = AddInstanceShape(shapes[i]);
     }
     size_t hash = ArchHash((const char*)&protoIndices[0], protoIndices.size() * sizeof(int));
-    if (hash != protoHash)
+    if (hash != _protoHash)
     {
       UsdAttribute protoIndicesAttr = UsdGeomPointInstancer(_prim).GetProtoIndicesAttr();
       protoIndicesAttr.Set(protoIndices, timeCode);
-      protoHash = hash;
+      _protoHash = hash;
     }
   }
 }

@@ -103,8 +103,10 @@ void X2UModel::_Recurse(const CRef& ref, const std::string& parentPath)
       }
       else if (type == L"camera")
       {
-        UsdGeomCamera camera = UsdGeomCamera::Define(_stage, SdfPath(objPath));
-        //_prims.push_back({ ref, camera.GetPrim(), X2U_CAMERA, objPath });
+        X2UCamera* camera = new X2UCamera(objPath, ref);
+        camera->Init(_stage);
+        _prims.push_back(X2UCameraSharedPtr(camera));
+        _xObjPathMap[camera->GetID()] = camera->GetPath();
       }
 
       CRefArray children = obj.GetChildren();
@@ -130,10 +132,14 @@ void X2UModel::_WriteSample(double t)
   }
 }
 
-void X2UModel::_WritePrototypes()
+void X2UModel::_Finalize()
 {
   for (auto& prim : _prims)
   {
     prim->Term(_stage, _xObjPathMap);
- }
+  }
+  for (X2UModel& model : _models)
+  {
+    model._Finalize();
+  }
 }
