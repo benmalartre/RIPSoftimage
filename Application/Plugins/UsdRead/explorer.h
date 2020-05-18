@@ -7,6 +7,8 @@
 
 extern bool GL_EXTENSIONS_LOADED;
 
+static size_t U2X_EXPLORER_LINE_HEIGHT = 20;
+
 struct UsdExplorerItem {
   pxr::UsdPrim                  _prim;
   bool                          _visible;
@@ -42,23 +44,15 @@ public:
   void RecurseStage();
   void RecursePrim(UsdExplorerItem* current);
   void DrawItem(UsdExplorerItem* item);
-  /*
-	virtual LRESULT SetAttributeValue ( XSI::CString& in_cString, XSI::CValue& in_vValue );
-	virtual LRESULT GetAttributeValue ( XSI::CString& in_cString, XSI::CValue& out_vValue );
-
-	//
-	// window
-	//
-
-	virtual LRESULT SetWindowSize(int ox, int oy, int cx, int cy);
-	
-	virtual LRESULT Paint( WPARAM, LPARAM );
-	virtual LRESULT MouseMove( WPARAM, LPARAM );
-  */
+  void DrawItemType(UsdExplorerItem* item);
+  void DrawItemVisibility(UsdExplorerItem* item);
+  void DrawBackground( const ImColor& color = ImColor(20, 20, 20, 64));
 
 private:
   pxr::UsdStageRefPtr           _stage;
   bool                          _locked;
   UsdExplorerItem*              _root;
   ImGuiTreeNodeFlags            _selectBaseFlags;
+  GLuint                        _visibleTex;
+  GLuint                        _invisibleTex;
 };

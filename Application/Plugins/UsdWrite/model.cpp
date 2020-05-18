@@ -42,6 +42,7 @@ void X2UModel::_Recurse(const CRef& ref, const std::string& parentPath)
     X3DObject obj(ref);
 
     CString type = obj.GetType();
+    LOG(type);
     if (type == L"#model")
     {
       std::string modelFileName = ref.GetAsText().GetAsciiString();
@@ -67,7 +68,7 @@ void X2UModel::_Recurse(const CRef& ref, const std::string& parentPath)
     else
     {
       std::string objPath = parentPath + "/" + obj.GetName().GetAsciiString();
-      if (type == L"null")
+      if (type == L"null" || type == L"CameraRoot")
       {
         X2UXform* xform = new X2UXform(objPath, ref);;
         xform->Init(_stage);

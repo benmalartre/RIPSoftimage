@@ -139,15 +139,15 @@ void X2UCamera::WriteSample(double t)
     1,
     timeCode);
 
-  // vertical aperture
+  // vertical aperture (originaly in inch)
   double verticalAperture =
-    (double)xCamera.GetParameterValue(L"projplaneheight", t) * 25.4;
+    (double)xCamera.GetParameterValue(L"projplaneheight", t) * 25.4; 
   _attributes["verticalAperture"].WriteSample(
     (const void*)&verticalAperture,
     1,
     timeCode);
 
-  // horizontal aperture
+  // horizontal aperture (originaly in inch)
   double horizontalAperture =
     (double)xCamera.GetParameterValue(L"projplanewidth", t) * 25.4;
   _attributes["horizontalAperture"].WriteSample(

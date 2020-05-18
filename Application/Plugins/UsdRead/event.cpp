@@ -10,8 +10,6 @@ SICALLBACK UsdReadSceneOpen_OnEvent(const XSI::CRef& in_ref)
 
 SICALLBACK UsdReadObjectAdded_OnEvent(const XSI::CRef& in_ref)
 {
-  LOG("OBJECT ADDED :D");
-
   return CStatus::False;
 }
 

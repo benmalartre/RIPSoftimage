@@ -2,6 +2,7 @@
 
 #include <xsi_application.h>
 #include <xsi_string.h>
+#include <xsi_plugin.h>
 #include <pxr/pxr.h>
 #include <pxr/usd/usd/prim.h>
 #include <pxr/usd/usd/stage.h>
@@ -18,6 +19,12 @@
 using namespace XSI;
 
 #define LOG(msg) Application().LogMessage(msg);
+
+static CString U2XGetInstallationFolder()
+{
+  Plugin thisPlugin = Application().GetPlugins().GetItem(L"UsdRead");
+  return thisPlugin.GetOriginPath();
+}
 
 static CStringArray U2XGetNamesFromObjectNamesList(const CString& objectNames)
 {

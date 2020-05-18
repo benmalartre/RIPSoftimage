@@ -1,9 +1,9 @@
 #include <GL/glew.h>
 #include "window.h"
 #include "utils.h"
+#include "icons.h"
 #include "imgui/imgui_impl_win32.h"
 #include "imgui/imgui_impl_opengl3.h"
-
 
 HINSTANCE __gInstance = NULL;
 
@@ -28,13 +28,16 @@ BOOL APIENTRY DllMain(HANDLE hModule,
   return TRUE;
 }
 
+std::map<const char*, Icon> U2X_ICONS;
 HWND U2X_SOFTIMAGE_WINDOW = (HWND)0;
 HGLRC U2X_SHARED_CONTEXT = (HGLRC)0;
 U2XWindow* U2X_HIDDEN_WINDOW = NULL;
 ImFontAtlas* U2X_SHARED_ATLAS = NULL;
+ImFont* U2X_FONT_BOLD = NULL;
+ImFont* U2X_FONT_MEDIUM = NULL;
+ImFont* U2X_FONT_REGULAR = NULL;
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
 
 //
 // Softimage Main Window
@@ -72,6 +75,32 @@ void U2XCreateFontAtlas()
 {
   U2X_SHARED_ATLAS = new ImFontAtlas();
   U2X_SHARED_ATLAS->AddFontDefault();
+  std::string pluginFolder(U2XGetInstallationFolder().GetAsciiString());
+
+  std::string fontPath;
+  fontPath = pluginFolder + "../../fonts/montserrat/Montserrat-Bold.otf";
+  U2X_FONT_BOLD = U2X_SHARED_ATLAS->AddFontFromFileTTF(
+    fontPath.c_str(),
+    U2X_FONT_SIZE,
+    NULL,
+    U2X_SHARED_ATLAS->GetGlyphRangesDefault()
+  );
+
+  fontPath = pluginFolder + "../../fonts/montserrat/Montserrat-Medium.otf";
+  U2X_FONT_MEDIUM = U2X_SHARED_ATLAS->AddFontFromFileTTF(
+    fontPath.c_str(),
+    U2X_FONT_SIZE,
+    NULL,
+    U2X_SHARED_ATLAS->GetGlyphRangesDefault()
+  );
+
+  fontPath = pluginFolder + "../../fonts/montserrat/Montserrat-Regular.otf";
+  U2X_FONT_REGULAR = U2X_SHARED_ATLAS->AddFontFromFileTTF(
+    fontPath.c_str(),
+    U2X_FONT_SIZE,
+    NULL,
+    U2X_SHARED_ATLAS->GetGlyphRangesDefault()
+  );
 }
 
 void U2XDeleteFontAtlas()
@@ -88,6 +117,9 @@ void U2XGetSharedContext()
     U2X_HIDDEN_WINDOW->InitGL();
   }
 }
+
+//
+// 
 
 void U2XSetWindowStyle()
 {
@@ -124,6 +156,9 @@ void U2XWindow::InitGL()
   // init OpenGL Imgui Implementation 
   const char* glsl_version = "#version 130";
   ImGui_ImplOpenGL3_Init(glsl_version);
+
+  // init icons
+  U2XInitializeIcons();
 
   Draw();
 
@@ -241,7 +276,7 @@ void U2XWindow::Create(HWND hParent, bool shared)
 
   DWORD style;
   if (_shared)style = WS_CHILD| WS_DISABLED;
-  else style = WS_CHILD | WS_VISIBLE ;
+  else style = WS_CHILD | WS_VISIBLE;
 
   _hWnd = CreateWindow(
     _className.c_str(),

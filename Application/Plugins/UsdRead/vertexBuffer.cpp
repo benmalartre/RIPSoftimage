@@ -150,13 +150,21 @@ void U2XVertexBuffer::ComputeOutputDatas(const U2XTopology* topo,
     
       case INTERPOLATION_UNIFORM:
       {
-        for(size_t i=0;i<_numOutputElements;++i) 
-        {
-          memcpy(
-            (void*)(result + i * _elementSize),
-            (void*)(_rawInputDatas + samples[i * 3 + 1] * _elementSize), 
-            _elementSize
-          );
+        if (_numInputElements > 1) {
+          for (size_t i = 0; i < _numOutputElements; ++i)
+          {
+            memcpy(
+              (void*)(result + i * _elementSize),
+              (void*)(_rawInputDatas + samples[i * 3 + 1] * _elementSize),
+              _elementSize
+            );
+          }
+        }
+        else {
+          for (size_t i = 0; i<_numOutputElements; ++i)
+          {
+            memcpy(result + i * _elementSize, _rawInputDatas, _elementSize);
+          }
         }
         break;
       }

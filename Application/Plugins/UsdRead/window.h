@@ -39,6 +39,11 @@ class U2XWindow;
 extern HGLRC U2X_SHARED_CONTEXT;
 extern U2XWindow* U2X_HIDDEN_WINDOW;
 extern ImFontAtlas* U2X_SHARED_ATLAS;
+extern ImFont* U2X_FONT_BOLD;
+extern ImFont* U2X_FONT_MEDIUM;
+extern ImFont* U2X_FONT_REGULAR;
+
+static float U2X_FONT_SIZE = 16;
 
 void U2XSetupPixelFormat(HDC hDC);
 void U2XSetWindowStyle();

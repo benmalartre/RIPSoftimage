@@ -1,4 +1,5 @@
 #include <GL/glew.h>
+#include "icons.h"
 #include "scene.h"
 #include "stage.h"
 #include "window.h"
@@ -18,7 +19,8 @@ UsdExplorerWindow::UsdExplorerWindow()
     ImGuiWindowFlags_NoMove |
     ImGuiWindowFlags_NoDecoration|
     ImGuiWindowFlags_NoResize |
-    ImGuiWindowFlags_NoTitleBar;
+    ImGuiWindowFlags_NoTitleBar |
+    ImGuiWindowFlags_AlwaysVerticalScrollbar;
 
   _selectBaseFlags =
     ImGuiTreeNodeFlags_OpenOnArrow |
@@ -169,8 +171,18 @@ LRESULT UsdExplorerWindow::Notify ( XSI::CRef& in_ctxt)
                     break;
 				}
 			case siWindowPaint: LOG ( "XSI_WINDOW_PAINT"); break;
-			case siWindowSetFocus: LOG ( "XSI_WINDOW_SETFOCUS"); break;
-			case siWindowLostFocus: LOG ( "XSI_WINDOW_LOSTFOCUS");break;
+			case siWindowSetFocus: 
+      {
+        SetFocus(_hWnd);
+        LOG("XSI_WINDOW_SETFOCUS");
+        break;
+      }
+			case siWindowLostFocus: 
+      {
+        SetFocus(GetParent(_hWnd));
+        LOG("XSI_WINDOW_LOSTFOCUS");
+        break;
+      }
 			}
 			break;
 		}
@@ -325,13 +337,84 @@ void UsdExplorerWindow::TermGL()
   ImGui_ImplOpenGL3_Shutdown();
   ImGui_ImplWin32_Shutdown(_hWnd);
   if (_ctxt)ImGui::DestroyContext(_ctxt);
-  
+}
+
+void UsdExplorerWindow::DrawBackground(const ImColor& color)
+{
+  auto* drawList = ImGui::GetWindowDrawList();
+  const auto& style = ImGui::GetStyle();
+
+  float scrollOffsetH = ImGui::GetScrollX();
+  float scrollOffsetV = ImGui::GetScrollY();
+  float scrolledOutLines = floorf(scrollOffsetV / U2X_EXPLORER_LINE_HEIGHT);
+  scrollOffsetV -= U2X_EXPLORER_LINE_HEIGHT * scrolledOutLines;
+
+  ImVec2 clipRectMin(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y);
+  ImVec2 clipRectMax(clipRectMin.x + ImGui::GetWindowWidth(), clipRectMin.y + ImGui::GetWindowHeight());
+
+  if (ImGui::GetScrollMaxX() > 0)
+  {
+    clipRectMax.y -= style.ScrollbarSize;
+  }
+
+  drawList->PushClipRect(clipRectMin, clipRectMax);
+
+  bool isOdd = (static_cast<int>(scrolledOutLines) % 2) == 0;
+
+  float yMin = clipRectMin.y - scrollOffsetV + ImGui::GetCursorPosY();
+  float yMax = clipRectMax.y - scrollOffsetV + U2X_EXPLORER_LINE_HEIGHT;
+  float xMin = clipRectMin.x + scrollOffsetH + ImGui::GetWindowContentRegionMin().x;
+  float xMax = clipRectMin.x + scrollOffsetH + ImGui::GetWindowContentRegionMax().x;
+
+  for (float y = yMin; y < yMax; y += U2X_EXPLORER_LINE_HEIGHT, isOdd = !isOdd)
+  {
+    if (isOdd)
+    {
+      drawList->AddRectFilled({ xMin, y }, { xMax, y + U2X_EXPLORER_LINE_HEIGHT }, color);
+    }
+  }
+
+  drawList->PopClipRect();
+
+}
+
+void UsdExplorerWindow::DrawItemType(UsdExplorerItem* item)
+{
+  ImGui::Text(item->_prim.GetTypeName().GetText());
+  ImGui::NextColumn();
+}
+
+void UsdExplorerWindow::DrawItemVisibility(UsdExplorerItem* item)
+{
+  GLuint tex = item->_visible ?
+    U2X_ICONS["visible.png"]._tex :
+    U2X_ICONS["invisible.png"]._tex;
+
+  ImGui::ImageButton(
+    (void*)tex,
+    ImVec2(16, 16),
+    ImVec2(0, 0),
+    ImVec2(1, 1),
+    0,
+    ImVec4(1, 1, 1, 1),
+    ImVec4(0, 0, 0, 1));
+  ImGui::NextColumn();
 }
 
 void UsdExplorerWindow::DrawItem(UsdExplorerItem* current)
 {
   ImGuiTreeNodeFlags itemFlags = _selectBaseFlags;
-  if (current->_selected) itemFlags |= ImGuiTreeNodeFlags_Selected;
+  ImGui::PushStyleColor(
+    ImGuiCol_WindowBg,
+    ImVec4(
+    (float)rand() / (float)RAND_MAX,
+      (float)rand() / (float)RAND_MAX,
+      (float)rand() / (float)RAND_MAX,
+      1));
+
+  if (current->_selected) {
+    itemFlags |= ImGuiTreeNodeFlags_Selected;
+  }
 
   // parent
   if (current->_items.size())
@@ -341,9 +424,15 @@ void UsdExplorerWindow::DrawItem(UsdExplorerItem* current)
         current->_prim.GetPath().GetText(),
         itemFlags,
         current->_prim.GetName().GetText());
-
     if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())current->_selected = true;
 
+    ImGui::NextColumn();
+
+    DrawItemType(current);
+    DrawItemVisibility(current);
+
+    
+    
     if (currentOpen)
     {
       for (const auto item : current->_items)
@@ -360,9 +449,13 @@ void UsdExplorerWindow::DrawItem(UsdExplorerItem* current)
       current->_prim.GetPath().GetText(), 
       itemFlags, 
       current->_prim.GetName().GetText());
-
     if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())current->_selected = true;
+
+    ImGui::NextColumn();
+    DrawItemType(current);
+    DrawItemVisibility(current);
   }
+  ImGui::PopStyleColor();
 }
 
 bool UsdExplorerWindow::Draw()
@@ -375,14 +468,32 @@ bool UsdExplorerWindow::Draw()
   //
   if (_stage)
   {
-    
-
     ImGui::Begin("UsdExplorer", NULL, _flags);
     ImGui::SetWindowPos(ImVec2(0, 0));
     ImGui::SetWindowSize(ImVec2(GetWidth(), GetHeight()));
+   // DrawBackground();
 
+    // setup columns
+    ImGui::Columns(3);
+    ImGui::SetColumnWidth(0, GetWidth() - 120);
+    ImGui::SetColumnWidth(1, 60);
+    ImGui::SetColumnWidth(2, 30);
+
+    // draw title
+    ImGui::PushFont(U2X_FONT_BOLD);
+    ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(1, 0, 0, 1));
+    ImGui::Text("Prim name");
+    ImGui::NextColumn();
+    ImGui::Text("Type");
+    ImGui::NextColumn();
+    ImGui::Text("Vis");
+    ImGui::NextColumn();
+    ImGui::PopStyleColor();
+    ImGui::PopFont();
+ 
+    ImGui::PushFont(U2X_FONT_REGULAR);
     DrawItem(_root);
-
+    ImGui::PopFont();
     ImGui::End();
   }
   else ImGui::ShowDemoWindow();
@@ -426,7 +537,7 @@ void UsdExplorerWindow::RecursePrim(UsdExplorerItem* currentItem)
     UsdExplorerItem* childItem = currentItem->AddItem();
     childItem->_expanded = true;
     childItem->_prim = childPrim;
-    childItem->_visible = true;
+    childItem->_visible = ((float)rand()/(float)RAND_MAX) >0.5;
     RecursePrim(childItem);
   }
 }

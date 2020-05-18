@@ -451,9 +451,7 @@ void X2UAttribute::WriteSample(const void* datas, uint32_t numElements, const Us
 
       case X2U_DATA_FLOAT:
       {
-        LOG("X2U_FLOAT DATA : " + CString(*(float*)datas));
         TfToken typeNameToken = _dstAttribute.GetTypeName().GetAsToken();
-        LOG("X2U NAME TOKEN : " + CString(typeNameToken.GetText()));
         if (typeNameToken == SdfValueTypeNames->Float)
           _dstAttribute.Set(VtValue(*(float*)datas), timeCode);
         else if (typeNameToken == SdfValueTypeNames->Double)
