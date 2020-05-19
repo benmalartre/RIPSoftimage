@@ -210,8 +210,6 @@ void U2XWindow::EndDraw()
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
   SwapBuffers(_hDC);
-  
-
 }
 
 void U2XWindow::Activate(bool state)
@@ -254,8 +252,10 @@ U2XWindow::~U2XWindow()
 void U2XWindow::Create(HWND hParent, bool shared)
 {
   _className = "U2XWindow" +std::to_string((int)hParent);
+ 
   
   _shared = shared;
+
   WNDCLASS WindowClass = {
     0,                            // style
     U2XWindowCallback,            // window proc
@@ -271,12 +271,12 @@ void U2XWindow::Create(HWND hParent, bool shared)
   if (!RegisterClass(&WindowClass))
   {
     MessageBox(NULL, "Can't register OpenGl window", "exit(1)", NULL);
-    exit(1);
+    return;
   }
 
   DWORD style;
-  if (_shared)style = WS_CHILD| WS_DISABLED;
-  else style = WS_CHILD | WS_VISIBLE;
+  if (_shared)style = WS_CHILD | WS_DISABLED | WS_TABSTOP;
+  else style = WS_CHILD | WS_VISIBLE | WS_TABSTOP;
 
   _hWnd = CreateWindow(
     _className.c_str(),
@@ -291,10 +291,11 @@ void U2XWindow::Create(HWND hParent, bool shared)
     __gInstance,      // instance
     this              // user data
   );
+  
   if (!_hWnd)
   {
     MessageBox(NULL, "OpenGl handle is NULL", "exit(1)", NULL);
-    exit(1);
+    return;
   }
 
   if(!_shared)ShowWindow(_hWnd, SW_SHOW);
@@ -315,7 +316,7 @@ void U2XWindow::CreateContext(HWND hwnd)
 void U2XWindow::DestroyContext(HWND hwnd)
 {
   wglMakeCurrent(NULL, NULL);
-  if (_hRC) wglDeleteContext(_hRC);
+  if (_hRC && _shared) wglDeleteContext(_hRC);
   ReleaseDC(hwnd, _hDC);
   PostQuitMessage(0);
 }
@@ -372,12 +373,10 @@ void U2XSetupPixelFormat(HDC hDC)
 
 LRESULT CALLBACK U2XWindowCallback(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-  if (msg == WM_MOUSEWHEEL)LOG("FUCKIN MOUSE WHEEL...");
   if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
-    return true;
-    
-  U2XWindow* window = (U2XWindow*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
+    return false;
 
+  U2XWindow* window = (U2XWindow*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
   switch (msg)
   {
   case WM_DESTROY:
@@ -391,7 +390,6 @@ LRESULT CALLBACK U2XWindowCallback(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lP
     break;
 
   case WM_MOUSEHWHEEL:
-    LOG("MOUSE FUCKIN WHEEL!!!");
     break;
 
   case WM_SIZE:
@@ -408,9 +406,10 @@ LRESULT CALLBACK U2XWindowCallback(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lP
     break;
    
   case WM_PAINT:
+  case WM_SETREDRAW:
     if(window->Draw())return false;
     break;
   }
-  return DefWindowProc(hWnd, msg, wParam, lParam);
-  
+  return DefWindowProcW(hWnd, msg, wParam, lParam);
+
 }

@@ -43,10 +43,11 @@ public:
 
   void RecurseStage();
   void RecursePrim(UsdExplorerItem* current);
-  void DrawItem(UsdExplorerItem* item);
+  void DrawItem(UsdExplorerItem* item, bool heritedVisibility);
   void DrawItemType(UsdExplorerItem* item);
-  void DrawItemVisibility(UsdExplorerItem* item);
-  void DrawBackground( const ImColor& color = ImColor(20, 20, 20, 64));
+  void DrawItemVisibility(UsdExplorerItem* item, bool heritedVisibility);
+  void DrawBackground();
+  void DrawItemBackground(ImDrawList* drawList, const UsdExplorerItem* item, bool& flip);
 
 private:
   pxr::UsdStageRefPtr           _stage;
@@ -55,4 +56,8 @@ private:
   ImGuiTreeNodeFlags            _selectBaseFlags;
   GLuint                        _visibleTex;
   GLuint                        _invisibleTex;
+  ImVec4                        _backgroundColor;
+  ImVec4                        _alternateColor;
+  ImVec4                        _selectedColor;
+  ImVec4                        _hoveredColor;
 };

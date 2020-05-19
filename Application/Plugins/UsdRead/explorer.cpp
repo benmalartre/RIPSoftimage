@@ -24,15 +24,18 @@ UsdExplorerWindow::UsdExplorerWindow()
 
   _selectBaseFlags =
     ImGuiTreeNodeFlags_OpenOnArrow |
-    ImGuiTreeNodeFlags_OpenOnDoubleClick |
-    ImGuiTreeNodeFlags_SpanFullWidth;
+    ImGuiTreeNodeFlags_OpenOnDoubleClick;
+
+  _backgroundColor = ImVec4(0.5, 0.5, 0.5, 1.0);
+  _alternateColor = ImVec4(0.6, 0.6, 0.6, 1.0);
+  _selectedColor = ImVec4(1.0, 0.7, 0.3, 1.0);
+  _hoveredColor = ImVec4(0.9, 0.6, 0.2, 1.0);
 }
 
 UsdExplorerWindow::~UsdExplorerWindow()
 {
 
 }
-
 
 LRESULT	UsdExplorerWindow::Init( XSI::CRef& in_ctxt )
 {
@@ -42,6 +45,9 @@ LRESULT	UsdExplorerWindow::Init( XSI::CRef& in_ctxt )
   U2XGetSharedContext();
   Create((HWND)viewContext.GetParentWindowHandle(), false);
   InitGL();
+
+  _visibleTex = U2X_ICONS["visible.png"]._tex;
+  _invisibleTex = U2X_ICONS["invisible.png"]._tex;
   
 	return S_OK;
 }
@@ -161,26 +167,24 @@ LRESULT UsdExplorerWindow::Notify ( XSI::CRef& in_ctxt)
 			switch (lpWindowEvent->GetWindowState())
 			{
 			case siWindowSize: 
-				{
+			{
 					int x,y,w,h;
 
 					lpWindowEvent->GetPosition (x,y,w,h);
 					char l_szMessage[MAX_PATH];
 					sprintf ( l_szMessage, "XSI_WINDOW_SIZE: (%d,%d) (%d, %d)",x,y,w,h);
 					LOG(l_szMessage);
-                    break;
+          break;
 				}
 			case siWindowPaint: LOG ( "XSI_WINDOW_PAINT"); break;
 			case siWindowSetFocus: 
       {
         SetFocus(_hWnd);
-        LOG("XSI_WINDOW_SETFOCUS");
         break;
       }
 			case siWindowLostFocus: 
       {
         SetFocus(GetParent(_hWnd));
-        LOG("XSI_WINDOW_LOSTFOCUS");
         break;
       }
 			}
@@ -339,18 +343,51 @@ void UsdExplorerWindow::TermGL()
   if (_ctxt)ImGui::DestroyContext(_ctxt);
 }
 
-void UsdExplorerWindow::DrawBackground(const ImColor& color)
+void UsdExplorerWindow::DrawItemBackground(ImDrawList* drawList, 
+  const UsdExplorerItem* item, bool& flip)
 {
-  auto* drawList = ImGui::GetWindowDrawList();
+  ImVec2 pos = ImGui::GetCursorPos();
+  if (item->_selected) {
+    drawList->AddRectFilled(
+      { 0, pos.y }, 
+      { ImGui::GetWindowWidth(), pos.y + U2X_EXPLORER_LINE_HEIGHT }, 
+      ImColor(_selectedColor));
+  }
+  else {
+    if (flip)
+      drawList->AddRectFilled(
+        { 0, pos.y }, 
+        { ImGui::GetWindowWidth(), pos.y + U2X_EXPLORER_LINE_HEIGHT }, 
+        ImColor(_backgroundColor));
+    else
+      drawList->AddRectFilled(
+        { 0, pos.y }, 
+        { ImGui::GetWindowWidth(), pos.y + U2X_EXPLORER_LINE_HEIGHT }, 
+        ImColor(_alternateColor));
+  }
+ 
+
+  ImGui::SetCursorPos(ImVec2(0, pos.y + U2X_EXPLORER_LINE_HEIGHT));
+  if (item->_expanded) {
+    for (const auto child : item->_items) {
+      flip = !flip;
+      DrawItemBackground(drawList, child, flip);
+    }
+  }
+}
+
+void UsdExplorerWindow::DrawBackground()
+{
+  
+  auto* drawList = ImGui::GetBackgroundDrawList();
   const auto& style = ImGui::GetStyle();
 
   float scrollOffsetH = ImGui::GetScrollX();
   float scrollOffsetV = ImGui::GetScrollY();
-  float scrolledOutLines = floorf(scrollOffsetV / U2X_EXPLORER_LINE_HEIGHT);
-  scrollOffsetV -= U2X_EXPLORER_LINE_HEIGHT * scrolledOutLines;
 
   ImVec2 clipRectMin(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y);
-  ImVec2 clipRectMax(clipRectMin.x + ImGui::GetWindowWidth(), clipRectMin.y + ImGui::GetWindowHeight());
+  ImVec2 clipRectMax(clipRectMin.x + ImGui::GetWindowWidth(), 
+    clipRectMin.y + ImGui::GetWindowHeight());
 
   if (ImGui::GetScrollMaxX() > 0)
   {
@@ -358,24 +395,19 @@ void UsdExplorerWindow::DrawBackground(const ImColor& color)
   }
 
   drawList->PushClipRect(clipRectMin, clipRectMax);
+  bool flip = false;
 
-  bool isOdd = (static_cast<int>(scrolledOutLines) % 2) == 0;
+  drawList->AddRectFilled(
+    { 0, -scrollOffsetV }, 
+    { ImGui::GetWindowWidth(), -scrollOffsetV + U2X_EXPLORER_LINE_HEIGHT },
+    ImColor(1,0,0,1));
 
-  float yMin = clipRectMin.y - scrollOffsetV + ImGui::GetCursorPosY();
-  float yMax = clipRectMax.y - scrollOffsetV + U2X_EXPLORER_LINE_HEIGHT;
-  float xMin = clipRectMin.x + scrollOffsetH + ImGui::GetWindowContentRegionMin().x;
-  float xMax = clipRectMin.x + scrollOffsetH + ImGui::GetWindowContentRegionMax().x;
-
-  for (float y = yMin; y < yMax; y += U2X_EXPLORER_LINE_HEIGHT, isOdd = !isOdd)
-  {
-    if (isOdd)
-    {
-      drawList->AddRectFilled({ xMin, y }, { xMax, y + U2X_EXPLORER_LINE_HEIGHT }, color);
-    }
-  }
+  ImGui::SetCursorPos(ImVec2(0, -scrollOffsetV + U2X_EXPLORER_LINE_HEIGHT));
+  DrawItemBackground(drawList, _root, flip);
+  ImGui::SetCursorPos(ImVec2(0, U2X_EXPLORER_LINE_HEIGHT));
 
   drawList->PopClipRect();
-
+  
 }
 
 void UsdExplorerWindow::DrawItemType(UsdExplorerItem* item)
@@ -384,11 +416,9 @@ void UsdExplorerWindow::DrawItemType(UsdExplorerItem* item)
   ImGui::NextColumn();
 }
 
-void UsdExplorerWindow::DrawItemVisibility(UsdExplorerItem* item)
+void UsdExplorerWindow::DrawItemVisibility(UsdExplorerItem* item, bool heritedVisibility)
 {
-  GLuint tex = item->_visible ?
-    U2X_ICONS["visible.png"]._tex :
-    U2X_ICONS["invisible.png"]._tex;
+  GLuint tex = item->_visible ? _visibleTex : _invisibleTex;
 
   ImGui::ImageButton(
     (void*)tex,
@@ -396,22 +426,19 @@ void UsdExplorerWindow::DrawItemVisibility(UsdExplorerItem* item)
     ImVec2(0, 0),
     ImVec2(1, 1),
     0,
-    ImVec4(1, 1, 1, 1),
-    ImVec4(0, 0, 0, 1));
+    ImVec4(0,0,0,0),
+    heritedVisibility ? ImVec4(0, 0, 0, 1) : ImVec4(0, 0, 0, 0.5));
+
+  if (ImGui::IsItemClicked())
+    item->_visible = !item->_visible;
+
   ImGui::NextColumn();
 }
 
-void UsdExplorerWindow::DrawItem(UsdExplorerItem* current)
+void UsdExplorerWindow::DrawItem(UsdExplorerItem* current, bool heritedVisibility)
 {
   ImGuiTreeNodeFlags itemFlags = _selectBaseFlags;
-  ImGui::PushStyleColor(
-    ImGuiCol_WindowBg,
-    ImVec4(
-    (float)rand() / (float)RAND_MAX,
-      (float)rand() / (float)RAND_MAX,
-      (float)rand() / (float)RAND_MAX,
-      1));
-
+      
   if (current->_selected) {
     itemFlags |= ImGuiTreeNodeFlags_Selected;
   }
@@ -424,38 +451,42 @@ void UsdExplorerWindow::DrawItem(UsdExplorerItem* current)
         current->_prim.GetPath().GetText(),
         itemFlags,
         current->_prim.GetName().GetText());
-    if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())current->_selected = true;
+
+    if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
+      current->_selected = !current->_selected;
 
     ImGui::NextColumn();
 
     DrawItemType(current);
-    DrawItemVisibility(current);
+    DrawItemVisibility(current, heritedVisibility);
 
-    
-    
     if (currentOpen)
     {
+      current->_expanded = true;
       for (const auto item : current->_items)
-        DrawItem(item);
+        DrawItem(item, current->_visible && heritedVisibility);
       ImGui::TreePop();
     }
+    else current->_expanded = false;
   }
   // leaf
   else
   {
-    itemFlags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
+    itemFlags |= ImGuiTreeNodeFlags_Leaf | 
+      ImGuiTreeNodeFlags_NoTreePushOnOpen;
 
     ImGui::TreeNodeEx(
       current->_prim.GetPath().GetText(), 
       itemFlags, 
       current->_prim.GetName().GetText());
-    if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())current->_selected = true;
+    if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
+      current->_selected = true;
+    current->_expanded = false;
 
     ImGui::NextColumn();
     DrawItemType(current);
-    DrawItemVisibility(current);
+    DrawItemVisibility(current, heritedVisibility);
   }
-  ImGui::PopStyleColor();
 }
 
 bool UsdExplorerWindow::Draw()
@@ -463,15 +494,27 @@ bool UsdExplorerWindow::Draw()
   if(!_active)return false;
   BeginDraw();
   
-  
-  //show Main Window
-  //
   if (_stage)
   {
+    // setup colors
+    const size_t numColorIDs = 7;
+    int colorIDs[numColorIDs] = {
+      ImGuiCol_WindowBg,
+      ImGuiCol_Header,
+      ImGuiCol_HeaderHovered,
+      ImGuiCol_HeaderActive,
+      ImGuiCol_Button,
+      ImGuiCol_ButtonActive,
+      ImGuiCol_ButtonHovered
+    };
+    for(int i=0;i<numColorIDs;++i)
+      ImGui::PushStyleColor(
+        colorIDs[i],
+        ImVec4(0, 0, 0, 0));
+
     ImGui::Begin("UsdExplorer", NULL, _flags);
     ImGui::SetWindowPos(ImVec2(0, 0));
     ImGui::SetWindowSize(ImVec2(GetWidth(), GetHeight()));
-   // DrawBackground();
 
     // setup columns
     ImGui::Columns(3);
@@ -481,39 +524,25 @@ bool UsdExplorerWindow::Draw()
 
     // draw title
     ImGui::PushFont(U2X_FONT_BOLD);
-    ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(1, 0, 0, 1));
     ImGui::Text("Prim name");
     ImGui::NextColumn();
     ImGui::Text("Type");
     ImGui::NextColumn();
     ImGui::Text("Vis");
     ImGui::NextColumn();
-    ImGui::PopStyleColor();
     ImGui::PopFont();
- 
+
+    DrawBackground();
+
     ImGui::PushFont(U2X_FONT_REGULAR);
-    DrawItem(_root);
+    DrawItem(_root, true);
     ImGui::PopFont();
+
     ImGui::End();
+    ImGui::PopStyleColor(numColorIDs);
   }
   else ImGui::ShowDemoWindow();
  
-  //bool opened;
-  //int flags = 0;
-  //flags |= ImGuiWindowFlags_NoResize;
-  //flags |= ImGuiWindowFlags_NoTitleBar;
-  //flags |= ImGuiWindowFlags_NoMove;
-  //
-  //ImGui::PushID((int)_hWnd);
-  //ImGui::Begin(_className.c_str(), &opened, flags);
-  //
-  //ImGui::SetWindowSize(ImVec2(rect.right - rect.left, rect.bottom - rect.top), ImGuiCond_Always);
-  //ImGui::SetWindowPos(ImVec2(0,0), ImGuiCond_Always);
-  //
-  //FillBackground();
-  //
-  //ImGui::End();
-  //ImGui::PopID();
   EndDraw();
   return true;
 }
@@ -569,7 +598,8 @@ LRESULT UsdExplorerWindow::GetAttributeValue ( XSI::CString& in_cString, XSI::CV
 //
 // Softimage Plugin Callbacks
 //
-XSIPLUGINCALLBACK void	UsdExplorer_Init(XSI::CRef in_ctxt)
+XSIPLUGINCALLBACK void	
+UsdExplorer_Init(XSI::CRef in_ctxt)
 {
   assert(in_ctxt.IsA(XSI::siViewContextID));
   XSI::ViewContext viewContext = in_ctxt;
@@ -578,12 +608,14 @@ XSIPLUGINCALLBACK void	UsdExplorer_Init(XSI::CRef in_ctxt)
   UsdExplorerWindow* explorer = new UsdExplorerWindow();
 
   viewContext.PutUserData((void*)explorer);
-  viewContext.SetFlags(XSI::siWindowNotifications | XSI::siWindowSize | XSI::siWindowPaint );
+  //viewContext.SetFlags(XSI::siWindowNotifications | XSI::siWindowSize | XSI::siWindowPaint );
+  viewContext.SetFlags(XSI::siWindowNotifications);
 
   explorer->Init(in_ctxt);
 }
 
-XSIPLUGINCALLBACK void UsdExplorer_Term(XSI::CRef in_ctxt)
+XSIPLUGINCALLBACK void 
+UsdExplorer_Term(XSI::CRef in_ctxt)
 {
   XSI::ViewContext viewContext = in_ctxt;
   assert(viewContext.IsValid());
@@ -599,7 +631,8 @@ XSIPLUGINCALLBACK void UsdExplorer_Term(XSI::CRef in_ctxt)
 }
 
 
-XSIPLUGINCALLBACK void UsdExplorer_Notify(XSI::CRef in_ctxt)
+XSIPLUGINCALLBACK void 
+UsdExplorer_Notify(XSI::CRef in_ctxt)
 {
   XSI::ViewContext viewContext = in_ctxt;
   assert(viewContext.IsValid());
@@ -611,7 +644,8 @@ XSIPLUGINCALLBACK void UsdExplorer_Notify(XSI::CRef in_ctxt)
   explorer->Notify(in_ctxt);
 }
 
-XSIPLUGINCALLBACK void UsdExplorer_SetAttributeValue(XSI::CRef in_ctxt, XSI::CString name, XSI::CValue value)
+XSIPLUGINCALLBACK void 
+UsdExplorer_SetAttributeValue(XSI::CRef in_ctxt, XSI::CString name, XSI::CValue value)
 {
   XSI::ViewContext viewContext = in_ctxt;
   assert(viewContext.IsValid());
@@ -623,7 +657,8 @@ XSIPLUGINCALLBACK void UsdExplorer_SetAttributeValue(XSI::CRef in_ctxt, XSI::CSt
 
 }
 
-XSIPLUGINCALLBACK XSI::CValue	UsdExplorer_GetAttributeValue(XSI::CRef in_ctxt, XSI::CString name)
+XSIPLUGINCALLBACK XSI::CValue	
+UsdExplorer_GetAttributeValue(XSI::CRef in_ctxt, XSI::CString name)
 {
 
   XSI::ViewContext viewContext = in_ctxt;

@@ -83,6 +83,7 @@ public:
     return _rect.bottom - _rect.top;
   };
   virtual bool IsActive() { return _active; };
+  virtual bool IsShared() { return _shared; };
   virtual void Activate(bool state);
   virtual void FillBackground();
  
