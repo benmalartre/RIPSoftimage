@@ -1,6 +1,26 @@
 #include "event.h"
 #include "scene.h"
 #include "utils.h"
+#include "window.h"
+
+SICALLBACK UsdReadValueChange_OnEvent(const XSI::CRef& in_ref)
+{
+  Context ctxt(in_ref);
+  CRef object = ctxt.GetAttribute("Object");
+
+  if (object.IsA(siKinematicStateID)) {
+    CString fullname = ctxt.GetAttribute("FullName");
+    if (fullname.FindString("kine.global") != UINT_MAX) {
+      KinematicState kineState(object);
+      X3DObject x3dobject = kineState.GetParent3DObject();
+      if (x3dobject.GetType() == "UsdPrimitive") {
+        x3dobject.PutParameterValue("Update", CValue(true));
+      }
+    }
+  }
+
+  return XSI::CStatus::False;
+}
 
 SICALLBACK UsdReadSceneOpen_OnEvent(const XSI::CRef& in_ref)
 {
@@ -23,6 +43,9 @@ SICALLBACK UsdReadObjectRemoved_OnEvent(const XSI::CRef& in_ref)
 SICALLBACK UsdReadNewScene_OnEvent(const XSI::CRef& in_ref)
 {
   U2X_PRIMITIVES.ClearCache();
+  for (auto& ui : U2X_UIS) {
+    ui->ClearStage();
+  }
   return CStatus::False;
 }
 

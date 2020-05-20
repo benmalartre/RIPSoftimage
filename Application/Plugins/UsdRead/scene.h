@@ -5,7 +5,6 @@
 #include "prim.h"
 #include <map>
 
-
 struct U2XSceneLight
 {
   unsigned long   _objectID;
@@ -31,6 +30,7 @@ struct U2XPrimitiveManager
   void Set(CustomPrimitive& in_prim, U2XStage* stage)
   {
     _cache[in_prim.GetObjectID()] = stage;
+    stage->SetObjectID(in_prim.GetObjectID());
   }
 
   void CheckCache()
@@ -58,10 +58,6 @@ private:
   typedef ULONG ObjectID;
 
   std::map<ObjectID, U2XStage*> _cache;
-};
-
-struct U2XSelection {
-  //std::map<
 };
 
 extern U2XPrimitiveManager U2X_PRIMITIVES;

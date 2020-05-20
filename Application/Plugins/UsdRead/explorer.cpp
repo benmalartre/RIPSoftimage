@@ -30,11 +30,18 @@ UsdExplorerWindow::UsdExplorerWindow()
   _alternateColor = ImVec4(0.6, 0.6, 0.6, 1.0);
   _selectedColor = ImVec4(1.0, 0.7, 0.3, 1.0);
   _hoveredColor = ImVec4(0.9, 0.6, 0.2, 1.0);
+
+  U2X_UIS.push_back(this);
 }
 
 UsdExplorerWindow::~UsdExplorerWindow()
 {
-
+  for (auto it = U2X_UIS.begin(); it < U2X_UIS.end(); ++it) {
+    if (*it == this) {
+      U2X_UIS.erase(it);
+      break;
+    }
+  }
 }
 
 LRESULT	UsdExplorerWindow::Init( XSI::CRef& in_ctxt )
@@ -100,7 +107,7 @@ LRESULT UsdExplorerWindow::Notify ( XSI::CRef& in_ctxt)
           U2XStage* stage = U2X_PRIMITIVES.Get(CustomPrimitive(xPrim));
           if (stage)
           {
-            _stage = stage->Get();
+            _stage = stage;
             RecurseStage();
           }
         }
@@ -366,7 +373,6 @@ void UsdExplorerWindow::DrawItemBackground(ImDrawList* drawList,
         ImColor(_alternateColor));
   }
  
-
   ImGui::SetCursorPos(ImVec2(0, pos.y + U2X_EXPLORER_LINE_HEIGHT));
   if (item->_expanded) {
     for (const auto child : item->_items) {
@@ -419,6 +425,8 @@ void UsdExplorerWindow::DrawItemType(UsdExplorerItem* item)
 void UsdExplorerWindow::DrawItemVisibility(UsdExplorerItem* item, bool heritedVisibility)
 {
   GLuint tex = item->_visible ? _visibleTex : _invisibleTex;
+  ImVec4 col = heritedVisibility ?
+    ImVec4(0, 0, 0, 1) : ImVec4(0.33, 0.33, 0.33, 1);
 
   ImGui::ImageButton(
     (void*)tex,
@@ -427,10 +435,24 @@ void UsdExplorerWindow::DrawItemVisibility(UsdExplorerItem* item, bool heritedVi
     ImVec2(1, 1),
     0,
     ImVec4(0,0,0,0),
-    heritedVisibility ? ImVec4(0, 0, 0, 1) : ImVec4(0, 0, 0, 0.5));
+    col);
 
-  if (ImGui::IsItemClicked())
+  if (ImGui::IsItemClicked()) {
     item->_visible = !item->_visible;
+    pxr::UsdGeomImageable imageable(item->_prim);
+    if (TF_VERIFY(imageable)) {
+      if (item->_visible)imageable.MakeVisible();
+      else imageable.MakeInvisible();
+      Application app;
+      XSI::ProjectItem item = app.GetObjectFromID(_stage->GetObjectID());
+      if (item.IsValid())
+      {
+        CustomPrimitive primitive(item);
+        item.PutParameterValue(L"Update", CValue(true));
+        _needRefresh = true;
+      }
+    }
+  }
 
   ImGui::NextColumn();
 }
@@ -544,6 +566,11 @@ bool UsdExplorerWindow::Draw()
   else ImGui::ShowDemoWindow();
  
   EndDraw();
+
+  if (_needRefresh) {
+    Application().ExecuteCommand("Refresh", CValueArray(), CValue());
+    _needRefresh = false;
+  }
   return true;
 }
 
@@ -553,7 +580,7 @@ void UsdExplorerWindow::RecurseStage()
   if (_root)delete _root;
   _root = new UsdExplorerItem();
   _root->_expanded = true;
-  _root->_prim = _stage->GetPseudoRoot();
+  _root->_prim = _stage->Get()->GetPseudoRoot();
   _root->_visible = true;
   RecursePrim(_root);
 
@@ -566,34 +593,18 @@ void UsdExplorerWindow::RecursePrim(UsdExplorerItem* currentItem)
     UsdExplorerItem* childItem = currentItem->AddItem();
     childItem->_expanded = true;
     childItem->_prim = childPrim;
-    childItem->_visible = ((float)rand()/(float)RAND_MAX) >0.5;
+    pxr::UsdAttribute visibilityAttr =
+      pxr::UsdGeomImageable(childPrim).GetVisibilityAttr();
+    if (visibilityAttr.IsValid())
+    {
+      TfToken visible;
+      visibilityAttr.Get(&visible);
+      if (visible == UsdGeomTokens->invisible)currentItem->_visible = false;
+      else childItem->_visible = true;
+    }
     RecursePrim(childItem);
   }
 }
-
-/*
-LRESULT UsdExplorerWindow::SetAttributeValue ( XSI::CString& in_cString, XSI::CValue& in_vValue )
-{
-
-	XSI::CString l_mess;
-	l_mess = L"SetAttributeValue: ";
-	l_mess += in_cString;
-	PrintNotification ( (char*)l_mess.GetAsciiString());
-
-	return S_OK;
-}
-
-LRESULT UsdExplorerWindow::GetAttributeValue ( XSI::CString& in_cString, XSI::CValue& out_vValue )
-{
-
-	XSI::CString l_mess;
-	l_mess = L"GetAttributeValue: ";
-	l_mess += in_cString;
-	PrintNotification ( (char*)l_mess.GetAsciiString());
-
-	return S_OK;
-}
-*/
 
 //
 // Softimage Plugin Callbacks
@@ -608,7 +619,6 @@ UsdExplorer_Init(XSI::CRef in_ctxt)
   UsdExplorerWindow* explorer = new UsdExplorerWindow();
 
   viewContext.PutUserData((void*)explorer);
-  //viewContext.SetFlags(XSI::siWindowNotifications | XSI::siWindowSize | XSI::siWindowPaint );
   viewContext.SetFlags(XSI::siWindowNotifications);
 
   explorer->Init(in_ctxt);

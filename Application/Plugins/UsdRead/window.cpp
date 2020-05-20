@@ -29,6 +29,7 @@ BOOL APIENTRY DllMain(HANDLE hModule,
 }
 
 std::map<const char*, Icon> U2X_ICONS;
+std::vector<U2XWindow*> U2X_UIS;
 HWND U2X_SOFTIMAGE_WINDOW = (HWND)0;
 HGLRC U2X_SHARED_CONTEXT = (HGLRC)0;
 U2XWindow* U2X_HIDDEN_WINDOW = NULL;
@@ -238,7 +239,10 @@ void U2XWindow::FillBackground()
 }
 
 
-U2XWindow::U2XWindow() : _initialized(false), _active(true)
+U2XWindow::U2XWindow() 
+  : _initialized(false)
+  , _active(true)
+  , _stage(NULL)
 {
 }
 
@@ -253,7 +257,6 @@ void U2XWindow::Create(HWND hParent, bool shared)
 {
   _className = "U2XWindow" +std::to_string((int)hParent);
  
-  
   _shared = shared;
 
   WNDCLASS WindowClass = {

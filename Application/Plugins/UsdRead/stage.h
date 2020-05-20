@@ -18,6 +18,19 @@
 
 class U2XPrim;
 extern int U2X_STAGE_ID;
+
+class U2XSelection {
+public:
+  void AddPrim(const SdfPath& path);
+  void RemovePrim(const SdfPath& path);
+  void Clear();
+  void SetStage(pxr::UsdStageRefPtr& stage) { _stage = stage;}
+
+private:
+  pxr::UsdStageRefPtr                         _stage;
+  TfHashMap<SdfPath, UsdPrim, SdfPath::Hash>  _items;
+};
+
 // Prim base class
 class U2XStage {
 public:
@@ -25,6 +38,8 @@ public:
   ~U2XStage();
 
   pxr::UsdStageRefPtr& Get() { return _stage; };
+  void SetObjectID(ULONG objectID) { _objectID = objectID; };
+  ULONG GetObjectID() { return _objectID; };
   inline const pxr::GfBBox3d& GetBBox() { return _bbox; };
   size_t GetNumPrims() { return _prims.size(); };
   LONG GetLastEvalID() { return _lastEvalID; };
@@ -32,7 +47,7 @@ public:
   bool IsLoaded() { return _isLoaded; };
   bool HasFilename(const XSI::CString& filename, size_t index);
   void SetFilenames(const XSI::CStringArray& filenames);
-  void SetTime(double time);
+  void SetTime(double time, bool forceUpdate);
   void Reload();
   void Clear();
   void ComputeBoundingBox(const pxr::UsdTimeCode& timeCode);
@@ -43,6 +58,7 @@ public:
 protected:
   std::vector<SdfLayerRefPtr>       _layers;
   SdfLayerRefPtr                    _rootLayer;
+  //SdfLayerRefPtr                    _rootLayer;
   std::vector<XSI::CString>         _rawFilenames;
   std::vector<std::string>          _filenames;
   bool                              _isLoaded;
@@ -56,5 +72,7 @@ protected:
   pxr::UsdGeomBBoxCache*            _bboxCache;
   pxr::UsdGeomXformCache*           _xformCache;
   pxr::GfMatrix4f                   _invXform;
+  ULONG                             _objectID;
+  U2XSelection                      _selection;
 };
 

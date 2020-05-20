@@ -19,7 +19,6 @@ void U2XPrim::GetBoundingBox(pxr::UsdGeomBBoxCache& bboxCache)
 
 void U2XPrim::GetVisibility(const pxr::UsdTimeCode& timeCode, bool init)
 {
- 
   if (init || !_parent)
   {
     pxr::UsdAttribute visibilityAttr = pxr::UsdGeomImageable(_prim).GetVisibilityAttr();
@@ -32,8 +31,7 @@ void U2XPrim::GetVisibility(const pxr::UsdTimeCode& timeCode, bool init)
   }
   else
   {
-    if (_visibilityVarying)
-    {
+    if (_visibilityVarying) {
       pxr::UsdAttribute visibilityAttr = pxr::UsdGeomImageable(_prim).GetVisibilityAttr();
       TfToken visibility;
       visibilityAttr.Get(&visibility, timeCode);
@@ -42,9 +40,7 @@ void U2XPrim::GetVisibility(const pxr::UsdTimeCode& timeCode, bool init)
         _visibility = _parent->_visibility;
       }
     }
-    else _visibility = _parent->_visibility;
   }
-
 }
 
 void U2XPrim::GetXform(const pxr::UsdTimeCode& timeCode)

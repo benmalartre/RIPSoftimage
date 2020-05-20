@@ -10,7 +10,7 @@ public:
 
   void Init() override;
   void Term() override;
-  void Update(double t) override;
+  void Update(double t, bool reinitialize=false) override;
   void Prepare() override;
   void Draw() override;
 

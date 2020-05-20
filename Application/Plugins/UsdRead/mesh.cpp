@@ -128,11 +128,11 @@ void U2XMesh::Term()
 
 }
 
-void U2XMesh::Update(double t)
+void U2XMesh::Update(double t, bool reinitialize)
 {
   
   pxr::UsdTimeCode timeCode(t);
-  GetVisibility(timeCode);
+  GetVisibility(timeCode, reinitialize);
   bool pointsPositionUpdated = false;
   bool topoUpdated = false;
 
@@ -141,7 +141,6 @@ void U2XMesh::Update(double t)
   // topo
   if (_topoVarying)
   {
-    LOG("TOPO VARYING FOR : " + CString(_prim.GetName().GetText()));
     pxr::UsdAttribute faceVertexCountsAttr = mesh.GetFaceVertexCountsAttr();
     pxr::UsdAttribute faceVertexIndicesAttr = mesh.GetFaceVertexIndicesAttr();
 
@@ -212,8 +211,6 @@ void U2XMesh::Update(double t)
       }
       if (topoUpdated)colorsBuffer->SetNumOutputElements(_vao.GetNumElements());
     }
-    
-   
   }
   
   _vao.UpdateState();

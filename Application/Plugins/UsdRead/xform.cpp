@@ -25,10 +25,10 @@ void U2XXform::Term()
 
 }
 
-void U2XXform::Update(double t)
+void U2XXform::Update(double t, bool reinitialize)
 {
   pxr::UsdTimeCode timeCode(t);
-  GetVisibility(timeCode);
+  GetVisibility(timeCode, reinitialize);
   GetXform(timeCode);
 }
 

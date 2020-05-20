@@ -45,6 +45,7 @@ SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
 	in_reg.PutName(L"UsdRead");
 	in_reg.PutVersion(1,0);
 	in_reg.RegisterPrimitive(L"UsdPrimitive");
+  in_reg.RegisterEvent("UsdReadValueChange", siOnValueChange);
   in_reg.RegisterEvent("UsdReadObjectAdded", siOnObjectAdded);
   in_reg.RegisterEvent("UsdReadObjectRemoved", siOnObjectRemoved);
   in_reg.RegisterEvent("UsdReadSceneOpen", siOnBeginSceneOpen);
@@ -82,6 +83,8 @@ SICALLBACK UsdPrimitive_Define( CRef& in_ctxt )
 	oPDef = oFactory.CreateParamDef(L"Filename",CValue::siString,L"");
 	oCustomPrimitive.AddParameter(oPDef,oParam);
   oPDef = oFactory.CreateParamDef(L"Time", CValue::siDouble, 1.0);
+  oCustomPrimitive.AddParameter(oPDef, oParam);
+  oPDef = oFactory.CreateParamDef(L"Update", CValue::siBool, false);
   oCustomPrimitive.AddParameter(oPDef, oParam);
 
 	return CStatus::OK;

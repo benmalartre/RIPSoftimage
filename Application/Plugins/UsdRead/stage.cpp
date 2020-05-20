@@ -17,6 +17,28 @@
 
 int U2X_STAGE_ID = 0;
 
+
+void U2XSelection::AddPrim(const SdfPath& path)
+{
+  if(_stage)
+    if (_items.find(path) == _items.end())
+      _items[path] = _stage->GetPrimAtPath(path);
+}
+
+void U2XSelection::RemovePrim(const SdfPath& path)
+{
+  if (_stage) {
+    auto it = _items.find(path);
+    if (it != _items.end()) _items.erase(it);
+  }
+}
+
+void U2XSelection::Clear()
+{
+  _items.clear();
+}
+
+
 U2XStage::U2XStage()
   : _lastEvalID(-1), _isLoaded(false), _time(DBL_MAX)
 {
@@ -59,6 +81,7 @@ void U2XStage::Reload()
   _isLoaded = false;
   Clear();
   _rootLayer = pxr::SdfLayer::CreateAnonymous("U2XStage" + std::to_string(U2X_STAGE_ID));
+  //_editLayer = pxr::SdfLayer::CreateAnonymous("U2XStage" + std::to_string(U2X_STAGE_ID) +"_EDIT");
   U2X_STAGE_ID++;
 
   for (size_t i = 0; i < _filenames.size(); ++i)
@@ -76,6 +99,10 @@ void U2XStage::Reload()
   //pxr::SdfLayerRefPtr rootLayer = pxr::SdfLayer::FindOrOpen(_filename);
   //_stage = pxr::UsdStage::Open(rootLayer);
   _stage = pxr::UsdStage::Open(_rootLayer->GetIdentifier());
+  _stage->SetEditTarget(_rootLayer);
+
+  _selection.Clear();
+  _selection.SetStage(_stage);
   _root = _stage->GetPseudoRoot();
   _upAxis = pxr::UsdGeomGetStageUpAxis(_stage);
   if (_upAxis == pxr::UsdGeomTokens->z)
@@ -90,14 +117,14 @@ void U2XStage::Reload()
   _isLoaded = true;
 }
 
-void U2XStage::SetTime(double time)
+void U2XStage::SetTime(double time, bool forceUpdate)
 {
-  if (time != _time)
+  if (time != _time || forceUpdate)
   {
     _xformCache->SetTime(pxr::UsdTimeCode(time));
     for (auto& prim : _prims)
     {
-      prim->Update(time);
+      prim->Update(time, forceUpdate);
       prim->SetMatrix(_xformCache->GetLocalToWorldTransform(prim->Get()));
     }
     ComputeBoundingBox(pxr::UsdTimeCode(time));
@@ -158,14 +185,18 @@ void U2XStage::Update(CustomPrimitive& prim)
 {
   const LONG objectID = prim.GetObjectID();
   const LONG evalID = prim.GetEvaluationID();
-  if (_lastEvalID != evalID)
+  CParameterRefArray& params = prim.GetParameters();
+  bool forceUpdate = params.GetValue("Update");
+
+  if (_lastEvalID != evalID || forceUpdate)
   {
     // get inverse xform
     X3DObject parent = prim.GetParent3DObject();
     KinematicState kineState = parent.GetKinematics().GetGlobal();
     pxr::GfMatrix4d xfo = *(pxr::GfMatrix4d*)&kineState.GetTransform().GetMatrix4();
     _invXform = pxr::GfMatrix4f(xfo.GetInverse());
-    CParameterRefArray& params = prim.GetParameters();
+    
+    
 
     // check filename
     CString filename = params.GetValue(L"Filename");
@@ -178,8 +209,9 @@ void U2XStage::Update(CustomPrimitive& prim)
     if (_isLoaded)
     {
       double time = params.GetValue(L"Time");
-      SetTime(time);
+      SetTime(time, forceUpdate);
     }
+    prim.PutParameterValue("Update", false);
     _lastEvalID = evalID;
   }
 }

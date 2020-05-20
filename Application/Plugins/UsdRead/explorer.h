@@ -9,6 +9,7 @@ extern bool GL_EXTENSIONS_LOADED;
 
 static size_t U2X_EXPLORER_LINE_HEIGHT = 20;
 
+class U2XStage;
 struct UsdExplorerItem {
   pxr::UsdPrim                  _prim;
   bool                          _visible;
@@ -50,7 +51,6 @@ public:
   void DrawItemBackground(ImDrawList* drawList, const UsdExplorerItem* item, bool& flip);
 
 private:
-  pxr::UsdStageRefPtr           _stage;
   bool                          _locked;
   UsdExplorerItem*              _root;
   ImGuiTreeNodeFlags            _selectBaseFlags;
@@ -60,4 +60,5 @@ private:
   ImVec4                        _alternateColor;
   ImVec4                        _selectedColor;
   ImVec4                        _hoveredColor;
+  bool                          _needRefresh;
 };

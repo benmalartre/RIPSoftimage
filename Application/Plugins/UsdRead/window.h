@@ -32,9 +32,10 @@
 #include "imgui/imgui_impl_win32.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include "utils.h"
-
+#include <vector>
 
 class U2XWindow;
+class U2XStage;
 
 extern HGLRC U2X_SHARED_CONTEXT;
 extern U2XWindow* U2X_HIDDEN_WINDOW;
@@ -86,6 +87,7 @@ public:
   virtual bool IsShared() { return _shared; };
   virtual void Activate(bool state);
   virtual void FillBackground();
+  virtual void ClearStage() { _stage = NULL; };
  
   virtual void Create(HWND hwnd, bool shared=false);
   virtual void CreateContext(HWND hwnd);
@@ -109,4 +111,7 @@ protected:
   RECT              _rect;
   bool              _active;
   bool              _initialized;
+  U2XStage*         _stage;
 };
+
+extern std::vector<U2XWindow*> U2X_UIS;
