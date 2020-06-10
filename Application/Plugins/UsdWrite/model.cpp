@@ -84,23 +84,33 @@ void X2UModel::_Recurse(const CRef& ref, const std::string& parentPath)
       }
       else if (type == L"crvlist")
       {
-        X2UCurve* curve = new X2UCurve(objPath, ref);;
+        X2UCurve* curve = new X2UCurve(objPath, ref, X2U_CURVE_NURBS);;
         curve->Init(_stage);
         _prims.push_back(X2UCurveSharedPtr(curve));
         _xObjPathMap[curve->GetID()] = curve->GetPath();
       }
       else if (type == L"pointcloud")
       {
+        bool isStrandPointCloud = X2UIsStrandPointCloud(obj);
+        if (isStrandPointCloud) {
+          X2UCurve* curve = new X2UCurve(objPath, ref, X2U_CURVE_STRANDS);
+          curve->Init(_stage);
+          _prims.push_back(X2UCurveSharedPtr(curve));
+          _xObjPathMap[curve->GetID()] = curve->GetPath();
+        }
+        else {
+          X2UInstancer* instancer = new X2UInstancer(objPath, ref);
+          instancer->Init(_stage);
+          _prims.push_back(X2UInstancerSharedPtr(instancer));
+          _xObjPathMap[instancer->GetID()] = instancer->GetPath();
+        }
         /*
         X2UPointCloudContainsInstances(X3DObject(ref));
         X2UPoints* point = new X2UPoints(objPath, ref);;
         point->Init(_stage);
         _prims.push_back(X2UPointSharedPtr(point));
         */
-        X2UInstancer* instancer = new X2UInstancer(objPath, ref);
-        instancer->Init(_stage);
-        _prims.push_back(X2UInstancerSharedPtr(instancer));
-        _xObjPathMap[instancer->GetID()] = instancer->GetPath();
+        
       }
       else if (type == L"camera")
       {

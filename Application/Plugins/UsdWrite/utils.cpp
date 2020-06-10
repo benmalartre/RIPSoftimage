@@ -68,6 +68,15 @@ bool X2UIsModelInstanced(Model& model)
   else return false;
 }
 
+bool X2UIsStrandPointCloud(const X3DObject& obj)
+{
+  ICEAttribute attr = obj.GetActivePrimitive().GetICEAttributeFromName("StrandPosition");
+  if (attr.IsValid() && attr.GetElementCount()) {
+    return true;
+  }
+  else return false;
+}
+
 bool X2UGetObjectVisibility(const X3DObject& obj, double t)
 {
   Property visibilityProp;

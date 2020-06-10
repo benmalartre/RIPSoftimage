@@ -10,21 +10,21 @@
 enum X2UCurveSourceType {
   X2U_CURVE_NURBS,
   X2U_CURVE_STRANDS,
-  X2U_CURVE_HAIR
+  X2U_CURVE_HAIRS
 };
 
 // Mesh 
 class X2UCurve final : public X2UPrim {
 public:
-  X2UCurve(std::string path, const CRef& ref);
+  X2UCurve(std::string path, const CRef& ref, X2UCurveSourceType srcType);
   ~X2UCurve();
 
   void Init(UsdStageRefPtr& stage) override;
   void WriteSample(double t) override;
 
   void InitFromNurbsCurve();
-  //void InitFromStrands();
-  //void InitFromHair();
+  void InitFromStrands();
+  void InitFromHairs();
 
 private:
   bool                _haveColors;

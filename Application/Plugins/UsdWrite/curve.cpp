@@ -1,12 +1,14 @@
 #include "curve.h"
 #include "utils.h"
 
-X2UCurve::X2UCurve(std::string path, const CRef& ref)
+
+X2UCurve::X2UCurve(std::string path, const CRef& ref, X2UCurveSourceType srcType)
   : X2UPrim(path, ref)
   , _haveNormals(false)
   , _haveWidths(false)
   , _haveColors(false)
   , _haveUVs(false)
+  , _srcType(srcType)
 {
 }
 
@@ -25,7 +27,17 @@ void X2UCurve::Init(UsdStageRefPtr& stage)
 
   // visibility attribute
   InitVisibilityAttribute();
-
+  switch (_srcType) {
+  case X2U_CURVE_NURBS:
+    InitFromNurbsCurve();
+    break;
+  case X2U_CURVE_STRANDS:
+    InitFromStrands();
+    break;
+  case X2U_CURVE_HAIRS:
+    InitFromHairs();
+    break;
+  }
 
   // points attribute
 
@@ -49,7 +61,7 @@ void X2UCurve::Init(UsdStageRefPtr& stage)
     _attributes["points"].WriteSample((const void*)&points[0],
       numPoints, UsdTimeCode::Default());
   }
-  */
+  
   LOG("CURVE WRITE INIT :D");
   UsdAttribute typeAttr = crv.CreateTypeAttr();
   UsdAttribute pointsAttr = crv.CreatePointsAttr();
@@ -107,7 +119,7 @@ void X2UCurve::Init(UsdStageRefPtr& stage)
   widthsAttr.Set(widths, timeCode);
   UsdGeomPrimvar widthsPrimVar(widthsAttr);
   widthsPrimVar.SetInterpolation(UsdGeomTokens->constant);
-
+  */
 
   /*
   NurbsCurve curve = curveList.GetCurves().GetItem(0);
@@ -192,6 +204,130 @@ void X2UCurve::Init(UsdStageRefPtr& stage)
   // display color
   GetDisplayColor();
   */
+}
+
+void X2UCurve::InitFromNurbsCurve()
+{
+
+}
+
+void X2UCurve::InitFromStrands()
+{
+  UsdTimeCode timeCode = UsdTimeCode::Default();
+  UsdGeomBasisCurves crv(_prim);
+  UsdAttribute typeAttr = crv.CreateTypeAttr();
+  UsdAttribute pointsAttr = crv.CreatePointsAttr();
+  UsdAttribute widthsAttr = crv.CreateWidthsAttr();
+  UsdAttribute curveVertexCountsAttr = crv.CreateCurveVertexCountsAttr();
+  UsdAttribute wrapAttr = crv.CreateWrapAttr();
+  UsdAttribute basisAttr = crv.CreateBasisAttr();
+
+  ICEAttribute pointPositionAttr = _xPrim.GetICEAttributeFromName("PointPosition");
+  size_t numPoints = pointPositionAttr.GetElementCount();
+  ICEAttribute pointSizeAttr = _xPrim.GetICEAttributeFromName("Size");
+  bool havePointSize = (pointSizeAttr.IsValid() && pointSizeAttr.GetElementCount() == numPoints);
+  ICEAttribute pointColorAttr = _xPrim.GetICEAttributeFromName("Color");
+  bool havePointColor = (pointColorAttr.IsValid() && pointColorAttr.GetElementCount() == numPoints);
+
+  TfToken curveType = UsdGeomTokens->linear;
+  // linear or cubic
+  //if (degree == 1) curveType = UsdGeomTokens->linear;
+  //else curveType = UsdGeomTokens->cubic;
+  typeAttr.Set(curveType, timeCode);
+
+  ICEAttribute strandPositionsAttr = _xPrim.GetICEAttributeFromName("StrandPosition");
+  CICEAttributeDataArray2D< MATH::CVector3f > strandPositions;
+  strandPositionsAttr.GetDataArray2D(strandPositions);
+  size_t numStrands = strandPositions.GetCount();
+
+  // points
+  VtArray<GfVec3f> curveVertexPositions;
+  VtArray<int> curveVertexCounts(numStrands);
+  for (int i = 0; i < strandPositions.GetCount(); ++i) {
+    CICEAttributeDataArrayVector3f positions;
+    strandPositions.GetSubArray(i, positions);
+    curveVertexCounts[i] = positions.GetCount();
+    size_t base = curveVertexPositions.size();
+    size_t np = positions.GetCount();
+    curveVertexPositions.resize(base + np);
+    memcpy(&curveVertexPositions[base], &positions[0], np * sizeof(pxr::GfVec3f));
+  }
+
+  pointsAttr.Set(curveVertexPositions, timeCode);
+  curveVertexCountsAttr.Set(curveVertexCounts, timeCode);
+
+  size_t numCurveVertex = curveVertexPositions.size();
+
+  ICEAttribute strandSizesAttr = _xPrim.GetICEAttributeFromName("StrandSize");
+  bool haveStrandSizes = 
+    X2UCheckICEAttributeDataArray2DSize<float>(strandSizesAttr, numPoints, numCurveVertex);
+
+  ICEAttribute strandOrientationsAttr = _xPrim.GetICEAttributeFromName("StrandOrientation");
+  bool haveStrandOrientations =
+    X2UCheckICEAttributeDataArray2DSize<MATH::CRotationf>(strandOrientationsAttr, numPoints, numCurveVertex);
+
+  ICEAttribute strandNormalsAttr = _xPrim.GetICEAttributeFromName("StrandNormal");
+  bool haveStrandNormals = 
+    X2UCheckICEAttributeDataArray2DSize<MATH::CVector3f>(strandNormalsAttr, numPoints, numCurveVertex);
+
+  ICEAttribute strandUpVectorsAttr = _xPrim.GetICEAttributeFromName("StrandUpVector");
+  bool haveStrandUpVectors =
+    X2UCheckICEAttributeDataArray2DSize<MATH::CVector3f>(strandUpVectorsAttr, numPoints, numCurveVertex);
+
+  // widths
+  if (haveStrandSizes) {
+    VtArray<float> curveVertexSizes(curveVertexPositions.size());
+    CICEAttributeDataArray2D< float > strandSizes;
+    strandSizesAttr.GetDataArray2D(strandSizes);
+    size_t baseIdx = 0;
+    if (havePointSize) {
+      CICEAttributeDataArrayFloat pointSize;
+      pointSizeAttr.GetDataArray(pointSize);
+      for (int i = 0; i < strandSizes.GetCount(); ++i) {
+        CICEAttributeDataArrayFloat sizes;
+        strandSizes.GetSubArray(i, sizes);
+        size_t np = sizes.GetCount();
+        for (size_t j = 0; j < np; ++j) {
+          curveVertexSizes[baseIdx + j] = sizes[j] * pointSize[i];
+        }
+        baseIdx += np;
+      }
+    }
+    else {
+      for (int i = 0; i < strandSizes.GetCount(); ++i) {
+        CICEAttributeDataArrayFloat sizes;
+        strandSizes.GetSubArray(i, sizes);
+        size_t np = sizes.GetCount();
+        memcpy(&curveVertexSizes[baseIdx], &sizes[0], np * sizeof(float));
+        baseIdx += np;
+      }
+    }
+    widthsAttr.Set(curveVertexSizes, timeCode);
+    UsdGeomPrimvar widthsPrimVar(widthsAttr);
+    widthsPrimVar.SetInterpolation(UsdGeomTokens->vertex);
+  }
+  else if (havePointSize) {
+    VtArray<float> curveSizes(curveVertexCounts.size());
+    CICEAttributeDataArrayFloat pointSize;
+    pointSizeAttr.GetDataArray(pointSize);
+    memcpy(&curveSizes[0], &pointSize[0], curveVertexCounts.size() * sizeof(float));
+    widthsAttr.Set(curveSizes, timeCode);
+    UsdGeomPrimvar widthsPrimVar(widthsAttr);
+    widthsPrimVar.SetInterpolation(UsdGeomTokens->uniform);
+  }
+  else {
+    VtArray<float> widths(1);
+    widths[0] = 0.01;
+    widthsAttr.Set(widths, timeCode);
+    UsdGeomPrimvar widthsPrimVar(widthsAttr);
+    widthsPrimVar.SetInterpolation(UsdGeomTokens->constant);
+  }
+  
+}
+
+void X2UCurve::InitFromHairs()
+{
+
 }
 
 void X2UCurve::WriteSample(double t)

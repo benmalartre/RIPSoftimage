@@ -128,11 +128,11 @@ void U2XMesh::Term()
 
 }
 
-void U2XMesh::Update(double t, bool reinitialize)
+void U2XMesh::Update(double t, bool forceUpdate)
 {
   
   pxr::UsdTimeCode timeCode(t);
-  GetVisibility(timeCode, reinitialize);
+  GetVisibility(timeCode, forceUpdate);
   bool pointsPositionUpdated = false;
   bool topoUpdated = false;
 

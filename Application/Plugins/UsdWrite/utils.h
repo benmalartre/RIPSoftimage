@@ -4,6 +4,7 @@
 #include <limits>
 #include <iostream>
 #include <string>
+#include <xsi_iceattributedataarray2D.h>
 
 static const GfVec3f UNDEFINED_COLOR = { 1.f,0.25f,0.5f};
 
@@ -21,6 +22,24 @@ void X2UGetLocalTransformAtTime(const X3DObject& obj, GfMatrix4d& ioMatrix, doub
 void X2UGetGlobalTransformAtTime(const X3DObject& obj, GfMatrix4d& ioMatrix, double t = DBL_MAX);
 void X2UGetLocalTransform(const X3DObject& obj, GfMatrix4d& ioMatrix);
 void X2UGetGlobalTransform(const X3DObject& obj, GfMatrix4d& ioMatrix);
+
+bool X2UIsStrandPointCloud(const X3DObject& obj);
+
+template<typename T>
+bool X2UCheckICEAttributeDataArray2DSize(const ICEAttribute& attr, size_t numSubArrays, size_t totalNumElements)
+{
+  if (!attr.IsValid())return false;
+  CICEAttributeDataArray2D<T> data2D;
+  attr.GetDataArray2D(data2D);
+  if (data2D.GetCount() != numSubArrays)return false;
+  size_t accum = 0;
+  for (size_t n = 0; n < numSubArrays; ++n) {
+    CICEAttributeDataArray<T> data;
+    data2D.GetSubArray(n, data);
+    accum += data.GetCount();
+  }
+  return accum == totalNumElements;
+}
 
 ICEAttribute X2UGetICEAttributeFromArray(CRefArray& attributes, const CString& name, int& index);
 
