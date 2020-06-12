@@ -813,8 +813,8 @@ void X2UAttribute::WriteSample(const void* datas, uint32_t numElements, const Us
       }
     }
   }
-
-   _hash = hash;
+  WriteInterpolation();
+  _hash = hash;
 }
 
 void X2UAttribute::WriteSample(const TfToken& token, const UsdTimeCode& timeCode)

@@ -216,18 +216,15 @@ void X2UCurve::InitFromStrands()
   UsdTimeCode timeCode = UsdTimeCode::Default();
   UsdGeomBasisCurves crv(_prim);
   UsdAttribute typeAttr = crv.CreateTypeAttr();
-  UsdAttribute pointsAttr = crv.CreatePointsAttr();
-  UsdAttribute widthsAttr = crv.CreateWidthsAttr();
-  UsdAttribute curveVertexCountsAttr = crv.CreateCurveVertexCountsAttr();
-  UsdAttribute wrapAttr = crv.CreateWrapAttr();
-  UsdAttribute basisAttr = crv.CreateBasisAttr();
+  //UsdAttribute wrapAttr = crv.CreateWrapAttr();
+  //UsdAttribute basisAttr = crv.CreateBasisAttr();
 
   ICEAttribute pointPositionAttr = _xPrim.GetICEAttributeFromName("PointPosition");
-  size_t numPoints = pointPositionAttr.GetElementCount();
+  size_t numCurves = pointPositionAttr.GetElementCount();
   ICEAttribute pointSizeAttr = _xPrim.GetICEAttributeFromName("Size");
-  bool havePointSize = (pointSizeAttr.IsValid() && pointSizeAttr.GetElementCount() == numPoints);
+  bool havePointSize = (pointSizeAttr.IsValid() && pointSizeAttr.GetElementCount() == numCurves);
   ICEAttribute pointColorAttr = _xPrim.GetICEAttributeFromName("Color");
-  bool havePointColor = (pointColorAttr.IsValid() && pointColorAttr.GetElementCount() == numPoints);
+  bool havePointColor = (pointColorAttr.IsValid() && pointColorAttr.GetElementCount() == numCurves);
 
   TfToken curveType = UsdGeomTokens->linear;
   // linear or cubic
@@ -243,6 +240,7 @@ void X2UCurve::InitFromStrands()
   // points
   VtArray<GfVec3f> curveVertexPositions;
   VtArray<int> curveVertexCounts(numStrands);
+  size_t numCurveVertices = 0;
   for (int i = 0; i < strandPositions.GetCount(); ++i) {
     CICEAttributeDataArrayVector3f positions;
     strandPositions.GetSubArray(i, positions);
@@ -250,33 +248,55 @@ void X2UCurve::InitFromStrands()
     size_t base = curveVertexPositions.size();
     size_t np = positions.GetCount();
     curveVertexPositions.resize(base + np);
+    numCurveVertices += np;
     memcpy(&curveVertexPositions[base], &positions[0], np * sizeof(pxr::GfVec3f));
   }
 
-  pointsAttr.Set(curveVertexPositions, timeCode);
-  curveVertexCountsAttr.Set(curveVertexCounts, timeCode);
+  _attributes["points"] =
+    X2UAttribute(
+      crv.CreatePointsAttr(VtValue(), true),
+      X2U_DATA_VECTOR3,
+      X2U_PRECISION_SINGLE,
+      true);
 
-  size_t numCurveVertex = curveVertexPositions.size();
+  // set default value
+  _attributes["points"].WriteSample((const void*)&curveVertexPositions[0],
+    numCurveVertices, timeCode);
+
+  _attributes["curveVertexCounts"] =
+    X2UAttribute(
+      crv.CreateCurveVertexCountsAttr(VtValue(), true),
+      X2U_DATA_LONG,
+      X2U_PRECISION_SINGLE,
+      true);
+
+  _attributes["curveVertexCounts"].WriteSample((const void*)&curveVertexCounts[0],
+    numCurves, timeCode);
+
 
   ICEAttribute strandSizesAttr = _xPrim.GetICEAttributeFromName("StrandSize");
   bool haveStrandSizes = 
-    X2UCheckICEAttributeDataArray2DSize<float>(strandSizesAttr, numPoints, numCurveVertex);
+    X2UCheckICEAttributeDataArray2DSize<float>(strandSizesAttr, numCurves, numCurveVertices);
 
   ICEAttribute strandOrientationsAttr = _xPrim.GetICEAttributeFromName("StrandOrientation");
   bool haveStrandOrientations =
-    X2UCheckICEAttributeDataArray2DSize<MATH::CRotationf>(strandOrientationsAttr, numPoints, numCurveVertex);
+    X2UCheckICEAttributeDataArray2DSize<MATH::CRotationf>(strandOrientationsAttr, numCurves, numCurveVertices);
 
   ICEAttribute strandNormalsAttr = _xPrim.GetICEAttributeFromName("StrandNormal");
   bool haveStrandNormals = 
-    X2UCheckICEAttributeDataArray2DSize<MATH::CVector3f>(strandNormalsAttr, numPoints, numCurveVertex);
+    X2UCheckICEAttributeDataArray2DSize<MATH::CVector3f>(strandNormalsAttr, numCurves, numCurveVertices);
 
   ICEAttribute strandUpVectorsAttr = _xPrim.GetICEAttributeFromName("StrandUpVector");
   bool haveStrandUpVectors =
-    X2UCheckICEAttributeDataArray2DSize<MATH::CVector3f>(strandUpVectorsAttr, numPoints, numCurveVertex);
+    X2UCheckICEAttributeDataArray2DSize<MATH::CVector3f>(strandUpVectorsAttr, numCurves, numCurveVertices);
+
+  ICEAttribute strandColorsAttr = _xPrim.GetICEAttributeFromName("StrandColor");
+  bool haveStrandColors =
+    X2UCheckICEAttributeDataArray2DSize<MATH::CColor4f>(strandColorsAttr, numCurves, numCurveVertices);
 
   // widths
   if (haveStrandSizes) {
-    VtArray<float> curveVertexSizes(curveVertexPositions.size());
+    VtArray<float> curveVertexWidths(curveVertexPositions.size());
     CICEAttributeDataArray2D< float > strandSizes;
     strandSizesAttr.GetDataArray2D(strandSizes);
     size_t baseIdx = 0;
@@ -288,7 +308,7 @@ void X2UCurve::InitFromStrands()
         strandSizes.GetSubArray(i, sizes);
         size_t np = sizes.GetCount();
         for (size_t j = 0; j < np; ++j) {
-          curveVertexSizes[baseIdx + j] = sizes[j] * pointSize[i];
+          curveVertexWidths[baseIdx + j] = sizes[j] * pointSize[i];
         }
         baseIdx += np;
       }
@@ -298,31 +318,103 @@ void X2UCurve::InitFromStrands()
         CICEAttributeDataArrayFloat sizes;
         strandSizes.GetSubArray(i, sizes);
         size_t np = sizes.GetCount();
-        memcpy(&curveVertexSizes[baseIdx], &sizes[0], np * sizeof(float));
+        memcpy(&curveVertexWidths[baseIdx], &sizes[0], np * sizeof(float));
         baseIdx += np;
       }
     }
-    widthsAttr.Set(curveVertexSizes, timeCode);
-    UsdGeomPrimvar widthsPrimVar(widthsAttr);
-    widthsPrimVar.SetInterpolation(UsdGeomTokens->vertex);
+    _attributes["widths"] =
+      X2UAttribute(
+        crv.CreateWidthsAttr(VtValue(), true),
+        X2U_DATA_FLOAT,
+        X2U_PRECISION_SINGLE,
+        true,
+        true,
+        X2U_INTERPOLATION_VERTEX);
+
+    _attributes["widths"].WriteSample((const void*)&curveVertexWidths[0],
+      numCurveVertices, timeCode);
   }
   else if (havePointSize) {
-    VtArray<float> curveSizes(curveVertexCounts.size());
+    VtArray<float> curveWidths(curveVertexCounts.size());
     CICEAttributeDataArrayFloat pointSize;
     pointSizeAttr.GetDataArray(pointSize);
-    memcpy(&curveSizes[0], &pointSize[0], curveVertexCounts.size() * sizeof(float));
-    widthsAttr.Set(curveSizes, timeCode);
-    UsdGeomPrimvar widthsPrimVar(widthsAttr);
-    widthsPrimVar.SetInterpolation(UsdGeomTokens->uniform);
+    memcpy(&curveWidths[0], &pointSize[0], numCurves * sizeof(float));
+
+    _attributes["widths"] =
+      X2UAttribute(
+        crv.CreateWidthsAttr(VtValue(), true),
+        X2U_DATA_FLOAT,
+        X2U_PRECISION_SINGLE,
+        true,
+        true,
+        X2U_INTERPOLATION_UNIFORM);
+
+    _attributes["widths"].WriteSample((const void*)&curveWidths[0],
+      numCurves, timeCode);
   }
   else {
     VtArray<float> widths(1);
     widths[0] = 0.01;
-    widthsAttr.Set(widths, timeCode);
-    UsdGeomPrimvar widthsPrimVar(widthsAttr);
-    widthsPrimVar.SetInterpolation(UsdGeomTokens->constant);
+    _attributes["widths"] =
+      X2UAttribute(
+        crv.CreateWidthsAttr(VtValue(), true),
+        X2U_DATA_FLOAT,
+        X2U_PRECISION_SINGLE,
+        true,
+        true,
+        X2U_INTERPOLATION_CONSTANT);
+
+    _attributes["widths"].WriteSample((const void*)&widths[0], 1, timeCode);
   }
   
+  // colors
+  if (haveStrandColors) {
+    VtArray<GfVec3f> curveVertexColors(curveVertexPositions.size());
+    CICEAttributeDataArray2D< MATH::CColor4f > strandColors;
+    strandColorsAttr.GetDataArray2D(strandColors);
+    size_t baseIdx = 0;
+    for (int i = 0; i < strandColors.GetCount(); ++i) {
+      CICEAttributeDataArrayColor4f colors;
+      strandColors.GetSubArray(i, colors);
+      size_t np = colors.GetCount();
+      for (size_t j = 0; j < np; ++j) {
+        curveVertexColors[baseIdx + j] = 
+          GfVec3f(colors[j][0], colors[j][1], colors[j][2]);
+      }
+      baseIdx += np;
+    }
+    _attributes["displayColor"] =
+      X2UAttribute(
+        crv.CreateDisplayColorAttr(VtValue(), true),
+        X2U_DATA_VECTOR3,
+        X2U_PRECISION_SINGLE,
+        true,
+        true,
+        X2U_INTERPOLATION_VERTEX);
+
+    _attributes["displayColor"].WriteSample((const void*)&curveVertexColors[0],
+      numCurveVertices, timeCode);
+  }
+  else if (havePointColor) {
+    VtArray<GfVec3f> curveColors(numCurves);
+    CICEAttributeDataArrayColor4f pointColor;
+    pointColorAttr.GetDataArray(pointColor);
+    for (size_t i = 0; i < pointColor.GetCount(); ++i) {
+      MATH::CColor4f color = pointColor[i];
+      curveColors[i] = GfVec3f(color[0], color[1], color[2]);
+    }
+    _attributes["displayColor"] =
+      X2UAttribute(
+        crv.CreateDisplayColorAttr(VtValue(), true),
+        X2U_DATA_VECTOR3,
+        X2U_PRECISION_SINGLE,
+        true,
+        true,
+        X2U_INTERPOLATION_UNIFORM);
+
+    _attributes["displayColor"].WriteSample((const void*)&curveColors[0],
+      numCurves, timeCode);
+  }
 }
 
 void X2UCurve::InitFromHairs()
