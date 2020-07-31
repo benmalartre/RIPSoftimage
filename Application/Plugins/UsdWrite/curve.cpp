@@ -505,7 +505,7 @@ void X2UCurve::WriteSample(double t)
       item.WriteSample(&color[0], 1, timeCode);
     }
   }
-  */
+  */  
 }
 
 /*
