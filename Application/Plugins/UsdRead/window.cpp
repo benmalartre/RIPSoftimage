@@ -1,4 +1,4 @@
-#include <GL/glew.h>
+#include <pxr/imaging/garch/glApi.h>
 #include "window.h"
 #include "utils.h"
 #include "icons.h"
@@ -79,7 +79,7 @@ void U2XCreateFontAtlas()
   std::string pluginFolder(U2XGetInstallationFolder().GetAsciiString());
 
   std::string fontPath;
-  fontPath = pluginFolder + "../../fonts/montserrat/Montserrat-Bold.otf";
+  fontPath = pluginFolder + "fonts/montserrat/Montserrat-Bold.otf";
   U2X_FONT_BOLD = U2X_SHARED_ATLAS->AddFontFromFileTTF(
     fontPath.c_str(),
     U2X_FONT_SIZE,
@@ -87,7 +87,7 @@ void U2XCreateFontAtlas()
     U2X_SHARED_ATLAS->GetGlyphRangesDefault()
   );
 
-  fontPath = pluginFolder + "../../fonts/montserrat/Montserrat-Medium.otf";
+  fontPath = pluginFolder + "fonts/montserrat/Montserrat-Medium.otf";
   U2X_FONT_MEDIUM = U2X_SHARED_ATLAS->AddFontFromFileTTF(
     fontPath.c_str(),
     U2X_FONT_SIZE,
@@ -95,7 +95,7 @@ void U2XCreateFontAtlas()
     U2X_SHARED_ATLAS->GetGlyphRangesDefault()
   );
 
-  fontPath = pluginFolder + "../../fonts/montserrat/Montserrat-Regular.otf";
+  fontPath = pluginFolder + "fonts/montserrat/Montserrat-Regular.otf";
   U2X_FONT_REGULAR = U2X_SHARED_ATLAS->AddFontFromFileTTF(
     fontPath.c_str(),
     U2X_FONT_SIZE,
@@ -138,10 +138,10 @@ void U2XSetWindowStyle()
 void U2XWindow::InitGL()
 {
   wglMakeCurrent(_hDC, _hRC);
-  glewInit();
-
+  GarchGLApiLoad();
   // Setup Dear ImGui binding
   IMGUI_CHECKVERSION();
+
   U2XCreateFontAtlas();
 
   // hidden context
@@ -237,7 +237,6 @@ void U2XWindow::FillBackground()
   ImGui::GetForegroundDrawList()->AddRect(vMin, vMax, IM_COL32(rand(), rand(), 0, 255));
  
 }
-
 
 U2XWindow::U2XWindow() 
   : _initialized(false)

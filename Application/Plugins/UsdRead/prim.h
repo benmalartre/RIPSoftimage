@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GL/glew.h"
+
 #include <pxr/pxr.h>
 #include <pxr/usd/usd/prim.h>
 #include <pxr/usd/sdf/path.h>
@@ -9,6 +9,7 @@
 #include <pxr/base/gf/matrix4d.h>
 #include <pxr/usd/usdGeom/bboxCache.h>
 #include <pxr/usd/usdGeom/gprim.h>
+#include <pxr/imaging/garch/glApi.h>
 
 #include "vertexBuffer.h"
 #include "vertexArray.h"

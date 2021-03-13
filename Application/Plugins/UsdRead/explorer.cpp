@@ -1,4 +1,4 @@
-#include <GL/glew.h>
+#include <pxr/imaging/garch/glApi.h>
 #include "icons.h"
 #include "scene.h"
 #include "stage.h"
@@ -46,8 +46,8 @@ UsdExplorerWindow::~UsdExplorerWindow()
 
 LRESULT	UsdExplorerWindow::Init( XSI::CRef& in_ctxt )
 {
-	XSI::ViewContext viewContext = in_ctxt;
-	assert (viewContext.IsValid() );
+  XSI::ViewContext viewContext = in_ctxt;
+  assert (viewContext.IsValid() );
 
   U2XGetSharedContext();
   Create((HWND)viewContext.GetParentWindowHandle(), false);
@@ -56,38 +56,38 @@ LRESULT	UsdExplorerWindow::Init( XSI::CRef& in_ctxt )
   _visibleTex = U2X_ICONS["visible.png"]._tex;
   _invisibleTex = U2X_ICONS["invisible.png"]._tex;
   
-	return S_OK;
+  return S_OK;
 }
 
 LRESULT	UsdExplorerWindow::Term( XSI::CRef& in_ctxt)
 {
   TermGL();
   
-	return S_OK;
+  return S_OK;
 }
 
 
 LRESULT UsdExplorerWindow::Notify ( XSI::CRef& in_ctxt)
 {
-	using namespace XSI;
+  using namespace XSI;
   
-	//
-	// Convert the CRef into a ViewContext
-	//
+  //
+  // Convert the CRef into a ViewContext
+  //
 
-	XSI::ViewContext viewContext = in_ctxt;
-	assert ( viewContext.IsValid() );
+  XSI::ViewContext viewContext = in_ctxt;
+  assert ( viewContext.IsValid() );
 
-	//
-	// Retrieve the notification information from the view context
-	//
+  //
+  // Retrieve the notification information from the view context
+  //
 
-	XSI::siEventID notification;
-	void*	data;
+  XSI::siEventID notification;
+  void*	data;
 
-	viewContext.GetNotificationData (notification, &data );
+  viewContext.GetNotificationData (notification, &data );
 
-	switch (notification)
+  switch (notification)
   {
 	  case siOnSelectionChange:
     {
@@ -116,206 +116,202 @@ LRESULT UsdExplorerWindow::Notify ( XSI::CRef& in_ctxt)
     break;
     }
 
-    /*
-	case siOnTimeChange:
-		{
-			//
-			// The current time has changed (the timeline has been scrubbed).
-			// Cast the data into a CTimeChangeNotification pointer to get at the
-			// details and print it.
-			//
+  /*
+  case siOnTimeChange:
+  {
+    //
+    // The current time has changed (the timeline has been scrubbed).
+    // Cast the data into a CTimeChangeNotification pointer to get at the
+    // details and print it.
+    //
 
-			XSI::CTimeChangeNotification* l_pTimeChange = (XSI::CTimeChangeNotification*)in_pData;
-			
-			XSI::CString	l_szMessage;
-			l_szMessage = L"XSI_TIME_CHANGE_CV";
-		
-			char *l_szMessChar = new char [ l_szMessage.Length() + 1 ];
-			//W2AHelper ( l_szMessChar, l_szMessage.GetWideString() );
-			//PrintNotification ( l_szMessChar );
-			delete [] l_szMessChar;
-			
-			break;
-		}
+    XSI::CTimeChangeNotification* l_pTimeChange = (XSI::CTimeChangeNotification*)in_pData;
 
-	case siOnObjectAdded:
-		{
-			//
-			// A new object is being added to the scene
-			// Print it's name 
-			//
+    XSI::CString	l_szMessage;
+    l_szMessage = L"XSI_TIME_CHANGE_CV";
+
+    char *l_szMessChar = new char [ l_szMessage.Length() + 1 ];
+    //W2AHelper ( l_szMessChar, l_szMessage.GetWideString() );
+    //PrintNotification ( l_szMessChar );
+    delete [] l_szMessChar;
+
+    break;
+  }
+
+  case siOnObjectAdded:
+  {
+    //
+    // A new object is being added to the scene
+    // Print it's name 
+    //
             
-			XSI::CObjectAddedNotification* l_pObjectAdded = (XSI::CObjectAddedNotification*)in_pData;
-			
-			XSI::CString	l_szMessage;
-			l_szMessage = L"XSI_OBJECT_ADDED_CV";
+    XSI::CObjectAddedNotification* l_pObjectAdded = (XSI::CObjectAddedNotification*)in_pData;
 
-			const XSI::CRef&	l_pCRef = l_pObjectAdded->GetObjectAdded();
-			XSI::SIObject mySIObject ( l_pCRef );
-			XSI::CString	Name = mySIObject.GetFullName();
+    XSI::CString l_szMessage;
+    l_szMessage = L"XSI_OBJECT_ADDED_CV";
 
-			l_szMessage += L"[ ";
-			l_szMessage += Name;
-			l_szMessage += L" ]";
-		
-			char *l_szMessChar = new char [ l_szMessage.Length() + 1 ];
-			//W2AHelper ( l_szMessChar, l_szMessage.GetWideString() );
-			//PrintNotification ( l_szMessChar );
-			delete [] l_szMessChar;
-			
-			break;
-		}
-    */
-	case siOnWindowEvent:
-		{
+    const XSI::CRef& l_pCRef = l_pObjectAdded->GetObjectAdded();
+    XSI::SIObject mySIObject ( l_pCRef );
+    XSI::CString Name = mySIObject.GetFullName();
 
-			XSI::CWindowNotification* lpWindowEvent = (XSI::CWindowNotification*)data;
+    l_szMessage += L"[ ";
+    l_szMessage += Name;
+    l_szMessage += L" ]";
 
-			switch (lpWindowEvent->GetWindowState())
-			{
-			case siWindowSize: 
-			{
-					int x,y,w,h;
+    char *l_szMessChar = new char [ l_szMessage.Length() + 1 ];
+    //W2AHelper ( l_szMessChar, l_szMessage.GetWideString() );
+    //PrintNotification ( l_szMessChar );
+    delete [] l_szMessChar;
 
-					lpWindowEvent->GetPosition (x,y,w,h);
-					char l_szMessage[MAX_PATH];
-					sprintf ( l_szMessage, "XSI_WINDOW_SIZE: (%d,%d) (%d, %d)",x,y,w,h);
-					LOG(l_szMessage);
-          break;
-				}
-			case siWindowPaint: LOG ( "XSI_WINDOW_PAINT"); break;
-			case siWindowSetFocus: 
+    break;
+  }
+  */
+  case siOnWindowEvent:
+  {
+    XSI::CWindowNotification* lpWindowEvent = (XSI::CWindowNotification*)data;
+    switch (lpWindowEvent->GetWindowState())
+    {
+      case siWindowSize: 
+      {
+        int x,y,w,h;
+
+        lpWindowEvent->GetPosition (x,y,w,h);
+        char l_szMessage[MAX_PATH];
+        sprintf ( l_szMessage, "XSI_WINDOW_SIZE: (%d,%d) (%d, %d)",x,y,w,h);
+        break;
+      }
+      case siWindowPaint: break;
+      case siWindowSetFocus: 
       {
         SetFocus(_hWnd);
         break;
       }
-			case siWindowLostFocus: 
+      case siWindowLostFocus: 
       {
         SetFocus(GetParent(_hWnd));
         break;
       }
-			}
-			break;
-		}
-    /*
-	case siOnObjectRemoved:
-		{
-			//
-			// An existing object is being removed from the scene (deleted)
-			// Print it's name 
-			//
+    }
+    break;
+  }
+  /*
+  case siOnObjectRemoved:
+  {
+    //
+    // An existing object is being removed from the scene (deleted)
+    // Print it's name 
+    //
             
-			XSI::CObjectRemovedNotification* l_pObjectRemoved = (XSI::CObjectRemovedNotification*)in_pData;
-			
-			XSI::CString	l_szMessage;
-			l_szMessage = L"XSI_OBJECT_REMOVED_CV";
+    XSI::CObjectRemovedNotification* l_pObjectRemoved = (XSI::CObjectRemovedNotification*)in_pData;
 
-			const XSI::CString	l_szObjectName = l_pObjectRemoved->GetObjectName();
-			const XSI::siBranchFlag l_eFlag = l_pObjectRemoved->GetBranchFlag();
-			l_szMessage += L"[ ";
-			l_szMessage += l_szObjectName;
+    XSI::CString l_szMessage;
+    l_szMessage = L"XSI_OBJECT_REMOVED_CV";
 
-			switch (l_eFlag)
-			{
-			case siNode:	l_szMessage += L" [Node] "; break;
-			case siBranch:	l_szMessage += L" [Branch] "; break;
-			case siUnspecified:	l_szMessage += L" [Unspecified] "; break;
-			}
+    const XSI::CString l_szObjectName = l_pObjectRemoved->GetObjectName();
+    const XSI::siBranchFlag l_eFlag = l_pObjectRemoved->GetBranchFlag();
+    l_szMessage += L"[ ";
+    l_szMessage += l_szObjectName;
 
-			l_szMessage += L" ]";
-		
-			char *l_szMessChar = new char [ l_szMessage.Length() + 1 ];
-			//W2AHelper ( l_szMessChar, l_szMessage.GetWideString() );
-			//PrintNotification ( l_szMessChar );
-			delete [] l_szMessChar;
-			
-			break;
-		}
+    switch (l_eFlag)
+    {
+      case siNode: l_szMessage += L" [Node] "; break;
+      case siBranch: l_szMessage += L" [Branch] "; break;
+      case siUnspecified:	l_szMessage += L" [Unspecified] "; break;
+    }
 
+    l_szMessage += L" ]";
 
-	case siOnValueChange:
-		{
-			//
-			// Something has changed in the scene.
-			//
+    char *l_szMessChar = new char [ l_szMessage.Length() + 1 ];
+    //W2AHelper ( l_szMessChar, l_szMessage.GetWideString() );
+    //PrintNotification ( l_szMessChar );
+    delete [] l_szMessChar;
 
-			XSI::CString	l_szMessage;
-			l_szMessage = L"XSI_SET_VALUE_CV ";
-		
-			XSI::CValueChangeNotification* l_pData = (XSI::CValueChangeNotification*) in_pData;
+    break;
+  }
 
-			//
-			// Get the object that generated the notification
-			//
-			XSI::CRef cRef = l_pData->GetOwner();
+  case siOnValueChange:
+  {
+    //
+    // Something has changed in the scene.
+    //
 
-			XSI::CString l_csCIDName = cRef.GetClassIDName();
+    XSI::CString l_szMessage;
+    l_szMessage = L"XSI_SET_VALUE_CV ";
 
-			//
-			// Get the full name of the parameter that has changed
-			//
+    XSI::CValueChangeNotification* l_pData = (XSI::CValueChangeNotification*) in_pData;
 
-			l_szMessage += l_csCIDName;
-			l_szMessage += L" [ ";
-			l_szMessage += l_pData->GetComponentName();
+    //
+    // Get the object that generated the notification
+    //
+    XSI::CRef cRef = l_pData->GetOwner();
 
-			// note: GetOwner returns the Softimage object that initiates the 
-			// notification. The returned object is actually a CRef object 
-			// which refers to the underlying Softimage object which can be accessed
-			// through an API class.
-			//			
-			// For instance, if a parameter value is changed on a primitive 
-			// object then GetOwner returns a reference (i.e. CRef) to the 
-			// primitive object. The CRef can then be used to access the 
-			// primitive's geometry with the Primitive API class.
-			// 
-			// Please refer to the CRef documentation page and the section
-			// entitled "Understanding the C++ library" in the on-line 
-			// documentation for more details.
-			//
+    XSI::CString l_csCIDName = cRef.GetClassIDName();
 
-			LONG objClassID = cRef.GetClassID();
-			switch (objClassID)
-			{
-				case siPrimitiveID:
-				{
-					Primitive primObj(cRef);
-					Geometry geomObj = primObj.GetGeometry();
-					LONG nPoints = geomObj.GetPoints().GetCount();
+    //
+    // Get the full name of the parameter that has changed
+    //
 
-					l_szMessage += L": Number of points: " + CValue(nPoints).GetAsText();
-				}
-				break;
+    l_szMessage += l_csCIDName;
+    l_szMessage += L" [ ";
+    l_szMessage += l_pData->GetComponentName();
 
-				case siParameterID:
-				{
-					Parameter paramObj(cRef);
-					l_szMessage += L": New value: " + paramObj.GetValue().GetAsText();
-				}
-				break;
+    // note: GetOwner returns the Softimage object that initiates the 
+    // notification. The returned object is actually a CRef object 
+    // which refers to the underlying Softimage object which can be accessed
+    // through an API class.
+    //
+    // For instance, if a parameter value is changed on a primitive 
+    // object then GetOwner returns a reference (i.e. CRef) to the 
+    // primitive object. The CRef can then be used to access the 
+    // primitive's geometry with the Primitive API class.
+    // 
+    // Please refer to the CRef documentation page and the section
+    // entitled "Understanding the C++ library" in the on-line 
+    // documentation for more details.
+    //
 
-				case siClusterID:
-				{
-					Cluster clustObj(cRef);
-					CClusterElementArray elemArray = clustObj.GetElements();
-					LONG nElems = elemArray.GetCount();
-					l_szMessage += L": Number of elements: " + CValue(nElems).GetAsText();
-				}
-				break;
-			}
+    LONG objClassID = cRef.GetClassID();
+    switch (objClassID)
+    {
+      case siPrimitiveID:
+      {
+        Primitive primObj(cRef);
+        Geometry geomObj = primObj.GetGeometry();
+        LONG nPoints = geomObj.GetPoints().GetCount();
 
-			l_szMessage += L" ] ";
+        l_szMessage += L": Number of points: " + CValue(nPoints).GetAsText();
+        break;
+      }
 
-			char *l_szMessChar = new char [ l_szMessage.Length() + 1 ];
-			//W2AHelper ( l_szMessChar, l_szMessage.GetWideString() );
-			//PrintNotification ( l_szMessChar );
-			delete [] l_szMessChar;
-			
-			break;
+      case siParameterID:
+      {
+        Parameter paramObj(cRef);
+        l_szMessage += L": New value: " + paramObj.GetValue().GetAsText();
+        break;
+      }
 
-		}
-    */
-	}
+      case siClusterID:
+      {
+        Cluster clustObj(cRef);
+        CClusterElementArray elemArray = clustObj.GetElements();
+        LONG nElems = elemArray.GetCount();
+        l_szMessage += L": Number of elements: " + CValue(nElems).GetAsText();
+        break;
+      }
+      
+    }
+
+    l_szMessage += L" ] ";
+
+    char *l_szMessChar = new char [ l_szMessage.Length() + 1 ];
+    //W2AHelper ( l_szMessChar, l_szMessage.GetWideString() );
+    //PrintNotification ( l_szMessChar );
+    delete [] l_szMessChar;
+    break;
+
+    }
+  */
+  }
 
 	return S_OK;
 }
@@ -323,7 +319,7 @@ LRESULT UsdExplorerWindow::Notify ( XSI::CRef& in_ctxt)
 
 void UsdExplorerWindow::InitGL()
 {
-  glewInit();
+  GarchGLApiLoad();
 
   _ctxt = ImGui::CreateContext(U2X_SHARED_ATLAS);
   ImGui::SetCurrentContext(_ctxt);
@@ -384,7 +380,6 @@ void UsdExplorerWindow::DrawItemBackground(ImDrawList* drawList,
 
 void UsdExplorerWindow::DrawBackground()
 {
-  
   auto* drawList = ImGui::GetBackgroundDrawList();
   const auto& style = ImGui::GetStyle();
 

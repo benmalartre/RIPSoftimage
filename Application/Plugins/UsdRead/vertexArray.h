@@ -6,7 +6,7 @@
 #pragma once
 
 #include "pxr/pxr.h"
-#include "pxr/imaging/glf/glew.h"
+#include <pxr/imaging/garch/glApi.h>
 
 #include "topology.h"
 #include "vertexBuffer.h"

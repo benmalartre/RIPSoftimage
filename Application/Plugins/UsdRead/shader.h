@@ -5,7 +5,7 @@
 #include <iostream>
 #include <boost/functional/hash.hpp>
 
-#include <GL/glew.h>
+#include <pxr/imaging/garch/glApi.h>
 
 static const char *VERTEX_SHADER =
 "#version 330                                             \n"

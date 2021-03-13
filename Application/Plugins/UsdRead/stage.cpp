@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include "common.h"
 #include "stage.h"
 #include "prim.h"
@@ -14,6 +13,8 @@
 #include <pxr/usd/usdGeom/basisCurves.h>
 #include <pxr/usd/usdGeom/bboxCache.h>
 #include <pxr/usd/usdGeom/metrics.h>
+#include <pxr/imaging/garch/glApi.h>
+
 
 int U2X_STAGE_ID = 0;
 

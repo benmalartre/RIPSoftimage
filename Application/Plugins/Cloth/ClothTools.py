@@ -6,7 +6,6 @@ from Globals import xsi
 from Globals import XSIUIToolKit
 import Utils as uti
 import Property as pro
-reload(pro)
 import Cloth as cc
 import ICETree as ice
 import XML as xml
@@ -147,13 +146,13 @@ def Cloth_Rigger_AddDriverTab(prop):
 def Cloth_Rigger_AddWeightMapTab(prop):
 	obj = prop.Parent3DObject
 	layout = prop.PPGLayout
-	list = pro.BuildListWeightMaps(obj, prop, "FurMaps")
+	weightmaps_list = pro.BuildListWeightMaps(obj, prop, "FurMaps")
 	
 	layout.AddGroup("WeightMaps")
-	if len(list) == 0:
+	if len(weightmaps_list) == 0:
 		layout.AddStaticText("This object contains no weightmap")
 	else:
-		item = layout.AddEnumControl("WeightMapChooser",list,"List",constants.siControlListBox)
+		item = layout.AddEnumControl("WeightMapChooser",weightmaps_list,"List",constants.siControlListBox)
 		item.SetAttribute(constants.siUINoLabel,True)
 def Cloth_Rigger_AddTargetTab(prop):
 	layout = prop.PPGLayout
@@ -220,17 +219,14 @@ def Cloth_Rigger_AddColliderTab(prop):
 	pro.GetLogo(prop)
 	pro.AddObjectList(prop,"ColliderMeshes")
 	
-	colid = prop.Parameters("ColliderMeshesList").Value + 1
-	colstr = prop.Parameters("ColliderMeshes").Value
+	colliders = prop.Parameters("ColliderMeshes").Value
 	
-	if not colstr:
+	if not colliders:
 		layout.AddStaticText("No Collider For this Syflex object")
 		layout.AddGroup("Self Collide")
 		layout.AddItem("SelfCollide","Apply")
 		layout.EndGroup()
 		return
-	
-	id = str(colid)
 
 	layout.AddGroup("Cloth Point Cluster")
 	layout.AddRow()
@@ -281,19 +277,18 @@ def Cloth_Rigger_AddPresetTab(prop):
 	item.SetAttribute(constants.siUINoLabel,True)
 	layout.EndGroup()
 	
-	v = prop.Parameters("PresetMethod").Value
+	method = prop.Parameters("PresetMethod").Value
 	
-	if v == 0:
+	if method == 0:
 		layout.AddGroup("AutoSaved")
 		path = ""
 		layout.AddStaticText("Prest File Saved as : \n"+path)
 		layout.EndGroup()
 		
-	elif  v == 1:
+	elif  method == 1:
 		layout.AddGroup("Presets")
 		aPresets = []
 		
-	#Hair_GroomProperty_GetPresetList()
 		layout.AddRow()
 		item = layout.AddEnumControl("PresetList",aPresets,"Presets",constants.siControlListBox)
 		item.SetAttribute(constants.siUINoLabel,True)
@@ -303,7 +298,7 @@ def Cloth_Rigger_AddPresetTab(prop):
 		layout.EndRow()
 		layout.EndGroup()
 		
-	elif v == 2:
+	elif method == 2:
 		layout.AddGroup("Preset")
 		item = layout.AddEnumControl("PresetFile",[],"Preset",constants.siControlFilePath)
 		item.SetAttribute(constants.siUIFileFilter,"XML files (*.xml)|*.xml:*.xml|All Files (*.*)|*.*||")
@@ -447,20 +442,20 @@ def Cloth_Rigger_CreateSoftMimicCluster_OnClicked():
 	uti.CreateClusterFromSelection(target,clsname)
 		
 def Cloth_Rigger_SelectColliderPolygonCluster_OnClicked():
-	id = pro.GetIDFromSelectedUIItem(PPG.Inspected(0),"ColliderMeshes")
+	item_id = pro.GetIDFromSelectedUIItem(PPG.Inspected(0),"ColliderMeshes")
 	target = pro.GetObjectFromSelectedUIItem(PPG.Inspected(0),"ColliderMeshes")
 	cls = xsi.OpenTransientExplorer( target, constants.siSEFilterPropertiesAndPrimitives, 3 )(0)
 	if cls and cls.Type == "poly":
-		PPG.Inspected(0).Parameters("ColliderPolygonCluster"+str(id)).Value = cls.Name
+		PPG.Inspected(0).Parameters("ColliderPolygonCluster"+str(item_id)).Value = cls.Name
 	else:
 		xsi.LogMessage("[Cloth_Rigger] Invalid Selection : Select a Polygon Cluster on Collider Geometry", constants.siWarning)
 
 def Cloth_Rigger_SelectCollidePointCluster_OnClicked():
-	id = pro.GetIDFromSelectedUIItem(PPG.Inspected(0),"ColliderMeshes")
+	item_id = pro.GetIDFromSelectedUIItem(PPG.Inspected(0),"ColliderMeshes")
 	target = PPG.Inspected(0).Parent3DObject
 	cls = xsi.OpenTransientExplorer( target, constants.siSEFilterPropertiesAndPrimitives, 3 )(0)
 	if cls and cls.Type == "pnt":
-		PPG.Inspected(0).Parameters("CollidePointCluster"+str(id)).Value = cls.Name
+		PPG.Inspected(0).Parameters("CollidePointCluster"+str(item_id)).Value = cls.Name
 	else:
 		xsi.LogMessage("[Cloth_Rigger] Invalid Selection : Select a Point Cluster on Cloth Geometry", constants.siWarning)
 		
@@ -742,21 +737,21 @@ def Cloth_GetColliderMeshes(prop):
 	split = v.split("|")
 	split.pop()
 	
-	id = 1
-	col = None
+	_id = 1
+	_col = None
 	for s in split:
-		col = model.FindChild(s)
+		_col = model.FindChild(s)
 			
-		if not col:
+		if not _col:
 			xsi.LogMessage("[Cloth_Rigger] Collider named "+s+" not found...\nRemove it from list!!",constants.siWarning)
 			continue
 
-		collider = cc.Collider(obj,col,False)
+		collider = cc.Collider(obj,_col,False)
 		collider.GetPntCls(prop)
 		collider.GetPolyCls(prop)
 		colliders.append(collider)
 		collider.Rig()
-		id += 1
+		_id += 1
 				
 	return colliders
 	
@@ -765,16 +760,16 @@ def Cloth_GetExtraCollider(prop):
 	parent = obj.Parent3DObject
 	
 	model = obj.Model
-	col = model.FindChild("ExtraCollider")
-	if not col:
-		id = pro.GetNbObjectsInList(prop,"ColliderMeshes")
+	_col = model.FindChild("ExtraCollider")
+	if not _col:
+		_id = pro.GetNbObjectsInList(prop,"ColliderMeshes")
 		
 		col = parent.AddPrimitive("EmptyPolygonMesh","ExtraCollider")
 		tree = ice.CreateICETree(col,"ClothExtraCollider",0)
 		compound = xsi.AddICECompoundNode("ClothExtraCollider", str(tree))
 		xsi.ConnectICENodes(str(tree)+".port1", str(compound)+".execute")
 		
-	extra = cc.Collider(obj,col,True)
+	extra = cc.Collider(obj,_col,True)
 	extra.GetPntCls(prop)
 	extra.GetPolyCls(prop)
 	extra.Rig()
