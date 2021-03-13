@@ -59,3 +59,4 @@ windows
 *x64*
 *.pys
 *ipch*
+*/build/*
