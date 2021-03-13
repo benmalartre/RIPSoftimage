@@ -31,7 +31,7 @@
 #include <xsi_progressbar.h>
 
 #include <pxr/pxr.h>
-#include <pxr/base/tf/hash.h>
+#include <pxr/base/arch/hash.h>
 #include <pxr/usd/usd/stage.h>
 #include <pxr/usd/usd/prim.h>
 #include <pxr/usd/usdGeom/camera.h>
