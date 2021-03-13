@@ -3,7 +3,7 @@
 # --------------------------------------------
 import math
 
-from Globals import xsi
+from Globals import XSI
 from Globals import XSIMath
 from win32com.client import constants as siConstants
 import Utils as uti
@@ -12,7 +12,7 @@ import Utils as uti
 # Create Rig Control Curve
 def IRIcon( parent, name, t, color, icon, width=1, height=1, depth=1, po=None, ro=None, ap=None):
 	if not parent:
-		parent = xsi.ActiveSceneRoot
+		parent = XSI.ActiveSceneRoot
 		
 	if not po:
 		po = XSIMath.CreateVector3()
@@ -72,7 +72,7 @@ def IRIcon( parent, name, t, color, icon, width=1, height=1, depth=1, po=None, r
 	elif icon == "null":
 		ctl = null(parent, name, width, color, t, po, ro)
 	else: 
-		xsi.LogMessage("[RigIcon] : invalid type of icon", siConstants.siError)
+		XSI.LogMessage("[RigIcon] : invalid type of icon", siConstants.siError)
 		return
 			
 	return ctl

@@ -148,3 +148,4 @@ set (ADDITIONAL_LIBRARIES Comctl32)
 
 add_subdirectory (UsdRead)
 add_subdirectory (UsdWrite)
+add_subdirectory (IceRig)

@@ -1,22 +1,22 @@
 # -------------------------------------------------------------------
 # ICETree
 # -------------------------------------------------------------------
-from Globals import xsi
+from Globals import XSI
 
 # -------------------------------------------------------------------
 # Merged Rig Cloud
 # -------------------------------------------------------------------
 def MergeRigCloud(model, clouds, name):
 	cloud = model.AddPrimitive("PointCloud", name)
-	tree = xsi.ApplyOp("ICETree", cloud, "siNode", "", "", 2)
+	tree = XSI.ApplyOp("ICETree", cloud, "siNode", "", "", 2)
 	idx = 1
 	for c in clouds:
-		merge = xsi.AddICECompoundNode("MergeRigPointCloud", str(tree))
-		xsi.AddPortToICENode(str(tree)+".port"+str(idx), "siNodePortDataInsertionLocationAfter")
-		xsi.ConnectICENodes(str(tree)+".port"+str(idx), str(merge)+".execute")
-		get = xsi.AddICENode("GetDataNode", str(tree))
-		xsi.SetValue(str(get)+".reference", ReplaceModelNameByThisModel(c), "")
-		xsi.ConnectICENodes(str(merge)+".Cloud", str(get)+".outname")
+		merge = XSI.AddICECompoundNode("MergeRigPointCloud", str(tree))
+		XSI.AddPortToICENode(str(tree) + ".port" + str(idx), "siNodePortDataInsertionLocationAfter")
+		XSI.ConnectICENodes(str(tree) + ".port" + str(idx), str(merge) + ".execute")
+		get = XSI.AddICENode("GetDataNode", str(tree))
+		XSI.SetValue(str(get) + ".reference", ReplaceModelNameByThisModel(c), "")
+		XSI.ConnectICENodes(str(merge) + ".Cloud", str(get) + ".outname")
 		idx += 1
 
 
@@ -25,7 +25,7 @@ def MergeRigCloud(model, clouds, name):
 # -------------------------------------------------------------------
 def ReplaceModelNameByThisModel(obj, inmodel=None):
 	if inmodel == None:
-		inmodel = xsi.ActiveSceneRoot
+		inmodel = XSI.ActiveSceneRoot
 	fullname = obj.FullName
 	model = obj.Model
 	if model.FullName == inmodel.FullName:
@@ -68,14 +68,14 @@ def GetObjectFromReferenceValue(node):
 # Create Empty ICETree
 # -------------------------------------------------------------------
 def CreateICETree(cloud, name="ICETree", constructionhistory=0):
-	tree = xsi.ApplyOp("ICETree", cloud, "siNode", "", "", constructionhistory)
-	ICETree = xsi.Dictionary.GetObject(tree)
+	tree = XSI.ApplyOp("ICETree", cloud, "siNode", "", "", constructionhistory)
+	ICETree = XSI.Dictionary.GetObject(tree)
 	ICETree.Name = name
 	return ICETree
 
 def CreateSimulatedICETree(cloud, name="ICETree"):
-	tree = xsi.CreateSimulatedICETree(cloud);
-	ICETree = xsi.Dictionary.GetObject(tree)
+	tree = XSI.CreateSimulatedICETree(cloud);
+	ICETree = XSI.Dictionary.GetObject(tree)
 	ICETree.Name = name
 	return ICETree
 

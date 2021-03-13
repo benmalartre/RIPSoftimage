@@ -2,157 +2,157 @@
 # Simple XML read/write for storing compound values
 # Only support for simple DataType (bool, int, float)
 # -------------------------------------------------------------------
-from win32com.client import constants as siConstants
-from Globals import xsi
+from win32com.client import constants
+from Globals import XSI
 from Globals import Dispatch
 import xml.etree.ElementTree as xml
 import os
-from os import path
+
 
 def CheckFileExists(path):
 	return os.path.exists(path)
 
 
 def AddParameterToXML(root, parameter):
-	param = xml.Element("parameter")
-	param.attrib["datatype"] = str(parameter.ValueType)
-	param.attrib["name"] = parameter.ScriptName
-	param.attrib["value"] = str(parameter.Value)
+	param = xml.Element('parameter')
+	param.attrib['datatype'] = str(parameter.ValueType)
+	param.attrib['name'] = parameter.ScriptName
+	param.attrib['value'] = str(parameter.Value)
 	
 	root.append(param)
 
 
 def AddOperatorToXML(root, operator):
-	op = xml.Element("operator")
+	op = xml.Element('operator')
 	
-	op.attrib["type"] = str(operator.Type)
+	op.attrib['type'] = str(operator.Type)
 	split = operator.FullName.split(".")
-	s = split.pop()
-	op.attrib["name"] = s
+	last = split.pop()
+	op.attrib['name'] = last
 	
-	for p in operator.Parameters:
-		if p.Animatable:
-			AddParameterToXML(op, p)
+	for parameter in operator.Parameters:
+		if parameter.Animatable:
+			AddParameterToXML(op, parameter)
 			
 	root.append(op)
 
 
 def AddInputPortToXML(root, port):
-	dt =port.DataType
+	data_type =port.DataType
 	
 	elem = xml.Element("port")
-	elem.attrib["datatype"] = str(dt)
-	if dt<8:
+	elem.attrib["datatype"] = str(data_type)
+	if data_type < 8:
 		elem.attrib["name"] = port.Name
 		elem.attrib["value"] = str(port.Value)
 		
 	root.append(elem)
 
 
-def WriteSyflexXMLPreset(pth, clothop):
-	xsi.LogMessage("Write Syflex XML Preset called :: "+pth)
-	root = xml.Element("syCloth")
+def WriteSyflexXMLPreset(filename, cloth):
+	XSI.LogMessage('Write Syflex XML Preset called : {}'.format(filename))
+	root = xml.Element('syCloth')
 	
-	for n in clothop.NestedObjects:
-		if n.IsClassOf(siConstants.siParameterID):
-			if not n.ReadOnly and n.Animatable:
-				AddParameterToXML(root, n)
-		elif n.IsClassOf(siConstants.siOperatorID):
-			AddOperatorToXML(root, n)
+	for item in cloth.NestedObjects:
+		if item.IsClassOf(constants.siParameterID):
+			if not item.ReadOnly and item.Animatable:
+				AddParameterToXML(root, item)
+		elif item.IsClassOf(constants.siOperatorID):
+			AddOperatorToXML(root, item)
 
-	f= open(pth, 'w')
-	xml.ElementTree(root).write(f)
-	f.close()
+	_file = open(filename, 'w')
+	xml.ElementTree(root).write(_file)
+	_file.close()
 
 
-def ReadSyflexXMLPreset(pth, clothop):
-	if not CheckFileExists(pth) :
-		xsi.LogMessage("[Read Syflex XML Preset] File : "+pth+" doesn't exists...")
+def ReadSyflexXMLPreset(filename, cloth):
+	if not CheckFileExists(filename):
+		XSI.LogMessage("[Read Syflex XML Preset] File : " + filename + " doesn't exists...")
 		return
 		
-	if not clothop:
-		xsi.LogMessage("[Read Syflex XML Preset] Invalid Output syCloth Operator ...")
+	if not cloth:
+		XSI.LogMessage("[Read Syflex XML Preset] Invalid Output syCloth Operator ...")
 		return
 		
-	tree = xml.parse(pth)
+	tree = xml.parse(filename)
 	root = tree.getroot()
 	
-	ops = root.findall("operator")
-	params = root.findall("parameter")
+	all_operators = root.findall("operator")
+	all_parameters = root.findall("parameter")
 	
-	for n in clothop.NestedObjects:
-		if n.IsClassOf(siConstants.siParameterID):
-			if not n.ReadOnly and n.Animatable:
-				value = GetParameterValueFromList(n.Name, params)
+	for item in cloth.NestedObjects:
+		if item.IsClassOf(constants.siParameterID):
+			if not item.ReadOnly and item.Animatable:
+				value = GetParameterValueFromList(item.Name, all_parameters)
 				if value:
-					n.Value = value
+					item.Value = value
 
-		elif n.IsClassOf(siConstants.siOperatorID):
-			op = GetOperatorFromList(n, ops)
+		elif item.IsClassOf(constants.siOperatorID):
+			op = GetOperatorFromList(item, all_operators)
 			if op:
-				params = op.findall("parameter")
-				for p in params:
-					SetParameterValueFromElement(p, n)
+				op_parameters = op.findall("parameter")
+				for op_parameter in op_parameters:
+					SetParameterValueFromElement(op_parameter, item)
 
 
-def GetParameterValueFromList(pName,pList):
+def GetParameterValueFromList(name, parameters):
 	try:
-		for p in pList:
-			if p.attrib["name"] == pName:
-				dt = int(p.attrib["datatype"])
-				if dt == siConstants.siBool:
-					if p.attrib["value"] == "False":
+		for parameter in parameters:
+			if parameter.attrib['name'] == name:
+				data_type = int(parameter.attrib['datatype'])
+				if data_type == constants.siBool:
+					if parameter.attrib['value'] == 'False':
 						return False
 					else:
 						return True
-				elif dt == siConstants.siInt2 or dt == siConstants.siInt4:
-					return int(p.attrib["value"])
-				elif dt == siConstants.siFloat or dt == siConstants.siDouble:
-					return float(p.attrib["value"])
-				elif dt == siConstants.siString:
-					return p.attrib["value"]
+				elif data_type == constants.siInt2 or data_type == constants.siInt4:
+					return int(parameter.attrib['value'])
+				elif data_type == constants.siFloat or data_type == constants.siDouble:
+					return float(parameter.attrib['value'])
+				elif data_type == constants.siString:
+					return parameter.attrib['value']
 				else:
 					return None
-	except:
+	except RuntimeError:
 		return None
 	return None
 
 
 def SetParameterValueFromElement(elem, op):
-	pName = elem.attrib["name"]
-	param = op.Parameters(pName)
+	name = elem.attrib['name']
+	param = op.Parameters(name)
 	
 	if param:
-		dt = int(elem.attrib["datatype"])
-		if dt == siConstants.siBool:
-			if elem.attrib["value"] == "True":
+		data_type = int(elem.attrib['datatype'])
+		if data_type == constants.siBool:
+			if elem.attrib['value'] == 'True':
 				param.Value = True
 			else:
 				param.Value = False
 				
-		elif dt == siConstants.siInt2 or dt == siConstants.siInt4:
-			param.Value = int(elem.attrib["value"])
+		elif data_type == constants.siInt2 or data_type == constants.siInt4:
+			param.Value = int(elem.attrib['value'])
 			
-		elif dt == siConstants.siFloat or dt == siConstants.siDouble:
-			param.Value = float(elem.attrib["value"])
-		elif dt == siConstants.siString:
-			param.Value = elem.attrib["value"]
+		elif data_type == constants.siFloat or data_type == constants.siDouble:
+			param.Value = float(elem.attrib['value'])
+		elif data_type == constants.siString:
+			param.Value = elem.attrib['value']
 
 
-def GetOperatorFromList(op, opList):
+def GetOperatorFromList(op, operators):
 	split = op.FullName.split(".")
-	opName = split.pop()
+	op_name = split.pop()
 	try:
-		for o in opList:
-			if o.attrib["name"] == opName:
-				return o
-	except:
+		for op in operators:
+			if op.attrib["name"] == op_name:
+				return op
+	except RuntimeError:
 		return None
 	return None
 
 
 def WriteCompoundsXMLPreset(pth, compounds, title="Compound"):
-	xsi.LogMessage("Write Compounds XML Preset called :: "+pth)
+	XSI.LogMessage("Write Compounds XML Preset called :: " + pth)
 	root = xml.Element(title)
 	for c in compounds:
 		compound = xml.Element(c.Name)
@@ -167,7 +167,7 @@ def WriteCompoundsXMLPreset(pth, compounds, title="Compound"):
 
 
 def WriteCompoundXMLPreset(pth, compound):
-	xsi.LogMessage("Write Compound XML Preset called :: "+pth)
+	XSI.LogMessage("Write Compound XML Preset called :: " + pth)
 	root = xml.Element(compound.Name)
 	ports = compound.InputPorts
 	for p in ports:
@@ -180,11 +180,11 @@ def WriteCompoundXMLPreset(pth, compound):
 
 def ReadCompoundXMLPreset(pth, compound):
 	if not CheckFileExists(pth):
-		xsi.LogMessage("[Read Compound XML Preset] File : "+pth+" doesn't exists...")
+		XSI.LogMessage("[Read Compound XML Preset] File : " + pth + " doesn't exists...")
 		return
 		
 	if not compound:
-		xsi.LogMessage("[Read Compound XML Preset] Invalid Output Compound ...")
+		XSI.LogMessage("[Read Compound XML Preset] Invalid Output Compound ...")
 		return
 		
 	tree = xml.parse(pth)
@@ -219,7 +219,7 @@ def ReadCompoundXMLPreset(pth, compound):
 
 def ReadCompoundsXMLPreset(pth, compounds):
 	if not CheckFileExists(pth):
-		xsi.LogMessage("[Read Compounds XML Preset] File : "+pth+" doesn't exists...")
+		XSI.LogMessage("[Read Compounds XML Preset] File : " + pth + " doesn't exists...")
 		return
 	
 	tree = xml.parse(pth)
@@ -227,7 +227,7 @@ def ReadCompoundsXMLPreset(pth, compounds):
 		
 	for c in compounds:
 		if not c:
-			xsi.LogMessage("[Read Compounds XML Preset] Invalid Output Compound ...")
+			XSI.LogMessage("[Read Compounds XML Preset] Invalid Output Compound ...")
 			continue
 
 		compound = root.find(c.Name)
@@ -268,7 +268,7 @@ def GetCageDeformedObjectFromConnectionStack(obj):
 		obj = c.find("object")
 		n = obj.text
 		if n.find("cagedeformop") > -1:
-			op = xsi.Dictionary.GetObject(n)
+			op = XSI.Dictionary.GetObject(n)
 			target = op.Parent3DObject
 			return target
 	return None

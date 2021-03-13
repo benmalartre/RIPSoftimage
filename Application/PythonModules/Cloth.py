@@ -1,126 +1,130 @@
-# -------------------------------------------------------------------
-# Cloth
-# -------------------------------------------------------------------
-from win32com.client import constants as siConstants
-from Globals import xsi
+from win32com.client import constants
+from Globals import XSI
 from Globals import XSIUIToolKit
-import Utils as uti
-import ICETree as ice
+import Utils
+import ICETree
 
 
-# --------------------------------------------
-# Collider Class
-# --------------------------------------------
 class Collider:
 	def __init__(self, obj, collider, extra=False):
 		self.object = obj
 		self.collider = collider
-		self.pntcls = None
-		self.polycls = None
+		self.pntCluster = None
+		self.polyCluster = None
 		self.extra = extra
 		
 		if not extra:
-			self.pntclsname = "Collide_"+collider.Name
-			self.polyclsname = "Collide_"+obj.Name
+			self.pntClusterName = 'Collide_{}'.format(collider.Name)
+			self.polyClusterName = 'Collide_{}'.format(obj.Name)
 		else:
-			self.pntclsname = "Collide_Extra"
-			self.polyclsname = "Collide_"+obj.Name
+			self.pntClusterName = 'Collide_Extra'
+			self.polyClusterName = 'Collide_{}'.format(obj.Name)
 		
-	def GetPntCls(self, prop):
-		self.pntcls = self.object.ActivePrimitive.Geometry.Clusters.Find(self.pntclsname)
-		if not self.pntcls:
-			self.pntcls = uti.CreateCompleteButNotAlwaysCluster(self.object,
-																siConstants.siVertexCluster,
-																self.pntclsname)
+	def GetPntCluster(self):
+		self.pntCluster = self.object.ActivePrimitive.Geometry.Clusters.Find(self.pntClusterName)
+		if not self.pntCluster:
+			self.pntCluster = Utils.CreateCompleteButNotAlwaysCluster(
+				self.object,
+				constants.siVertexCluster,
+				self.pntClusterName
+			)
 		
-	def GetPolyCls(self, prop):
-		self.polycls = self.collider.ActivePrimitive.Geometry.Clusters(self.polyclsname)
-		if not self.polycls:
+	def GetPolyCluster(self):
+		self.polyCluster = self.collider.ActivePrimitive.Geometry.Clusters(self.polyClusterName)
+		if not self.polyCluster:
 			if self.extra:
-				self.polycls = uti.CreateAlwaysCompleteCluster(self.collider,
-															   siConstants.siPolygonCluster,
-															   self.polyclsname)
+				self.polyCluster = Utils.CreateAlwaysCompleteCluster(
+					self.collider,
+					constants.siPolygonCluster,
+					self.polyClusterName
+				)
 			else:
-				self.polycls = uti.CreateCompleteButNotAlwaysCluster(self.collider,
-																	 siConstants.siPolygonCluster,
-																	 self.polyclsname)
+				self.polyCluster = Utils.CreateCompleteButNotAlwaysCluster(
+					self.collider,
+					constants.siPolygonCluster,
+					self.polyClusterName)
 		
 	def Rig(self):
-		clothop = GetClothOperator(self.object)
-		if not clothop:
-			XSIUIToolKit.MsgBox("No Syflex Operator on "+str(self.object)+"\n Fuck You!",
-								siConstants.siMsgCritical, "ClothBuilder")
+		cloth_op = GetClothOperator(self.object)
+		if not cloth_op:
+			XSIUIToolKit.MsgBox(
+				'No Syflex Operator on "{}"+"'.format(self.object),
+				constants.siMsgCritical, 'ClothBuilder')
 			return
 		
-		collideop = xsi.ApplyOperator("syCollide", clothop.FullName +";"+
-													 self.pntcls.FullName +";"+
-													 self.collider.ActivePrimitive.FullName +";"+
-													 self.collider.Kinematics.FullName+";"+
-													 self.polycls.FullName +";"+
-													 self.object.Kinematics.FullName)
-		collideop.Parameters("Reset").Value = True
+		collide_op = XSI.ApplyOperator('syCollide', ';'.join([
+			cloth_op.FullName,
+			self.pntCluster.FullName,
+			self.collider.ActivePrimitive.FullName,
+			self.collider.Kinematics.FullName,
+			self.polyCluster.FullName,
+			self.object.Kinematics.FullName
+		]))
+
+		collide_op.Parameters('Reset').Value = True
 		
-		collideop.Parameters("ExtEnvelope").Value = 0.05
-		collideop.Parameters("IntEnvelope").Value = -0.05
-		collideop.Parameters("Friction").Value = 0.2
-		collideop.Parameters("Damp").Value = 0.01
+		collide_op.Parameters('ExtEnvelope').Value = 0.05
+		collide_op.Parameters('IntEnvelope').Value = -0.05
+		collide_op.Parameters('Friction').Value = 0.2
+		collide_op.Parameters('Damp').Value = 0.01
 		
 		# if this collider isn't a cloth object
 		# nor extra collider object we add pre roll setup
-		if not self.collider.Properties("Cloth_Rigger") and not self.extra:
-			#Create Init ICE Tree
+		if not self.collider.Properties('Cloth_Rigger') and not self.extra:
+			# create init ICE tree
 			trees = self.collider.ActivePrimitive.ICETrees
-			if not trees.Find("InitCollide"):
-				tree = ice.CreateIceTree(self.collider, "InitCollide",1)
-				compound = xsi.AddICECompoundNode("ClothInitTarget", str(tree))
-				xsi.ConnectICENodes(str(tree)+".port1", str(compound)+".Execute")
+			if not trees.Find('InitCollide'):
+				tree = ICETree.CreateIceTree(self.collider, 'InitCollide', 1)
+				compound = XSI.AddICECompoundNode('ClothInitTarget', str(tree))
+				XSI.ConnectICENodes('{}.port1'.format(tree), '{}.Execute'.format(compound))
 			
-			#Create PreRoll ICE Tree
-			if not trees.Find("PreRollCollide"):
-				tree = ice.CreateIceTree(self.collider, "PreRollCollide",3)
-				compound = xsi.AddICECompoundNode("ClothTargetPreRoll", str(tree))
-				xsi.ConnectICENodes(str(tree)+".port1", str(compound)+".Execute")
+			# create pre-roll ICE tree
+			if not trees.Find('PreRollCollide'):
+				tree = ICETree.CreateIceTree(self.collider, 'PreRollCollide', 3)
+				compound = XSI.AddICECompoundNode('ClothTargetPreRoll', str(tree))
+				XSI.ConnectICENodes('{}.port1'.format(tree), '{}.Execute'.format(compound))
 
 
 # --------------------------------------------
 # Nail Class
 # --------------------------------------------
 class Nail:
-	def __init__(self, obj, nail, pntcls=None, id=0):
+	def __init__(self, obj, nail, cluster=None, idx=0):
 		self.object = obj
 		self.nail = nail
-		self.pntcls = pntcls
-		self.id = id
-		
-		self.pntclsname = "NailPoints"+str(id)+"Cls"
+		self.cluster = cluster
+		self.id = idx
+		self.name = 'NailPoints {} Cluster'.format(idx)
 		
 	def GetPntCls(self):
-		if self.pntcls == None:
-			self.pntcls = uti.CreateCompleteButNotAlwaysCluster(self.object,
-																siConstants.siVertexCluster,
-																self.pntclsname)
+		if not self.cluster:
+			self.cluster = Utils.CreateCompleteButNotAlwaysCluster(
+				self.object,
+				constants.siVertexCluster,
+				self.name)
 			
-		return self.pntcls
+		return self.cluster
 
 
 # --------------------------------------------
 # Get Cloth Operator
 # --------------------------------------------
 def GetClothOperator(obj):
-	opstack = obj.ActivePrimitive.ConstructionHistory
-	for op in opstack:
-		if op.Type == "syCloth":
+	op_stack = obj.ActivePrimitive.ConstructionHistory
+	for op in op_stack:
+		if op.Type == 'syCloth':
 			return op
 
 	return None
 
+
 # --------------------------------------------
 # Is Syflex
 # --------------------------------------------
-def IsSyflex(inObj):
-	hist = inObj.ActivePrimitive.ConstructionHistory
+def IsSyflex(obj):
+	hist = obj.ActivePrimitive.ConstructionHistory
 	for h in hist:
-		if h.Type == "syCloth":
+		if h.Type == 'syCloth':
 			return h
 	return None
 
@@ -129,16 +133,12 @@ def IsSyflex(inObj):
 # Find Syflex Meshes
 # --------------------------------------------
 def FindSyflexMeshes(model=None):
-	syflex  = xsi.FindObjects(None, "{513A555C-13F2-4D77-82E7-C35D14B789C1}")
-	meshes = []
-	for s in syflex:
-		m = s.OutputPorts(0).Target2.Parent
-		if not model:
-			meshes.Add(m)
-		else:
-			if model.Name == m.Model.Name:
-				meshes.append(m)
-	return meshes
+	all_syflex = XSI.FindObjects(None, '{513A555C-13F2-4D77-82E7-C35D14B789C1}')
+	if model:
+		return [syflex.OutputPorts(0).Target2.Parent for syflex in all_syflex
+				if (model.Name == syflex.OutputPorts(0).Target2.Parent.Model.Name)]
+	else:
+		return [syflex.OutputPorts(0).Target2.Parent for syflex in all_syflex]
 
 
 # --------------------------------------------
@@ -147,12 +147,12 @@ def FindSyflexMeshes(model=None):
 def FindColliderMeshes(cloth):
 	if not IsSyflex(cloth):
 		return None
-	syflex  = cloth.ActivePrimitive.ConstructionHistory.Find("syCloth")
+	all_syflex = cloth.ActivePrimitive.ConstructionHistory.Find('syCloth')
 	colliders = []
-	for s in syflex.NestedObjects:
-		if s.Type == "syCollide":
-			m = s.InputPorts(2).Target2.Parent3DObject
-			colliders.append(m)
+	for syflex in all_syflex.NestedObjects:
+		if syflex.Type == 'syCollide':
+			mesh = syflex.InputPorts(2).Target2.Parent3DObject
+			colliders.append(mesh)
 	return colliders
 
 
@@ -160,10 +160,6 @@ def FindColliderMeshes(cloth):
 # Find Pattern Meshes
 # --------------------------------------------
 def FindPatternMeshes(model):	
-	objects = model.FindChildren("", "", siConstants.si3DObjectFamily, True)
-	patterns = []
-	for o in objects:
-		if o.Properties("Cloth_Rigger"):
-			patterns.append(o)
-			
-	return patterns
+	objects = model.FindChildren('', '', constants.si3DObjectFamily, True)
+	return [obj for obj in objects if obj.Properties('Cloth_Rigger')]
+

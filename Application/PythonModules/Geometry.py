@@ -1,75 +1,75 @@
 # -------------------------------------------------------------------
 # Geometry
 # -------------------------------------------------------------------
-from win32com.client import constants as siConstants
-from Globals import xsi
+from win32com.client import constants
+from Globals import XSI
 from Globals import XSIFactory
-import Element as ele
-import Skeleton as ske
-import Utils as uti
-import ICETree as tre
+import Element
+import Skeleton
+import Utils
+import ICETree
 
 
 # -------------------------------------------------------------------
 # Geometry Element Class
 # -------------------------------------------------------------------
-class IRGeometry(ele.IRElement):
-	def __init__(self,prop, parent, name):
-		super(IRGeometry, self).__init__(prop, parent,name)
+class IRGeometry(Element.IRElement):
+	def __init__(self, prop, parent, name):
+		super(IRGeometry, self).__init__(prop, parent, name)
 		self.builder = prop
 		
 	def AddToRig(self):
-		sel = xsi.Selection
-		self.list = "GeometryList"
-		self.chooser = "GeometryChooser"
+		sel = XSI.Selection
+		self.list = 'GeometryList'
+		self.chooser = 'GeometryChooser'
 		
 		sList = self.builder.Parameters(self.list).Value
 		
-		if sel.Count>0:
+		if sel.Count > 0:
 			for s in sel:
 				if s.Type == "polymsh" or s.Type == "crvlist":
 					sList = self.UpdateGeometryList(s)
 				else:
-					xsi.LogMessage("[RigBuilder] Accepts only POLYMESH or CRVLIST ---> "+str(s)+" : Skipped!!")
+					XSI.LogMessage("[RigBuilder] Accepts only POLYMESH or CRVLIST ---> " + str(s) + " : Skipped!!")
 					
 		else:
-			objs = uti.PickMultiElement(siConstants.siPolyMeshFilter, "Pick Geometries To Deform")
+			objs = Utils.PickMultiElement(constants.siPolyMeshFilter, 'Pick Geometries To Deform')
 			for o in objs:
 				sList = self.UpdateGeometryList(o)
 		
-		aUIItems = ele.BuildListFromString(sList)
+		ui_items = Element.BuildListFromString(sList)
 		layout = self.builder.PPGLayout
 		cnt = layout.Count
 		for i in range(cnt):
 			if layout.Item(i).Name == self.chooser:
-				layout.Item(i).UIItems = aUIItems 
+				layout.Item(i).UIItems = ui_items
 		
 	def RemoveFromRig(self):
-		self.list = "GeometryList"
-		self.chooser = "GeometryChooser"
+		self.list = 'GeometryList'
+		self.chooser = 'GeometryChooser'
 		
 		ID = self.builder.Parameters(self.chooser).Value
 		geoname = self.builder.Parameters(self.chooser).value
 		
 		sList = self.RemoveFromList(geoname)
 		
-		aUIItems = ele.BuildListFromString(sList)
+		aUIItems = Element.BuildListFromString(sList)
 		layout = self.builder.PPGLayout
 		cnt = layout.Count
 		for i in range(cnt):
 			if layout.Item(i).Name == self.chooser:
 				layout.Item(i).UIItems = aUIItems 
 		
-	def UpdateGeometryList(self,geo):
+	def UpdateGeometryList(self, geo):
 		sList = self.builder.Parameters(self.list).Value
 		if not self.ExistInList(geo.Name):
-			sList+=geo.Name+"|"
+			sList += geo.Name+'|'
 			self.builder.Parameters(self.list).Value = sList
 		return sList
 			
-	def RemoveFromList(self,geoname):
+	def RemoveFromList(self, name):
 		sList = self.builder.Parameters(self.list).Value
-		sList = sList.replace(geoname+"|","")
+		sList = sList.replace(name + '|', '')
 		self.builder.Parameters(self.list).Value = sList
 		return sList
 
@@ -78,21 +78,20 @@ class IRGeometry(ele.IRElement):
 # Bind Skin To Skeleton
 # -------------------------------------------------------------------
 def BindSkinToSkeleton(model, skin):
-	
-	#prepare mesh
-	uti.GetWeightMap(skin, "SmoothWeightMap", 1, 0, 1)
-	uti.GetWeightMap(skin, "SearchMap", 1, 0, 1)
-	uti.GetWeightMap(skin, "StretchMap", 1, 0, 1)
-	uti.GetWeightMap(skin, "BulgeMap", 1, 0, 1)
-	uti.GetWeightMap(skin, "RaycastMap", 0, 0, 1)
-	uti.GetWeightMap(skin, "MuscleMap", 0, 0, 1)
+	# prepare mesh
+	Utils.GetWeightMap(skin, 'SmoothWeightMap', 1, 0, 1)
+	Utils.GetWeightMap(skin, 'SearchMap', 1, 0, 1)
+	Utils.GetWeightMap(skin, 'StretchMap', 1, 0, 1)
+	Utils.GetWeightMap(skin, 'BulgeMap', 1, 0, 1)
+	Utils.GetWeightMap(skin, 'RaycastMap', 0, 0, 1)
+	Utils.GetWeightMap(skin, 'MuscleMap', 0, 0, 1)
 	
 	# get weights
-	tree = tre.CreateICETree(skin, "GetWeights", 0)
-	weights = xsi.AddICECompoundNode("IRGetSkeletonWeights", str(tree))
-	xsi.ConnectICENodes(str(tree)+".port1", str(weights)+".execute")
+	tree = ICETree.CreateICETree(skin, 'GetWeights', 0)
+	compound = XSI.AddICECompoundNode('IRGetSkeletonWeights', str(tree))
+	XSI.ConnectICENodes('{}.port1'.format(tree), '{}.execute'.format(compound))
 	
-	# NO deform
+	# no deform
 	'''
 	tree = tre.CreateICETree(skin,"Deform",2)
 	deform = xsi.AddICECompoundNode("ICE Envelope Skeleton", str(tree))
@@ -105,38 +104,38 @@ def BindSkinToSkeleton(model, skin):
 # -------------------------------------------------------------------
 def CreateEnvelopeDuplicate(model, skin):
 	# check ICE skeleton
-	skel = model.FindChild("ICE_Skeleton")
+	skeleton = model.FindChild('ICE_Skeleton')
 	
 	# check envelope group
-	env_grp = model.Groups("Envelope")
+	env_grp = model.Groups('Envelope')
 
-	if not skel:
-		xsi.LogMessage("[CreateEnvelopeDuplicate] No ICE Skeleton or no Envelope Group!", siConstants.siWarning)
+	if not skeleton:
+		XSI.LogMessage('[CreateEnvelopeDuplicate] No ICE Skeleton or no Envelope Group!', constants.siWarning)
 		return
 	
 	# check nb deformers
-	nbp = skel.ActivePrimitive.Geometry.Points.Count
-	if not env_grp or not nbp == env_grp.Members.Count:
-		env_grp = ske.CreateEnvelopeNullsFromSkeletonCloud(model)
+	num_points = skeleton.ActivePrimitive.Geometry.Points.Count
+	if not env_grp or not num_points == env_grp.Members.Count:
+		env_grp = Skeleton.CreateEnvelopeNullsFromSkeletonCloud(model)
 		
 	# duplicate mesh
-	dup = uti.GetMeshCopy(skin)
+	dup = Utils.GetMeshCopy(skin)
 	skin.Parent3DObject.AddChild(dup)
-	skin.Properties("Visibility").Parameters("ViewVis").Value = False
+	skin.Properties('Visibility').Parameters('ViewVis').Value = False
 	
-	xsi.ApplyFlexEnv(dup.FullName+";"+env_grp.Members.GetAsText(),"",2)
+	XSI.ApplyFlexEnv('{};{}'.format(dup.FullName, env_grp.Members.GetAsText()), '', 2)
 
 	# transfer weights
-	tree = tre.CreateICETree(dup,"TransfertWeights",0)
-	weights = xsi.AddICECompoundNode("TransferWeightsFromICESkeleton", str(tree))
-	xsi.ConnectICENodes(str(tree)+".port1", str(weights)+".execute")
-	name = tre.ReplaceModelNameByThisModel(skin,model)
-	xsi.SetValue(str(weights)+".Reference",name)
+	tree = ICETree.CreateICETree(dup, 'TransferWeights', 0)
+	compound = XSI.AddICECompoundNode('TransferWeightsFromICESkeleton', str(tree))
+	XSI.ConnectICENodes('{}.port1'.format(tree), '{}.execute'.format(compound))
+	name = ICETree.ReplaceModelNameByThisModel(skin, model)
+	XSI.SetValue('{}.Reference'.format(compound), name)
 	
 	# deform
-	tree = tre.CreateICETree(dup,"Deform",2)
-	deform = xsi.AddICECompoundNode("ICE Envelope Skeleton", str(tree))
-	xsi.ConnectICENodes(str(tree)+".port1", str(deform)+".execute")
+	tree = ICETree.CreateICETree(dup, 'Deform', 2)
+	deform = XSI.AddICECompoundNode('ICE Envelope Skeleton', str(tree))
+	XSI.ConnectICENodes('{}.port1'.format(tree), '{}.execute'.format(deform))
 	'''
 	#prepare mesh
 	uti.CopyWeightMap(skin,dup,"SmoothWeightMap")
@@ -151,224 +150,143 @@ def CreateEnvelopeDuplicate(model, skin):
 # -------------------------------------------------------------------
 # Prepare Skin
 # -------------------------------------------------------------------
-def PrepareSkin(model,skin):
-	#check for weight maps
-	smoothweightmap = uti.GetWeightMap(skin, "SmoothWeightMap", 1, 0, 1)
-	searchmap = uti.GetWeightMap(skin, "SearchMap", 1, 0, 1)
-	bulgemap = uti.GetWeightMap(skin, "BulgeMap", 1, 0, 1)
-	stretchmap = uti.GetWeightMap(skin, "StretchMap", 1, 0, 1)
+def PrepareSkin(model, skin):
+	# check for weight maps
+	Utils.GetWeightMap(skin, 'SmoothWeightMap', 1, 0, 1)
+	Utils.GetWeightMap(skin, 'SearchMap', 1, 0, 1)
+	Utils.GetWeightMap(skin, 'BulgeMap', 1, 0, 1)
+	Utils.GetWeightMap(skin, 'StretchMap', 1, 0, 1)
 
 	# create one complete but not always cluster 
-	# plus one weightmap per rig element	
-	elems = ele.CollectGuideElements(model)
-	for e in elems:
-		crv = e.Parent3DObject
-		clsname = e.ElementName.Value+"_Cls"
-		cls = crv.ActivePrimitive.Geometry.Clusters(clsname)
-		if not cls:
-			cls = uti.CreateCompleteButNotAlwaysCluster(skin, siConstants.siVertexCluster, clsname)
-			wm = uti.GetWeightMap(skin, "WeightMap", 1, 0, 1, cls)
+	# plus one weight map per rig element
+	elements = Element.CollectGuideElements(model)
+	for element in elements:
+		crv = element.Parent3DObject
+		cluster_name = '{}_Cls'.format(element.ElementName.Value)
+		cluster = crv.ActivePrimitive.Geometry.Clusters(cluster_name)
+		if not cluster:
+			cluster = Utils.CreateCompleteButNotAlwaysCluster(skin, constants.siVertexCluster, cluster_name)
+			Utils.GetWeightMap(skin, 'WeightMap', 1, 0, 1, cluster)
 
 
 # -------------------------------------------------------------------
 # Set SetOneElementMap
 # -------------------------------------------------------------------
-def SetOneElementMap(crv, inObj, name):
-	wMap = uti.GetWeightMap(inObj, name)
-	tree = inObj.ActivePrimitive.ICETrees.Find("SetOneElement")
+def SetOneElementMap(crv, obj, name):
+	weight_map = Utils.GetWeightMap(obj, name)
+	tree = obj.ActivePrimitive.ICETrees.Find('SetOneElement')
 	if not tree:
-		tree = tre.CreateIceTree(inObj, "SetOneElement", 1)
+		tree = ICETree.CreateIceTree(obj, 'SetOneElement', 1)
 		
-	setter = xsi.AddICECompoundNode("SetOneElementMap", str(tree))
+	setter = XSI.AddICECompoundNode('SetOneElementMap', str(tree))
 	idx = tree.InputPorts.Count
-	xsi.AddPortToICENode(str(tree)+".port"+str(idx), "siNodePortDataInsertionLocationAfter")
-	xsi.ConnectICENodes(str(tree)+".port"+str(idx), str(setter)+".execute")
-	xsi.SetValue(str(setter)+".reference", "this.cls.WeightMapCls."+name, "")
-	getter = xsi.AddICENode("GetDataNode", str(tree))
-	xsi.SetValue(str(getter)+".reference", tre.ReplaceModelNameByThisModel(crv), "")
-	xsi.ConnectICENodes(str(setter)+".Guide_Curve", str(getter)+".outname")
-	return wMap
-
-
-# -------------------------------------------------------------------
-# Gather Skin Datas On Another Geometry
-# -------------------------------------------------------------------
-def GatherSkinDataOnOther(skin, copy):
-	elementmaps = []
-	model = copy.Model
-	
-	elems = CollectSkeletonElements(model)
-	for e in elems:
-		wMap =uti.GetWeightMap(copy,e.ElementName.Value+"Map")
-		elementmaps.append(wMap)
-	
-	# create build array and set data nodes	
-	tree = tre.CreateRigIceTree(skin,"GatherDatas",1)
-	setter = xsi.AddICECompoundNode("Set Data", tree)
-	xsi.SetValue(str(setter)+".Reference", "Self.__ElementWeights", "")
-	build = xsi.AddICENode("BuildArrayNode", tree)
-	xsi.ConnectICENodes(str(setter)+".value", str(build)+".array")
-	xsi.ConnectICENodes(str(tree)+".port1", str(setter)+".execute")
-
-	# create get closest location
-	closest = xsi.AddICENode("GetClosestLocationNode", tree)
-	get1 = xsi.AddICENode("GetDataNode", tree)
-	get2 = xsi.AddICENode("GetDataNode", tree)
-	xsi.SetValue(str(get1)+".Reference", copy.FullName, "")
-	xsi.SetValue(str(get2)+".Reference", "Self.PointPosition", "")
-	xsi.ConnectICENodes(str(closest)+".geometry", str(get1)+".value")
-	xsi.ConnectICENodes(str(closest)+".position", str(get2)+".value")
-	
-	# create point index to location
-	idtoloc = xsi.AddICENode("PointIndexToLocationNode", tree)
-	elem = xsi.AddICENode("GetElementIndicesNode", tree)
-	xsi.ConnectICENodes(str(idtoloc)+".geometry", str(get1)+".value")
-	xsi.ConnectICENodes(str(elem)+".value", str(get2)+".value")
-	xsi.ConnectICENodes(str(idtoloc)+".index", str(elem)+".indices")
-	
-	# create switch
-	switch = xsi.AddICENode("IfNode", tree)
-	xsi.ConnectICENodes(str(switch)+".iftrue", str(closest)+".location")
-	xsi.ConnectICENodes(str(switch)+".iffalse", str(idtoloc)+".result")
-	
-	idx = 1
-	# connect each element map
-	for m in elementmaps:
-		get = xsi.AddICENode("GetDataNode", tree)
-		if idx > 1:
-			xsi.AddPortToICENode(str(build)+".value"+str(idx-1), "siNodePortDataInsertionLocationAfter")
-		xsi.ConnectICENodes(str(get)+".source", str(switch)+".result")
-		xsi.SetValue(str(get)+".reference", "cls.WeightMapCls."+m.Name+".Weights", "")
-		xsi.ConnectICENodes(str(build)+".value"+str(idx), str(get)+".value")
-		idx += 1
-	
-	id = 1
-	# get side map
-	get = xsi.AddICENode("GetDataNode", tree)
-	xsi.AddPortToICENode(str(tree)+".port"+str(id), "siNodePortDataInsertionLocationAfter")
-	xsi.ConnectICENodes(str(get)+".source", str(switch)+".result" )
-	xsi.SetValue(str(get)+".reference", "cls.WeightMapCls.SideMap.Weights", "")
-	xsi.AddPortToICENode(str(set)+".Value", "siNodePortDataInsertionLocationAfter")
-	xsi.SetValue(str(set)+".Reference1", "Self.__PerPointSide", "")
-	xsi.ConnectICENodes(str(set)+".value1", str(get)+".value")
-	
-	# get smooth weight map
-	get = xsi.AddICENode("GetDataNode", tree)
-	xsi.AddPortToICENode(str(tree)+".port"+str(id), "siNodePortDataInsertionLocationAfter")
-	xsi.ConnectICENodes(str(get)+".source", str(switch)+".result" )
-	xsi.SetValue(str(get)+".reference", "cls.WeightMapCls.SmoothWeightMap.Weights", "")
-	xsi.AddPortToICENode(str(set)+".Value1", "siNodePortDataInsertionLocationAfter")
-	xsi.SetValue(str(set)+".Reference2", "Self.__SmoothWeights", "")
-	xsi.ConnectICENodes(str(set)+".value2", str(get)+".value")
-	
-	# get search map
-	get = xsi.AddICENode("GetDataNode", tree)
-	xsi.AddPortToICENode(str(tree)+".port"+str(id), "siNodePortDataInsertionLocationAfter")
-	xsi.ConnectICENodes(str(get)+".source", str(switch)+".result" )
-	xsi.SetValue(str(get)+".reference", "cls.WeightMapCls.SearchMap.Weights", "")
-	xsi.AddPortToICENode(str(set)+".Value2", "siNodePortDataInsertionLocationAfter")
-	xsi.SetValue(str(set)+".Reference3", "Self.__PerPointSearch", "")
-	xsi.ConnectICENodes(str(set)+".value3", str(get)+".value")
+	XSI.AddPortToICENode('{}.port{}'.format(tree, idx), 'siNodePortDataInsertionLocationAfter')
+	XSI.ConnectICENodes('{}.port{}'.format(tree, idx), '{}.execute'.format(setter))
+	XSI.SetValue('{}.reference'.format(setter), 'this.cls.WeightMapCls.{}'.format(name), '')
+	getter = XSI.AddICENode('GetDataNode', str(tree))
+	XSI.SetValue('{}.reference'.format(getter), ICETree.ReplaceModelNameByThisModel(crv), '')
+	XSI.ConnectICENodes('{}.Guide_Curve'.format(setter), '{}.outname'.format(getter))
+	return weight_map
 
 
 # -------------------------------------------------------------------
 # Gather Skin Datas On Itself
 # -------------------------------------------------------------------
 def GatherSkinDataOnSelf(skin):
-	cls = []
+	all_clusters = []
 	model = skin.Model
 	
-	elems = CollectSkeletonElements(model)
-	for e in elems:
-		# check cluster and weightmap existence
-		clsname = e.ElementName.Value+"_Cls"
-		c = skin.ActivePrimitive.Geometry.Clusters(clsname)
-		if not c:
-			c = uti.CreateCompleteButNotAlwaysCluster(skin, siConstants.siVertexCluster,clsname)
-		cls.append(c)
-		wm = uti.GetWeightMap(skin,"WeightMap",1,0,1,c)
+	elements = CollectSkeletonElements(model)
+	for element in elements:
+		# check cluster and weight map existence
+		cluster_name = '{}_Cls'.format(element.ElementName.Value)
+		cluster = skin.ActivePrimitive.Geometry.Clusters(cluster_name)
+		if not cluster:
+			cluster = Utils.CreateCompleteButNotAlwaysCluster(skin, constants.siVertexCluster, cluster_name)
+		all_clusters.append(cluster)
+		wm = Utils.GetWeightMap(skin, 'WeightMap', 1, 0, 1, cluster)
 	
 	# create build array and set data nodes	
-	tree = tre.CreateRigIceTree(skin,"GatherDatas",1)
-	setter = xsi.AddICECompoundNode("Set Data", tree)
-	xsi.SetValue(str(setter)+".Reference", "Self.__ElementWeights", "")
-	build = xsi.AddICENode("BuildArrayNode", tree)
-	xsi.ConnectICENodes(str(setter)+".value", str(build)+".array")
-	xsi.ConnectICENodes(str(tree)+".port1", str(setter)+".execute")
+	tree = ICETree.CreateRigIceTree(skin, 'GatherDatas', 1)
+	setter = XSI.AddICECompoundNode('Set Data', tree)
+	XSI.SetValue('{}.Reference'.format(setter), 'Self.__ElementWeights', )
+	build = XSI.AddICENode('BuildArrayNode', tree)
+	XSI.ConnectICENodes('{}.value'.format(setter), '{}.array'.format(build))
+	XSI.ConnectICENodes('{}.port1'.format(tree), '{}.execute'.format(setter))
 
 	idx = 1
 	# connect each element map
-	for c in cls:
-		getter = xsi.AddICECompoundNode("GetRigElementWeight", tree)
+	for cluster in all_clusters:
+		getter = XSI.AddICECompoundNode('GetRigElementWeight', tree)
 		if idx > 1:
-			xsi.AddPortToICENode(str(build)+".value"+str(idx-1), "siNodePortDataInsertionLocationAfter")
-		xsi.SetValue(str(getter)+".reference", "Self.cls."+c.Name, "")
-		xsi.ConnectICENodes(str(build)+".value"+str(idx), str(getter)+".Weight")
+			XSI.AddPortToICENode(
+				'{}.value{}'.format(build, idx - 1),
+				'siNodePortDataInsertionLocationAfter'
+			)
+		XSI.SetValue('{}.reference'.format(getter), 'Self.cls.{}'.format(cluster.Name), "")
+		XSI.ConnectICENodes('{}.value{}'.format(build, idx), '{}.Weight'.format(getter))
 		idx += 1
 	
-	#check for weight maps
-	smoothweightmap = uti.GetWeightMap(skin, "SmoothWeightMap", 1, 0, 1)
-	searchmap = uti.GetWeightMap(skin, "SearchMap", 1, 0, 1)
-	bulgemap = uti.GetWeightMap(skin, "BulgeMap", 1, 0, 1)
-	stretchmap = uti.GetWeightMap(skin, "StretchMap", 1, 0, 1)
-	
-	idx=1
+	# check for weight maps
+	Utils.GetWeightMap(skin, 'SmoothWeightMap', 1, 0, 1)
+	Utils.GetWeightMap(skin, 'SearchMap', 1, 0, 1)
+	Utils.GetWeightMap(skin, 'BulgeMap', 1, 0, 1)
+	Utils.GetWeightMap(skin, 'StretchMap', 1, 0, 1)
+
 	# get smooth weight map
-	getter = xsi.AddICENode("GetDataNode", tree)
-	xsi.SetValue(str(getter)+".reference", "Self.cls.WeightMapCls.SmoothWeightMap.Weights", "")
-	xsi.AddPortToICENode(str(setter)+".Value", "siNodePortDataInsertionLocationAfter")
-	xsi.SetValue(str(setter)+".Reference1", "Self.__SmoothWeights", "")
-	xsi.ConnectICENodes(str(setter)+".value1", str(getter)+".value")
+	getter = XSI.AddICENode('GetDataNode', tree)
+	XSI.SetValue('{}.reference'.format(getter), 'Self.cls.WeightMapCls.SmoothWeightMap.Weights', '')
+	XSI.AddPortToICENode('{}.Value'.format(setter), 'siNodePortDataInsertionLocationAfter')
+	XSI.SetValue('{}.Reference1'.format(setter), 'Self.__SmoothWeights', '')
+	XSI.ConnectICENodes('{}.value1'.format(setter), '{}.value'.format(getter))
 	
 	# get search map
-	getter = xsi.AddICENode("GetDataNode", tree)
-	xsi.SetValue(str(getter)+".reference", "Self.cls.WeightMapCls.SearchMap.Weights", "")
-	xsi.AddPortToICENode(str(setter)+".Value1", "siNodePortDataInsertionLocationAfter")
-	xsi.SetValue(str(setter)+".Reference2", "Self.__PerPointSearch", "")
-	xsi.ConnectICENodes(str(setter)+".value2", str(getter)+".value")
+	getter = XSI.AddICENode('GetDataNode', tree)
+	XSI.SetValue('{}.reference'.format(getter), 'Self.cls.WeightMapCls.SearchMap.Weights', '')
+	XSI.AddPortToICENode('{}.Value1'.format(setter), 'siNodePortDataInsertionLocationAfter')
+	XSI.SetValue('{}.Reference2'.format(setter), 'Self.__PerPointSearch', '')
+	XSI.ConnectICENodes('{}.value2'.format(setter), '{}.value'.format(getter))
 	
 	# get stretch map
-	getter = xsi.AddICENode("GetDataNode", tree)
-	xsi.SetValue(str(getter)+".reference", "Self.cls.WeightMapCls.StretchMap.Weights", "")
-	xsi.AddPortToICENode(str(setter)+".Value2", "siNodePortDataInsertionLocationAfter")
-	xsi.SetValue(str(setter)+".Reference3", "Self.__PerPointStretch", "")
-	xsi.ConnectICENodes(str(setter)+".value3", str(getter)+".value")
+	getter = XSI.AddICENode('GetDataNode', tree)
+	XSI.SetValue('{}.reference'.format(getter), 'Self.cls.WeightMapCls.StretchMap.Weights', '')
+	XSI.AddPortToICENode('{}.Value2'.format(setter), 'siNodePortDataInsertionLocationAfter')
+	XSI.SetValue('{}.Reference3'.format(setter), 'Self.__PerPointStretch', '')
+	XSI.ConnectICENodes('{}.value3'.format(setter), '{}.value'.format(getter))
 	
 	# get bulge map
-	getter = xsi.AddICENode("GetDataNode", tree)
-	xsi.SetValue(str(getter)+".reference", "Self.cls.WeightMapCls.BulgeMap.Weights", "")
-	xsi.AddPortToICENode(str(setter)+".Value3", "siNodePortDataInsertionLocationAfter")
-	xsi.SetValue(str(setter)+".Reference4", "Self.__PerPointBulge", "")
-	xsi.ConnectICENodes(str(setter)+".value4", str(getter)+".value")
+	getter = XSI.AddICENode('GetDataNode', tree)
+	XSI.SetValue('{}.reference'.format(getter), 'Self.cls.WeightMapCls.BulgeMap.Weights', '')
+	XSI.AddPortToICENode('{}.Value3'.format(setter), 'siNodePortDataInsertionLocationAfter')
+	XSI.SetValue('{}.Reference4'.format(setter), 'Self.__PerPointBulge', '')
+	XSI.ConnectICENodes('{}.value4'.format(setter), '{}.value'.format(getter))
 	
 	# show affected points
-	affected = xsi.AddICECompoundNode("ShowRigAffectedPoints", tree)
-	xsi.AddPortToICENode(str(tree)+".port1", "siNodePortDataInsertionLocationAfter")
-	xsi.ConnectICENodes(str(tree)+".port2", str(affected)+".Execute")
+	affected = XSI.AddICECompoundNode('ShowRigAffectedPoints', tree)
+	XSI.AddPortToICENode('{}.port1'.format(tree), 'siNodePortDataInsertionLocationAfter')
+	XSI.ConnectICENodes('{}.port2'.format(tree), '{}.Execute'.format(affected))
 
 
 # -------------------------------------------------------------------
 # Collect Skeleton Elements
 # -------------------------------------------------------------------
 def CollectSkeletonElements(model):
-	prop = model.Properties("RigBuilder")
+	prop = model.Properties('RigBuilder')
 	if not prop:
 		return
 	
-	sList = prop.Parameters("SkeletonList").Value
-	elemsname = sList.split("|")
-	elemsname.pop()
-	
-	elems = XSIFactory.CreateActiveXObject("XSI.Collection")
-	#props = xsi.FindObjects(None,"{76332571-D242-11d0-B69C-00AA003B3EA6}")
-	
-	for e in elemsname:
-		crv = model.FindChild(e+"_Crv")
-		p = crv.Properties("RigElement")
+	element_names = prop.Parameters('SkeletonList').Value.split('|')
+	skeleton_elements = XSIFactory.CreateActiveXObject('XSI.Collection')
+
+	for element in element_names:
+		if element:
+			crv = model.FindChild('{}_Crv'.format(element))
+			if crv:
+				elem_prop = crv.Properties("RigElement")
+
+				if elem_prop:
+					skeleton_elements.Add(elem_prop)
+				else:
+					XSI.LogMessage(str(crv) + " does not have RigElement Property ---> Skipped!")
 		
-		if p:
-			elems.Add(p)
-		else:
-			xsi.LogMessage(str(crv)+" does not have RigElement Property ---> Skipped!")
-		
-	return elems
+	return skeleton_elements

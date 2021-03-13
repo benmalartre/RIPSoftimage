@@ -28,7 +28,7 @@ def XSILoadPlugin( in_reg ):
 
 def XSIUnloadPlugin( in_reg ):
 	strPluginName = in_reg.Name
-	xsi.LogMessage(str(strPluginName) + str(" has been unloaded."))
+	XSI.LogMessage(str(strPluginName) + str(" has been unloaded."))
 	return true
 
 # ---------------------------
@@ -85,7 +85,7 @@ def ELIServerProcess_OnEvent( in_ctxt ):
 		#
 		##################################
 		
-		xsi.LogMessage (task)		
+		XSI.LogMessage (task)
 
 # 	This event can be aborted by returning true or false if you don't want to abort.
 	return false
@@ -122,7 +122,7 @@ class XSI_server(threading.Thread, Comms):
 		self.sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 
 	def run(self):
-		xsi.LogMessage ("ELIXSIServer : Started")
+		XSI.LogMessage ("ELIXSIServer : Started")
 		try:
 			self.sock.bind((Comms.DOMAIN, Comms.PORT))
 			self.sock.listen(5)
@@ -132,7 +132,7 @@ class XSI_server(threading.Thread, Comms):
 				connection=ServerSocket(commsock,address)
 				connection.start()
 		except socket.error, data:
-			xsi.LogMessage ('ELIXSIServer : ERROR: %s, %s' (data[0], data[1]))
+			XSI.LogMessage ('ELIXSIServer : ERROR: %s, %s' (data[0], data[1]))
 
 	def stop(self):
 		self.serve = False
@@ -140,7 +140,7 @@ class XSI_server(threading.Thread, Comms):
 		# and enable a proper shutdown
 		end_connector = ClientSocket('localhost')
 		end_connector.send(Comms.END)
-		xsi.LogMessage ("ELIXSIServer : Stopped")
+		XSI.LogMessage ("ELIXSIServer : Stopped")
 
 class ServerSocket(threading.Thread, Comms):
 	
@@ -158,7 +158,7 @@ class ServerSocket(threading.Thread, Comms):
 	def run(self):
 		try:
 			data = self.recv()
-			xsi.LogMessage(data)
+			XSI.LogMessage(data)
 			# process data
 			plugin = disp(Application.Plugins("KETTLE_xsi_server"))
 			userdata = plugin.UserData
@@ -166,7 +166,7 @@ class ServerSocket(threading.Thread, Comms):
 			
 			self.send(Comms.SMSG_ACKNOWLEDGE)
 		except error, data:
-			xsi.LogMessage ("ELIXSIServer_SOCKET : ERROR : %s, %s" % (data[0], data[1]))
+			XSI.LogMessage ("ELIXSIServer_SOCKET : ERROR : %s, %s" % (data[0], data[1]))
 		
 
 	def recv(self):
@@ -196,7 +196,7 @@ class ServerSocket(threading.Thread, Comms):
 					# non blocking socket, hold for messages
 					time.sleep(0.1)
 				else:
-					xsi.LogMessage('ELIXSIServer_SOCKET (ERROR): %s, %s' % (data[0], data[1]))
+					XSI.LogMessage('ELIXSIServer_SOCKET (ERROR): %s, %s' % (data[0], data[1]))
 
 		return ''.join(total_data)
 
@@ -205,7 +205,7 @@ class ServerSocket(threading.Thread, Comms):
 			p_data = cPickle.dumps(data)
 			self.sock.sendall(p_data+Comms.END)
 		except socket.error, data:
-			xsi.LogMessage('ELIXSIServer_SOCKET (ERROR): %s, %s' % (data[0], data[1]))
+			XSI.LogMessage('ELIXSIServer_SOCKET (ERROR): %s, %s' % (data[0], data[1]))
 
 
 # ----------------------------------------------------------------------
@@ -225,7 +225,7 @@ class ClientSocket(Comms):
 	    p_data = cPickle.dumps(data)
 	    self.sock.sendall(p_data+Comms.END)
 	except socket.error, data:
-		xsi.LogMessage('ELIXSIServer_SHUTDOWN_SOCKET (ERROR): %s, %s' % (data[0], data[1]))
+		XSI.LogMessage('ELIXSIServer_SHUTDOWN_SOCKET (ERROR): %s, %s' % (data[0], data[1]))
 			
 # ------------------------------------------------------------------------
 # xsi compatible threadsafe objects (maybe)

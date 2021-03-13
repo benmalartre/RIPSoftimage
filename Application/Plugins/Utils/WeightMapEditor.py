@@ -1,7 +1,7 @@
 # ======================================================================================================================
 # WeightMapEditorPlugin
 # ======================================================================================================================
-from Globals import xsi
+from Globals import XSI
 from win32com.client import constants
 import Utils as uti
 
@@ -24,13 +24,13 @@ def WeightMapEditorMenu_Init(in_ctxt):
 
 
 def OnWeightMapEditorMenu(in_ctxt):
-	root = xsi.ActiveSceneRoot
+	root = XSI.ActiveSceneRoot
 	prop = root.Properties("WeightMapEditor")
 	if not prop:
 		prop = root.AddProperty("WeightMapEditor")
 		
-	xsi.InspectObj(prop, None, None, constants.siLock)
-	obj = xsi.Selection(0).SubComponent.Parent3DObject
+	XSI.InspectObj(prop, None, None, constants.siLock)
+	obj = XSI.Selection(0).SubComponent.Parent3DObject
 
 	prop.Parameters("TargetObject").Value = obj.FullName
 	WeightMapEditor_RebuildLayout(prop)
@@ -51,13 +51,13 @@ def WeightMapEditor_OnInit():
 
 
 def WeightMapEditor_OnClosed( ):
-	xsi.LogMessage("ELIWeightMapEditor_OnClosed called", constants.siVerbose)
+	XSI.LogMessage("ELIWeightMapEditor_OnClosed called", constants.siVerbose)
 
 
 def WeightMapEditor_RebuildLayout(inPPG):
 	wmlist = []
 	if inPPG.Parameters("TargetObject").Value == "":
-		sel = xsi.Selection(0)
+		sel = XSI.Selection(0)
 		if not sel or not sel.IsClassOf(constants.siX3DObjectID):
 			sel = uti.PickElement(constants.siGeometryFilter, "Pick Geometry Object")
 		
@@ -65,7 +65,7 @@ def WeightMapEditor_RebuildLayout(inPPG):
 			inPPG.Parameters("TargetObject").Value = sel.FullName
 			wmlist = BuildListWeightMaps(sel, inPPG)
 	else:
-		obj = xsi.Dictionary.GetObject(inPPG.Parameters("TargetObject").Value)
+		obj = XSI.Dictionary.GetObject(inPPG.Parameters("TargetObject").Value)
 		wmlist = BuildListWeightMaps(obj, inPPG)
 		
 	layout = inPPG.PPGLayout
@@ -100,15 +100,15 @@ def WeightMapEditor_RebuildLayout(inPPG):
 
 
 def WeightMapEditor_WeightMapChooser_OnChanged():
-	sel = xsi.Selection(0)
+	sel = XSI.Selection(0)
 	wmname = GetUISelectedWeightMap(PPG.Inspected(0))
-	wm = xsi.Dictionary.GetObject(wmname)
-	xsi.SelectObj(wm)
-	xsi.SelectObj(sel)
+	wm = XSI.Dictionary.GetObject(wmname)
+	XSI.SelectObj(wm)
+	XSI.SelectObj(sel)
 
 
 def WeightMapEditor_ChangeTargetGeometry_OnClicked():
-	sel = xsi.Selection(0)
+	sel = XSI.Selection(0)
 	if not sel or not sel.IsClassOf(constants.siX3DObjectID):
 		sel = uti.PickElement(constants.siGeometryFilter, "Pick Geometry Object")
 	
@@ -119,65 +119,65 @@ def WeightMapEditor_ChangeTargetGeometry_OnClicked():
 
 
 def WeightMapEditor_SetWeightOnSelectedPoints_OnClicked():
-	sel = xsi.Selection(0)
+	sel = XSI.Selection(0)
 	if not sel.Type == "pntSubComponent":
-		xsi.LogMessage("Select some points on Target Object!!", constants.siWarning)
+		XSI.LogMessage("Select some points on Target Object!!", constants.siWarning)
 		return
 	
 	sub = sel.SubComponent
 	obj = sub.Parent3DObject
 
 	if not obj.FullName == PPG.Inspected(0).Parameters("TargetObject").Value:
-		xsi.LogMessage("Selected Points are not on Target Geometry...", constants.siWarning)
-		xsi.SelectObj(obj)
+		XSI.LogMessage("Selected Points are not on Target Geometry...", constants.siWarning)
+		XSI.SelectObj(obj)
 		WeightMapEditor_RebuildLayout(PPG.Inspected(0))
 		return
 	else:
 		wmname = GetUISelectedWeightMap(PPG.Inspected(0))
-		xsi.LogMessage(wmname)
-		wm = xsi.Dictionary.GetObject(wmname)
+		XSI.LogMessage(wmname)
+		wm = XSI.Dictionary.GetObject(wmname)
 		uti.SetWeightOnSelectedPoints(wm, PPG.Weight.Value, sub)
 
 
 def WeightMapEditor_AddWeightOnSelectedPoints_OnClicked():
-	sel = xsi.Selection(0)
+	sel = XSI.Selection(0)
 	if not sel.Type == "pntSubComponent":
-		xsi.LogMessage("Select some points on Target Object!!", constants.siWarning)
+		XSI.LogMessage("Select some points on Target Object!!", constants.siWarning)
 		return
 	
 	sub = sel.SubComponent
 	obj = sub.Parent3DObject
 
 	if not obj.FullName == PPG.Inspected(0).Parameters("TargetObject").Value:
-		xsi.LogMessage("Selected Points are not on Target Geometry...", constants.siWarning)
-		xsi.SelectObj(obj)
+		XSI.LogMessage("Selected Points are not on Target Geometry...", constants.siWarning)
+		XSI.SelectObj(obj)
 		WeightMapEditor_RebuildLayout(PPG.Inspected(0))
 		return
 	else:
 		wmname = GetUISelectedWeightMap(PPG.Inspected(0))
-		xsi.LogMessage(wmname)
-		wm = xsi.Dictionary.GetObject(wmname)
+		XSI.LogMessage(wmname)
+		wm = XSI.Dictionary.GetObject(wmname)
 		uti.AddWeightOnSelectedPoints(wm, PPG.Weight.Value, sub)
 
 
 def ELIWeightMapEditor_SubWeightOnSelectedPoints_OnClicked():
-	sel = xsi.Selection(0)
+	sel = XSI.Selection(0)
 	if not sel.Type == "pntSubComponent":
-		xsi.LogMessage("Select some points on Target Object!!", constants.siWarning)
+		XSI.LogMessage("Select some points on Target Object!!", constants.siWarning)
 		return
 	
 	sub = sel.SubComponent
 	obj = sub.Parent3DObject
 
 	if not obj.FullName == PPG.Inspected(0).Parameters("TargetObject").Value:
-		xsi.LogMessage("Selected Points are not on Target Geometry...", constants.siWarning)
-		xsi.SelectObj(obj)
+		XSI.LogMessage("Selected Points are not on Target Geometry...", constants.siWarning)
+		XSI.SelectObj(obj)
 		WeightMapEditor_RebuildLayout(PPG.Inspected(0))
 		return
 	else:
 		wmname = GetUISelectedWeightMap(PPG.Inspected(0))
-		xsi.LogMessage(wmname)
-		wm = xsi.Dictionary.GetObject(wmname)
+		XSI.LogMessage(wmname)
+		wm = XSI.Dictionary.GetObject(wmname)
 		uti.SubWeightOnSelectedPoints(wm, PPG.Weight.Value, sub)
 
 

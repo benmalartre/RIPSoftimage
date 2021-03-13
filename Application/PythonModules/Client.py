@@ -1,8 +1,10 @@
 import threading
 import socket
 import cPickle
+import time
 
 from Globals import *
+
 
 class Client(threading.Thread):
 	"""extension of thread object to start up and run our
@@ -19,7 +21,8 @@ class Client(threading.Thread):
 		# recieve acknoledgement / server messages
 		data = s_socket.recv()
 		print data
-		
+
+
 class ClientSocket(object):
 
 	"""socket server that sends and recieves pickled python objects"""
@@ -29,9 +32,8 @@ class ClientSocket(object):
 		self.SMSG_ACKNOWLEDGE = '!RECV!'
 		self.END = '[!END!]'
 
-
 	def recv(self):
-		xsi.LogMessage("ELIXSIClientSocket::RecV")
+		XSI.LogMessage("ELIXSIClientSocket::RecV")
 		"""recv data on sock, using an end identifier to acknowledge
 		when complete message is done"""
 
@@ -47,10 +49,10 @@ class ClientSocket(object):
 					break
 				total_data.append(data)
 				if len(total_data)>1:
-					#check if end_of_data was split
-					last_pair=total_data[-2]+total_data[-1]
+					# check if end_of_data was split
+					last_pair = total_data[-2]+total_data[-1]
 					if self.END in last_pair:
-						total_data[-2]=last_pair[:last_pair.find(self.END)]
+						total_data[-2] = last_pair[:last_pair.find(self.END)]
 						total_data.pop()
 						break
 			except socket.error, data:
@@ -65,10 +67,10 @@ class ClientSocket(object):
 		return msg
 
 	def send(self, data):
-		Application.LogMessage(data)
+		XSI.LogMessage(data)
 		try:
 			p_data = cPickle.dumps(data)
-			Application.LogMessage(p_data)
+			XSI.LogMessage(p_data)
 			print("sending!")
 			self.sock.sendall(p_data+self.END)
 			print('ELIXSIClient : sent',p_data+self.END)

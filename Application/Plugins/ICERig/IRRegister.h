@@ -1,42 +1,9 @@
 /*-------------------------------------------------
-	ICERigRegister.h
+    ICERigRegister.h
  
-	Include needed SDK headers
-	Include needed Windows headers
-	Define some global constants
-                                . .  ,  , 
-                              |` \/ \/ \,', 
-                              ;          ` \/\,. 
-                             :               ` \,/ 
-                             |                  / 
-                             ;                 : 
-                            :                  ; 
-                            |      ,---.      / 
-                           :     ,'     `,-._ \ 
-                           ;    (   o    \   `' 
-                         _:      .      ,'  o ; 
-                        /,.`      `.__,'`-.__, 
-                        \_  _               \ 
-                       ,'  / `,          `.,' 
-                 ___,'`-._ \_/ `,._        ; 
-              __;_,'      `-.`-'./ `--.____) 
-           ,-'           _,--\^-' 
-         ,:_____      ,-'     \ 
-        (,'     `--.  \;-._    ; 
-        :    Y      `-/    `,  : 
-        :    :       :     /_;' 
-        :    :       |    : 
-         \    \      :    : 
-          `-._ `-.__, \    `. 
-             \   \  `. \     `. 
-           ,-;    \---)_\ ,','/ 
-           \_ `---'--'" ,'^-;' 
-           (_`     ---'" ,-') 
-           / `--.__,. ,-'    \ 
-  -hrr-    )-.__,-- ||___,--' `-. 
-          /._______,|__________,'\ 
-          `--.____,'|_________,-'                  
-
+    Include needed SDK headers
+    Include needed Windows headers
+    Define some global constants           
 -------------------------------------------------*/
 #ifndef IR_REGISTER_H
 #define IR_REGISTER_H
@@ -117,137 +84,137 @@ using namespace MATH;
 using namespace std;
 
 namespace ICERIG {
-	#define MAX(a,b)	((a)<(b) ? (b)  : (a))
-	#define MIN(a,b)	((a)>(b) ? (b)  : (a))
-	#define ABS(a)		((a)<(0) ? (-a) : (a))
+  #define MAX(a,b)  ((a)<(b) ? (b)  : (a))
+  #define MIN(a,b)  ((a)>(b) ? (b)  : (a))
+  #define ABS(a)    ((a)<(0) ? (-a) : (a))
 
-	static unsigned char ICERigDataR = 200;
-	static unsigned char ICERigDataG = 255;
-	static unsigned char ICERigDataB = 200;
+  static unsigned char ICERigDataR = 200;
+  static unsigned char ICERigDataG = 255;
+  static unsigned char ICERigDataB = 200;
 
-	static unsigned char ICERigNodeR = 154;
-	static unsigned char ICERigNodeG = 188;
-	static unsigned char ICERigNodeB = 206;
+  static unsigned char ICERigNodeR = 154;
+  static unsigned char ICERigNodeG = 188;
+  static unsigned char ICERigNodeB = 206;
 
-	// Color constants
-	#define IRInvalidIndex					-1
-	#define IRSelectedHandleColor			RGBA_COLOR(255, 255,   0, 255)
-	#define IRXHandleColor					RGBA_COLOR(  255,   0, 0, 255)
-	#define IRYHandleColor					RGBA_COLOR(  0,   255, 0, 255)
-	#define IRZHandleColor					RGBA_COLOR(  0,   0, 255, 255)
+  // Color constants
+  #define IRInvalidIndex          -1
+  #define IRSelectedHandleColor   RGBA_COLOR(255, 255,   0, 255)
+  #define IRXHandleColor          RGBA_COLOR(  255,   0, 0, 255)
+  #define IRYHandleColor          RGBA_COLOR(  0,   255, 0, 255)
+  #define IRZHandleColor          RGBA_COLOR(  0,   0, 255, 255)
 
-	#define IRXYHandleColor					RGBA_COLOR(  255, 255,   0, 255)
-	#define IRXZHandleColor					RGBA_COLOR(  255, 255,   0, 255)
-	#define IRYZHandleColor					RGBA_COLOR(  255,   0, 255, 255)
+  #define IRXYHandleColor         RGBA_COLOR(  255, 255,   0, 255)
+  #define IRXZHandleColor         RGBA_COLOR(  255, 255,   0, 255)
+  #define IRYZHandleColor         RGBA_COLOR(  255,   0, 255, 255)
 
-	// Other constants
-	#define IRPickSize						14	 // pixels
-	#define IRHandleDragThreshold			5	 // pixels
-	#define IRGestureDragThreshold			10	 // pixels
-	#define IRShapeHandleSize				50	 // pixels
-	#define IROffsetHandleSize				100	 // pixels
-	#define IRMoveHandleSize				100	 
+  // Other constants
+  #define IRPickSize              14    // pixels
+  #define IRHandleDragThreshold   5     // pixels
+  #define IRGestureDragThreshold  10    // pixels
+  #define IRShapeHandleSize       50    // pixels
+  #define IROffsetHandleSize      100   // pixels
+  #define IRMoveHandleSize        100
 
-	// Shortcut Key constants
-	#define IRSwitchModeKey					0x09 // VK_TAB
+  // Shortcut Key constants
+  #define IRSwitchModeKey 0x09 // VK_TAB
 
-	// Tool Modes
-	enum IRToolMode
-	{
-		IRInvalidMode = -1,
-		IRShapeMode,
-		IRMoveMode,
-		IROffsetMode,
-		IRUpVectorMode,
-		IRSkeletonMode
-	};
+  // Tool Modes
+  enum IRToolMode
+  {
+    IRInvalidMode = -1,
+    IRShapeMode,
+    IRMoveMode,
+    IROffsetMode,
+    IRUpVectorMode,
+    IRSkeletonMode
+  };
 
-	//Attributes saved in cluster property
-	enum IRElemAttribute
-	{
-		IRWidth = 0,
-		IRDepth,
-		IROffset,
-		IRUpVector
-	};
+  //Attributes saved in cluster property
+  enum IRElemAttribute
+  {
+    IRWidth = 0,
+    IRDepth,
+    IROffset,
+    IRUpVector
+  };
 
-	enum IRElemType
-	{
-		IRNoType = -1,//invalid type
-		IRSkeletonType,
-		IRMuscleType
-	};
+  enum IRElemType
+  {
+    IRNoType = -1,//invalid type
+    IRSkeletonType,
+    IRMuscleType
+  };
 
-	enum IRAxis
-	{
-		IRNoAxis = -1,
-		IRAxisX,
-		IRAxisY,
-		IRAxisZ,
-		IRAxisXY,
-		IRAxisXZ,
-		IRAxisYZ,
-		IRAxisXYZ
-	};
+  enum IRAxis
+  {
+    IRNoAxis = -1,
+    IRAxisX,
+    IRAxisY,
+    IRAxisZ,
+    IRAxisXY,
+    IRAxisXZ,
+    IRAxisYZ,
+    IRAxisXYZ
+  };
 
-	static const char* IR_PROP_BUILDER = "RigBuilder";
-	static const char* IR_PROP_SKELETON = "RigElement";
-	static const char* IR_PROP_MUSCLE = "MuscleElement";
-	static const char* IR_PROP_CONTROL = "ControlElement";
+  static const char* IR_PROP_BUILDER = "RigBuilder";
+  static const char* IR_PROP_SKELETON = "RigElement";
+  static const char* IR_PROP_MUSCLE = "MuscleElement";
+  static const char* IR_PROP_CONTROL = "ControlElement";
 
-	inline CRotation GetRotationFromTwoVectors(CVector3 dir, CVector3 up = CVector3(0, 1, 0))
-	{
-		CVector3 cross;
-		CVector3 side;
+  inline CRotation GetRotationFromTwoVectors(CVector3 dir, CVector3 up = CVector3(0, 1, 0))
+  {
+    CVector3 cross;
+    CVector3 side;
 
-		dir.NormalizeInPlace();
-		up.NormalizeInPlace();
-		cross.Cross(dir, up);
-		cross.NormalizeInPlace();
-		side.Cross(dir, cross);
-		side.NormalizeInPlace();
+    dir.NormalizeInPlace();
+    up.NormalizeInPlace();
+    cross.Cross(dir, up);
+    cross.NormalizeInPlace();
+    side.Cross(dir, cross);
+    side.NormalizeInPlace();
 
-		CMatrix3 m;
-		m.Set(cross.GetX(), cross.GetY(), cross.GetZ(),
-			dir.GetX(), dir.GetY(), dir.GetZ(),
-			side.GetX(), side.GetY(), side.GetZ());
+    CMatrix3 m;
+    m.Set(cross.GetX(), cross.GetY(), cross.GetZ(),
+	    dir.GetX(), dir.GetY(), dir.GetZ(),
+	    side.GetX(), side.GetY(), side.GetZ());
 
-		CRotation r;
-		r.SetFromMatrix(m);
-		return r;
-	}
+    CRotation r;
+    r.SetFromMatrix(m);
+    return r;
+  }
 
-	inline CVector3 RotateVector(CVector3& v, CQuaternion& quat)
-	{
-		float len = (float)v.GetLength();
-		CVector3 vn;
-		CQuaternion q2;
+  inline CVector3 RotateVector(CVector3& v, CQuaternion& quat)
+  {
+    float len = (float)v.GetLength();
+    CVector3 vn;
+    CQuaternion q2;
 
-		vn.Normalize(v);
-		q2.Conjugate(quat);
+    vn.Normalize(v);
+    q2.Conjugate(quat);
 
-		CQuaternion vecQuat, resQuat;
+    CQuaternion vecQuat, resQuat;
 
-		vecQuat.PutX(vn.GetX());
-		vecQuat.PutY(vn.GetY());
-		vecQuat.PutZ(vn.GetZ());
+    vecQuat.PutX(vn.GetX());
+    vecQuat.PutY(vn.GetY());
+    vecQuat.PutZ(vn.GetZ());
 
-		resQuat.Mul(vecQuat, q2);
-		resQuat.Mul(quat, resQuat);
+    resQuat.Mul(vecQuat, q2);
+    resQuat.Mul(quat, resQuat);
 
-		CVector3 out(resQuat.GetX(), resQuat.GetY(), resQuat.GetZ());
-		out.NormalizeInPlace();
-		out.ScaleInPlace(len);
-		return out;
-	}
+    CVector3 out(resQuat.GetX(), resQuat.GetY(), resQuat.GetZ());
+    out.NormalizeInPlace();
+    out.ScaleInPlace(len);
+    return out;
+  }
 
-	#define LOG(_msg) Application().LogMessage(_msg);
-	#define R01() ((float)rand() / (float)RAND_MAX)
-	#define RAB(a, b) (((float)rand() / (float)RAND_MAX) * (b - a) + a)
+  #define LOG(_msg) Application().LogMessage(_msg);
+  #define R01() ((float)rand() / (float)RAND_MAX)
+  #define RAB(a, b) (((float)rand() / (float)RAND_MAX) * (b - a) + a)
 
-	static unsigned char IRNodeR = 154;
-	static unsigned char IRNodeG = 188;
-	static unsigned char IRNodeB = 206;
+  static unsigned char IRNodeR = 154;
+  static unsigned char IRNodeG = 188;
+  static unsigned char IRNodeB = 206;
 
 } // ICERIG
 #endif

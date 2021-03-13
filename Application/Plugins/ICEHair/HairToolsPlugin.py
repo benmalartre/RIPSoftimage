@@ -2,7 +2,7 @@
 # HairTools Plugin
 #---------------------------------------
 from win32com.client import constants
-from Globals import xsi
+from Globals import XSI
 from Globals import XSIUtils
 import Utils as uti
 import ICETree as ice
@@ -36,8 +36,8 @@ def HairTools_Init( in_ctxt ):
 	oMenu.AddCallBackItem("Help Page","Hair_GetHelpPage")
 	
 def Hair_GetGroomProperty(in_ctxt):
-	mesh = xsi.Selection(0)
-	if not mesh or not mesh.type=="polymsh":
+	mesh = XSI.Selection(0)
+	if not mesh or not mesh.Type == "polymsh":
 		XSIUIToolkit.MsgBox("Select PolygonMesh and try again...",constants.siMsgOkOnly,"HairTools")
 		return
 	prop = mesh.Properties("Hair_Groom")
@@ -46,13 +46,13 @@ def Hair_GetGroomProperty(in_ctxt):
 	
 	uti.GetWeightMap(mesh,"Frizz_Map",1,0,1)
 	uti.GetWeightMap(mesh,"Spread_Map",1,0,1)
-	xsi.InspectObj(prop,"","",constants.siLock)
+	XSI.InspectObj(prop, "", "", constants.siLock)
 
 def Hair_GetHelpPage(in_ctxt):
 	path = pro.GetPluginPath("HairTools")
 	spath = path.split("Application")[0]
 	doc = XSIUtils.BuildPath(spath,"docs","Hair_documentation.html")
-	xsi.OpenNetView(doc)
+	XSI.OpenNetView(doc)
 	
 	
 #---------------------------------------
@@ -304,13 +304,13 @@ def Hair_Groom_RebuildLayout(prop):
 		
 		layout.EndGroup()
 		
-def Hair_Groom_PaintMap(map):
-	object = map.Parent3DObject
-	object.Properties("Visibility").Parameters("ViewVis").Value = True
-	xsi.SelectObj(map)
-	view = xsi.OpenView("Object View",True)
+def Hair_Groom_PaintMap(weight_map):
+	parent_3dobject = weight_map.Parent3DObject
+	parent_3dobject.Properties("Visibility").Parameters("ViewVis").Value = True
+	XSI.SelectObj(weight_map)
+	view = XSI.OpenView("Object View", True)
 	view.SetAttributeValue("lockstatus",True)
-	xsi.PaintTool()
+	XSI.PaintTool()
 	
 def Hair_Groom_GetPresetList():
 	path = pro.GetPluginPath("HairToolsPlugin")
@@ -318,9 +318,9 @@ def Hair_Groom_GetPresetList():
 	if path:
 		presetpath = path.replace("Application\\Plugins\\Hair\\","Data\\Presets\\Hair")
 		XSIUtils.EnsureFolderExists(presetpath)
-		xsi.LogMessage(presetpath)
+		XSI.LogMessage(presetpath)
 		regex = ".*\.xml$"
-		files = xsi.FindFilesInFolder(presetpath,regex,True,False)
+		files = XSI.FindFilesInFolder(presetpath, regex, True, False)
 		
 		i = 0
 		for f in files:
@@ -349,10 +349,10 @@ def Hair_Groom_SkullMapChooser_OnChanged():
 	if cls:
 		wm = cls.LocalProperties(uiitems[value*2])
 		if wm:
-			xsi.SelectObj(wm)
+			XSI.SelectObj(wm)
 			
 		else:
-			xsi.LogMessage("[Hair_Groom] Can't find WeightMap "+wmname+"...",constants.siWarning)
+			XSI.LogMessage("[Hair_Groom] Can't find WeightMap " + wmname + "...", constants.siWarning)
 
 def Hair_Groom_CageMapChooser_OnChanged():
 	prop = PPG.Inspected(0)
@@ -364,10 +364,10 @@ def Hair_Groom_CageMapChooser_OnChanged():
 	if cls:
 		wm = cls.LocalProperties(uiitems[value*2])
 		if wm:
-			xsi.SelectObj(wm)
+			XSI.SelectObj(wm)
 			
 		else:
-			xsi.LogMessage("[Hair_Groom] Can't find WeightMap "+wmname+"...",constants.siWarning)
+			XSI.LogMessage("[Hair_Groom] Can't find WeightMap " + wmname + "...", constants.siWarning)
 
 def Hair_Groom_BuildDebugEmitTriangles_OnClicked():
 	prop = PPG.Inspected(0)
@@ -375,15 +375,15 @@ def Hair_Groom_BuildDebugEmitTriangles_OnClicked():
 	if guide:
 		debug = guide.Parent3DObject.AddPrimitive("EmptyPolygonMesh","DebugEmitTriangles")
 		tree = ice.CreateIceTree(debug,"DebugTriangles",0)
-		compound = xsi.AddICECompoundNode("HairDebugEmitTriangles", str(tree))
-		xsi.ConnectICENodes(str(tree)+".Port1", str(compound)+".Execute")
+		compound = XSI.AddICECompoundNode("HairDebugEmitTriangles", str(tree))
+		XSI.ConnectICENodes(str(tree) + ".Port1", str(compound) + ".Execute")
 		mat = debug.AddMaterial("Lambert",False,"DebugTrianglesMaterial")
-		xsi.SetInstanceDataValue("", str(mat)+".CAV", "Color")
-		xsi.DisconnectICENodePort(str(compound)+".Set_Data.Value")
-		xsi.ConnectICENodes(str(compound)+".Set_Data.Value", str(compound)+".RandomValueNode.value")
+		XSI.SetInstanceDataValue("", str(mat) + ".CAV", "Color")
+		XSI.DisconnectICENodePort(str(compound) + ".Set_Data.Value")
+		XSI.ConnectICENodes(str(compound) + ".Set_Data.Value", str(compound) + ".RandomValueNode.value")
 		
 	else:
-		xsi.LogMessage("[Hair_Groom] Build Debug Emit Triangles, no Guide Cloud found, Sorry...", constants.siWarning)
+		XSI.LogMessage("[Hair_Groom] Build Debug Emit Triangles, no Guide Cloud found, Sorry...", constants.siWarning)
 		
 	
 def Hair_Groom_PaintCageMap_OnClicked():
@@ -423,7 +423,7 @@ def Hair_Groom_SelectUpVectorCurve_OnClicked():
 	if pick and pick.Model.Name == model.Name:
 		PPG.UpVectorCurve.Value = pick.Name
 	else:
-		xsi.LogMessage("Ensure the UpVector Curve is under the same model as the Hair Cage",constants.siWarning)
+		XSI.LogMessage("Ensure the UpVector Curve is under the same model as the Hair Cage", constants.siWarning)
 		
 def Hair_Groom_SelectSkullMesh_OnClicked():
 	pick = uti.PickElement(constants.siPolyMeshFilter,"Pick Skull Mesh")
@@ -431,7 +431,7 @@ def Hair_Groom_SelectSkullMesh_OnClicked():
 	if pick and pick.Model.Name == model.Name:
 		PPG.SkullMesh.Value = pick.Name
 	else:
-		xsi.LogMessage("Ensure the Skull Object is under the same model as the Hair Cage",constants.siWarning)
+		XSI.LogMessage("Ensure the Skull Object is under the same model as the Hair Cage", constants.siWarning)
 		
 def Hair_Groom_CreateTipPolygonsCluster_OnClicked():
 	Hair_CreateTipPolygonsCluster()
@@ -451,8 +451,8 @@ def Hair_Groom_ShowTipPolygonsCluster_OnClicked():
 	geo = obj.ActivePrimitive.Geometry
 	cls = geo.Clusters("TipPolygons")
 	if cls:
-		cls = xsi.Dictionary.GetObject(cls)
-		xsi.SelectObj(cls)
+		cls = XSI.Dictionary.GetObject(cls)
+		XSI.SelectObj(cls)
 
 	else:
 		XSIUIToolkit.MsgBox("TipPolygons cluster doesn't exists on "+ obj.FullName ,constants.siMsgOkOnly,"HairTools")
@@ -468,13 +468,13 @@ def Hair_Groom_InspectHairGuide_OnClicked():
 	guide = pro.FindChildFromParameterValue(PPG.Inspected(0),"HairGuide")
 	tree = guide.ActivePrimitive.ICETrees("Emit")
 	node = tree.Nodes.Find("HairEmitGuideFromMesh2")
-	xsi.InspectObj(node,"","",constants.siLock)
+	XSI.InspectObj(node, "", "", constants.siLock)
 	
 def Hair_Groom_InspectHairRender_OnClicked():
 	render = pro.FindChildFromParameterValue(PPG.Inspected(0),"HairRender")
 	tree = render.ActivePrimitive.ICETrees("Emit")
 	node = tree.Nodes.Find("HairRenderEmit")
-	xsi.InspectObj(node,"","",constants.siLock)
+	XSI.InspectObj(node, "", "", constants.siLock)
 	
 def Hair_Groom_HideHairObjects_OnClicked():
 	prop = PPG.Inspected(0)
@@ -482,9 +482,9 @@ def Hair_Groom_HideHairObjects_OnClicked():
 	model = obj.Model
 	grp = model.Groups("HairHidden")
 	if grp:
-		xsi.ToggleVisibility(grp)
+		XSI.ToggleVisibility(grp)
 	else:
-		xsi.LogMessage("[Hair_Groom] There is no HairHidden Group under "+ model.FullName,constants.siError)
+		XSI.LogMessage("[Hair_Groom] There is no HairHidden Group under " + model.FullName, constants.siError)
 	
 def Hair_Groom_WriteXML(filename=None):
 	prop = PPG.Inspected(0)
@@ -520,7 +520,7 @@ def Hair_Groom_GetXMLFile(prop):
 			return filename
 			
 def Hair_Groom_GetAutoSavePresetPath(PPG):
-	path = xsi.ActiveProject2.Path
+	path = XSI.ActiveProject2.Path
 	obj = PPG.Parent3DObject
 	presetfolder = XSIUtils.BuildPath(path,"Presets","Hair")
 	XSIUtils.EnsureFolderExists(presetfolder,false)
@@ -542,7 +542,7 @@ def Hair_GetCompoundNodes(prop):
 		
 	guide = pro.FindChildFromParameterValue(prop,"HairGuide")
 	if not guide:
-		xsi.LogMessage("[Hair_GetCompoundNodes] Cant't find corresponding Hair Guide Cloud!!")
+		XSI.LogMessage("[Hair_GetCompoundNodes] Can't find corresponding Hair Guide Cloud!!")
 	else:
 		tree = guide.ActivePrimitive.ICETrees("Emit")
 		if tree:
@@ -552,7 +552,7 @@ def Hair_GetCompoundNodes(prop):
 				
 	render = pro.FindChildFromParameterValue(prop,"HairRender")
 	if not render:
-		xsi.LogMessage("[Hair_GetCompoundNodes] Cant't find corresponding Hair Render Cloud")
+		XSI.LogMessage("[Hair_GetCompoundNodes] Can't find corresponding Hair Render Cloud")
 	
 	else:
 		tree = render.ActivePrimitive.ICETrees("Emit")
@@ -573,7 +573,7 @@ def Hair_Groom_PickTargetMesh_OnClicked():
 	pick = uti.PickElement(constants.siPolyMeshFilter,"Pick Target Mesh")
 	if pick:
 		if not pick.Model.Name == PPG.Inspected(0).Parent3DObject.Model.Name:
-			xsi.LogMessage("[Hair_Groom] Target Mesh have to be under same model as Hair Cage object!!", constants.siWarning)
+			XSI.LogMessage("[Hair_Groom] Target Mesh have to be under same model as Hair Cage object!!", constants.siWarning)
 			return 
 		PPG.TargetMesh.Value = pick.Name
 		
@@ -581,7 +581,7 @@ def Hair_Groom_PickHeadBone_OnClicked():
 	pick = uti.PickElement(constants.siObjectFilter,"Pick Head Bone")
 	if pick:
 		if not pick.Model.Name == PPG.Inspected(0).Parent3DObject.Model.Name:
-			xsi.LogMessage("[Hair_Groom] Head Bone have to be under same model as Hair Cage object!!", constants.siWarning)
+			XSI.LogMessage("[Hair_Groom] Head Bone have to be under same model as Hair Cage object!!", constants.siWarning)
 			return 
 			
 		PPG.HeadBone.Value = pick.Name
@@ -591,7 +591,7 @@ def Hair_Groom_PickColliderMesh_OnClicked():
 	pick = uti.PickElement(constants.siPolyMeshFilter,"Pick Collider Mesh")
 	if pick:
 		if not pick.Model.Name == PPG.Inspected(0).Parent3DObject.Model.Name:
-			xsi.LogMessage("[Hair_Groom] Collider have to be under same model as Hair Cage object!!", constants.siWarning)
+			XSI.LogMessage("[Hair_Groom] Collider have to be under same model as Hair Cage object!!", constants.siWarning)
 			return 
 		
 		
@@ -603,23 +603,17 @@ def Hair_Groom_PickColliderMesh_OnClicked():
 def Hair_Groom_GetCollideList(prop):
 	model = prop.Parent3DObject.Model
 	if not model.Groups("HairCollide"):
-		uti.GroupSetup(model,None,"HairCollide")
+		uti.GroupSetup(model, None, "HairCollide")
 		return []
 
 	else:
 		grp = model.Groups("HairCollide")
 		members = grp.Members
 		if members.Count == 0:
-			xsi.LogMessage("[Hair_Control_GetCollideList] HairCollide Group is Empty!!", constants.siWarning)
+			XSI.LogMessage("[Hair_Control_GetCollideList] HairCollide Group is Empty!!", constants.siWarning)
 			return []
 		else:
-			list = []
-			id = 0
-			for m in members:
-				list.append(m.Name)
-				list.append(id)
-				id = id+1
-			return list
+			return [members[i/2] if not (i % 2) else i/2 for i in xrange(2 * len(members))]
 
 def Hair_Groom_AddCollider_OnClicked():
 	prop = PPG.Inspected(0)
@@ -656,7 +650,7 @@ def Hair_Groom_CreateHairDynamics_OnClicked():
 	#get dynamics type
 	dynamictype = prop.Parameters("DynamicsType").Value
 	if type == 2:
-		xsi.LogMessage("[Hair_DynamicsProperty] Regular Syflex NOT yet implemented, you have to do it manually...", constants.siError)
+		XSI.LogMessage("[Hair_DynamicsProperty] Regular Syflex NOT yet implemented, you have to do it manually...", constants.siError)
 		return
 	
 	#duplicate hair mesh to be used as dynamics target
@@ -664,7 +658,7 @@ def Hair_Groom_CreateHairDynamics_OnClicked():
 	target = None
 	if not dup:
 		data = mesh.ActivePrimitive.Geometry.Get2()
-		target = xsi.ActiveSceneRoot.AddPolygonMesh (data[0], data[1])
+		target = XSI.ActiveSceneRoot.AddPolygonMesh (data[0], data[1])
 		target.Name = mesh.Name+"_Target"
 		parent.AddChild(target)
 	else:
@@ -672,9 +666,9 @@ def Hair_Groom_CreateHairDynamics_OnClicked():
 		try:
 			target = model.FindChild(prop.Parameters("TargetMesh").Value)
 		except:
-			xsi.LogMessage("[Hair_DynamicsProperty] Target Mesh doesn't exist : we create it...",constants.siInfo)
+			XSI.LogMessage("[Hair_DynamicsProperty] Target Mesh doesn't exist : we create it...", constants.siInfo)
 			data = mesh.ActivePrimitive.Geometry.Get2()
-			target = xsi.ActiveSceneRoot.AddPolygonMesh (data[0], data[1])
+			target = XSI.ActiveSceneRoot.AddPolygonMesh (data[0], data[1])
 			target.Name = mesh.Name+"_Target"
 			parent.AddChild(target)
 	
@@ -700,7 +694,7 @@ def Hair_Groom_CreateHairDynamics_OnClicked():
 	
 	setmap = prop.Parameters("ApplyDynamicsMap").Value
 		
-	xsi.Hair_ApplyDynamics(mesh,target,collider,headbone,dynamictype,setmap)
+	XSI.Hair_ApplyDynamics(mesh, target, collider, headbone, dynamictype, setmap)
 #---------------------------------------
 # Create Hair Dynamics Command 
 #---------------------------------------
@@ -726,7 +720,7 @@ def Hair_ApplyDynamics_Execute(mesh,target,collider,headbone,dynamictype,setmap)
 	#if no target mesh duplicate hair mesh to be used as dynamics target
 	if not target:
 		data = mesh.ActivePrimitive.Geometry.Get2()
-		target = xsi.ActiveSceneRoot.AddPolygonMesh (data[0], data[1])
+		target = XSI.ActiveSceneRoot.AddPolygonMesh (data[0], data[1])
 		target.Name = mesh.Name+"_Target"
 		parent.AddChild(target)
 			
@@ -735,7 +729,7 @@ def Hair_ApplyDynamics_Execute(mesh,target,collider,headbone,dynamictype,setmap)
 		headbone = model.AddNull("Hair_Driver")
 		
 	#set dynamics weight map
-	xsi.FreezeModeling(mesh)
+	XSI.FreezeModeling(mesh)
 	
 	dynamicsmap = uti.GetWeightMap(mesh,"Dynamics_Map",1,0,1)
 	blendmap = uti.GetWeightMap(mesh,"Blend_Map",1,0,1)
@@ -743,22 +737,22 @@ def Hair_ApplyDynamics_Execute(mesh,target,collider,headbone,dynamictype,setmap)
 	# Set Dynamic Map
 	if setmap:
 		tree = ice.CreateIceTree(mesh,"SetDynamicsMap",0)
-		compound = xsi.AddICECompoundNode("HairTipGradientMap", str(tree))
-		xsi.ConnectICENodes(str(tree)+".port1", str(compound)+".Execute")
+		compound = XSI.AddICECompoundNode("HairTipGradientMap", str(tree))
+		XSI.ConnectICENodes(str(tree) + ".port1", str(compound) + ".Execute")
 		if type<2:
-			xsi.LogMessage("Set Dynamic Map Value")
-			xsi.SetValue(str(compound)+".Out_Start", 0, "")
-			xsi.SetValue(str(compound)+".Out_End", 1, "")
+			XSI.LogMessage("Set Dynamic Map Value")
+			XSI.SetValue(str(compound) + ".Out_Start", 0, "")
+			XSI.SetValue(str(compound) + ".Out_End", 1, "")
 		
-		compound = xsi.AddICECompoundNode("HairSmoothDynamicMap", str(tree))
-		xsi.AddPortToICENode(str(tree)+".port1", "siNodePortDataInsertionLocationAfter")
-		xsi.ConnectICENodes(str(tree)+".port2", str(compound)+".Execute")
+		compound = XSI.AddICECompoundNode("HairSmoothDynamicMap", str(tree))
+		XSI.AddPortToICENode(str(tree) + ".port1", "siNodePortDataInsertionLocationAfter")
+		XSI.ConnectICENodes(str(tree) + ".port2", str(compound) + ".Execute")
 		
 	#Init Dynamics ICETree
 	tree = ice.CreateIceTree(mesh,"InitDynamics",2)
-	compound = xsi.AddICECompoundNode("ClothInitShape", str(tree))
-	xsi.ConnectICENodes(str(tree)+".port1", str(compound)+".Execute")
-	xsi.SetValue(str(compound)+".Reference", ice.ReplaceModelNameByThisModel(target, model), "")
+	compound = XSI.AddICECompoundNode("ClothInitShape", str(tree))
+	XSI.ConnectICENodes(str(tree) + ".port1", str(compound) + ".Execute")
+	XSI.SetValue(str(compound) + ".Reference", ice.ReplaceModelNameByThisModel(target, model), "")
 	
 	# create pin/mimic cluster if not exists
 	pincls = mesh.ActivePrimitive.Geometry.Clusters("Pin_Cls") 
@@ -778,7 +772,7 @@ def Hair_ApplyDynamics_Execute(mesh,target,collider,headbone,dynamictype,setmap)
 			mimiccls = mesh.ActivePrimitive.Geometry.AddCluster(constants.siVertexCluster,"Mimic_Cls",add)
 		
 	else:
-		xsi.LogMessage("Pin_Cls/Mimic_Cls already in place on "+mesh.FullName+" : creation skipped...")
+		XSI.LogMessage("Pin_Cls/Mimic_Cls already in place on " + mesh.FullName + " : creation skipped...")
 
 	
 	#ICE softbody dynamics
@@ -786,59 +780,59 @@ def Hair_ApplyDynamics_Execute(mesh,target,collider,headbone,dynamictype,setmap)
 			
 		# init softbody ICETree
 		tree = ice.CreateIceTree(mesh,"SoftbodyInit",1)
-		compound = xsi.AddICECompoundNode("Init Verlet Geometry Data", str(tree))
-		xsi.ConnectICENodes(str(tree)+".port1", str(compound)+".Execute")
+		compound = XSI.AddICECompoundNode("Init Verlet Geometry Data", str(tree))
+		XSI.ConnectICENodes(str(tree) + ".port1", str(compound) + ".Execute")
 		
 		tree = ice.CreateSimulatedIceTree(mesh,"SoftbodyDynamics")
 		
-		compound = xsi.AddICECompoundNode("HairSoftBodyDynamics", str(tree))
-		xsi.ConnectICENodes(str(tree)+".port1", str(compound)+".Execute")
+		compound = XSI.AddICECompoundNode("HairSoftBodyDynamics", str(tree))
+		XSI.ConnectICENodes(str(tree) + ".port1", str(compound) + ".Execute")
 		
-		get1 = xsi.AddICENode("GetDataNode", str(tree))
-		get2 = xsi.AddICENode("GetDataNode", str(tree))
-		get3 = xsi.AddICENode("GetDataNode", str(tree))
+		get1 = XSI.AddICENode("GetDataNode", str(tree))
+		get2 = XSI.AddICENode("GetDataNode", str(tree))
+		get3 = XSI.AddICENode("GetDataNode", str(tree))
 		
-		xsi.ConnectICENodes(str(compound)+".Target_Name", str(get1)+".OutName")
-		xsi.ConnectICENodes(str(compound)+".Head_Name", str(get2)+".OutName")
-		xsi.ConnectICENodes(str(compound)+".Collider_Name", str(get3)+".OutName")
+		XSI.ConnectICENodes(str(compound) + ".Target_Name", str(get1) + ".OutName")
+		XSI.ConnectICENodes(str(compound) + ".Head_Name", str(get2) + ".OutName")
+		XSI.ConnectICENodes(str(compound) + ".Collider_Name", str(get3) + ".OutName")
 
-		xsi.SetValue(str(get1)+".reference", ice.ReplaceModelNameByThisModel(target,model), "")
-		xsi.SetValue(str(get2)+".reference", ice.ReplaceModelNameByThisModel(headbone,model), "")
+		XSI.SetValue(str(get1) + ".reference", ice.ReplaceModelNameByThisModel(target, model), "")
+		XSI.SetValue(str(get2) + ".reference", ice.ReplaceModelNameByThisModel(headbone, model), "")
 		
 		if collider:
 			uti.GroupSetup(model,[collider],"HairCollide")
 			
-		xsi.SetValue(str(get3)+".reference", "this_model.HairCollide", "")
+		XSI.SetValue(str(get3) + ".reference", "this_model.HairCollide", "")
 		
 	#ICE syflex dynamics		
 	if dynamictype == 1:
 		
 		tree = ice.CreateSimulatedIceTree(mesh,"SyflexDynamics")
-		compound = xsi.AddICECompoundNode("HairSyflexDynamics", str(tree))
-		xsi.ConnectICENodes(str(tree)+".port1", str(compound)+".Execute")
+		compound = XSI.AddICECompoundNode("HairSyflexDynamics", str(tree))
+		XSI.ConnectICENodes(str(tree) + ".port1", str(compound) + ".Execute")
 		
-		get1 = xsi.AddICENode("GetDataNode", str(tree))
-		get2 = xsi.AddICENode("GetDataNode", str(tree))
-		get3 = xsi.AddICENode("GetDataNode", str(tree))
-		get4 = xsi.AddICENode("GetDataNode", str(tree))
+		get1 = XSI.AddICENode("GetDataNode", str(tree))
+		get2 = XSI.AddICENode("GetDataNode", str(tree))
+		get3 = XSI.AddICENode("GetDataNode", str(tree))
+		get4 = XSI.AddICENode("GetDataNode", str(tree))
 
-		xsi.ConnectICENodes(str(compound)+".Target_Name", str(get1)+".OutName")
-		xsi.ConnectICENodes(str(compound)+".Collider_Name", str(get2)+".OutName")
-		xsi.ConnectICENodes(str(compound)+".Wind_Object", str(get3)+".OutName")
-		xsi.ConnectICENodes(str(compound)+".Turbulence_Object", str(get4)+".OutName")
+		XSI.ConnectICENodes(str(compound) + ".Target_Name", str(get1) + ".OutName")
+		XSI.ConnectICENodes(str(compound) + ".Collider_Name", str(get2) + ".OutName")
+		XSI.ConnectICENodes(str(compound) + ".Wind_Object", str(get3) + ".OutName")
+		XSI.ConnectICENodes(str(compound) + ".Turbulence_Object", str(get4) + ".OutName")
 
-		xsi.SetValue(str(get1)+".reference", ice.ReplaceModelNameByThisModel(target,model), "")
+		XSI.SetValue(str(get1) + ".reference", ice.ReplaceModelNameByThisModel(target, model), "")
 		
 		if collider:
 			uti.GroupSetup(model,[collider],"HairCollide")
 			
-		xsi.SetValue(str(get2)+".reference", "this_model.HairCollide", "")
+		XSI.SetValue(str(get2) + ".reference", "this_model.HairCollide", "")
 			
 		# connect wind
 		wind = model.FindChild("HairWindControl")
 		if not wind:
 			wind = uti.AddNull(parent,10,1.5,"HairWindControl",0,1,0.5)
-		xsi.SetValue(str(get3)+".reference", ice.ReplaceModelNameByThisModel(wind,model), "")
+		XSI.SetValue(str(get3) + ".reference", ice.ReplaceModelNameByThisModel(wind, model), "")
 		
 		#connect turbulence
 		turb = model.FindChild("HairTurbulenceControl")
@@ -847,11 +841,11 @@ def Hair_ApplyDynamics_Execute(mesh,target,collider,headbone,dynamictype,setmap)
 			turb.Parameters("Radius").Value = 0.77
 			turb.Parameters("SubdivU").Value = 24
 			tree = ice.CreateIceTree(turb,"DeformIcon",0)
-			compound = xsi.AddICECompoundNode("HairTurbulenceIcon", str(tree))
-			xsi.ConnectICENodes(str(tree)+".port1", str(compound)+".Execute")
+			compound = XSI.AddICECompoundNode("HairTurbulenceIcon", str(tree))
+			XSI.ConnectICENodes(str(tree) + ".port1", str(compound) + ".Execute")
 			uti.SetWireColor(turb,.3,1,.8)	
-			xsi.FreezeObj(turb)
-		xsi.SetValue(str(get4)+".reference", ice.ReplaceModelNameByThisModel(turb,model), "")
+			XSI.FreezeObj(turb)
+		XSI.SetValue(str(get4) + ".reference", ice.ReplaceModelNameByThisModel(turb, model), "")
 		
 	# Restore Shape ICE Tree
 	Hair_ApplyRestoreOp(mesh, target)
@@ -860,7 +854,7 @@ def Hair_ApplyDynamics_Execute(mesh,target,collider,headbone,dynamictype,setmap)
 # Create Tip Polygons Cluster  
 #---------------------------------------
 def Hair_CreateTipPolygonsCluster():
-	sel = xsi.Selection(0)
+	sel = XSI.Selection(0)
 	if not sel.Type == "polySubComponent":
 		XSIUIToolkit.MsgBox("Select Some Polygons on Hair Mesh and try again...",constants.siMsgOkOnly,"HairTools")
 		return
@@ -871,14 +865,14 @@ def Hair_CreateTipPolygonsCluster():
 		return
 
 	cls = sel.SubComponent.CreateCluster("TipPolygons")
-	xsi.SelectObj(cls)
+	XSI.SelectObj(cls)
 	
 #---------------------------------------
 # Add Polygons To Tip Polygons Cluster
 #---------------------------------------
 def Hair_AddPolygonsToTipPolygonsCluster(PPG):
 	
-	sel = xsi.Selection(0)
+	sel = XSI.Selection(0)
 	if not sel.Type == "polySubComponent":
 		XSIUIToolkit.MsgBox("Select Some Polygons on Hair Mesh and try again...",constants.siMsgOkOnly,"HairTools")
 		return
@@ -906,7 +900,7 @@ def Hair_AddPolygonsToTipPolygonsCluster(PPG):
 # Remove Polygons From Tip Polygons Cluster
 #---------------------------------------
 def Hair_RemovePolygonsFromTipPolygonsCluster(PPG):
-	sel = xsi.Selection(0)
+	sel = XSI.Selection(0)
 	if not sel.Type == "polySubComponent":
 		XSIUIToolkit.MsgBox("Select Some Polygons on Hair Mesh and try again...",constants.siMsgOkOnly,"HairTools")
 		return
@@ -934,17 +928,17 @@ def Hair_RemovePolygonsFromTipPolygonsCluster(PPG):
 # Merge Selected Hair Meshes
 #---------------------------------------
 def Hair_MergeMeshes_Execute():
-	sel = xsi.Selection
+	sel = XSI.Selection
 	if not Hair_CheckSelection(sel):
 		return False
 	
 	tipsmerged = Hair_GetTipPolygonsIndices(sel)
-	op = xsi.ApplyGenOp("MeshMerge", "", sel, 3, "siPersistentOperation", "siKeepGenOpInputs", "")(0)
+	op = XSI.ApplyGenOp("MeshMerge", "", sel, 3, "siPersistentOperation", "siKeepGenOpInputs", "")(0)
 	op.Parameters("Tolerance").Value = 0
 	mesh = op.Parent3DObject
 	mesh.Name = "Hair_Mesh_Merged"
 	mesh.ActivePrimitive.Geometry.AddCluster(constants.siPolygonCluster,"TipPolygons",tipsmerged)
-	xsi.FreezeObj(mesh)
+	XSI.FreezeObj(mesh)
 
 	return True
 
@@ -970,7 +964,7 @@ def Hair_EmitFromMesh(prop):
 		upvcrv = pro.FindChildFromParameterValue(prop,"UpVectorCurve")
 		
 		if not skull:
-			xsi.LogMessage("[HairTools] You MUST select Skull Object before building hair!!", constants.siWarning)
+			XSI.LogMessage("[HairTools] You MUST select Skull Object before building hair!!", constants.siWarning)
 			prop.SkullMesh.Value = ""
 			return None
 			
@@ -990,62 +984,62 @@ def Hair_EmitFromMesh(prop):
 		clone = uti.GetWeightMap(skull,"Clone_Map",1,0,1)
 		spread = uti.GetWeightMap(skull,"Spread_Map",1,0,1)
 		
-		xsi.FreezeModeling(mesh.FullName+","+skull.FullName)
+		XSI.FreezeModeling(mesh.FullName + "," + skull.FullName)
 		
 		# get Skull Static and transfert density
-		skullstatic = uti.GetMeshDuplicate(xsi.Dictionary.GetObject(skull))
+		skullstatic = uti.GetMeshDuplicate(XSI.Dictionary.GetObject(skull))
 		tree = ice.CreateIceTree(skullstatic,"TransfertDensity",0)
-		compound = xsi.AddICECompoundNode("HairTransfertDensityMap",str(tree))
-		xsi.ConnectICENodes(str(tree)+".port1",str(compound)+".Execute")
-		get = xsi.AddICENode("GetDataNode", str(tree))
-		xsi.SetValue(str(get)+".reference", ice.ReplaceModelNameByThisModel(skull,model), "")
-		xsi.ConnectICENodes(str(compound)+".Skull_Object", str(get)+".outname")
+		compound = XSI.AddICECompoundNode("HairTransfertDensityMap", str(tree))
+		XSI.ConnectICENodes(str(tree) + ".port1", str(compound) + ".Execute")
+		get = XSI.AddICENode("GetDataNode", str(tree))
+		XSI.SetValue(str(get) + ".reference", ice.ReplaceModelNameByThisModel(skull, model), "")
+		XSI.ConnectICENodes(str(compound) + ".Skull_Object", str(get) + ".outname")
 		tohide.append(skullstatic)
 		
 		if not mesh.ActivePrimitive.ICETrees("GetMeshData"):
 			tree = ice.CreateIceTree(mesh,"GetMeshData",1)
-			compound = xsi.AddICECompoundNode("HairGetMeshData", str(tree))
-			xsi.ConnectICENodes(str(tree)+".port1", str(compound)+".execute")
+			compound = XSI.AddICECompoundNode("HairGetMeshData", str(tree))
+			XSI.ConnectICENodes(str(tree) + ".port1", str(compound) + ".execute")
 		
 		if not mesh.ActivePrimitive.ICETrees("SetMeshData"):
 			tree = ice.CreateIceTree(mesh,"SetMeshData",3)
-			compound = xsi.AddICECompoundNode("HairSetMeshData", str(tree))
-			xsi.ConnectICENodes(str(tree)+".port1", str(compound)+".execute")
+			compound = XSI.AddICECompoundNode("HairSetMeshData", str(tree))
+			XSI.ConnectICENodes(str(tree) + ".port1", str(compound) + ".execute")
 		
 		guide = root.AddPrimitive("PointCloud","Hair_Guide")
 		tohide.append(guide)
 		prop.Parameters("HairGuide").Value = guide.Name
 		tree = ice.CreateIceTree(guide,"Emit",0)
 		
-		compound = xsi.AddICECompoundNode("HairEmitGuideFromMesh2", str(tree))
-		xsi.ConnectICENodes(str(tree)+".port"+str(1), str(compound)+".execute")
-		get1 = xsi.AddICENode("GetDataNode", str(tree))
-		xsi.SetValue(str(get1)+".reference", str(mesh), "")
-		xsi.ConnectICENodes(str(compound)+".Cage_Mesh", str(get1)+".outname")
+		compound = XSI.AddICECompoundNode("HairEmitGuideFromMesh2", str(tree))
+		XSI.ConnectICENodes(str(tree) + ".port" + str(1), str(compound) + ".execute")
+		get1 = XSI.AddICENode("GetDataNode", str(tree))
+		XSI.SetValue(str(get1) + ".reference", str(mesh), "")
+		XSI.ConnectICENodes(str(compound) + ".Cage_Mesh", str(get1) + ".outname")
 		
 		render = root.AddPrimitive("PointCloud","Hair_Render")
 		prop.Parameters("HairRender").Value = render.Name
 		tree = ice.CreateIceTree(render,"Emit",0)
 		
-		compound = xsi.AddICECompoundNode("HairRenderEmit", str(tree))
-		xsi.ConnectICENodes(str(tree)+".port"+str(1), str(compound)+".execute")
+		compound = XSI.AddICECompoundNode("HairRenderEmit", str(tree))
+		XSI.ConnectICENodes(str(tree) + ".port" + str(1), str(compound) + ".execute")
 	
-		get1 = xsi.AddICENode("GetDataNode", str(tree))
-		xsi.SetValue(str(get1)+".reference", str(ice.ReplaceModelNameByThisModel(skullstatic,model)), "")
-		xsi.ConnectICENodes(str(compound)+".Emitter_Static", str(get1)+".outname")
+		get1 = XSI.AddICENode("GetDataNode", str(tree))
+		XSI.SetValue(str(get1) + ".reference", str(ice.ReplaceModelNameByThisModel(skullstatic, model)), "")
+		XSI.ConnectICENodes(str(compound) + ".Emitter_Static", str(get1) + ".outname")
 		
-		get2 = xsi.AddICENode("GetDataNode", str(tree))
-		xsi.SetValue(str(get2)+".reference", str(ice.ReplaceModelNameByThisModel(skull,model)), "")
-		xsi.ConnectICENodes(str(compound)+".Emitter_Deform", str(get2)+".outname")
+		get2 = XSI.AddICENode("GetDataNode", str(tree))
+		XSI.SetValue(str(get2) + ".reference", str(ice.ReplaceModelNameByThisModel(skull, model)), "")
+		XSI.ConnectICENodes(str(compound) + ".Emitter_Deform", str(get2) + ".outname")
 		
-		get3 = xsi.AddICENode("GetDataNode", str(tree))
-		xsi.SetValue(str(get3)+".reference", str(ice.ReplaceModelNameByThisModel(guide,model)), "")
-		xsi.ConnectICENodes(str(compound)+".Guide", str(get3)+".outname")
+		get3 = XSI.AddICENode("GetDataNode", str(tree))
+		XSI.SetValue(str(get3) + ".reference", str(ice.ReplaceModelNameByThisModel(guide, model)), "")
+		XSI.ConnectICENodes(str(compound) + ".Guide", str(get3) + ".outname")
 		
-		get4 = xsi.AddICENode("GetDataNode", str(tree))
+		get4 = XSI.AddICENode("GetDataNode", str(tree))
 		if upvcrv:
-			xsi.SetValue(str(get4)+".reference", ice.ReplaceModelNameByThisModel(upvcrv,model), "")
-		xsi.ConnectICENodes(str(compound)+".UpVector_Curve", str(get4)+".outname")	
+			XSI.SetValue(str(get4) + ".reference", ice.ReplaceModelNameByThisModel(upvcrv, model), "")
+		XSI.ConnectICENodes(str(compound) + ".UpVector_Curve", str(get4) + ".outname")
 		
 		Hair_Groom_ReadXML()
 		uti.GroupSetup(mesh.Model,tohide,"HairHidden")
@@ -1056,19 +1050,19 @@ def Hair_EmitFromMesh(prop):
 		matName = prop.Parameters("HairMaterial").Value
 		mat = None
 		try:
-			mat = xsi.Dictionary.GetObject(matName)
+			mat = XSI.Dictionary.GetObject(matName)
 			render.SetMaterial(mat)
 
 		except:
-			xsi.LogMessage("[Hair_Groom] Create New Hair Material")
+			XSI.LogMessage("[Hair_Groom] Create New Hair Material")
 			mat = render.AddMaterial("Phong",false,"Hair_Mat")	
-			shader = xsi.CreateShaderFromProgID("Softimage.rh_renderer.1.0", mat.FullName , "Hair")
-			xsi.SIConnectShaderToCnxPoint(shader.FullName+".out", mat.FullName+".surface", False)
-			xsi.SIConnectShaderToCnxPoint(shader.FullName+".out", mat.FullName+".shadow", False)
+			shader = XSI.CreateShaderFromProgID("Softimage.rh_renderer.1.0", mat.FullName, "Hair")
+			XSI.SIConnectShaderToCnxPoint(shader.FullName + ".out", mat.FullName + ".surface", False)
+			XSI.SIConnectShaderToCnxPoint(shader.FullName + ".out", mat.FullName + ".shadow", False)
 			photon = mat.Parameters("Photon")
 			phong = photon.NestedObjects(0)
 			if phong:
-				xsi.DeleteObj(phong)
+				XSI.DeleteObj(phong)
 			
 			lib = mat.Library
 			prop.Parameters("HairMaterial").Value = lib.FullName+"."+mat.Name
@@ -1086,10 +1080,10 @@ def Hair_CleanUp(prop):
 		model = mesh.Model
 		skullstatic = model.FindChild(skull.Name+"_Static")
 		if skullstatic:
-			xsi.DeleteObj(skullstatic)
+			XSI.DeleteObj(skullstatic)
 		
 	if not mesh.ActivePrimitive.ICETrees("SetMeshData"):
-		xsi.LogMessage(mesh.FullName+" doesn't have HairMeshData ICETree on it...")
+		XSI.LogMessage(mesh.FullName + " doesn't have HairMeshData ICETree on it...")
 		return False
 	
 	done = Hair_DeleteHairCloud(prop)
@@ -1104,7 +1098,7 @@ def Hair_CleanUp(prop):
 			or h.Name == "Simulation":
 				todelete.append(h)
 			
-		xsi.DeleteObj(todelete)
+		XSI.DeleteObj(todelete)
 	
 		return True
 	else:
@@ -1120,8 +1114,8 @@ def Hair_DeleteHairCloud(prop):
 	render = pro.FindChildFromParameterValue(prop,"HairRender")
 	
 	if not guide or not render:
-		xsi.LogMessage("[Hair_DeleteHairCloud] Can't find corresponding Hair Guide or Hair Render ---> Deletion aborted...",constants.siWarning)
-		xsi.LogMessage("[Hair_DeleteHairCloud] You'll have to delete them yourself...",constants.siWarning)
+		XSI.LogMessage("[Hair_DeleteHairCloud] Can't find corresponding Hair Guide or Hair Render ---> Deletion aborted...", constants.siWarning)
+		XSI.LogMessage("[Hair_DeleteHairCloud] You'll have to delete them yourself...", constants.siWarning)
 		return False
 		
 	else:
@@ -1132,7 +1126,7 @@ def Hair_DeleteHairCloud(prop):
 		prop.Parameters("HairMaterial").Value = lib.FullName+"."+mat.Name
 		
 		#delete point clouds
-		xsi.DeleteObj(guide.FullName+","+render.FullName)
+		XSI.DeleteObj(guide.FullName + "," + render.FullName)
 		return True
 					
 def Hair_IsMeshEqual(inMesh,inNodeValue):
@@ -1176,14 +1170,14 @@ def Hair_GetTipPolygonsIndices(sel):
 	
 def Hair_CheckSelection(sel):
 	for s in sel:
-		mesh = xsi.Selection(0)
+		mesh = XSI.Selection(0)
 		if not s.type=="polymsh":
-			xsi.LogMessage("Select Polygon Meshes you want to merge")
+			XSI.LogMessage("Select Polygon Meshes you want to merge")
 			return false
 			
 		cls = mesh.ActivePrimitive.Geometry.Clusters("TipPolygons")
 		if not cls:
-			xsi.LogMessage("No TipPolygon Cluster on selected Geometry : Add Hair From Mesh aborted...")
+			XSI.LogMessage("No TipPolygon Cluster on selected Geometry : Add Hair From Mesh aborted...")
 			return false
 	return true
 	
@@ -1203,7 +1197,7 @@ def Hair_CheckGeometry(inMesh):
 	
 	if check:
 		XSIUIToolkit.MsgBox("Selected Geometry Contains Triangles or N-Gons outside of TipPolygons cluster ---> Invalid Geometry...",constants.siMsgOkOnly,"HairTools")
-		xsi.SelectObj(sub)
+		XSI.SelectObj(sub)
 		return		
 
 	return True
@@ -1211,8 +1205,8 @@ def Hair_CheckGeometry(inMesh):
 def Hair_ApplyRestoreOp(obj, target):
 	restoremap = uti.GetWeightMap(obj,"Restore_Map",0,0,1)
 	tree = ice.CreateIceTree(obj,"DynamicsRestore",3)
-	xsi.MoveOperatorAfter(obj.ActivePrimitive, tree, str(obj.ActivePrimitive)+".simulationmarker")
+	XSI.MoveOperatorAfter(obj.ActivePrimitive, tree, str(obj.ActivePrimitive) + ".simulationmarker")
 
-	compound = xsi.AddICECompoundNode("HairRestoreShape", str(tree))
-	xsi.ConnectICENodes(str(tree)+".port1", str(compound)+".Result")
-	xsi.SetValue(str(compound)+".Target_Mesh_Reference", ice.ReplaceModelNameByThisModel(target,obj.model), "")
+	compound = XSI.AddICECompoundNode("HairRestoreShape", str(tree))
+	XSI.ConnectICENodes(str(tree) + ".port1", str(compound) + ".Result")
+	XSI.SetValue(str(compound) + ".Target_Mesh_Reference", ice.ReplaceModelNameByThisModel(target, obj.model), "")

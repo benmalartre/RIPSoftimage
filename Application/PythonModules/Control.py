@@ -2,52 +2,40 @@
 # Control
 # -------------------------------------------------------------------
 from win32com.client import constants
-from Globals import xsi
+from Globals import XSI
 from Globals import XSIMath
 from Globals import XSIFactory
 from Constants import *
-import Element as ele
-import Utils as uti
-import ICETree as tre
-import Icon as ico
+import Element
+import Utils
+import ICETree
+import Icon
 
 
-# -------------------------------------------------------------------
-# Control Element Class
-# -------------------------------------------------------------------
-class IRControl(ele.IRElement):
-	# ---------------------------------------------------------------
-	# Constructor
-	# ---------------------------------------------------------------
-	def __init__(self, crv, parent, name, icon=0, mode=CTRL_FK, side=MIDDLE, suffix="_XX"):
+class IRControl(Element.IRElement):
+	def __init__(self, crv, parent, name, icon=0, mode=CTRL_FK, side=MIDDLE, suffix='_XX'):
 		super(IRControl, self).__init__(crv, parent, name, side, False, suffix)
 
 		self.type = ID_CONTROL
 		self.mode = mode
-		self.list = "ControlList"
-		self.chooser = "ControlChooser"
+		self.list = 'ControlList'
+		self.chooser = 'ControlChooser'
 		self.size = 1.0
 		self.icon = RIG_CONTROL_ICON[icon]
 		if self.crv:
 			self.prop = self.crv.Properties(PROP_CONTROL)
 
-		self.root = self.model.FindChild("Controls", constants.siNullPrimType)
+		self.root = self.model.FindChild('Controls', constants.siNullPrimType)
 
-	# ---------------------------------------------------------------
-	# Override Pick Position
-	# ---------------------------------------------------------------
 	def PickPosition(self):
-		self.position = uti.PickPosition()
-		self.rotation = uti.GetOrientationFromPickPosition(self.position)
+		self.position = Utils.PickPosition()
+		self.rotation = Utils.GetOrientationFromPickPosition(self.position)
 		return True
 
-	# ---------------------------------------------------------------
-	# Create Control Element
-	# ---------------------------------------------------------------
 	def CreateGuide(self):
 		builder = self.GetBuilder()
 		if self.CheckElementExist():
-			xsi.LogMessage("[CreateControlElement] : " + self.fullname+"_Ctrl already exist ---> aborted...!")
+			XSI.LogMessage('[CreateControlElement] : ' + self.fullname + '_Ctrl already exist ---> aborted...!')
 			return False
 
 		t = XSIMath.CreateTransform()
@@ -57,17 +45,11 @@ class IRControl(ele.IRElement):
 		self.GetControlColor()
 		color = [self.colorrik, self.colorgik, self.colorbik]
 		self.size = builder.Parameters("GlobalSize").Value
-		self.crv = ico.IRIcon(self.parent, self.fullname+"_Ctrl", t, color, self.icon, self.size, self.size, self.size)
+		self.crv = Icon.IRIcon(self.parent, self.fullname+"_Ctrl", t, color, self.icon, self.size, self.size, self.size)
 
-		print self.model
-		print self.crv
-
-		uti.GroupSetup(self.model, [self.crv], "Control_Curves")
+		Utils.GroupSetup(self.model, [self.crv], "Control_Curves")
 		return True
 
-	# ---------------------------------------------------------------
-	# Get Existing Control Element
-	# ---------------------------------------------------------------
 	def GetFromGuide(self, crv):
 		self.crv = crv
 		self.position = crv.Kinematics.Global.Transform.Translation
@@ -87,12 +69,9 @@ class IRControl(ele.IRElement):
 			self.type = CTRL_SRT
 		self.GetControlColor()
 
-	# ---------------------------------------------------------------
-	# Symmetrize Control
-	# ---------------------------------------------------------------
 	def Symmetrize(self):
 		if self.side == MIDDLE:
-			xsi.LogMessage("[CreateControlElement] : Can't symmetrize middle elements ---> aborted...!")
+			XSI.LogMessage("[CreateControlElement] : Can't symmetrize middle elements ---> aborted...!")
 			return None
 		
 		axis = self.builder.Parameters("SymmetryAxis").Value
@@ -102,15 +81,17 @@ class IRControl(ele.IRElement):
 			self.symparent = self.ctrl.Parent
 			
 		color = [self.colorrik, self.colorgik, self.colorbik]
-		self.symctrl = ico.IRIcon(self.symparent,
-								  self.symfullname+"_Ctrl",
-								  XSIMath.CreateTransform(),
-								  color,
-								  self.icon,
-								  self.size,
-								  self.size,
-								  self.size)
-		uti.SimpleSymmetry(self.symctrl, self.ctrl, axis)
+		self.symctrl = Icon.IRIcon(
+			self.symparent,
+			self.symfullname+"_Ctrl",
+			XSIMath.CreateTransform(),
+			color,
+			self.icon,
+			self.size,
+			self.size,
+			self.size
+		)
+		Utils.SimpleSymmetry(self.symctrl, self.ctrl, axis)
 		'''
 		self.symguidepoints = XSIFactory.CreateActiveXObject("XSI.Collection")
 		self.parent = self.model.FindChild(self.guidepoints[0].Parent.Name.replace(self.prefix,self.symprefix))
@@ -139,21 +120,15 @@ class IRControl(ele.IRElement):
 		self.symprop.Parameters("Side").Value = 1-self.side
 		'''
 
-	# ---------------------------------------------------------------
-	# Add to Rig
-	# ---------------------------------------------------------------
+	def ConnectSymmetry(self, elem):
+		pass
+
 	def AddToRig(self):
-		xsi.LogMessage("[RigControl] : Add to Rig called...")
+		XSI.LogMessage("[RigControl] : Add to Rig called...")
 
-	# ---------------------------------------------------------------
-	# Remove Element	
-	# ---------------------------------------------------------------
 	def RemoveFromRig(self):
-		xsi.LogMessage("[RigControl] : Remove Control Element Called...")
+		XSI.LogMessage("[RigControl] : Remove Control Element Called...")
 
-	# ---------------------------------------------------------------
-	# Get Control Color	
-	# ---------------------------------------------------------------
 	def GetControlColor(self):
 		builder = self.GetBuilder()
 		if self.side == RIGHT:
@@ -183,14 +158,11 @@ class IRControl(ele.IRElement):
 			self.colorgfk = builder.Parameters("M_ColorG_FK").Value
 			self.colorbfk = builder.Parameters("M_ColorB_FK").Value
 
-	# ---------------------------------------------------------------
-	# Set Control Color	
-	# ---------------------------------------------------------------
 	def SetControlColor(self):
 		if self.type == CTRL_FK:
-			uti.SetWireColor(self.ctrl, self.colorrfk, self.colorgfk, self.colorbfk)
+			Utils.SetWireColor(self.ctrl, self.colorrfk, self.colorgfk, self.colorbfk)
 		else:
-			uti.SetWireColor(self.ctrl, self.colorrik, self.colorgik, self.colorbik)
+			Utils.SetWireColor(self.ctrl, self.colorrik, self.colorgik, self.colorbik)
 			
 
 # -------------------------------------------------------------------
@@ -263,7 +235,7 @@ def BuildIK2BonesRig(parent, crv, ppg):
 		pos = []
 		for i in range(1,last):
 			pos.append(pnts[i].Position)
-		p1 = uti.GetAveragePosition(pos)
+		p1 = Utils.GetAveragePosition(pos)
 		p2 = pnts[last].Position
 	
 	dir1 = XSIMath.CreateVector3()
@@ -271,7 +243,7 @@ def BuildIK2BonesRig(parent, crv, ppg):
 	dir2 = XSIMath.CreateVector3()
 	dir2.Sub(p1, p2)
 	
-	l = dir1.Length() + dir2.Length()
+	length = dir1.Length() + dir2.Length()
 	
 	plane = XSIMath.CreateVector3()
 	plane.Cross(dir1, dir2)
@@ -279,101 +251,113 @@ def BuildIK2BonesRig(parent, crv, ppg):
 	
 	offset = XSIMath.CreateVector3()
 	offset.Normalize(dir1)
-	offset.ScaleInPlace(-l*0.5)
+	offset.ScaleInPlace(-length*0.5)
 	offset.AddInPlace(p1)
 	
 	l1 = dir1.Length()
 	l2 = dir2.Length()
 	
-	t = XSIMath.CreateTransform()
-	t.SetTranslation(p0)
+	transform = XSIMath.CreateTransform()
+	transform.SetTranslation(p0)
 	
-	root = ico.IRIcon(parent, name+"_Root_Ctrl", t, [r, g, b], "cube", 0.1*l, 0.1*l, 0.1*l)
-	ik = uti.MakeRigNull(parent, 1, name+"_IK")
+	root = Icon.IRIcon(parent, name+"_Root_Ctrl", transform, [r, g, b], "cube", 0.1*length, 0.1*length, 0.1*length)
+	ik = Utils.MakeRigNull(parent, 1, name+"_IK")
 	
-	t.SetTranslation(p1)
-	ik.Kinematics.Global.Transform = t
+	transform.SetTranslation(p1)
+	ik.Kinematics.Global.Transform = transform
 	
-	tree = tre.CreateICETree(ik, "IK", 2)
-	iknode = xsi.AddICECompoundNode("IK2BonesKinematics", tree)
-	xsi.ConnectICENodes(str(tree)+".port1", str(iknode)+".Execute")
+	tree = ICETree.CreateICETree(ik, "IK", 2)
+	ik_node = XSI.AddICECompoundNode("IK2BonesKinematics", tree)
+	XSI.ConnectICENodes(str(tree) + ".port1", str(ik_node) + ".Execute")
 	
 	# set ik values
-	xsi.SetValue(str(iknode)+".Reference", "this_model."+name+"_Root_Ctrl", "")
-	xsi.SetValue(str(iknode)+".Reference1", "this_model."+name+"_Eff_Ctrl", "")
-	xsi.SetValue(str(iknode)+".Reference2", "this_model."+name+"_UpV_Ctrl", "")
-	xsi.SetValue(str(iknode)+".LengthA", l1, "")
-	xsi.SetValue(str(iknode)+".LengthB", l2, "")
+	XSI.SetValue(str(ik_node) + ".Reference", "this_model." + name + "_Root_Ctrl", "")
+	XSI.SetValue(str(ik_node) + ".Reference1", "this_model." + name + "_Eff_Ctrl", "")
+	XSI.SetValue(str(ik_node) + ".Reference2", "this_model." + name + "_UpV_Ctrl", "")
+	XSI.SetValue(str(ik_node) + ".LengthA", l1, "")
+	XSI.SetValue(str(ik_node) + ".LengthB", l2, "")
 
-	knee = ico.IRIcon(ik, name+"_Knee_Ctrl", t, [r, g, b], "sphere", 0.1*l, 0.1*l, 0.1*l)
+	knee = Icon.IRIcon(ik, name+"_Knee_Ctrl", transform, [r, g, b], "sphere", 0.1*length, 0.1*length, 0.1*length)
 	
-	t.SetTranslation(offset)
-	upv = ico.IRIcon(root, name+"_UpV_Ctrl", t, [r, g, b], "pyramid", 0.05*l, 0.05*l, 0.05*l)
+	transform.SetTranslation(offset)
+	upv = Icon.IRIcon(root, name+"_UpV_Ctrl", transform, [r, g, b], "pyramid", 0.05*length, 0.05*length, 0.05*length)
 	
-	t.SetTranslation(p2)
-	eff = ico.IRIcon(parent, name+"_Eff_Ctrl", t, [r, g, b], "square", l, l, l)
+	transform.SetTranslation(p2)
+	eff = Icon.IRIcon(parent, name+"_Eff_Ctrl", transform, [r, g, b], "square", length, length, length)
 	
-	uti.ResetStaticKinematicState([root, knee, eff])
-	uti.GroupSetup(parent.Model, [root, knee, eff], "IK_Rig")
-	xsi.SetNeutralPose([root, knee, eff, upv], "siSRT", "")
+	Utils.ResetStaticKinematicState([root, knee, eff])
+	Utils.GroupSetup(parent.Model, [root, knee, eff], "IK_Rig")
+	XSI.SetNeutralPose([root, knee, eff, upv], "siSRT", "")
 
 
 # -------------------------------------------------------------------
 # Build FK RiG
 # -------------------------------------------------------------------
 def BuildFKRig(parent, crv, ppg, side=MIDDLE, simple=False):
-	prefix = "M_"
+	prefix = 'M_'
 	if side == LEFT:
-		prefix = "L_"
+		prefix = 'L_'
 	elif side == RIGHT:
-		prefix = "R_"
+		prefix = 'R_'
 			
-	r = ppg.Parameters(prefix+"ColorR_FK").Value
-	g = ppg.Parameters(prefix+"ColorG_FK").Value
-	b = ppg.Parameters(prefix+"ColorB_FK").Value
+	r = ppg.Parameters('{}ColorR_FK'.format(prefix)).Value
+	g = ppg.Parameters('{}ColorG_FK'.format(prefix)).Value
+	b = ppg.Parameters('{}ColorB_FK'.format(prefix)).Value
 			
 	model = parent.Model
-	builder = model.Properties("RigBuilder")
+	builder = model.Properties('RigBuilder')
 	if not builder:
-		xsi.LogMessage("[RigControl] : Invalid Parent Object ---> Aborted!")
+		XSI.LogMessage('[RigControl] Invalid parent object, aborted !')
 		return False
 		
-	elemppg = crv.Properties("RigElement")
-	if not elemppg:
-		xsi.LogMessage("[RigControl] : Guide Curve is NOT a Rig Element ---> Aborted!")
+	elem_ppg = crv.Properties('RigElement')
+	if not elem_ppg:
+		XSI.LogMessage('[RigControl] Guide curve is not a rig element, aborted !')
 		return False
 		
-	ctrls = XSIFactory.CreateActiveXObject("XSI.Collection")
+	ctrls = XSIFactory.CreateActiveXObject('XSI.Collection')
 	
-	basename = crv.Name.replace("_Crv", "")
+	basename = crv.Name.replace('_Crv', '')
 	vertices = crv.ActivePrimitive.Geometry.Points
 	
-	upv_x = elemppg.Parameters("UpVectorX").Value
-	upv_y = elemppg.Parameters("UpVectorY").Value
-	upv_z = elemppg.Parameters("UpVectorZ").Value
+	up_x = elem_ppg.Parameters('UpVectorX').Value
+	up_y = elem_ppg.Parameters('UpVectorY').Value
+	up_z = elem_ppg.Parameters('UpVectorZ').Value
 	
-	up = XSIMath.CreateVector3(upv_x, upv_y, upv_z)
-	dir = XSIMath.CreateVector3()
+	up_vector = XSIMath.CreateVector3(up_x, up_y, up_z)
+	direction = XSIMath.CreateVector3()
 	for idx, vertex in enumerate(vertices):
-		t = XSIMath.CreateTransform()
+		transform = XSIMath.CreateTransform()
 		p0 = vertex.Position
-		t.SetTranslation(p0)
+		transform.SetTranslation(p0)
 		
 		if idx < vertices.Count-1:
 			p1 = vertices[idx+1].Position
-			dir.Sub(p1, p0)
-			dir.NormalizeInPlace() 
-			rot = uti.GetRotationFromTwoVectors(dir, up)
-			t.SetRotation(rot)
-			fk = ico.simple(parent, basename+"_FK"+str(idx+1)+"_Ctrl", [r, g, b], t, p1)
+			direction.Sub(p1, p0)
+			direction.NormalizeInPlace()
+			rot = Utils.GetRotationFromTwoVectors(direction, up_vector)
+			transform.SetRotation(rot)
+			fk = Icon.simple(
+				parent,
+				'{}_FK{}_Ctrl'.format(basename, idx+1),
+				[r, g, b],
+				transform,
+				p1
+			)
 		else:
-			fk = ico.simple(parent, basename+"_FK"+str(idx+1)+"_Ctrl", [r, g, b], t, p0)
+			fk = Icon.simple(
+				parent,
+				'{}_FK{}_Ctrl'.format(basename, idx+1),
+				[r, g, b],
+				transform,
+				p0
+			)
 		parent = fk
 		ctrls.Add(fk) 
 		
-	uti.ResetStaticKinematicState(ctrls)
-	xsi.SetNeutralPose(ctrls, "siSRT", "")
-	uti.GroupSetup(model, ctrls, inGroupName="FK_Rig")
+	Utils.ResetStaticKinematicState(ctrls)
+	XSI.SetNeutralPose(ctrls, 'siSRT', '')
+	Utils.GroupSetup(model, ctrls, inGroupName='FK_Rig')
 
 	return True
 
@@ -382,69 +366,78 @@ def BuildFKRig(parent, crv, ppg, side=MIDDLE, simple=False):
 # Build SRT RiG (Points on Curve)
 # -------------------------------------------------------------------
 def BuildSRTRig(parent, crv, ppg, side=MIDDLE, simple=False):
-	prefix = "M_"
+	prefix = 'M_'
 	if side == LEFT:
-		prefix = "L_"
+		prefix = 'L_'
 	elif side == RIGHT:
-		prefix = "R_"
+		prefix = 'R_'
 			
-	r = ppg.Parameters(prefix+"ColorR_FK").Value
-	g = ppg.Parameters(prefix+"ColorG_FK").Value
-	b = ppg.Parameters(prefix+"ColorB_FK").Value
+	r = ppg.Parameters('{}ColorR_FK'.format(prefix)).Value
+	g = ppg.Parameters('{}ColorG_FK'.format(prefix)).Value
+	b = ppg.Parameters('{}ColorB_FK'.format(prefix)).Value
 			
 	model = parent.Model
-	builder = model.Properties("RigBuilder")
+	builder = model.Properties('RigBuilder')
 	if not builder:
-		xsi.LogMessage("[RigControl] : Invalid Parent Object ---> Aborted!")
+		XSI.LogMessage('[RigControl] : Invalid Parent Object ---> Aborted!')
 		return False
 		
-	elemppg = crv.Properties("RigElement")
-	if not elemppg:
-		xsi.LogMessage("[RigControl] : Guide Curve is NOT a Rig Element ---> Aborted!")
+	elem_ppg = crv.Properties('RigElement')
+	if not elem_ppg:
+		XSI.LogMessage('[RigControl] : Guide Curve is NOT a Rig Element ---> Aborted!')
 		return False
 		
-	ctrls = XSIFactory.CreateActiveXObject("XSI.Collection")
+	controls = XSIFactory.CreateActiveXObject('XSI.Collection')
 	
-	basename = crv.Name.replace("_Crv", "")
+	basename = crv.Name.replace('_Crv', '')
 	vertices = crv.ActivePrimitive.Geometry.Points
 	for idx, vertex in enumerate(vertices):
-		t = XSIMath.CreateTransform()
+		transform = XSIMath.CreateTransform()
 		p0 = vertex.Position
-		t.SetTranslation(p0)
-		srt = ico.IRIcon(parent, basename+str(idx)+"_Ctrl", t, [r, g, b], "sphere", 0.1, 0.1, 0.1)
-		ctrls.Add(srt)
+		transform.SetTranslation(p0)
+		srt = Icon.IRIcon(
+			parent,
+			'{}{}_Ctrl'.format(basename, idx),
+			transform,
+			[r, g, b],
+			'sphere',
+			0.1,
+			0.1,
+			0.1
+		)
+		controls.Add(srt)
 		
-	uti.ResetStaticKinematicState(ctrls)
-	xsi.SetNeutralPose(ctrls, "siSRT", "")
-	uti.GroupSetup(model, ctrls, inGroupName="FK_Rig")
+	Utils.ResetStaticKinematicState(controls)
+	XSI.SetNeutralPose(controls, 'siSRT', '')
+	Utils.GroupSetup(model, controls, inGroupName='FK_Rig')
 
 
 # -------------------------------------------------------------------
 # Build FootRoll RiG
 # -------------------------------------------------------------------
 def BuildFootRollRig(parent, crv, ppg, side=MIDDLE, simple=False):
-	prefix = "M_"
+	prefix = 'M_'
 	if side == LEFT:
-		prefix = "L_"
+		prefix = 'L_'
 	elif side == RIGHT:
-		prefix = "R_"
+		prefix = 'R_'
 		
 	basename = crv.Name.replace("_Crv", "")
 	
-	r = ppg.Parameters(prefix+"ColorR_FK").Value
-	g = ppg.Parameters(prefix+"ColorG_FK").Value
-	b = ppg.Parameters(prefix+"ColorB_FK").Value
+	r = ppg.Parameters('{}ColorR_FK'.format(prefix)).Value
+	g = ppg.Parameters('{}ColorG_FK'.format(prefix)).Value
+	b = ppg.Parameters('{}ColorB_FK'.format(prefix)).Value
 
 	axis = XSIMath.CreateVector3()
 	d1 = XSIMath.CreateVector3()
 	d2 = XSIMath.CreateVector3()
 	
-	pnts = crv.ActivePrimitive.Geometry.Points
+	points = crv.ActivePrimitive.Geometry.Points
 	pos = []
-	for p in pnts:
-		pos.append(p.Position)
+	for point in points:
+		pos.append(point.Position)
 		
-	last = pnts.Count-1
+	last = points.Count-1
 	d1.Sub(pos[1], pos[0])
 	d2.Sub(pos[last], pos[0])
 	
@@ -454,46 +447,82 @@ def BuildFootRollRig(parent, crv, ppg, side=MIDDLE, simple=False):
 	axis.Cross(d1, d2)
 	
 	# build root control
-	minZ = pos[0].Z
-	for i, p in enumerate(pos):
+	min_z = pos[0].Z
+	for i, point in enumerate(pos):
 		if i == 0:
 			continue
-		if p.Z < minZ:
-			minZ = p.Z
+		if point.Z < min_z:
+			min_z = point.Z
 			
-	average = uti.GetAveragePosition(pos)
-	average.Z = minZ
+	average = Utils.GetAveragePosition(pos)
+	average.Z = min_z
 	
-	l = uti.GetCurveLength(crv)
-	t = XSIMath.CreateTransform()
-	t.SetTranslation(average)
-	main = ico.IRIcon(parent, basename+"Main_Ctrl", t, [r, g, b], "circle", 0.5*l, 0.5*l, 0.5*l)
+	length = Utils.GetCurveLength(crv)
+	transform = XSIMath.CreateTransform()
+	transform.SetTranslation(average)
+	main = Icon.IRIcon(
+		parent,
+		'{}_MainControl'.format(basename),
+		transform,
+		[r, g, b],
+		'circle',
+		0.5*length,
+		0.5*length,
+		0.5*length
+	)
 	parent = main
 	parents = []
 	
 	ctrls = []
 	# build reverse structure
 	for i in range(0, last):
-		t.SetTranslation(pos[last-i])
-		parent = ico.IRIcon(parent, prefix+basename+str(i)+"_Ctrl", t, [r, g, b], "bendedarrow2", 0.2*l, 0.2*l, 0.2*l)
+		transform.SetTranslation(pos[last-i])
+		parent = Icon.IRIcon(
+			parent,
+			'{}{}{}_Ctrl'.format(prefix, basename, i),
+			transform,
+			[r, g, b],
+			'bendedarrow2',
+			0.2*length,
+			0.2*length,
+			0.2*length
+		)
 		parents.append(parent)
 		ctrls.append(parent)
 			
 	# build final control structure
 	fks = []
 	for i in range(0, last+1):
-		t.SetTranslation(pos[last-i])
+		transform.SetTranslation(pos[last-i])
 		if i == 0:
-			icon = ico.IRIcon(main, prefix+basename+str(i)+"_Ctrl", t, [r, g, b], "sphere", 0.1*l, 0.1*l, 0.1*l)
+			icon = Icon.IRIcon(
+				main,
+				'{}{}{}_Ctrl'.format(prefix, basename, i),
+				transform,
+				[r, g, b],
+				"sphere",
+				0.1*length,
+				0.1*length,
+				0.1*length
+			)
 			fks.append(icon)
 			ctrls.append(icon)
 		else:
-			icon = ico.IRIcon(parents[i-1], prefix+basename+str(i)+"_Ctrl", t, [r, g, b], "sphere", 0.1*l, 0.1*l, 0.1*l)
+			icon = Icon.IRIcon(
+				parents[i-1],
+				'{}{}{}_Ctrl'.format(prefix, basename, i),
+				transform,
+				[r, g, b],
+				'sphere',
+				0.1*length,
+				0.1*length,
+				0.1*length
+			)
 			fks.append(icon)
 			ctrls.append(icon)
 			
-	uti.ResetStaticKinematicState(fks)
-	uti.GroupSetup(parent.Model, fks, "IK_Rig")
+	Utils.ResetStaticKinematicState(fks)
+	Utils.GroupSetup(parent.Model, fks, 'IK_Rig')
 	
-	xsi.SetNeutralPose(ctrls, "siSRT", "")
-	uti.GroupSetup(parent.Model, ctrls, "Anim_Ctrls")
+	XSI.SetNeutralPose(ctrls, 'siSRT', '')
+	Utils.GroupSetup(parent.Model, ctrls, 'Anim_Controls')

@@ -1,89 +1,85 @@
-# ===============================================
-# File Module
-# ===============================================
+from win32com.client import constants
 from Globals import *
 import os
 import stat
 import shutil
 
 
-# -----------------------------------------------
-# FolderExists
-# -----------------------------------------------
 def FolderExists(folder):
-	folderExists = os.path.isdir(folder)
-	return folderExists	
+	""" Does folder exists on disk
+	:return bool: folder exists
+	"""
+	return os.path.isdir(folder)
 
 
-# -----------------------------------------------
-# FileExists
-# -----------------------------------------------
-def FileExists(file):
-	fileExists = os.path.isfile(file)
-	return fileExists
+def FileExists(filename):
+	""" Does folder exists on disk
+	:return bool: file exists
+	"""
+	return os.path.isfile(filename)
 
 
-# -----------------------------------------------
-# IsFileReadOnly
-# -----------------------------------------------
-def IsFileReadOnly(file):
-	fileAtt = os.stat(file).st_mode
-	if not fileAtt & stat.S_IWRITE:
-		return True
-	else:
-		return False
+def IsFileReadOnly(filename):
+	""" Is read-only file
+	:return bool: is read-only file
+	"""
+	return not (os.stat(filename).st_mode & stat.S_IWRITE)
 
 
-# -----------------------------------------------
-# IsFileValid (size > 0kb)
-# -----------------------------------------------
-def IsFileValid(file):
-	s = os.path.getsize(file)
-	if s == 0:
-		return False
-	return True
+def IsFileValid(filename):
+	""" Is file valid
+	:return bool: is file valid (>0kb)
+	"""
+	return os.path.getsize(filename) > 0
 
 
-# -----------------------------------------------
-# CopyFiles
-# -----------------------------------------------
-def CopyFiles(sourcepath, targetpath, checkexist=False):
-	for root, dirs, files in os.walk(sourcepath):
+def CopyFiles(sourcePath, targetPath, checkExist=False):
+	""" Copy files from source path to target path
+	:param str sourcePath: source directory
+	:param str targetPath: target directory
+	:param bool checkExist: check for existing file and ask for overwrite
+	"""
+	for root, dirs, files in os.walk(sourcePath):
 		# figure out where we're going
-		dest = targetpath + root.replace(sourcepath, '')
+		destination = '{}{}'.format(targetPath, root.replace(sourcePath, ''))
 
 		# loop through all files in the directory
-		for f in files:
-
-			# compute current (old) & new file locations
-			oldLoc = root + '\\' + f
-			newLoc = dest + '\\' + f
+		for _file in files:
+			# compute current & new file locations
+			old_location = os.path.join(root, _file)
+			new_location = os.path.join(destination, _file)
 			
-			if checkexist and FileExists(newLoc):
-				buttonPressed = XSIUIToolKit.Msgbox("File "+ f +" already exists, Overwrite?",
-													constants.siMsgYesNo | constants.siMsgQuestion,
-													"Copy Files" )
-				if buttonPressed == constants.siMsgNo:
+			if checkExist and FileExists(new_location):
+				response = XSIUIToolKit.Msgbox(
+					'File "{}" already exists, Overwrite?'.format(_file),
+					constants.siMsgYesNo | constants.siMsgQuestion,
+					'Copy Files'
+				)
+				if response == constants.siMsgNo:
 					continue
 					
 			try:
-				shutil.copy2(oldLoc, newLoc)
-			except:
-				xsi.LogMessage('Error copying file : '+ f,constants.siError)
+				shutil.copy2(old_location, new_location)
+			except RuntimeError:
+				XSI.LogMessage('Error copying file "{}"'.format(_file), constants.siError)
 
 
-# -----------------------------------------------
-# CopyOneFile
-# -----------------------------------------------
-def CopyOneFile(source, target, checkexist=False):
-	if checkexist and FileExists(target):
-		buttonPressed = XSIUIToolKit.Msgbox("File " + target +" already exists, Overwrite?",
-											constants.siMsgYesNo | constants.siMsgQuestion,
-											"Copy Files" )
-		if buttonPressed == constants.siMsgNo:
+def CopyOneFile(source, target, checkExist=False):
+	""" Copy one file from source path to target path
+	:param str source: source filename
+	:param str target: target filename
+	:param bool checkExist: check for existing file and ask for overwrite
+	"""
+	if checkExist and FileExists(target):
+		response = XSIUIToolKit.Msgbox(
+			'File "{}" already exists, Overwrite?'.format(target),
+			constants.siMsgYesNo | constants.siMsgQuestion,
+			'Copy Files'
+		)
+		if response == constants.siMsgNo:
 			return
 	
 	try:
 		shutil.copy2(source, target)
-	except:
-		xsi.LogMessage('Error copying file : '+ source, constants.siError)
+	except RuntimeError:
+		XSI.LogMessage('Error copying file : ' + source, constants.siError)

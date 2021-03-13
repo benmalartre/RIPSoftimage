@@ -1,7 +1,7 @@
 # -------------------------------------------------------------------
 # Muscle
 # -------------------------------------------------------------------
-from Globals import xsi
+from Globals import XSI
 from win32com.client import constants as siConstants
 from Constants import *
 import Element as ele
@@ -13,8 +13,8 @@ import ICETree as tre
 # Muscle Element Class
 # -------------------------------------------------------------------
 class IRMuscle(ele.IRElement):
-	def __init__(self, crv, parent, name, side=MIDDLE, selfsymmetrize=False, suffix="_Crv"):
-		super(IRMuscle, self).__init__(crv, parent, name, side, selfsymmetrize, suffix)
+	def __init__(self, crv, parent, name, side=MIDDLE, mirror=False, suffix="_Crv"):
+		super(IRMuscle, self).__init__(crv, parent, name, side, mirror, suffix)
 
 		self.type = ID_SKELETON
 		self.list = "MuscleList"
@@ -39,8 +39,8 @@ class IRMuscle(ele.IRElement):
 	def PickPosition(self):
 		self.position = uti.PickMultiPosition(-1, False)
 		if len(self.position) < 2:
-			xsi.LogMessage("[Create Element] : You need to pick at least TWO points ---> aborted...!",
-						   siConstants.siWarning)
+			XSI.LogMessage("[Create Element] : You need to pick at least TWO points ---> aborted...!",
+                           siConstants.siWarning)
 			return False
 			self.rotation = uti.GetOrientationFromPickPosition(self.position)
 		return True
@@ -50,7 +50,7 @@ class IRMuscle(ele.IRElement):
 			self.root = uti.AddNull(self.model, 0, 1, "Muscles", 0, 0, 0)
 		
 		if self.CheckElementExist():
-			xsi.LogMessage("[BuildRigMuscle] : " + self.fullname + self.suffix+" already exist ---> skipped...!")
+			XSI.LogMessage("[BuildRigMuscle] : " + self.fullname + self.suffix + " already exist ---> skipped...!")
 			return False
 
 		self.nbp = len(self.position) + 2
@@ -84,32 +84,34 @@ class IRMuscle(ele.IRElement):
 	# ---------------------------------------------------------------
 	def Symmetrize(self):
 		if self.side == MIDDLE:
-			xsi.LogMessage("[ICERig] : Can't symmetrize middle elements ---> aborted...!")
+			XSI.LogMessage("[ICERig] : Can't symmetrize middle elements ---> aborted...!")
 			return None
 
-		symmelement = IRMuscle(None,
-							   self.GetSymParent(self.parent),
-							   self.name,
-							   self.GetOppositeSide(),
-							   self.selfsymmetrize,
-							   self.suffix)
+		sibling = IRMuscle(
+			None,
+			self.GetSymParent(self.parent),
+			self.name,
+			self.GetOppositeSide(),
+			self.mirror,
+			self.suffix
+		)
 
-		symmelement.position = self.position
-		symmelement.rotation = self.rotation
-		symmelement.symmelement = self
-		self.symmelement = symmelement
+		sibling.position = self.position
+		sibling.rotation = self.rotation
+		sibling.sibling = self
+		self.sibling = sibling
 
-		symmelement.CreateGuide()
+		sibling.CreateGuide()
 
 		# add symmetrize element data ICE Tree
-		t = tre.CreateICETree(symmelement.crv, "SymmetrizeMuscleGuide", 2)
-		n = xsi.AddICECompoundNode("IRSymetrizeMuscleDatas", str(t))
+		t = tre.CreateICETree(sibling.crv, "SymmetrizeMuscleGuide", 2)
+		n = XSI.AddICECompoundNode("IRSymetrizeMuscleDatas", str(t))
 
-		xsi.ConnectICENodes(str(t) + ".port1", str(n) + ".Execute")
+		XSI.ConnectICENodes(str(t) + ".port1", str(n) + ".Execute")
 		name = tre.ReplaceModelNameByThisModel(self.crv, self.model)
-		xsi.SetValue(str(n) + ".Reference", name, "")
+		XSI.SetValue(str(n) + ".Reference", name, "")
 
-		return symmelement
+		return sibling
 			
 	def AddToRig(self):
 		CreateMuscleCloud(self.model,False)
@@ -122,19 +124,19 @@ class IRMuscle(ele.IRElement):
 def CreateMuscleCloud(model, deform=False):
 	cloud = model.FindChild("ICE_Muscles")
 	if cloud:
-		xsi.LogMessage("[CreateMuscleCloud] Muscle Cloud already exists : skipped....")
+		XSI.LogMessage("[CreateMuscleCloud] Muscle Cloud already exists : skipped....")
 		return cloud
 	
 	cloud = model.AddPrimitive("PointCloud", "ICE_Muscles")
 	tree = tre.CreateICETree(cloud, "Emit", 0)
 	
-	muscle = xsi.AddICECompoundNode("IRMuscleCloudInit", str(tree))
-	xsi.ConnectICENodes(str(tree)+".port1", str(muscle)+".Execute")
+	muscle = XSI.AddICECompoundNode("IRMuscleCloudInit", str(tree))
+	XSI.ConnectICENodes(str(tree) + ".port1", str(muscle) + ".Execute")
 	
 	tree = tre.CreateICETree(cloud, "Deform", 2)
 	
-	bind = xsi.AddICECompoundNode("BindMusclesToSkeleton", str(tree))
-	xsi.ConnectICENodes(str(tree)+".port1", str(bind)+".Execute")
+	bind = XSI.AddICECompoundNode("BindMusclesToSkeleton", str(tree))
+	XSI.ConnectICENodes(str(tree) + ".port1", str(bind) + ".Execute")
 	
 	return cloud
 	
@@ -149,8 +151,8 @@ def CreateMuscleMesh(model, deform=True):
 		static.Name = "Muscle_Static"
 		tree = tre.CreateICETree(static, "Init", 0)
 	
-		build = xsi.AddICECompoundNode("IRBuildMuscles", str(tree))
-		xsi.ConnectICENodes(str(tree)+".port1", str(build)+".Execute")
+		build = XSI.AddICECompoundNode("IRBuildMuscles", str(tree))
+		XSI.ConnectICENodes(str(tree) + ".port1", str(build) + ".Execute")
 	
 	deform = model.FindChild("Muscle_Deform")
 	if not deform:

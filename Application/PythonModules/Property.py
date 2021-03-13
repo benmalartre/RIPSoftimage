@@ -2,7 +2,7 @@
 # Property
 # -------------------------------------------------------------------
 from win32com.client import constants as siConstants
-from Globals import xsi
+from Globals import XSI
 from Globals import XSIFactory
 import Utils as uti
 
@@ -12,7 +12,7 @@ import Utils as uti
 # ----------------------------------------------------
 def GetProperties(prop_type, model=None):
 	filtered = XSIFactory.CreateActiveXObject("XSI.Collection")
-	props = xsi.FindObjects(None, "{76332571-D242-11d0-B69C-00AA003B3EA6}")
+	props = XSI.FindObjects(None, "{76332571-D242-11d0-B69C-00AA003B3EA6}")
 	for p in props:
 		if p.Type == prop_type:
 			if model:
@@ -106,11 +106,11 @@ def FindPPGModel(prop):
 def FindChildFromParameterValue(prop, param):
 	value = prop.Parameters(param).Value
 	if not value:
-		xsi.LogMessage("[FindChildFromParameterValue] : Parameter " + param + " is Empty... Sorry!")
+		XSI.LogMessage("[FindChildFromParameterValue] : Parameter " + param + " is Empty... Sorry!")
 		return None
 	
 	model = FindPPGModel(prop)
-	xsi.LogMessage(model)
+	XSI.LogMessage(model)
 	out = model.FindChild(value)
 	return out
 
@@ -121,7 +121,7 @@ def FindChildFromParameterValue(prop, param):
 def FindPropertyFromParameterValue(prop, param, parent):
 	value = prop.Parameters(param).Value
 	if not value:
-		xsi.LogMessage("[FindPropertyFromParameterValue] : Parameter " + param + " is Empty... Skipped!")
+		XSI.LogMessage("[FindPropertyFromParameterValue] : Parameter " + param + " is Empty... Skipped!")
 		return None
 	
 	out = parent.Properties(value)
@@ -153,7 +153,7 @@ def GetObjectFromStringParameter(prop, inname):
 	if clsname == "":
 		return cls
 	try:
-		cls = xsi.Dictionary.GetObject(clsname)
+		cls = XSI.Dictionary.GetObject(clsname)
 		return cls
 	except:
 		return None
@@ -181,7 +181,7 @@ def GetObjectFromSelectedUIItem(prop, inname):
 		try:
 			out = model.FindChild(selected)
 		except:
-			xsi.LogMessage("[Property] Can't find Object "+selected+" : Remove it from list...", siConstants.siWarning)
+			XSI.LogMessage("[Property] Can't find Object " + selected + " : Remove it from list...", siConstants.siWarning)
 		return out
 	return None
 
@@ -232,7 +232,7 @@ def AddObjectList(prop, inname):
 # Add Object To List
 # ----------------------------------------------------
 def AddObjectToList(prop, inname, message):
-	xsi.LogMessage("Add Object To List Called...")
+	XSI.LogMessage("Add Object To List Called...")
 	
 	obj = prop.Parent3DObject
 	model = obj.Model
@@ -240,14 +240,14 @@ def AddObjectToList(prop, inname, message):
 	pick = uti.PickElement(siConstants.siPolyMeshFilter, message)
 	if pick:
 		if not pick.Model.FullName == model.FullName:
-			xsi.LogMessage("Picked Object MUST be in same Model as Reference Object", siConstants.siWarning)
+			XSI.LogMessage("Picked Object MUST be in same Model as Reference Object", siConstants.siWarning)
 			return
 			
 		if not CheckObjectAlreadyInList(prop, inname, pick.Name):
 			prop.Parameters(inname).Value = prop.Parameters(inname).Value + pick.Name+"|"
 	
 		else:
-			xsi.Logmessage(prop.Name+" : " + pick.Name + " already in list ---> skipped...")
+			XSI.Logmessage(prop.Name + " : " + pick.Name + " already in list ---> skipped...")
 
 
 # ----------------------------------------------------

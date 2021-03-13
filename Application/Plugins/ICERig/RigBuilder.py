@@ -2,7 +2,7 @@
 # RigBuilder
 #--------------------------------------------------------
 from win32com.client import constants
-from Globals import xsi
+from Globals import XSI
 from Globals import XSIFactory
 from Globals import Dispatch
 from Constants import *
@@ -51,7 +51,7 @@ def XSILoadPlugin(in_reg):
 
 def XSIUnloadPlugin(in_reg):
 	strPluginName = in_reg.Name
-	xsi.LogMessage(str(strPluginName) + str(" has been unloaded."), constants.siVerbose)
+	XSI.LogMessage(str(strPluginName) + str(" has been unloaded."), constants.siVerbose)
 	return True
 
 
@@ -68,14 +68,14 @@ def ICERig_Init(ctxt):
 # Apply RigBuilder
 # -----------------------------------------------
 def GetRigBuilder_Execute():
-	model = xsi.ActiveSceneRoot.AddModel(None, "Rig")
+	model = XSI.ActiveSceneRoot.AddModel(None, "Rig")
 
 	uti.GroupSetup(model, None, "FK_Rig")
 	uti.GroupSetup(model, None, "IK_Rig")
 	uti.GroupSetup(model, None, "Spring_Rig")
 
 	prop = model.AddProperty("RigBuilder")
-	xsi.InspectObj(prop, None, None, constants.siLock)
+	XSI.InspectObj(prop, None, None, constants.siLock)
 	
 	guide = uti.AddNull(model, 0,.2, "Guides", 0, 0, 0)
 	geo = uti.AddNull(model, 1, .2, "Geometries", 0, 0, 0)
@@ -83,12 +83,12 @@ def GetRigBuilder_Execute():
 	uti.SetWireColor(rig, 1.0, 0.25, 0.5)
 	
 	tree = tre.CreateICETree(rig, "Init", constructionhistory=2)
-	init = xsi.AddICECompoundNode("IRRigInit", tree)
-	xsi.ConnectICENodes(str(tree)+".port1", str(init)+".Execute")
+	init = XSI.AddICECompoundNode("IRRigInit", tree)
+	XSI.ConnectICENodes(str(tree) + ".port1", str(init) + ".Execute")
 	
 	simul = tre.CreateSimulatedICETree(rig, "Deform")
-	deform = xsi.AddICECompoundNode("IRRigDeform", simul)
-	xsi.ConnectICENodes(str(simul)+".port1", str(deform)+".Execute")
+	deform = XSI.AddICECompoundNode("IRRigDeform", simul)
+	XSI.ConnectICENodes(str(simul) + ".port1", str(deform) + ".Execute")
 	
 	
 # -----------------------------------------------
@@ -528,16 +528,16 @@ def RigBuilder_GeometryElements_GridData(prop):
 
 def RigBuilder_SkeletonChooser_OnChanged():
 	sel = RigBuilder_GetSelectedSkeletonElements(PPG)
-	xsi.SelectObj(sel)
+	XSI.SelectObj(sel)
 
 
 def RigBuilder_UpdateElement_OnClicked():
-	sel = xsi.Selection
+	sel = XSI.Selection
 	for s in sel:
 		if s.Properties("RigElement"):
 			cls = s.ActivePrimitive.Geometry.Clusters("ElementData")
 			if cls:
-				xsi.DeleteObj(cls)
+				XSI.DeleteObj(cls)
 			
 			cls = uti.CreateAlwaysCompleteCluster(s, constants.siVertexCluster, "ElementData")
 			cls = Dispatch(cls)
@@ -548,11 +548,11 @@ def RigBuilder_UpdateElement_OnClicked():
 
 def RigBuilder_SymmetrizeElement_OnClicked():
 	sel = None
-	if xsi.Selection.Count == 0:
+	if XSI.Selection.Count == 0:
 		sel = RigBuilder_GetSelectedSkeletonElements(PPG)#xsi.Selection
 	else:
 		sel = []
-		for s in xsi.Selection:
+		for s in XSI.Selection:
 			sel.append(s)
 			
 	for src in sel:
@@ -560,7 +560,7 @@ def RigBuilder_SymmetrizeElement_OnClicked():
 		if prop:
 			if not prop.Parameters("Symmetrize").Value:
 				prop.Parameters("Symmetrize").Value = True
-				xsi.LogMessage("[RigBuilder] : Can't Symmetrize Element " + prop.Parameters("ElementName").Value, constants.siWarning)
+				XSI.LogMessage("[RigBuilder] : Can't Symmetrize Element " + prop.Parameters("ElementName").Value, constants.siWarning)
 				#return False
 				
 			cls = src.ActivePrimitive.Geometry.Clusters("ElementData")
@@ -592,7 +592,7 @@ def RigBuilder_SymmetrizeElement_OnClicked():
 
 
 def RigBuilder_SymmetrizeMuscle_OnClicked():
-	sel = xsi.Selection
+	sel = XSI.Selection
 	prop = PPG.Inspected(0)
 	model = prop.Parent3DObject
 	if sel.Count == 0:
@@ -601,7 +601,7 @@ def RigBuilder_SymmetrizeMuscle_OnClicked():
 	for src in sel:
 		node = src.ActivePrimitive.ICETrees(0).Nodes(0)
 		if node and node.Name == "Muscle Curve Guide":
-			m = msc.IRMuscle(None, parent, name, side=MIDDLE, selfsymmetrize=False, suffix="")
+			m = msc.IRMuscle(None, parent, name, side=MIDDLE, mirror=False, suffix="")
 			m.GetFromGuide(src)
 			m.Symmetrize()
 
@@ -610,7 +610,7 @@ def RigBuilder_AddGeometry_OnClicked():
 	prop = PPG.Inspected(0)
 	model = prop.Parent3DObject
 	
-	elem = geo.IRGeometry(prop, model, xsi.Selection(0).FullName)
+	elem = geo.IRGeometry(prop, model, XSI.Selection(0).FullName)
 	elem.AddToRig()
 	PPG.Refresh()
 
@@ -654,7 +654,7 @@ def RigBuilder_RebuildMuscleList_OnClicked():
 	group = model.Groups("Muscle_Curves")
 	members = group.Members
 	if not members:
-		xsi.DeleteOb(group)
+		XSI.DeleteOb(group)
 	else:
 		sList = ""
 		for m in members:
@@ -671,7 +671,7 @@ def RigBuilder_MuscleDefoLength(prop,mname):
 	start = model.FindChild(mname+"_Start")
 	end = model.FindChild(mname+"_End")
 	dist = uti.DistanceBetweenTwoObjects(start, end)
-	xsi.LogMessage(mname+" ---> "+str(dist))
+	XSI.LogMessage(mname + " ---> " + str(dist))
 	prop = start.Properties("MuscleControl")
 	if prop:
 		prop.Parameters("DefoLength").Value = dist
@@ -710,7 +710,7 @@ def RigBuilder_CreateNewElement_OnClicked():
 
 
 def RigBuilder_IRSetElement_OnClicked():
-	sel = xsi.Selection(0)
+	sel = XSI.Selection(0)
 	if sel:
 		model = PPG.Inspected(0).Parent3DObject
 		show_env = model.FindChild("ICE_Envelope", constants.siPointCloudPrimType)
@@ -718,11 +718,11 @@ def RigBuilder_IRSetElement_OnClicked():
 			t = show_env.ActivePrimitive.ICETrees(0)
 			n = t.Nodes(0)
 			name = sel.Name.replace("_Crv", "")
-			xsi.SetValue(str(n)+".Element_Name_string", name, "")
+			XSI.SetValue(str(n) + ".Element_Name_string", name, "")
 
-		xsi.IRSetElement()
+		XSI.IRSetElement()
 	else:
-		xsi.LogMessage("[ICERig Set Element] Invalid Selection : Operation aborted!!", constants.siWarning)
+		XSI.LogMessage("[ICERig Set Element] Invalid Selection : Operation aborted!!", constants.siWarning)
 
 
 def RigBuilder_ShowGuidePoints_OnChanged():
@@ -794,20 +794,20 @@ def RigBuilder_Symmetrize_OnChanged():
 
 
 def RigBuilder_SetControlStaticKineState_OnClicked():
-	uti.ResetStaticKinematicState(xsi.Selection)
+	uti.ResetStaticKinematicState(XSI.Selection)
 
 
 def RigBuilder_SetNeutralPose_OnClicked():
 	#uti.AddStaticKinematicState(xsi.Selection)
-	xsi.LogMessage("Not Implemented!!!")
+	XSI.LogMessage("Not Implemented!!!")
 
 
 def RigBuilder_UpdateControlColor_OnClicked():
 	ctrls = []
 	prop = PPG.Inspected(0)
 	model = prop.Parent3DObject
-	if xsi.Selection.Count > 0:
-		for s in xsi.Selection:
+	if XSI.Selection.Count > 0:
+		for s in XSI.Selection:
 			if s.name.find("_Ctrl")>-1:
 				ctrl = ctr.IRControl(prop, model)
 				ctrl.GetFromGuide(s)
@@ -827,7 +827,7 @@ def RigBuilder_UpdateControlColor_OnClicked():
 def RigBuilder_RebuildSkeleton_OnClicked():
 	model = PPG.Inspected(0).Parent3DObject
 	print model
-	model = xsi.ActiveSceneRoot.Models(model.Name)
+	model = XSI.ActiveSceneRoot.Models(model.Name)
 	print model.FindChildren2("", "", None, True)
 	ske.DeleteSkeletonCloud(model)
 	if model.Groups("Guide_Curves").Members.Count > 1:
@@ -841,7 +841,7 @@ def RigBuilder_PrepareCopySkin_OnClicked():
 	if skin:
 		geo.PrepareCopySkin(model, skin)
 	else:
-		xsi.LogMessage("[RigBuilder] : Fail Prepare Skin Geometry!")
+		XSI.LogMessage("[RigBuilder] : Fail Prepare Skin Geometry!")
 
 
 # ----------------------------------------------
@@ -861,7 +861,7 @@ def RigBuilder_RemovePointsFromSkeletonElement_OnClicked():
 
 def RigBuilder_UpdateClusterElement(PPG, method):
 	# check selection
-	sel = xsi.Selection(0) 
+	sel = XSI.Selection(0)
 	if sel and sel.Type == "pntSubComponent":
 		sub =sel.SubComponent
 		item = PPG.Inspected(0).PPGLayout.Item("SkeletonChooser")
@@ -877,7 +877,7 @@ def RigBuilder_UpdateClusterElement(PPG, method):
 			elems = [1 for i in range(len(elems_tuple[0])) for j in range(len(elems_tuple))]
 			wm.Elements.Array = elems
 		else:
-			xsi.LogMessage("[RigBuilder] : Can't find cluster named "+clsname+" under geometry "+parent.Name)
+			XSI.LogMessage("[RigBuilder] : Can't find cluster named " + clsname + " under geometry " + parent.Name)
 
 
 def RigBuilder_MirrorPointsForSkeletonElement_OnClicked():
@@ -926,7 +926,7 @@ def RigBuilder_GetSelectedSkinGeometry(PPG):
 	prop = PPG.Inspected(0)
 	model = prop.Parent3DObject
 	skinname = getSelectedUIItem(prop, "GeometryChooser")
-	xsi.LogMessage(skinname)
+	XSI.LogMessage(skinname)
 	if skinname == None:
 		return None
 
@@ -937,7 +937,7 @@ def RigBuilder_GetSelectedSkinGeometry(PPG):
 
 # a faire...
 def RigBuilder_GetAllSkinGeometry(PPG):
-	xsi.LogMessage("[ICERig] GetAllSkinGeometry not implemented...")
+	XSI.LogMessage("[ICERig] GetAllSkinGeometry not implemented...")
 	return False
 	'''
 	model = PPG.Inspected(0).Parent3DObject
@@ -989,7 +989,7 @@ def RigBuilder_InspectElement_OnClicked():
 	elems = RigBuilder_GetRigElement(PPG)
 	if len(elems) > 0:
 		for i in range(len(elems)):
-			xsi.LogMessage("Element Name "+elems[i].fullname)
+			XSI.LogMessage("Element Name " + elems[i].fullname)
 			elems[i].Inspect()
 
 
@@ -1023,9 +1023,9 @@ def RigBuilder_GetRigElement(PPG):
 				elem = RigBuilder_GetElementFromType(prop, elemtype, obj)
 				elems.append(elem)
 			else:
-				xsi.LogMessage("[RigBuilder] Can't find element property for "+item)
+				XSI.LogMessage("[RigBuilder] Can't find element property for " + item)
 		else:
-			xsi.LogMessage("[RigBuilder] Can't find associated xsi object for "+item)
+			XSI.LogMessage("[RigBuilder] Can't find associated xsi object for " + item)
 	return elems
 
 
@@ -1279,8 +1279,8 @@ def RigElement_RebuildLayout(ppg):
 
 def RigElement_IRSetElement_OnClicked():
 	crv = PPG.Inspected(0).Parent3DObject
-	xsi.SelectObj(crv)
-	xsi.IRSetElement()
+	XSI.SelectObj(crv)
+	XSI.IRSetElement()
 
 
 def  RigElement_ElementName_OnChanged():
@@ -1433,10 +1433,10 @@ def MuscleElement_DivisionsV_OnChanged():
 
 def RigElement_BuildRigControl_OnClicked():
 	nb = PPG.Inspected.Count
-	parent = xsi.Selection(0)
+	parent = XSI.Selection(0)
 		
 	if not parent or parent.Name.find("_Ctrl") == -1:
-		xsi.LogMessage("Invalid Selection, Select a controller and try again")
+		XSI.LogMessage("Invalid Selection, Select a controller and try again")
 		return
 	
 	model = parent.model

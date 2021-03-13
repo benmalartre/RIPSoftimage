@@ -6,7 +6,7 @@
 #	benmalartre@hotmail.com
 #
 #---------------------------------------
-from Globals import xsi
+from Globals import XSI
 import Cloth as clo
 import Utils as uti
 import XML as xml
@@ -31,18 +31,18 @@ def XSILoadPlugin( in_reg ):
 # Execute Hair_GetModelControl
 #---------------------------------------
 def Hair_GetModelControl_Execute():
-	model = xsi.Selection
+	model = XSI.Selection
 	props = []
 	for m in model:
 		if not m.Type == "#model" or m.Name == "Scene_Root":
-			xsi.LogMessage("[Hair_GetModelControl] Hair_Control can only be applied on Model, sorry!!", constants.siError)
+			XSI.LogMessage("[Hair_GetModelControl] Hair_Control can only be applied on Model, sorry!!", constants.siError)
 			continue
 		p = m.Properties("Hair_Control")
 		if not p:
 			p = m.AddProperty("Hair_Control")
 		props.append(p)
 		
-	xsi.InspectObj(props,"", "", constants.siLock, False )
+	XSI.InspectObj(props, "", "", constants.siLock, False)
 	
 #---------------------------------------
 # Define Hair_Control
@@ -153,9 +153,9 @@ def Hair_Control_OnInit():
 	
 	#Set Environment to Interactive
 	try:
-		xsi.SetValue("Environments.Environment.simtimectrl.playmode", 2, "")
+		XSI.SetValue("Environments.Environment.simtimectrl.playmode", 2, "")
 	except:
-		xsi.LogMessage("[Hair_Control] Can't set Environment to Interactive, Sorry...", constants.siWarning)
+		XSI.LogMessage("[Hair_Control] Can't set Environment to Interactive, Sorry...", constants.siWarning)
 	PPG.Refresh()
 	
 def Hair_Control_RebuildLayout(prop):
@@ -534,7 +534,7 @@ def Hair_Control_GetHairObjectsList(prop):
 	
 def Hair_Control_GetHairObjects(prop):
 	model = prop.Parent3DObject
-	icetrees =  xsi.FindObjects2( constants.siICETreeID )
+	icetrees =  XSI.FindObjects2(constants.siICETreeID)
 	hairs = []
 	for i in icetrees:
 		if i.CompoundNodes.Find("HairSyflexDynamics") and i.Parent3DObject.Model.FullName == model.FullName:
@@ -549,9 +549,9 @@ def Hair_Control_GetTargetObjects(prop):
 		tree = c.ActivePrimitive.ICETrees.Find("ClothInit")
 		if tree:
 			node = tree.Nodes("HairInitShape")
-			targetname = xsi.GetValue(str(node)+".Reference")
+			targetname = XSI.GetValue(str(node) + ".Reference")
 			targetname = targetname.replace("this_model",model.Name)
-			target = xsi.Dictionary.GetObject(targetname)
+			target = XSI.Dictionary.GetObject(targetname)
 			if target:
 				targets.append(target)
 				
@@ -608,7 +608,7 @@ def Hair_Control_GetCollideList(prop):
 		grp = model.Groups("HairCollide")
 		members = grp.Members
 		if members.Count == 0:
-			xsi.LogMessage("[Hair_Control_GetCollideList] HairCollide Group is Empty!!", constants.siError)
+			XSI.LogMessage("[Hair_Control_GetCollideList] HairCollide Group is Empty!!", constants.siError)
 			return []
 		else:
 			list = []
@@ -625,7 +625,7 @@ def Hair_Control_AddCollider_OnClicked():
 	pick = uti.PickElement(constants.siPolyMeshFilter,"Pick Polymesh Collider")
 	grp = model.Groups("HairCollide")
 	if not grp:
-		xsi.LogMessage("[Hair_Control_AddCollider] No HairCollide Group under "+model.Name+", Check your Asset!",constants.siError)
+		XSI.LogMessage("[Hair_Control_AddCollider] No HairCollide Group under " + model.Name + ", Check your Asset!", constants.siError)
 		return
 		
 	if pick:
@@ -638,17 +638,17 @@ def Hair_Control_RemoveCollider_OnClicked():
 	model = prop.Parent3DObject
 	grp = model.Groups("HairCollide")
 	if not grp:
-		xsi.LogMessage("[Hair_Control_AddCollider] No HairCollide Group under "+model.Name+", Check your Asset!",constants.siError)
+		XSI.LogMessage("[Hair_Control_AddCollider] No HairCollide Group under " + model.Name + ", Check your Asset!", constants.siError)
 		return
 		
 	items = PPG.PPGLayout.Item("CollideChooser").UIItems
 	value = prop.Parameters("CollideChooser").Value
 	
 	if len(items)<=2:
-		xsi.LogMessage("[Hair_Control_RemoveCollider] There is only ONE collider in HairCollideGroup : Can't remove it!", constants.siWarning)
+		XSI.LogMessage("[Hair_Control_RemoveCollider] There is only ONE collider in HairCollideGroup : Can't remove it!", constants.siWarning)
 		return
 	else:
-		collider = xsi.Dictionary.GetObject(items[value*2])
+		collider = XSI.Dictionary.GetObject(items[value * 2])
 		if collider:
 			grp.RemoveMember(collider)
 			Hair_Control_RebuildLayout(prop)
@@ -669,9 +669,9 @@ def Hair_Control_GetOutObjects(prop):
 def Hair_Control_IsolateCharacter_OnChanged():
 	prop = PPG.Inspected(0)
 	model = prop.Parent3DObject
-	xsi.SelectObj("B:"+model.FullName)
-	xsi.IsolateSelected(1 - prop.Parameters("IsolateCharacter").Value, -1)
-	xsi.DeselectAll()
+	XSI.SelectObj("B:" + model.FullName)
+	XSI.IsolateSelected(1 - prop.Parameters("IsolateCharacter").Value, -1)
+	XSI.DeselectAll()
 	
 def Hair_Control_WriteSyflexCache_OnChanged():
 	prop = PPG.Inspected(0)
@@ -683,7 +683,7 @@ def Hair_Control_WriteSyflexCache_OnChanged():
 	nodes = Hair_GetDynamicNode(prop)
 
 	for n in nodes:
-		xsi.LogMessage(n)
+		XSI.LogMessage(n)
 		n.InputPorts("Cache_Mode").Value = value
 
 def Hair_Control_ReadSyflexCache_OnChanged():
@@ -710,7 +710,7 @@ def Hair_Control_CacheWriteCache_OnClicked():
 	# exit if syflexcache isn't in READ mode
 	read = prop.Parameters("ReadSyflexCache").Value
 	if not read:
-		xsi.LogMessage("[Hair_Control] Syflex Cache isn't in READ mode: Write Cache aborted!!", constants.siError)
+		XSI.LogMessage("[Hair_Control] Syflex Cache isn't in READ mode: Write Cache aborted!!", constants.siError)
 		return
 		
 	# exit if syflexcache doesn't exist(check for first and last frames)
@@ -733,17 +733,17 @@ def Hair_Control_CacheWriteCache_OnClicked():
 		cachepath = XSIUtils.BuildPath(sequencepath,"Cache")
 		buttonPressed = XSIUIToolkit.Msgbox( "Write Sequence Cache", constants.siMsgYesNo | constants.siMsgQuestion, "Hair_Dynamics" )
 		if buttonPressed == constants.siMsgNo:
-			xsi.LogMessage( "[Hair_WriteCache] Write Sequence Cache Cancelled by the User...", constants.siWarning )
+			XSI.LogMessage("[Hair_WriteCache] Write Sequence Cache Cancelled by the User...", constants.siWarning)
 			return
 		else:
-			xsi.LogMessage("[Hair_Control_WriteCache] Write SEQUENCE Cache : "+cachepath)
+			XSI.LogMessage("[Hair_Control_WriteCache] Write SEQUENCE Cache : " + cachepath)
 			for s in shots:
 				startframe = s.frameIn
 				endframe = s.frameOut
 				shotpath = XSIUtils.BuildPath(cachepath,s.shot)
 			
-				xsi.LogMessage("[Hair_Control_WriteCache] Write SHOT Cache : "+shotpath)
-				xsi.WritePointCacheModel(model,shotpath,startframe,endframe,coord,format,rate,False)
+				XSI.LogMessage("[Hair_Control_WriteCache] Write SHOT Cache : " + shotpath)
+				XSI.WritePointCacheModel(model, shotpath, startframe, endframe, coord, format, rate, False)
 		
 	# Shot Cache Mode
 	elif mode == 1:
@@ -769,11 +769,11 @@ def Hair_Control_CacheWriteCache_OnClicked():
 					
 				buttonPressed = XSIUIToolkit.Msgbox( msg, constants.siMsgYesNo | constants.siMsgQuestion, "Hair_Dynamics" )
 				if buttonPressed == constants.siMsgNo:
-					xsi.LogMessage( "[Hair_WriteCache] Write Shot Cache Cancelled by the User...", constants.siWarning )
+					XSI.LogMessage("[Hair_WriteCache] Write Shot Cache Cancelled by the User...", constants.siWarning)
 					return
 				else:
-					xsi.LogMessage("[Hair_Control_WriteCache] Write SHOT Cache : "+cachepath)
-					xsi.WritePointCacheModel(model,cachepath,startframe,endframe,coord,format,rate,checkexist)
+					XSI.LogMessage("[Hair_Control_WriteCache] Write SHOT Cache : " + cachepath)
+					XSI.WritePointCacheModel(model, cachepath, startframe, endframe, coord, format, rate, checkexist)
 					started = 1
 					if prop.WriteMethod.Value == 1:
 						return
@@ -781,23 +781,23 @@ def Hair_Control_CacheWriteCache_OnClicked():
 				startframe = s.frameIn
 				endframe = s.frameOut
 				cachepath = XSIUtils.BuildPath(sequencepath,"Cache",s.shot)
-				xsi.WritePointCacheModel(model,cachepath,startframe,endframe,coord,format,rate,False)
+				XSI.WritePointCacheModel(model, cachepath, startframe, endframe, coord, format, rate, False)
 		
 	# Alternative Folder Cache Mode
 	elif mode == 2:
 		folder = PPG.Inspected(0).Parameters("OutputFolder").Value
 		if not fil.FolderExists(folder):
-			xsi.LogMessage("[Hair_Control] Output Folder is Invalid : Write Cache Aborted!", constants.siWarning)
+			XSI.LogMessage("[Hair_Control] Output Folder is Invalid : Write Cache Aborted!", constants.siWarning)
 			return
 		else:
-			xsi.LogMessage("[Hair_Control_WriteCache] Write ALTERNATIVE Cache : "+folder)
-			xsi.WritePointCacheModel(model,folder,startframe,endframe,coord,format,rate,checkexist)
+			XSI.LogMessage("[Hair_Control_WriteCache] Write ALTERNATIVE Cache : " + folder)
+			XSI.WritePointCacheModel(model, folder, startframe, endframe, coord, format, rate, checkexist)
 	
 def Hair_Control_AddExtraCollider_OnClicked():
 	prop = PPG.Inspected(0)
 	colliders = Hair_Control_GetColliderObjects(prop)
 	for c in colliders:
-		xsi.LogMessage(c.FullName)
+		XSI.LogMessage(c.FullName)
 			
 #-------------------------------------------------
 # Parameters changed callback
@@ -1001,7 +1001,7 @@ def Hair_Control_Damping_OnChanged():
 	Hair_Control_ParameterChanged(PPG.Inspected(0),"Damping","Damping")
 	
 def Hair_Control_GravityFactor_OnChanged():
-	xsi.LogMessage("Udpdate Parameter for ScriptedOp GravityIconOp")
+	XSI.LogMessage("Udpdate Parameter for ScriptedOp GravityIconOp")
 
 def Hair_Control_GravityActive_OnChanged():
 	Hair_Control_ParameterChanged(PPG.Inspected(0),"GravityActive","GravityActive")
@@ -1016,7 +1016,7 @@ def Hair_Control_GravityZ_OnChanged():
 	Hair_Control_ParameterChanged(PPG.Inspected(0),"GravityZ","Gravity_Z")
 	
 def Hair_Control_WindFactor_OnChanged():
-	xsi.LogMessage("Udpdate Parameter for ScriptedOp WindIconOp")
+	XSI.LogMessage("Udpdate Parameter for ScriptedOp WindIconOp")
 
 def Hair_Control_WindActive_OnChanged():
 	Hair_Control_ParameterChanged(PPG.Inspected(0),"WindActive","Use_Wind")
@@ -1103,25 +1103,25 @@ def Hair_Control_ParameterChanged(prop,propparam,nodeparam):
 		if restore:
 			tree = c.ActivePrimitive.ICETrees("DynamicsRestore")
 		if not tree:
-			xsi.LogMessage("[Hair_Control] No SyflexDynamics\RestoreShape ICETree under "+ c.FullName)
+			XSI.LogMessage("[Hair_Control] No SyflexDynamics\RestoreShape ICETree under " + c.FullName)
 			return
 		node = tree.CompoundNodes("HairSyflexDynamics")
 		if restore:
 			node = tree.CompoundNodes("HairRestoreShape")
 			
 		if not node:
-			xsi.LogMessage("[Hair_Control] Can't find compound Node under "+ tree.FullName)
+			XSI.LogMessage("[Hair_Control] Can't find compound Node under " + tree.FullName)
 			return
 		try:
 			outparam = node.Parameters(nodeparam)
 			if outparam == None:
 				outparam = node.InputPorts(nodeparam)
 			if not outparam:
-				xsi.SetValue(str(node)+"."+nodeparam, PPG.Inspected(0).Parameters(propparam).Value, "")
+				XSI.SetValue(str(node) + "." + nodeparam, PPG.Inspected(0).Parameters(propparam).Value, "")
 			else:
 				outparam.Value = PPG.Inspected(0).Parameters(propparam).Value
 		except:
-			xsi.LogMessage("[Hair_Control] Can't find InputPort "+nodeparam+" under "+node.FullName+" !",constants.siWarning)
+			XSI.LogMessage("[Hair_Control] Can't find InputPort " + nodeparam + " under " + node.FullName + " !", constants.siWarning)
 		
 def Hair_Control_PresetMethod_OnChanged():
 	Hair_Control_RebuildLayout(PPG.Inspected(0))
@@ -1143,26 +1143,26 @@ def Hair_Control_ApplyBindPose(prop):
 	hipstranslation = model.FindChild2("HipsTranslation")
 	
 	if hips and hipstranslation:
-		xsi.SelectObj("B:"+hipstranslation.FullName)
-		xsi.SelectChildNodes()
+		XSI.SelectObj("B:" + hipstranslation.FullName)
+		XSI.SelectChildNodes()
 	
-		marked = xsi.SetMarking("kine.local.sclx,kine.local.scly,kine.local.sclz,kine.local.rotx,kine.local.roty,kine.local.rotz,kine.local.posx,kine.local.posy,kine.local.posz")
+		marked = XSI.SetMarking("kine.local.sclx,kine.local.scly,kine.local.sclz,kine.local.rotx,kine.local.roty,kine.local.rotz,kine.local.posx,kine.local.posy,kine.local.posz")
 		active = prop.Parameters("HairActive").Value
 		if active:
 			prop.Parameters("HairActive").Value = False
 			Hair_Control_ParameterChanged(prop,"HairActive","Active")
 			
 		uti.SetCurrentFrame(firstframe)
-		xsi.Refresh()
-		xsi.SaveKeyOnKeyable(marked,firstframe)
+		XSI.Refresh()
+		XSI.SaveKeyOnKeyable(marked, firstframe)
 	
-		tmpaction = xsi.StoreAction(model, None, 2, "tmpAction", True, firstframe, endframe,True)
-		xsi.RemoveAnimation( None, None, False, True,True, constants.siAnySource )
+		tmpaction = XSI.StoreAction(model, None, 2, "tmpAction", True, firstframe, endframe, True)
+		XSI.RemoveAnimation(None, None, False, True, True, constants.siAnySource)
 		if tmpaction:
-			xsi.ApplyAction( tmpaction, model )
+			XSI.ApplyAction(tmpaction, model)
 		if bindpose:
-			xsi.ApplyAction( bindpose, model )
-		xsi.SaveKeyOnKeyable( marked, startframe )
+			XSI.ApplyAction(bindpose, model)
+		XSI.SaveKeyOnKeyable(marked, startframe)
 		
 		uti.SetStartFrame(startframe)
 		uti.SetCurrentFrame(startframe)
@@ -1171,19 +1171,19 @@ def Hair_Control_ApplyBindPose(prop):
 			prop.Parameters("HairActive").Value = True
 			Hair_Control_ParameterChanged(prop,"HairActive","Active")
 		 
-	xsi.LogMessage("[Hair_Control] Apply Simulation Bind Pose Called...")
+	XSI.LogMessage("[Hair_Control] Apply Simulation Bind Pose Called...")
 		
 def Hair_Control_SelectWindIcon_OnClicked():
 	model = PPG.Inspected(0).Parent3DObject
 	icon = model.FindChild("HairWindControl")
 	if icon:
-		xsi.SelectObj(icon)
+		XSI.SelectObj(icon)
 		
 def Hair_Control_SelectTurbIcon_OnClicked():
 	model = PPG.Inspected(0).Parent3DObject
 	icon = model.FindChild("HairTurbulenceControl")
 	if icon:
-		xsi.SelectObj(icon)
+		XSI.SelectObj(icon)
 		
 def Hair_Control_SaveDynamicsPreset_OnClicked():
 	folder = PPG.PresetFolder.Value
@@ -1192,7 +1192,7 @@ def Hair_Control_SaveDynamicsPreset_OnClicked():
 		try:
 			XSIUtils.EnsureFolderExists(folder,false)
 		except:
-			xsi.LogMessage("[Hair_Control] Preset Folder Invalid!!", constants.siError)
+			XSI.LogMessage("[Hair_Control] Preset Folder Invalid!!", constants.siError)
 			return
 			
 	path = XSIUtils.BuildPath(folder,pname+".xml")
@@ -1209,12 +1209,12 @@ def Hair_Control_LoadDynamicsPreset_OnClicked():
 		try:
 			XSIUtils.EnsureFolderExists(folder,false)
 		except:
-			xsi.LogMessage("[Hair_Control] Preset Folder Invalid!!", constants.siError)
+			XSI.LogMessage("[Hair_Control] Preset Folder Invalid!!", constants.siError)
 			return
 	
 	nodes = Hair_GetDynamicNode(prop)
 	if not nodes:	
-		xsi.LogMessage("[Hair_Control_LoadDynamicsPreset] There are NO Hair Dynamics nodes under this character...", constants.siWarning)
+		XSI.LogMessage("[Hair_Control_LoadDynamicsPreset] There are NO Hair Dynamics nodes under this character...", constants.siWarning)
 		return
 		
 	path = XSIUtils.BuildPath(folder,pname)
@@ -1231,7 +1231,7 @@ def Hair_Control_DeleteDynamicsPreset_OnClicked():
 		try:
 			XSIUtils.EnsureFolderExists(folder,false)
 		except:
-			xsi.LogMessage("[Hair_Control] Preset Folder Invalid!!", constants.siError)
+			XSI.LogMessage("[Hair_Control] Preset Folder Invalid!!", constants.siError)
 			return
 			
 	path = XSIUtils.BuildPath(folder,pname+".xml")
@@ -1260,10 +1260,10 @@ def Hair_Control_SetSyflexCache_OnClicked():
 					c.Parameters("FilePath").Value = XSIUtils.BuildPath(seqpath,"Cache","Tmp")
 		
 def Hair_Control_ClearSyflexCache_OnClicked():
-	scene = xsi.ActiveProject2.ActiveScene
+	scene = XSI.ActiveProject2.ActiveScene
 	
-	folder = xsi.InstallationPath( constants.siProjectPath )
-	scene = xsi.ActiveProject.ActiveScene
+	folder = XSI.InstallationPath(constants.siProjectPath)
+	scene = XSI.ActiveProject.ActiveScene
 	folder = XSIUtils.BuildPath(folder,"Caches",scene)
 	
 	prop = PPG.Inspected(0)
@@ -1271,7 +1271,7 @@ def Hair_Control_ClearSyflexCache_OnClicked():
 	model = cloth[0].Model
 	
 	# Reset to First Frame
-	remote = xsi.Dictionary.GetObject( "PlayControl" )
+	remote = XSI.Dictionary.GetObject("PlayControl")
 	v = remote.Parameters("In").Value
 	remote.Parameters( "Current" ).Value = prop.Parameters("FirstFrame").Value
 	
@@ -1281,7 +1281,7 @@ def Hair_Control_ClearSyflexCache_OnClicked():
 	for c in cloth:
 		syflex = c.ActivePrimitive.ConstructionHistory.Find( "syCloth" )
 		#clear all cache.
-		xsi.LogMessage("{Hair_Control] Delete All Syflex Cache File for "+c.FullName)
+		XSI.LogMessage("{Hair_Control] Delete All Syflex Cache File for " + c.FullName)
 		syflex.Parameters("ClearCache").Value = 2
 		syflex.Parameters("Cache").Value = ""
 
@@ -1331,7 +1331,7 @@ def Hair_Control_ClearSyflexCache_OnClicked():
 def Hair_Control_SetDampingPercentage_OnClicked():
 	prop = PPG.Inspected(0)
 	
-	tmp = xsi.ActiveSceneRoot.AddProperty("CustomProperty",false, "Hair_Control_SetDampingPercentage")
+	tmp = XSI.ActiveSceneRoot.AddProperty("CustomProperty", false, "Hair_Control_SetDampingPercentage")
 	p = tmp.AddParameter3( "Value", constants.siFloat, 100, 1, 1000, False, False )
 	layout = tmp.PPGLayout
 	layout.Clear()
@@ -1339,7 +1339,7 @@ def Hair_Control_SetDampingPercentage_OnClicked():
 	layout.AddItem( "Value")
 	layout.EndGroup()
 	
-	bCancelled  = xsi.InspectObj(tmp,None,"Set Syflex Damping",constants.siModal,False)
+	bCancelled  = XSI.InspectObj(tmp, None, "Set Syflex Damping", constants.siModal, False)
 	if not bCancelled:
 		prop.StretchDamping.Value = prop.StretchStiffness.Value / p.Value
 		prop.ShearDamping.Value = prop.ShearStiffness.Value / p.Value
@@ -1348,11 +1348,11 @@ def Hair_Control_SetDampingPercentage_OnClicked():
 		Hair_Control_ShearDamping_OnChanged()
 		Hair_Control_BendDamping_OnChanged()
 
-		xsi.DeleteObj(tmp)
+		XSI.DeleteObj(tmp)
 
 	else:
-		xsi.DeleteObj(tmp)
-		xsi.LogMessage("[Hair_Control]Set Syflex Damping Aborted..")
+		XSI.DeleteObj(tmp)
+		XSI.LogMessage("[Hair_Control]Set Syflex Damping Aborted..")
 	
 def Hair_Control_GetPresetList():
 	path = PPG.PresetFolder.Value
@@ -1364,7 +1364,7 @@ def Hair_Control_GetPresetList():
 			return
 			
 		regex = ".*\.xml$"
-		files = xsi.FindFilesInFolder(path,regex,True,False)
+		files = XSI.FindFilesInFolder(path, regex, True, False)
 		
 		i = 0
 		for f in files:
@@ -1418,10 +1418,10 @@ def Hair_Control_PaintPush_OnClicked():
 	if len(hairs) == 1:
 		selectedpush = prop.CorrectivePushList.value
 		cls = hairs[0].ActivePrimitive.Geometry.Clusters("CorrectivePushCls")
-		xsi.SelectObj(cls.Properties(selectedpush))
-		xsi.PaintTool()
+		XSI.SelectObj(cls.Properties(selectedpush))
+		XSI.PaintTool()
 	else:
-		xsi.LogMessage("[Hair_Control] Paint Corrective Push only works in Single Item Mode!!", constants.siError)
+		XSI.LogMessage("[Hair_Control] Paint Corrective Push only works in Single Item Mode!!", constants.siError)
 
 
 def Hair_Control_PaintRestoreMap_OnClicked():
@@ -1437,10 +1437,10 @@ def Hair_Control_PaintRestoreMap_OnClicked():
 		if map:
 			Hair_Control_PaintMap(map)
 		else:
-			xsi.LogMessage("[Hair_Control]Can't find Restore Map on "+hairs[0].FullName)
+			XSI.LogMessage("[Hair_Control]Can't find Restore Map on " + hairs[0].FullName)
 		
 	else:
-		xsi.LogMessage("[Hair_Control] Paint Restore Map only works in Single Item Mode!!", constants.siError)
+		XSI.LogMessage("[Hair_Control] Paint Restore Map only works in Single Item Mode!!", constants.siError)
 
 def Hair_Control_PaintDynamicsMap_OnClicked():
 	prop = PPG.Inspected(0)
@@ -1455,19 +1455,19 @@ def Hair_Control_PaintDynamicsMap_OnClicked():
 		if map:
 			Hair_Control_PaintMap(map)
 		else:
-			xsi.LogMessage("[Hair_Control]Can't find Dynamics Map on "+hairs[0].FullName)
+			XSI.LogMessage("[Hair_Control]Can't find Dynamics Map on " + hairs[0].FullName)
 		
 	else:
-		xsi.LogMessage("[Hair_Control] Paint Dynamics Map only works in Single Item Mode!!", constants.siError)
+		XSI.LogMessage("[Hair_Control] Paint Dynamics Map only works in Single Item Mode!!", constants.siError)
 	
 	
 def Hair_Control_PaintMap(map):
 	object = map.Parent3DObject
 	object.Properties("Visibility").Parameters("ViewVis").Value = True
-	xsi.SelectObj(map)
-	view = xsi.OpenView("Object View",True)
+	XSI.SelectObj(map)
+	view = XSI.OpenView("Object View", True)
 	view.SetAttributeValue("lockstatus",True)
-	xsi.PaintTool()
+	XSI.PaintTool()
 	
 	
 def Hair_Control_InspectRestoreNode_OnClicked():
@@ -1480,12 +1480,12 @@ def Hair_Control_InspectRestoreNode_OnClicked():
 			node = tree.CompoundNodes("HairRestoreShape")
 			if node:
 				inspect.append(node)
-	xsi.InspectObj(inspect)		
+	XSI.InspectObj(inspect)
 	
 def Hair_Control_GetSequencePath():
-	assetmanagement = xsi.ActiveSceneRoot.Properties("AssetManagement")
+	assetmanagement = XSI.ActiveSceneRoot.Properties("AssetManagement")
 	if not assetmanagement:
-		xsi.LogMessage("[Hair_Control_SetSyflexCache] No AssetManagement property in scene!!", constants.siWarning)
+		XSI.LogMessage("[Hair_Control_SetSyflexCache] No AssetManagement property in scene!!", constants.siWarning)
 		return None
 		
 	animpath = assetmanagement.Parameters("anim_path").Value

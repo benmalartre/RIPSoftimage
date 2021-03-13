@@ -2,8 +2,8 @@
 # Cleaner
 # -------------------------------------------------------------------
 from Globals import *
-import Utils as uti
-import ICETree as ice
+import Utils
+import ICETree
 
 
 # ---------------------------------------------------
@@ -22,20 +22,20 @@ def CleanHair(cage):
 			return
 			
 		get = dynamictree.DataProviderNodes(0)
-		target = ice.GetObjectFromReferenceValue(get)
+		target = ICETree.GetObjectFromReferenceValue(get)
 		if target:
 			model = target.Model
 			grp = model.Groups("PointCache")
-			if grp and not uti.ObjectInGroup(target, grp):
-				xsi.DeleteObj(target)
+			if grp and not Utils.ObjectInGroup(target, grp):
+				XSI.DeleteObj(target)
 			
 		get = dynamictree.DataProviderNodes(1)
-		collider = ice.GetObjectFromReferenceValue(get)
+		collider = ICETree.GetObjectFromReferenceValue(get)
 		if collider:
 			model = collider.Model
 			grp = model.Groups("PointCache")
-			if grp and not uti.ObjectInGroup(collider, grp):
-				xsi.DeleteObj(collider)
+			if grp and not Utils.ObjectInGroup(collider, grp):
+				XSI.DeleteObj(collider)
 
 
 # ---------------------------------------------------
@@ -43,13 +43,13 @@ def CleanHair(cage):
 # ---------------------------------------------------
 def CleanMesh(obj):
 	delete = []
-	xsi.FreezeModeling(obj)
+	XSI.FreezeModeling(obj)
 	mode = 0
-	xsi.LogMessage(obj.FullName)
+	XSI.LogMessage(obj.FullName)
 	for c in obj.ActivePrimitive.ConstructionHistory:
 		if c.Name == "simulationmarker":
-			xsi.DeleteObj(c)
-		elif c.Name =="GetMeshData" or c.Name == "SetMeshData":
+			XSI.DeleteObj(c)
+		elif c.Name == "GetMeshData" or c.Name == "SetMeshData":
 			CleanHair(obj)
 			mode = 1
 			continue
@@ -64,7 +64,7 @@ def CleanMesh(obj):
 		if c.Type == "edge":
 			delete.append(c)
 		
-	xsi.DeleteObj(delete)
+	XSI.DeleteObj(delete)
 	
 	return mode
 
@@ -73,15 +73,15 @@ def CleanMesh(obj):
 # Clean Transform
 # ---------------------------------------------------
 def CleanTransform(obj):
-	tra = XSIMath.CreateTransform()
+	transform = XSIMath.CreateTransform()
 	constraints = obj.Kinematics.Constraints
 	if constraints.Count > 0:
-		xsi.DeleteObj(constraints)
+		XSI.DeleteObj(constraints)
 	local = obj.Kinematics.Local
-	for p in local.Parameters:
-		p.Disconnect()
+	for parameter in local.Parameters:
+		parameter.Disconnect()
 		
 	glob = obj.Kinematics.Global
-	for p in glob.Parameters:
-		p.Disconnect()
-	glob.PutTransform2(0, tra)
+	for parameter in glob.Parameters:
+		parameter.Disconnect()
+	glob.PutTransform2(0, transform)

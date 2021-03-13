@@ -3,7 +3,7 @@
 #	bbppTransformation
 #
 #---------------------------------------------------------------
-from Globals import xsi
+from Globals import XSI
 from win32com.client import constants
 
 null = None
@@ -24,7 +24,7 @@ def XSILoadPlugin( in_reg ):
 
 def XSIUnloadPlugin( in_reg ):
 	strPluginName = in_reg.Name
-	xsi.LogMessage(str(strPluginName) + str(" has been unloaded."),constants.siVerbose)
+	XSI.LogMessage(str(strPluginName) + str(" has been unloaded."), constants.siVerbose)
 	return true
 	
 def bbpp_Init(in_ctxt):
@@ -35,10 +35,10 @@ def bbpp_Init(in_ctxt):
 	oMenu.AddCommandItem("&Create Transformation", "bbppCreateTransformation")
 	
 def bbppCreateTransformation_Execute():
-	oModel = xsi.ActiveSCeneRoot.AddModel()
+	oModel = XSI.ActiveSCeneRoot.AddModel()
 	oModel.Name = "Transformation"
 	oProp = oModel.AddProperty("bbppTransformation")
-	xsi.InspectObj(oProp,"","",constants.siLock)
+	XSI.InspectObj(oProp, "", "", constants.siLock)
 	
 	Groups = oModel.Groups
 	StartGrp = Groups("Start")
@@ -72,7 +72,7 @@ def bbppTransformation_OnInit():
 
 def bbppTransformation_RebuildLayout( inPPG ):
 
-	oPlugin = xsi.Plugins("bbppTransformationPlugin");
+	oPlugin = XSI.Plugins("bbppTransformationPlugin");
 	oPluginPath = oPlugin.OriginPath;
 	oTrunkedPath = oPluginPath.split("Application\\");
 	oPicturePath = oTrunkedPath[0]+"Data\Pictures\Barbatruc.bmp";
@@ -191,17 +191,17 @@ def replaceObjectNameBySelf(obj,str):
 	
 def bbppTransformation_CreateCorrespondanceIceTree(obj,group,map):
 	oModel = PPG.Inspected(0).Parent3DObject
-	oIceTree = xsi.ApplyOp("ICETree", obj, "siNode", "", "", 0)
-	oCorrespondance = xsi.AddICECompoundNode("bbpp Correspondance Map", oIceTree)
-	xsi.ConnectICENodes(str(oIceTree)+".port1", str(oCorrespondance)+".Execute")
-	oGet1 = xsi.AddICENode("GetDataNode", oIceTree)
-	oGet2 = xsi.AddICENode("GetDataNode", oIceTree)
+	oIceTree = XSI.ApplyOp("ICETree", obj, "siNode", "", "", 0)
+	oCorrespondance = XSI.AddICECompoundNode("bbpp Correspondance Map", oIceTree)
+	XSI.ConnectICENodes(str(oIceTree) + ".port1", str(oCorrespondance) + ".Execute")
+	oGet1 = XSI.AddICENode("GetDataNode", oIceTree)
+	oGet2 = XSI.AddICENode("GetDataNode", oIceTree)
 	#sGroupName = replaceModelNameByThisModel(oModel,group.FullName)
-	xsi.SetValue(str(oGet1)+".reference", group.FullName)
-	xsi.ConnectICENodes(str(oCorrespondance)+".PointsGroup", str(oGet1)+".outname")
+	XSI.SetValue(str(oGet1) + ".reference", group.FullName)
+	XSI.ConnectICENodes(str(oCorrespondance) + ".PointsGroup", str(oGet1) + ".outname")
 	sMapName = replaceObjectNameBySelf(obj,map.FullName)
-	xsi.SetValue(str(oGet2)+".reference", sMapName+".Colors")
-	xsi.ConnectICENodes(str(oCorrespondance)+".ColorMap", str(oGet2)+".outname")
+	XSI.SetValue(str(oGet2) + ".reference", sMapName + ".Colors")
+	XSI.ConnectICENodes(str(oCorrespondance) + ".ColorMap", str(oGet2) + ".outname")
 	
 def bbppTransformation_CreateCorrespondancePoints_OnClicked( ):
 	Model = PPG.Inspected(0).Parent3DObject
@@ -248,24 +248,24 @@ def bbppTransformation_CreateCorrespondancePoints_OnClicked( ):
 	applyColorizePointTree(Model,oCurve,pid)
 	
 def applyColorizePointTree(model,obj,id):
-	oIceTree = xsi.ApplyOp("ICETree", obj, "siNode", "", "", 0)
-	oColorize = xsi.AddICECompoundNode("bbpp Colorize Point", oIceTree)
-	xsi.ConnectICENodes(str(oIceTree)+".port1", str(oColorize)+".Execute")
-	oGet1 = xsi.AddICENode("GetDataNode", oIceTree)
-	xsi.SetValue(str(oGet1)+".reference", model.FullName)
-	xsi.ConnectICENodes(str(oColorize)+".TransformationModel", str(oGet1)+".outname")
-	xsi.SetValue(str(oColorize)+".PointID", id, "")
+	oIceTree = XSI.ApplyOp("ICETree", obj, "siNode", "", "", 0)
+	oColorize = XSI.AddICECompoundNode("bbpp Colorize Point", oIceTree)
+	XSI.ConnectICENodes(str(oIceTree) + ".port1", str(oColorize) + ".Execute")
+	oGet1 = XSI.AddICENode("GetDataNode", oIceTree)
+	XSI.SetValue(str(oGet1) + ".reference", model.FullName)
+	XSI.ConnectICENodes(str(oColorize) + ".TransformationModel", str(oGet1) + ".outname")
+	XSI.SetValue(str(oColorize) + ".PointID", id, "")
 	
 def bbppTransformation_DeleteCorrespondancePoints_OnClicked( ):
 	oModel = PPG.Inspected(0).Parent3DObject
-	if xsi.Selection.Count == 0:
+	if XSI.Selection.Count == 0:
 		oElem = bPickElement(constants.siNullFilter,"Pick Point to Delete")
 		
 	else:
-		oElem = xsi.Selection(0)
+		oElem = XSI.Selection(0)
 		
 	if not oElem:
-		xsi.LogMessage("bbppTransformation Delete Points : Operation Aborted !",constants.siInfo)
+		XSI.LogMessage("bbppTransformation Delete Points : Operation Aborted !", constants.siInfo)
 		return
 		
 	if oElem.Model.FullName == oModel.FullName and oElem.Type == "null":
@@ -279,10 +279,10 @@ def bbppTransformation_DeleteCorrespondancePoints_OnClicked( ):
 			oOther = oModel.FindChild("Start"+sSplit[1])
 			oCurve = oModel.FindChild("Link"+sSplit[1])
 			
-		xsi.DeleteObj(str(oElem)+","+str(oOther)+","+str(oCurve))
+		XSI.DeleteObj(str(oElem) + "," + str(oOther) + "," + str(oCurve))
 		
 	else:
-		xsi.LogMessage("bbppTransformation Delete Points : Invalid Selection ---> Nothing Deleted!",constants.siError)
+		XSI.LogMessage("bbppTransformation Delete Points : Invalid Selection ---> Nothing Deleted!", constants.siError)
 			
 def bbppTransformation_BuildOutputMesh_OnClicked( ):
 	oPPG = PPG.Inspected(0)
@@ -298,7 +298,7 @@ def bbppTransformation_BuildOutputMesh_OnClicked( ):
 	oEndGeomStatic =  bbppTransformation_EndGeometryStaticExist(oPPG)
 	
 	if not oStartGeomStatic or not oEndGeomStatic:
-		xsi.LogMessage("bbppTransformation Geometry Does not exist ---> Can't build Output Mesh!",constants.siError)
+		XSI.LogMessage("bbppTransformation Geometry Does not exist ---> Can't build Output Mesh!", constants.siError)
 		return
 	
 	if oPPG.AnimatedTransformation.Value:
@@ -306,92 +306,92 @@ def bbppTransformation_BuildOutputMesh_OnClicked( ):
 		oEndGeomAnimated =  bbppTransformation_EndGeometryAnimatedExist(oPPG)
 		
 		if not oStartGeomAnimated or not oEndGeomAnimated:
-			xsi.LogMessage("bbppTransformation Geometry Does not exist ---> Can't build Output Mesh!",constants.siError)
+			XSI.LogMessage("bbppTransformation Geometry Does not exist ---> Can't build Output Mesh!", constants.siError)
 			return
 	
 	# create start geometry point cloud
 	if not oStartCloud:
 		# create emission node
-		oStartCloud = xsi.GetPrim("PointCloud", "StartCloud", oModel)
-		oIceTree = xsi.ApplyOp("ICETree", oStartCloud, "siNode", "", "", 0)
-		oEmit = xsi.AddICECompoundNode("bbpp Emit From Points", oIceTree)
-		xsi.ConnectICENodes(str(oIceTree)+".port1", str(oEmit)+".add")
-		oGet1 = xsi.AddICENode("GetDataNode", oIceTree)
-		xsi.SetValue(str(oGet1)+".reference", oStartGeomStatic.FullName)
-		xsi.ConnectICENodes(str(oEmit)+".Emiter", str(oGet1)+".outname")
-		xsi.SetValue(str(oEmit)+".Color_red", 0.9)
-		xsi.SetValue(str(oEmit)+".Color_green", 0.4)
-		xsi.SetValue(str(oEmit)+".Color_blue", 0.1)
+		oStartCloud = XSI.GetPrim("PointCloud", "StartCloud", oModel)
+		oIceTree = XSI.ApplyOp("ICETree", oStartCloud, "siNode", "", "", 0)
+		oEmit = XSI.AddICECompoundNode("bbpp Emit From Points", oIceTree)
+		XSI.ConnectICENodes(str(oIceTree) + ".port1", str(oEmit) + ".add")
+		oGet1 = XSI.AddICENode("GetDataNode", oIceTree)
+		XSI.SetValue(str(oGet1) + ".reference", oStartGeomStatic.FullName)
+		XSI.ConnectICENodes(str(oEmit) + ".Emiter", str(oGet1) + ".outname")
+		XSI.SetValue(str(oEmit) + ".Color_red", 0.9)
+		XSI.SetValue(str(oEmit) + ".Color_green", 0.4)
+		XSI.SetValue(str(oEmit) + ".Color_blue", 0.1)
 		
 		# create blend node
-		oBlend = xsi.AddICECompoundNode("bbpp Blend Cloud", oIceTree)
-		xsi.AddPortToICENode(str(oIceTree)+".port1", "siNodePortDataInsertionLocationAfter")
-		xsi.ConnectICENodes(str(oIceTree)+".port2", str(oBlend)+".Execute")
-		oGet2 = xsi.AddICENode("GetDataNode",oIceTree)
-		xsi.SetValue(str(oGet2)+".reference", str(oStartGrp))
-		xsi.ConnectICENodes(str(oBlend)+".Start_Cloud", str(oGet2)+".outname")
-		oGet3 = xsi.AddICENode("GetDataNode",oIceTree)
-		xsi.SetValue(str(oGet3)+".reference", str(oEndGrp))
-		xsi.ConnectICENodes(str(oBlend)+".End_Cloud", str(oGet3)+".outname")
-		oGet4 = xsi.AddICENode("GetDataNode",oIceTree)
-		xsi.SetValue(str(oGet4)+".reference", oEndGeomStatic.FullName)
-		xsi.ConnectICENodes(str(oBlend)+".Target_Geometry", str(oGet4)+".value")
+		oBlend = XSI.AddICECompoundNode("bbpp Blend Cloud", oIceTree)
+		XSI.AddPortToICENode(str(oIceTree) + ".port1", "siNodePortDataInsertionLocationAfter")
+		XSI.ConnectICENodes(str(oIceTree) + ".port2", str(oBlend) + ".Execute")
+		oGet2 = XSI.AddICENode("GetDataNode", oIceTree)
+		XSI.SetValue(str(oGet2) + ".reference", str(oStartGrp))
+		XSI.ConnectICENodes(str(oBlend) + ".Start_Cloud", str(oGet2) + ".outname")
+		oGet3 = XSI.AddICENode("GetDataNode", oIceTree)
+		XSI.SetValue(str(oGet3) + ".reference", str(oEndGrp))
+		XSI.ConnectICENodes(str(oBlend) + ".End_Cloud", str(oGet3) + ".outname")
+		oGet4 = XSI.AddICENode("GetDataNode", oIceTree)
+		XSI.SetValue(str(oGet4) + ".reference", oEndGeomStatic.FullName)
+		XSI.ConnectICENodes(str(oBlend) + ".Target_Geometry", str(oGet4) + ".value")
 		
 		# connect timer
-		oTimer = xsi.AddICECompoundNode("bbpp Transformation Timer", oIceTree)
-		xsi.ConnectICENodes(str(oBlend)+".Blend", str(oTimer)+".Blend")
-		oGet5 = xsi.AddICENode("GetDataNode", oIceTree)
-		xsi.SetValue(str(oGet5)+".reference", oPPG.StartFrame.FullName)
-		oGet6 = xsi.AddICENode("GetDataNode", oIceTree)
-		xsi.SetValue(str(oGet6)+".reference", oPPG.EndFrame.FullName)
-		xsi.ConnectICENodes(str(oTimer)+".Start_Frame", str(oGet5)+".value")
-		xsi.ConnectICENodes(str(oTimer)+".End_Frame", str(oGet6)+".value")
+		oTimer = XSI.AddICECompoundNode("bbpp Transformation Timer", oIceTree)
+		XSI.ConnectICENodes(str(oBlend) + ".Blend", str(oTimer) + ".Blend")
+		oGet5 = XSI.AddICENode("GetDataNode", oIceTree)
+		XSI.SetValue(str(oGet5) + ".reference", oPPG.StartFrame.FullName)
+		oGet6 = XSI.AddICENode("GetDataNode", oIceTree)
+		XSI.SetValue(str(oGet6) + ".reference", oPPG.EndFrame.FullName)
+		XSI.ConnectICENodes(str(oTimer) + ".Start_Frame", str(oGet5) + ".value")
+		XSI.ConnectICENodes(str(oTimer) + ".End_Frame", str(oGet6) + ".value")
 
 	# create end geometry point cloud
 	if not oEndCloud:
 		# create emission node
-		oEndCloud = xsi.GetPrim("PointCloud", "EndCloud", oModel)
-		oIceTree = xsi.ApplyOp("ICETree", oEndCloud, "siNode", "", "", 0)
-		oEmit = xsi.AddICECompoundNode("bbpp Emit From Points", oIceTree)
-		xsi.ConnectICENodes(str(oIceTree)+".port1", str(oEmit)+".add")
-		oGet1 = xsi.AddICENode("GetDataNode", oIceTree)
-		xsi.SetValue(str(oGet1)+".reference", oEndGeomStatic.FullName)
-		xsi.ConnectICENodes(str(oEmit)+".Emiter", str(oGet1)+".outname")
-		xsi.SetValue(str(oEmit)+".Color_red", 0.1)
-		xsi.SetValue(str(oEmit)+".Color_green", 0.9)
-		xsi.SetValue(str(oEmit)+".Color_blue", 0.4)
+		oEndCloud = XSI.GetPrim("PointCloud", "EndCloud", oModel)
+		oIceTree = XSI.ApplyOp("ICETree", oEndCloud, "siNode", "", "", 0)
+		oEmit = XSI.AddICECompoundNode("bbpp Emit From Points", oIceTree)
+		XSI.ConnectICENodes(str(oIceTree) + ".port1", str(oEmit) + ".add")
+		oGet1 = XSI.AddICENode("GetDataNode", oIceTree)
+		XSI.SetValue(str(oGet1) + ".reference", oEndGeomStatic.FullName)
+		XSI.ConnectICENodes(str(oEmit) + ".Emiter", str(oGet1) + ".outname")
+		XSI.SetValue(str(oEmit) + ".Color_red", 0.1)
+		XSI.SetValue(str(oEmit) + ".Color_green", 0.9)
+		XSI.SetValue(str(oEmit) + ".Color_blue", 0.4)
 		
 		# create blend node
-		oBlend = xsi.AddICECompoundNode("bbpp Blend Cloud", oIceTree)
-		xsi.AddPortToICENode(str(oIceTree)+".port1", "siNodePortDataInsertionLocationAfter")
-		xsi.ConnectICENodes(str(oIceTree)+".port2", str(oBlend)+".Execute")
-		oGet2 = xsi.AddICENode("GetDataNode",oIceTree)
-		xsi.SetValue(str(oGet2)+".reference", str(oEndGrp))
-		xsi.ConnectICENodes(str(oBlend)+".Start_Cloud", str(oGet2)+".outname")
-		oGet3 = xsi.AddICENode("GetDataNode",oIceTree)
-		xsi.SetValue(str(oGet3)+".reference", str(oStartGrp))
-		xsi.ConnectICENodes(str(oBlend)+".End_Cloud", str(oGet3)+".outname")
-		oGet4 = xsi.AddICENode("GetDataNode",oIceTree)
-		xsi.SetValue(str(oGet4)+".reference", oStartGeomStatic.FullName)
-		xsi.ConnectICENodes(str(oBlend)+".Target_Geometry", str(oGet4)+".value")
+		oBlend = XSI.AddICECompoundNode("bbpp Blend Cloud", oIceTree)
+		XSI.AddPortToICENode(str(oIceTree) + ".port1", "siNodePortDataInsertionLocationAfter")
+		XSI.ConnectICENodes(str(oIceTree) + ".port2", str(oBlend) + ".Execute")
+		oGet2 = XSI.AddICENode("GetDataNode", oIceTree)
+		XSI.SetValue(str(oGet2) + ".reference", str(oEndGrp))
+		XSI.ConnectICENodes(str(oBlend) + ".Start_Cloud", str(oGet2) + ".outname")
+		oGet3 = XSI.AddICENode("GetDataNode", oIceTree)
+		XSI.SetValue(str(oGet3) + ".reference", str(oStartGrp))
+		XSI.ConnectICENodes(str(oBlend) + ".End_Cloud", str(oGet3) + ".outname")
+		oGet4 = XSI.AddICENode("GetDataNode", oIceTree)
+		XSI.SetValue(str(oGet4) + ".reference", oStartGeomStatic.FullName)
+		XSI.ConnectICENodes(str(oBlend) + ".Target_Geometry", str(oGet4) + ".value")
 		
 		# connect timer
-		oTimer = xsi.AddICECompoundNode("bbpp Transformation Timer", oIceTree)
-		xsi.ConnectICENodes(str(oBlend)+".Blend", str(oTimer)+".Blend")
-		oGet5 = xsi.AddICENode("GetDataNode", oIceTree)
-		xsi.SetValue(str(oGet5)+".reference", oPPG.StartFrame.FullName)
-		oGet6 = xsi.AddICENode("GetDataNode", oIceTree)
-		xsi.SetValue(str(oGet6)+".reference", oPPG.EndFrame.FullName)
-		xsi.ConnectICENodes(str(oTimer)+".Start_Frame", str(oGet5)+".value")
-		xsi.ConnectICENodes(str(oTimer)+".End_Frame", str(oGet6)+".value")
-		xsi.SetValue(str(oTimer)+".Revert", True)
+		oTimer = XSI.AddICECompoundNode("bbpp Transformation Timer", oIceTree)
+		XSI.ConnectICENodes(str(oBlend) + ".Blend", str(oTimer) + ".Blend")
+		oGet5 = XSI.AddICENode("GetDataNode", oIceTree)
+		XSI.SetValue(str(oGet5) + ".reference", oPPG.StartFrame.FullName)
+		oGet6 = XSI.AddICENode("GetDataNode", oIceTree)
+		XSI.SetValue(str(oGet6) + ".reference", oPPG.EndFrame.FullName)
+		XSI.ConnectICENodes(str(oTimer) + ".Start_Frame", str(oGet5) + ".value")
+		XSI.ConnectICENodes(str(oTimer) + ".End_Frame", str(oGet6) + ".value")
+		XSI.SetValue(str(oTimer) + ".Revert", True)
 		
 	# create Blob Mesh
 	# delete it if already exists
 	bbppTransformation_BlobGeometryExist(oPPG)
-	xsi.SelectObj(str(oStartCloud)+","+str(oEndCloud))
-	xsi.Create_Polygonizer_Polymesh()
-	oBlob = xsi.Selection(0)
+	XSI.SelectObj(str(oStartCloud) + "," + str(oEndCloud))
+	XSI.Create_Polygonizer_Polymesh()
+	oBlob = XSI.Selection(0)
 	oBlob.Name = "OutputMesh"
 	oModel.AddChild(oBlob)
 	oBlobOp = oBlob.ActivePrimitive.ConstructionHistory.Find("Polygonizer")
@@ -419,7 +419,7 @@ def bbppTransformation_BuildOutputMesh_OnClicked( ):
 	
 def bbppTransformation_StartGeometryStaticExist(inPPG):
 
-		outObj = xsi.Dictionary.GetObject(inPPG.StartGeometryStatic.Value,false)
+		outObj = XSI.Dictionary.GetObject(inPPG.StartGeometryStatic.Value, false)
 		if not outObj:
 			inPPG.StartGeometryStatic.Value = ""
 			return
@@ -427,7 +427,7 @@ def bbppTransformation_StartGeometryStaticExist(inPPG):
 		return outObj
 	
 def bbppTransformation_EndGeometryStaticExist(inPPG):
-	outObj = xsi.Dictionary.GetObject(inPPG.EndGeometryStatic.Value,false)
+	outObj = XSI.Dictionary.GetObject(inPPG.EndGeometryStatic.Value, false)
 	if not outObj:
 		inPPG.EndGeometryStatic.Value = ""
 		return
@@ -436,7 +436,7 @@ def bbppTransformation_EndGeometryStaticExist(inPPG):
 	
 def bbppTransformation_StartGeometryAnimatedExist(inPPG):
 
-		outObj = xsi.Dictionary.GetObject(inPPG.StartGeometryAnimated.Value,false)
+		outObj = XSI.Dictionary.GetObject(inPPG.StartGeometryAnimated.Value, false)
 		if not outObj:
 			inPPG.StartGeometryAnimated.Value = ""
 			return
@@ -444,7 +444,7 @@ def bbppTransformation_StartGeometryAnimatedExist(inPPG):
 		return outObj
 	
 def bbppTransformation_EndGeometryAnimatedExist(inPPG):
-	outObj = xsi.Dictionary.GetObject(inPPG.EndGeometryAnimated.Value,false)
+	outObj = XSI.Dictionary.GetObject(inPPG.EndGeometryAnimated.Value, false)
 	if not outObj:
 		inPPG.EndGeometryAnimated.Value = ""
 		return
@@ -454,7 +454,7 @@ def bbppTransformation_EndGeometryAnimatedExist(inPPG):
 def bbppTransformation_BlobGeometryExist(inPPG):
 	oOutputMesh = inPPG.Parent3DObject.FindChild("OutputMesh")
 	if oOutputMesh:
-		xsi.DeleteObj(oOutputMesh)
+		XSI.DeleteObj(oOutputMesh)
 
 def  bbppTransformation_GetPointRoot(inPPG,inName):
 	oModel = inPPG.Parent3DObject
@@ -462,7 +462,7 @@ def  bbppTransformation_GetPointRoot(inPPG,inName):
 	if not oRoot :
 		oRoot = bAddNull(oModel,1,0.1,inName+"Root",0,0,0)
 		if not inName == "Link":
-			oGeom = xsi.ActiveSceneRoot.FindChild(inPPG.Parameters(inName+"GeometryStatic").Value)
+			oGeom = XSI.ActiveSceneRoot.FindChild(inPPG.Parameters(inName + "GeometryStatic").Value)
 			if oGeom:
 				oRoot.Kinematics.AddConstraint("Pose",oGeom)
 			
