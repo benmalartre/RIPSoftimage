@@ -1,23 +1,20 @@
-# -------------------------------------------------------------------
-# Cleaner
-# -------------------------------------------------------------------
 from Globals import *
 import Utils
 import ICETree
 
 
-# ---------------------------------------------------
-# Clean Hair
-# ---------------------------------------------------
 def CleanHair(cage):
+	""" Clean hair cage mesh
+	:param X3DObject cage: the hair cage mesh
+	"""
 	prim = cage.ActivePrimitive
 	history = prim.ConstructionHistory
 		
-	hasdynamic = history.Find("simulationmarker")
+	hasdynamic = history.Find('simulationmarker')
 	if hasdynamic:
-		dynamictree = prim.ICETrees.Find("SyflexDynamics")
+		dynamictree = prim.ICETrees.Find('SyflexDynamics')
 		if not dynamictree:
-			dynamictree = prim.ICETrees.Find("SoftBodyDynamics")
+			dynamictree = prim.ICETrees.Find('SoftBodyDynamics')
 		if not dynamictree:
 			return
 			
@@ -25,7 +22,7 @@ def CleanHair(cage):
 		target = ICETree.GetObjectFromReferenceValue(get)
 		if target:
 			model = target.Model
-			grp = model.Groups("PointCache")
+			grp = model.Groups('PointCache')
 			if grp and not Utils.ObjectInGroup(target, grp):
 				XSI.DeleteObj(target)
 			
@@ -33,23 +30,27 @@ def CleanHair(cage):
 		collider = ICETree.GetObjectFromReferenceValue(get)
 		if collider:
 			model = collider.Model
-			grp = model.Groups("PointCache")
+			grp = model.Groups('PointCache')
 			if grp and not Utils.ObjectInGroup(collider, grp):
 				XSI.DeleteObj(collider)
 
 
-# ---------------------------------------------------
-# Clean Mesh
-# ---------------------------------------------------
 def CleanMesh(obj):
+	""" Clean generic 3D mesh
+		- freeze modeling
+		- delete construction history
+		- delete point clusters excepting those containing weight map
+		- delete edge clusters
+	:param X3DObject obj: the mesh to clean
+	"""
 	delete = []
 	XSI.FreezeModeling(obj)
 	mode = 0
 	XSI.LogMessage(obj.FullName)
 	for c in obj.ActivePrimitive.ConstructionHistory:
-		if c.Name == "simulationmarker":
+		if c.Name == 'simulationmarker':
 			XSI.DeleteObj(c)
-		elif c.Name == "GetMeshData" or c.Name == "SetMeshData":
+		elif c.Name == 'GetMeshData' or c.Name == 'SetMeshData':
 			CleanHair(obj)
 			mode = 1
 			continue
@@ -57,11 +58,11 @@ def CleanMesh(obj):
 	
 	for c in obj.ActivePrimitive.Geometry.Clusters:
 		# delete pnt clusters except weight map
-		if c.Type == "pnt":
-			if c.Name.find("WeightMap") == -1:
+		if c.Type == 'pnt':
+			if c.Name.find('WeightMap') == -1:
 				delete.append(c)
 		# delete all edge cluster
-		if c.Type == "edge":
+		if c.Type == 'edge':
 			delete.append(c)
 		
 	XSI.DeleteObj(delete)
@@ -69,19 +70,21 @@ def CleanMesh(obj):
 	return mode
 
 
-# ---------------------------------------------------
-# Clean Transform
-# ---------------------------------------------------
 def CleanTransform(obj):
+	""" Clean transform
+		- delete constraints
+		- delete parameters connexions
+	:param X3DObject obj: the objetc to clean transform on
+	"""
 	transform = XSIMath.CreateTransform()
 	constraints = obj.Kinematics.Constraints
 	if constraints.Count > 0:
 		XSI.DeleteObj(constraints)
-	local = obj.Kinematics.Local
-	for parameter in local.Parameters:
+	kine_local = obj.Kinematics.Local
+	for parameter in kine_local.Parameters:
 		parameter.Disconnect()
 		
-	glob = obj.Kinematics.Global
-	for parameter in glob.Parameters:
+	kine_global = obj.Kinematics.Global
+	for parameter in kine_global.Parameters:
 		parameter.Disconnect()
-	glob.PutTransform2(0, transform)
+	kine_global.PutTransform2(0, transform)

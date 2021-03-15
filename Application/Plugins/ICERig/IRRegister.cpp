@@ -46,6 +46,7 @@ XSI::CStatus RegisterIRBuildElementID( XSI::PluginRegistrar& in_reg );
 XSI::CStatus RegisterIRDeltaMushInit(XSI::PluginRegistrar& in_reg);
 XSI::CStatus RegisterIRDeltaMush(XSI::PluginRegistrar& in_reg);
 XSI::CStatus RegisterIRResampleCurve(XSI::PluginRegistrar& in_reg);
+XSI::CStatus RegisterIRFabrik(XSI::PluginRegistrar& in_reg);
 
 SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
 {
@@ -61,6 +62,7 @@ SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
   RegisterIRDeltaMushInit(in_reg);
   RegisterIRDeltaMush(in_reg);
   RegisterIRResampleCurve(in_reg);
+  RegisterIRFabrik(in_reg);
 
   in_reg.RegisterTool(L"IRSetElement");
 	in_reg.RegisterTool(L"IRSimpleBrush");

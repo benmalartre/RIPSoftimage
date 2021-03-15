@@ -1,33 +1,17 @@
-#--------------------------------------------------------
-# RigBuilder
-#--------------------------------------------------------
 from win32com.client import constants
 from Globals import XSI
 from Globals import XSIFactory
 from Globals import Dispatch
 from Constants import *
-import Constants as CC
-reload(CC)
-import Utils as uti
-reload(uti)
-import Element as ele
-reload(ele)
-import Skeleton as ske
-reload(ske)
-
-import Geometry as geo
-reload(geo)
-import Muscle as msc
-reload(msc)
-
-import Icon as ico
-reload(ico)
-import ICETree as tre
-reload(tre)
-import Control as ctr
-reload(ctr)
-import Property as pro
-reload(pro)
+import Utils
+import Element
+import Skeleton
+import Geometry
+import Muscle
+import Icon
+import ICETree
+import Control
+import Property
 
 
 def XSILoadPlugin(in_reg):
@@ -70,23 +54,23 @@ def ICERig_Init(ctxt):
 def GetRigBuilder_Execute():
 	model = XSI.ActiveSceneRoot.AddModel(None, "Rig")
 
-	uti.GroupSetup(model, None, "FK_Rig")
-	uti.GroupSetup(model, None, "IK_Rig")
-	uti.GroupSetup(model, None, "Spring_Rig")
+	Utils.GroupSetup(model, None, "FK_Rig")
+	Utils.GroupSetup(model, None, "IK_Rig")
+	Utils.GroupSetup(model, None, "Spring_Rig")
 
 	prop = model.AddProperty("RigBuilder")
 	XSI.InspectObj(prop, None, None, constants.siLock)
 	
-	guide = uti.AddNull(model, 0,.2, "Guides", 0, 0, 0)
-	geo = uti.AddNull(model, 1, .2, "Geometries", 0, 0, 0)
-	rig = uti.AddNull(model, 2, .2, "ICE_Rig", 0, 0, 0)
-	uti.SetWireColor(rig, 1.0, 0.25, 0.5)
+	guide = Utils.AddNull(model, 0, 0.2, "Guides", 0, 0, 0)
+	geo = Utils.AddNull(model, 1, .2, "Geometries", 0, 0, 0)
+	rig = Utils.AddNull(model, 2, .2, "ICE_Rig", 0, 0, 0)
+	Utils.SetWireColor(rig, 1.0, 0.25, 0.5)
 	
-	tree = tre.CreateICETree(rig, "Init", constructionhistory=2)
+	tree = ICETree.CreateICETree(rig, "Init", constructionhistory=2)
 	init = XSI.AddICECompoundNode("IRRigInit", tree)
 	XSI.ConnectICENodes(str(tree) + ".port1", str(init) + ".Execute")
 	
-	simul = tre.CreateSimulatedICETree(rig, "Deform")
+	simul = ICETree.CreateSimulatedICETree(rig, "Deform")
 	deform = XSI.AddICECompoundNode("IRRigDeform", simul)
 	XSI.ConnectICENodes(str(simul) + ".port1", str(deform) + ".Execute")
 	
@@ -122,8 +106,7 @@ def RigBuilder_Define(in_ctxt):
 	
 	prop.AddParameter2("MuscleList", constants.siString, "")
 	prop.AddParameter2("MuscleChooser", constants.siString)
-	
-	
+
 	prop.AddParameter2("R_ColorR_IK", constants.siFloat, 0.5, 0.0, 1.0)
 	prop.AddParameter2("R_ColorG_IK", constants.siFloat, 0.0, 0.0, 1.0)
 	prop.AddParameter2("R_ColorB_IK", constants.siFloat, 1.0, 0.0, 1.0)
@@ -174,8 +157,8 @@ def RigBuilder_RebuildLayout( PPG ):
 	layout.AddTab("Globals")
 	
 	layout.AddGroup("Geometry To Deform")
-	ele.CheckRigElementList(PPG, ID_GEOMETRY)
-	items = ele.BuildListFromString(PPG.Parameters("GeometryList").Value)
+	Element.CheckRigElementList(PPG, ID_GEOMETRY)
+	items = Element.BuildListFromString(PPG.Parameters("GeometryList").Value)
 	item = layout.AddEnumControl("GeometryChooser", items, "", constants.siControlListBox)
 	item.SetAttribute(constants.siUINoLabel, True)
 	
@@ -188,13 +171,7 @@ def RigBuilder_RebuildLayout( PPG ):
 	layout.AddItem("GlobalSize", "Size")
 	layout.EndGroup()
 	layout.AddGroup("Symmetry")
-	items = []
-	items.append("XY")
-	items.append(0)
-	items.append("YZ")
-	items.append(1)
-	items.append("XZ")
-	items.append(2)
+	items = ["XY", 0, "YZ", 1, "XZ", 2]
 	item = layout.AddEnumControl("SymmetryAxis", items, "", constants.siControlCombo)
 	layout.EndGroup()
 	
@@ -216,8 +193,7 @@ def RigBuilder_RebuildLayout( PPG ):
 
 	# skeleton
 	layout.AddTab("Skeleton")
-	ele.CheckRigElementList(PPG, ID_SKELETON)
-	#RigBuilder_AddShowSkeletonElement(layout)
+	Element.CheckRigElementList(PPG, ID_SKELETON)
 	layout.AddGroup("New Element")
 	layout.AddItem("ElementName", "Name")
 	layout.AddEnumControl("Side", RIG_SIDE_ITEM_ARRAY, "Side", constants.siControlCombo)
@@ -233,7 +209,7 @@ def RigBuilder_RebuildLayout( PPG ):
 	layout.AddGroup("Existing Elements")
 	layout.AddGroup()
 	
-	items = ele.BuildListFromString(PPG.Parameters("SkeletonList").Value)
+	items = Element.BuildListFromString(PPG.Parameters("SkeletonList").Value)
 	item = layout.AddEnumControl("SkeletonChooser", items, "", constants.siControlListBox)
 	item.SetAttribute(constants.siUINoLabel, True)
 	item.SetAttribute(constants.siUIMultiSelectionListBox, True)
@@ -271,7 +247,7 @@ def RigBuilder_RebuildLayout( PPG ):
 
 	# muscles
 	layout.AddTab("Muscles")
-	ele.CheckRigElementList(PPG, ID_MUSCLE)
+	Element.CheckRigElementList(PPG, ID_MUSCLE)
 	layout.AddGroup("New Element")
 	layout.AddItem("ElementName", "Name")
 	layout.AddEnumControl("Side", RIG_SIDE_ITEM_ARRAY, "Side", constants.siControlCombo)
@@ -285,7 +261,7 @@ def RigBuilder_RebuildLayout( PPG ):
 	layout.AddGroup("Existing Elements")
 	layout.AddGroup()
 
-	items = ele.BuildListFromString(PPG.Parameters("MuscleList").Value)
+	items = Element.BuildListFromString(PPG.Parameters("MuscleList").Value)
 	item = layout.AddEnumControl("MuscleChooser", items, "", constants.siControlListBox)
 	item.SetAttribute(constants.siUINoLabel, True)
 	item.SetAttribute(constants.siUIMultiSelectionListBox, True)
@@ -318,7 +294,7 @@ def RigBuilder_RebuildLayout( PPG ):
 
 	# controls
 	layout.AddTab("Controls")
-	ele.CheckRigElementList(PPG, ID_CONTROL)
+	Element.CheckRigElementList(PPG, ID_CONTROL)
 	layout.AddGroup("New Element")
 	layout.AddItem("ElementName", "Name")
 	layout.AddEnumControl("Side", RIG_SIDE_ITEM_ARRAY, "Side", constants.siControlCombo)
@@ -335,7 +311,7 @@ def RigBuilder_RebuildLayout( PPG ):
 	layout.AddGroup("Existing Elements")
 	layout.AddGroup()
 
-	items = ele.BuildListFromString(PPG.Parameters("ControlList").Value)
+	items = Element.BuildListFromString(PPG.Parameters("ControlList").Value)
 	item = layout.AddEnumControl("ControlChooser", items, "", constants.siControlListBox)
 	item.SetAttribute(constants.siUINoLabel, True)
 	layout.EndGroup()
@@ -376,13 +352,13 @@ def RigBuilder_RebuildLayout( PPG ):
 	layout.AddRow()
 	layout.AddGroup("Geometries")
 	
-	items = ele.BuildListFromString(PPG.Parameters("GeometryList").Value)
+	items = Element.BuildListFromString(PPG.Parameters("GeometryList").Value)
 	item = layout.AddEnumControl("GeometryChooser", items, "", constants.siControlListBox)
 	item.SetAttribute(constants.siUINoLabel, True)
 	layout.EndGroup()
 	
 	layout.AddGroup("Skeleton Elements")
-	items = ele.BuildListFromString(PPG.Parameters("SkeletonList").Value)
+	items = Element.BuildListFromString(PPG.Parameters("SkeletonList").Value)
 	item = layout.AddEnumControl("SkeletonChooser", items, "", constants.siControlListBox)
 	item.SetAttribute(constants.siUINoLabel, True)
 	layout.EndGroup()
@@ -434,6 +410,7 @@ def RigBuilder_RebuildLayout( PPG ):
 	item.SetAttribute(constants.siUICX, 0)
 	item.SetAttribute(constants.siUICY, 25)
 	layout.EndGroup()
+
 
 '''	
 def RigBuilder_AddShowSkeletonElement(PPGLayout):
@@ -505,25 +482,25 @@ def RigBuilder_AddShowMuscleElement(PPGLayout):
 
 
 def RigBuilder_GeometryElements_GridData(prop):
-	oGrid = prop.Parameters("GeometryElements").Value
-	oGrid.BeginEdit()
+	grid = prop.Parameters("GeometryElements").Value
+	grid.BeginEdit()
 	
-	oGrid.RowCount = 6
-	oGrid.ColumnCount = 4
+	grid.RowCount = 6
+	grid.ColumnCount = 4
 	
-	oGrid.SetRowValues(0, [0, 0.5, 0.75, 1.0])
-	oGrid.SetRowValues(1, [0, 0.5, 0.75, 1.0])
-	oGrid.SetRowValues(2, [0, 0.5, 0.75, 1.0])
-	oGrid.SetRowValues(3, [0, 0.5, 0.75, 1.0])
-	oGrid.SetRowValues(4, [0, 0.5, 0.75, 1.0])
-	oGrid.SetRowValues(5, [0, 0.5, 0.75, 1.0])
+	grid.SetRowValues(0, [0, 0.5, 0.75, 1.0])
+	grid.SetRowValues(1, [0, 0.5, 0.75, 1.0])
+	grid.SetRowValues(2, [0, 0.5, 0.75, 1.0])
+	grid.SetRowValues(3, [0, 0.5, 0.75, 1.0])
+	grid.SetRowValues(4, [0, 0.5, 0.75, 1.0])
+	grid.SetRowValues(5, [0, 0.5, 0.75, 1.0])
 	
-	aCols = ["R","G","B","A"]
-	for i in range(0,3):
-		oGrid.SetRowLabel(i,"Vertex "+str(i))
-		oGrid.SetColumnLabel(i,aCols[i])
+	channels = ["R", "G", "B", "A"]
+	for idx, channel in enumerate(channels):
+		grid.SetRowLabel(idx, "Vertex "+str(idx))
+		grid.SetColumnLabel(idx, channel)
 		
-	oGrid.EndEdit()
+	grid.EndEdit()
 
 
 def RigBuilder_SkeletonChooser_OnChanged():
@@ -539,17 +516,16 @@ def RigBuilder_UpdateElement_OnClicked():
 			if cls:
 				XSI.DeleteObj(cls)
 			
-			cls = uti.CreateAlwaysCompleteCluster(s, constants.siVertexCluster, "ElementData")
+			cls = Utils.CreateAlwaysCompleteCluster(s, constants.siVertexCluster, "ElementData")
 			cls = Dispatch(cls)
-			depth = uti.GetWeightMap(s, "DepthMap", 10, 0, 100, cls)
-			width = uti.GetWeightMap(s, "WidthMap", 10, 0, 100, cls)
+			depth = Utils.GetWeightMap(s, "DepthMap", 10, 0, 100, cls)
+			width = Utils.GetWeightMap(s, "WidthMap", 10, 0, 100, cls)
 			offset = cls.AddProperty("SimpleDeformShape",0,"Offset")
 
 
 def RigBuilder_SymmetrizeElement_OnClicked():
-	sel = None
 	if XSI.Selection.Count == 0:
-		sel = RigBuilder_GetSelectedSkeletonElements(PPG)#xsi.Selection
+		sel = RigBuilder_GetSelectedSkeletonElements(PPG)
 	else:
 		sel = []
 		for s in XSI.Selection:
@@ -561,33 +537,31 @@ def RigBuilder_SymmetrizeElement_OnClicked():
 			if not prop.Parameters("Symmetrize").Value:
 				prop.Parameters("Symmetrize").Value = True
 				XSI.LogMessage("[RigBuilder] : Can't Symmetrize Element " + prop.Parameters("ElementName").Value, constants.siWarning)
-				#return False
 				
 			cls = src.ActivePrimitive.Geometry.Clusters("ElementData")
 			if not cls:
 				continue
-			
-			#element = ele.IRElement(prop,src.Parent3DObject)
-			skeleton = ske.IRSkeleton(src.Properties("RigElement"), src)
+
+			skeleton = Skeleton.IRSkeleton(src.Properties("RigElement"), src)
 			skeleton.GetFromGuide(src)
 			skeleton.Symmetrize()
 			'''
 			symname = element.symfullname
 			dst = element.model.FindChild(element.symfullname+"_Crv")
 			if not dst or not dst.ActivePrimitive.Geometry.Clusters("ElementData"):
-				guide = ske.GetFromGuide(self,src) 
+				guide = Skeleton.GetFromGuide(self,src) 
 				return False
 			
-			uti.CopyWeightMap(src,dst,"DepthMap")
-			uti.CopyWeightMap(src,dst,"WidthMap")
+			Utils.CopyWeightMap(src,dst,"DepthMap")
+			Utils.CopyWeightMap(src,dst,"WidthMap")
 			'''
-			#uti.CopyWeightMap(src,dst,"DepthMap")
+			#Utils.CopyWeightMap(src,dst,"DepthMap")
 			'''
-			depth = uti.GetWeightMap(s,"DepthMap",10,0,100,cls)
-			width = uti.GetWeightMap(s,"WidthMap",10,0,100,cls)
+			depth = Utils.GetWeightMap(s,"DepthMap",10,0,100,cls)
+			width = Utils.GetWeightMap(s,"WidthMap",10,0,100,cls)
 			offset = cls.AddProperty("SimpleDeformShape",0,"Offset")
 			
-			sdepth = uti.GetWeightMap(s,"DepthMap",10,0,100,cls)
+			sdepth = Utils.GetWeightMap(s,"DepthMap",10,0,100,cls)
 			'''
 
 
@@ -601,7 +575,7 @@ def RigBuilder_SymmetrizeMuscle_OnClicked():
 	for src in sel:
 		node = src.ActivePrimitive.ICETrees(0).Nodes(0)
 		if node and node.Name == "Muscle Curve Guide":
-			m = msc.IRMuscle(None, parent, name, side=MIDDLE, mirror=False, suffix="")
+			m = Muscle.IRMuscle(None, parent, name, side=MIDDLE, mirror=False, suffix="")
 			m.GetFromGuide(src)
 			m.Symmetrize()
 
@@ -610,7 +584,7 @@ def RigBuilder_AddGeometry_OnClicked():
 	prop = PPG.Inspected(0)
 	model = prop.Parent3DObject
 	
-	elem = geo.IRGeometry(prop, model, XSI.Selection(0).FullName)
+	elem = Geometry.IRGeometry(prop, model, XSI.Selection(0).FullName)
 	elem.AddToRig()
 	PPG.Refresh()
 
@@ -619,7 +593,7 @@ def RigBuilder_RemoveGeometry_OnClicked():
 	prop = PPG.Inspected(0)
 	model = prop.Parent3DObject
 
-	elem = geo.IRGeometry(prop, model)
+	elem = Geometry.IRGeometry(prop, model)
 	elem.RemoveFromRig()
 	PPG.Refresh()
 
@@ -640,7 +614,7 @@ def RigBuilder_RebuildSkeletonList_OnClicked():
 		sList += c.Name.replace("_Crv", "")+"|"
 	
 	prop.Parameters("SkeletonList").Value = sList
-	items = ele.BuildListFromString(sList)
+	items = Element.BuildListFromString(sList)
 	prop.PPGLayout.Item("SkeletonChooser").UIItems = items 
 	
 	PPG.Refresh()
@@ -661,7 +635,7 @@ def RigBuilder_RebuildMuscleList_OnClicked():
 			sList += m.Name.replace("_Crv", "")+"|"
 		
 		prop.Parameters("MuscleList").Value = sList
-		items = ele.BuildListFromString(sList)
+		items = Element.BuildListFromString(sList)
 		prop.PPGLayout.Item("MuscleChooser").UIItems = items 
 		PPG.Refresh()
 
@@ -670,7 +644,7 @@ def RigBuilder_MuscleDefoLength(prop,mname):
 	model = prop.Parent3DObject
 	start = model.FindChild(mname+"_Start")
 	end = model.FindChild(mname+"_End")
-	dist = uti.DistanceBetweenTwoObjects(start, end)
+	dist = Utils.DistanceBetweenTwoObjects(start, end)
 	XSI.LogMessage(mname + " ---> " + str(dist))
 	prop = start.Properties("MuscleControl")
 	if prop:
@@ -693,7 +667,7 @@ def RigBuilder_CreateNewElement_OnClicked():
 	model = prop.Parent3DObject
 	root = model.FindChild("Guides")
 	if not root:
-		uti.MakeRigNull(model, 0, "Guides")
+		Utils.MakeRigNull(model, 0, "Guides")
 	
 	elemType = RigBuilder_GetElementTypeFromTab(PPG)
 	elem = RigBuilder_GetElementFromType(prop, elemType, root)
@@ -794,11 +768,11 @@ def RigBuilder_Symmetrize_OnChanged():
 
 
 def RigBuilder_SetControlStaticKineState_OnClicked():
-	uti.ResetStaticKinematicState(XSI.Selection)
+	Utils.ResetStaticKinematicState(XSI.Selection)
 
 
 def RigBuilder_SetNeutralPose_OnClicked():
-	#uti.AddStaticKinematicState(xsi.Selection)
+	#Utils.AddStaticKinematicState(xsi.Selection)
 	XSI.LogMessage("Not Implemented!!!")
 
 
@@ -809,14 +783,14 @@ def RigBuilder_UpdateControlColor_OnClicked():
 	if XSI.Selection.Count > 0:
 		for s in XSI.Selection:
 			if s.name.find("_Ctrl")>-1:
-				ctrl = ctr.IRControl(prop, model)
+				ctrl = Control.IRControl(prop, model)
 				ctrl.GetFromGuide(s)
 				ctrls.append(ctrl)
 	else:
 		children = model.FindChildren("*_Ctrl*")
 		for c in children:
 			if c.Type == "crvlist":
-				ctrl = ctr.IRControl(prop, model)
+				ctrl = Control.IRControl(prop, model)
 				ctrl.GetFromGuide(c)
 				ctrls.append(ctrl)
 				
@@ -829,17 +803,17 @@ def RigBuilder_RebuildSkeleton_OnClicked():
 	print model
 	model = XSI.ActiveSceneRoot.Models(model.Name)
 	print model.FindChildren2("", "", None, True)
-	ske.DeleteSkeletonCloud(model)
+	Skeleton.DeleteSkeletonCloud(model)
 	if model.Groups("Guide_Curves").Members.Count > 1:
-		ele.ReorderCurveGroup(model, ID_SKELETON)
-	ske.CreateSkeletonCloud(model)
+		Element.ReorderCurveGroup(model, ID_SKELETON)
+	Skeleton.CreateSkeletonCloud(model)
 
 
 def RigBuilder_PrepareCopySkin_OnClicked():
 	model = PPG.Inspected(0).Parent3DObject
 	skin = RigBuilder_GetSelectedSkinGeometry(PPG)
 	if skin:
-		geo.PrepareCopySkin(model, skin)
+		Geometry.PrepareCopySkin(model, skin)
 	else:
 		XSI.LogMessage("[RigBuilder] : Fail Prepare Skin Geometry!")
 
@@ -871,8 +845,8 @@ def RigBuilder_UpdateClusterElement(PPG, method):
 		cls = parent.ActivePrimitive.Geometry.Clusters(clsname)
 		
 		if cls:
-			uti.UpdateClusterComponent(cls, sub, method)
-			wm = uti.GetWeightMap(parent, "WeightMap", 1, 0, 1, cls)
+			Utils.UpdateClusterComponent(cls, sub, method)
+			wm = Utils.GetWeightMap(parent, "WeightMap", 1, 0, 1, cls)
 			elems_tuple = wm.Elements.Array
 			elems = [1 for i in range(len(elems_tuple[0])) for j in range(len(elems_tuple))]
 			wm.Elements.Array = elems
@@ -890,7 +864,7 @@ def RigBuilder_MirrorPointsForSkeletonElement_OnClicked():
 	cls = skin.ActivePrimitive.Geometry.Clusters(clsname)
 	
 	if cls:
-		uti.MirrorVertexCluster(cls, True, "WeightMap")
+		Utils.MirrorVertexCluster(cls, True, "WeightMap")
 
 
 def RigBuilder_GatherSkinData_OnClicked():
@@ -898,7 +872,7 @@ def RigBuilder_GatherSkinData_OnClicked():
 	if not skin:
 		return False
 
-	geo.GatherSkinDataOnSelf(skin)
+	Geometry.GatherSkinDataOnSelf(skin)
 
 
 def RigBuilder_AttachSkin_OnClicked():
@@ -908,7 +882,7 @@ def RigBuilder_AttachSkin_OnClicked():
 		return False
 	print model
 	print skin
-	geo.BindSkinToSkeleton(model, skin)
+	Geometry.BindSkinToSkeleton(model, skin)
 
 
 def RigBuilder_CreateEnvelope_OnClicked():
@@ -917,7 +891,7 @@ def RigBuilder_CreateEnvelope_OnClicked():
 	if not skin:
 		return False
 		
-	geo.CreateEnvelopeDuplicate(model, skin)
+	Geometry.CreateEnvelopeDuplicate(model, skin)
 	
 # ---------------------------------------------------
 # Get Skin Geometry
@@ -949,10 +923,11 @@ def RigBuilder_GetAllSkinGeometry(PPG):
 		return False
 	return skin
 	'''
-	
+
+
 # ---------------------------------------------------
 # Get Skeleton Element
-#---------------------------------------------------	
+# ---------------------------------------------------
 def RigBuilder_GetSelectedSkeletonElement(PPG):
 	prop = PPG.Inspected(0)
 
@@ -980,8 +955,8 @@ def RigBuilder_GetSelectedSkeletonElements(PPG):
 # rebuild muscle
 def RigBuilder_RebuildMuscles_OnClicked():
 	model = PPG.Inspected(0).Parent3DObject
-	ele.ReorderCurveGroup(model, ID_MUSCLE)
-	msc.CreateMuscleMesh(model, True)
+	Element.ReorderCurveGroup(model, ID_MUSCLE)
+	Muscle.CreateMuscleMesh(model, True)
 
 
 # inspect element
@@ -1044,7 +1019,7 @@ def RigBuilder_GetElementFromType(prop, elemtype, parent):
 		else:
 			mode = prop.Parameters("ElementType").Value
 			crv = prop.Parent3DObject
-		elem = ske.IRSkeleton(crv, parent, name, mode, side, division, selfsymmetrize)
+		elem = Skeleton.IRSkeleton(crv, parent, name, mode, side, division, selfsymmetrize)
 
 	# muscle element
 	elif elemtype == ID_MUSCLE:
@@ -1052,7 +1027,7 @@ def RigBuilder_GetElementFromType(prop, elemtype, parent):
 			crv = None
 		else:
 			crv = prop.Parent3DObject
-		elem = msc.IRMuscle(crv, parent, name, side, selfsymmetrize)
+		elem = Muscle.IRMuscle(crv, parent, name, side, selfsymmetrize)
 
 	# control element
 	elif elemtype == ID_CONTROL:
@@ -1065,12 +1040,11 @@ def RigBuilder_GetElementFromType(prop, elemtype, parent):
 			mode = prop.Parameters("ElementType").Value
 			crv = prop.Parent3DObject
 
-		print "ICON : "+str(icon)
-		elem = ctr.IRControl(crv, parent, name, icon, mode, side)
+		elem = Control.IRControl(crv, parent, name, icon, mode, side)
 
 	# geometry element
 	elif elemtype == ID_GEOMETRY:
-		elem = geo.IRGeometry(prop, parent)
+		elem = Geometry.IRGeometry(prop, parent)
 	
 	return elem
 
@@ -1145,20 +1119,24 @@ def RigBuilder_GetElementPropType(elemtype):
 # -----------------------------------------------
 def RigElementPainter_Define(in_ctxt):
 	prop = in_ctxt.Source
-	prop.AddParameter2("ElementList", constants.siString, "", "", "", "", "", constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable)
+	prop.AddParameter2(
+		"ElementList", constants.siString, "", "", "", "", "",
+		constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable)
+
 
 def RigElementPainter_OnInit():
 	prop = PPG.Inspected(0)
 	RigElementPainter_RebuildLayout(prop)
 	PPG.Refresh()
-	
+
+
 def RigElementPainter_RebuildLayout(PPG):
 	layout = PPG.PPGLayout
 	layout.AddGroup("Elements")
 
-	items = ele.BuildListFromString(PPG.Parameters("ElementList").Value)
-	item = layout.AddEnumControl("ElementList",items,"",constants.siControlListBox)	
-	item.SetAttribute(constants.siUINoLabel,True)
+	items = Element.BuildListFromString(PPG.Parameters("ElementList").Value)
+	item = layout.AddEnumControl("ElementList", items, "", constants.siControlListBox)
+	item.SetAttribute(constants.siUINoLabel, True)
 	'''
 	layout.AddRow()
 	item = layout.AddButton("InspectMuscleElement","Inspect")
@@ -1177,13 +1155,31 @@ def RigElementPainter_RebuildLayout(PPG):
 # -----------------------------------------------
 def RigElement_Define( in_ctxt ):
 	prop = in_ctxt.Source
-	prop.AddParameter2("ElementType", constants.siInt4, 0, 0, 1000, 0, 100, constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable)
+	prop.AddParameter2(
+		"ElementType", constants.siInt4, 0, 0, 1000, 0, 100,
+		constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable
+	)
 	prop.AddParameter2("ElementName", constants.siString, "", "", "", "", "")
-	prop.AddParameter2("Divisions", constants.siInt4, 3, 1, 1000, 1, 12, constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable)
-	prop.AddParameter2("Side", constants.siInt4, 0, 0, 2, 0, 2, constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable)
-	prop.AddParameter2("Width", constants.siFloat, .5, 0.01, 100, 0, 2, constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable)
-	prop.AddParameter2("Height", constants.siFloat, .5, 0, 100, 0, 2, constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable)
-	prop.AddParameter2("Depth", constants.siFloat, .5, 0, 100, 0, 2, constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable)
+	prop.AddParameter2(
+		"Divisions", constants.siInt4, 3, 1, 1000, 1, 12,
+		constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable
+	)
+	prop.AddParameter2(
+		"Side", constants.siInt4, 0, 0, 2, 0, 2,
+		constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable
+	)
+	prop.AddParameter2(
+		"Width", constants.siFloat, .5, 0.01, 100, 0, 2,
+		constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable
+	)
+	prop.AddParameter2(
+		"Height", constants.siFloat, .5, 0, 100, 0, 2,
+		constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable
+	)
+	prop.AddParameter2(
+		"Depth", constants.siFloat, .5, 0, 100, 0, 2,
+		constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable
+	)
 	prop.AddParameter2("Symmetrize", constants.siBool, False, False, True, False, True)
 	prop.AddParameter2("SelfSymmetrize", constants.siBool, False, False, True, False, True)
 	prop.AddParameter2("SymmetryAxis", constants.siInt4, 0, 0, 2, 0, 2)
@@ -1191,11 +1187,26 @@ def RigElement_Define( in_ctxt ):
 	prop.AddParameter2("Contract", constants.siFloat, 1, -10, 10, -10, 10)
 	prop.AddParameter2("Slide", constants.siFloat, 0, -1, 1, -10, 10)
 	
-	prop.AddParameter2("ControlType", constants.siInt4, 0, 0, 6, 0, 6, constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable)
-	prop.AddParameter2("IKFKBlend", constants.siFloat, 0, 0, 1, 0, 1, constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable)
-	prop.AddParameter2("SpringActive", constants.siBool, True, False, True, False, True, constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable)
-	prop.AddParameter2("SpringBlend", constants.siFloat, 1, 0, 1, 0, 1, constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable)
-	prop.AddParameter2("AnimationMode", constants.siBool, False, False, True, 0, 1, constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable)
+	prop.AddParameter2(
+		"ControlType", constants.siInt4, 0, 0, 6, 0, 6,
+		constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable
+	)
+	prop.AddParameter2(
+		"IKFKBlend", constants.siFloat, 0, 0, 1, 0, 1,
+		constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable
+	)
+	prop.AddParameter2(
+		"SpringActive", constants.siBool, True, False, True, False, True,
+		constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable
+	)
+	prop.AddParameter2(
+		"SpringBlend", constants.siFloat, 1, 0, 1, 0, 1,
+		constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable
+	)
+	prop.AddParameter2(
+		"AnimationMode", constants.siBool, False, False, True, 0, 1,
+		constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable
+	)
 	
 	prop.AddParameter2("Collide", constants.siBool, False, False, True)
 	prop.AddParameter2("Stick", constants.siBool, False, False, True)
@@ -1204,14 +1215,15 @@ def RigElement_Define( in_ctxt ):
 	prop.AddParameter2("UpVectorY", constants.siFloat, 1.0)
 	prop.AddParameter2("UpVectorZ", constants.siFloat, 0.0)
 	prop.AddParameter2("UpVectorName", constants.siString, "")
-	
-	
+
 	return True
-	
+
+
 def RigElement_OnInit():
 	RigElement_RebuildLayout(PPG.Inspected(0))
 	PPG.Refresh()
-	
+
+
 def RigElement_RebuildLayout(ppg):
 	layout = ppg.PPGLayout
 	layout.Clear()
@@ -1260,7 +1272,6 @@ def RigElement_RebuildLayout(ppg):
 	item = layout.AddButton("BuildRigControl", "Build")
 	item.SetAttribute("WidthPercentage", 100)
 
-	
 	layout.AddTab("Extra")
 	layout.AddGroup("Up Vector")
 	layout.AddRow()
@@ -1301,29 +1312,74 @@ def  RigElement_ElementName_OnChanged():
 # -----------------------------------------------
 def MuscleElement_Define( in_ctxt ):
 	prop = in_ctxt.Source
-	prop.AddParameter2("ElementType", constants.siInt4, 0, 0, 1000, 0, 100, constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable)
+	prop.AddParameter2(
+		"ElementType", constants.siInt4, 0, 0, 1000, 0, 100,
+		constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable
+	)
 	prop.AddParameter2("ElementName", constants.siString, "", "", "", "", "")
-	prop.AddParameter2("StartTangent", constants.siFloat, 0.25, 0.001, 1, 0.001, 1, constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable)
-	prop.AddParameter2("EndTangent", constants.siFloat, 0.25, 0.001, 1, 0.001, 1, constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable)
-	prop.AddParameter2("BulgeLimit", constants.siFloat, 2, 0, 4, 0, 4, constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable)
-	prop.AddParameter2("StretchLimit", constants.siFloat, 2, 0, 4, 0, 4, constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable)
-	prop.AddParameter2("DefoLength", constants.siFloat, 4, 0.001, 1000, 0.001, 10, constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable)
+	prop.AddParameter2(
+		"StartTangent", constants.siFloat, 0.25, 0.001, 1, 0.001, 1,
+		constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable
+	)
+	prop.AddParameter2(
+		"EndTangent", constants.siFloat, 0.25, 0.001, 1, 0.001, 1,
+		constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable
+	)
+	prop.AddParameter2(
+		"BulgeLimit", constants.siFloat, 2, 0, 4, 0, 4,
+		constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable
+	)
+	prop.AddParameter2(
+		"StretchLimit", constants.siFloat, 2, 0, 4, 0, 4,
+		constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable
+	)
+	prop.AddParameter2(
+		"DefoLength", constants.siFloat, 4, 0.001, 1000, 0.001, 10,
+		constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable
+	)
 
-	prop.AddParameter2("SkeletonStart", constants.siInt4, -1, -1, 65535, -1, 65535, constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable)
-	prop.AddParameter2("SkeletonEnd", constants.siFloat, -1, -1, 65535, -1, 65535, constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable)
+	prop.AddParameter2(
+		"SkeletonStart", constants.siInt4, -1, -1, 65535, -1, 65535,
+		constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable
+	)
+	prop.AddParameter2(
+		"SkeletonEnd", constants.siFloat, -1, -1, 65535, -1, 65535,
+		constants.siClassifUnknown, constants.siPersistable + constants.siAnimatable + constants.siKeyable
+	)
 
-	prop.AddParameter2("Width", constants.siFloat, 1, 0, 100, 0, 2, constants.siClassifUnknown,constants.siPersistable + constants.siAnimatable + constants.siKeyable)
-	prop.AddParameter2("Height", constants.siFloat, 1, 0, 100, 0, 2, constants.siClassifUnknown,constants.siPersistable + constants.siAnimatable + constants.siKeyable)
-	prop.AddParameter2("DivisionsU", constants.siInt4,6,1,100,1,100, constants.siClassifUnknown,constants.siPersistable + constants.siAnimatable + constants.siKeyable)
-	prop.AddParameter2("DivisionsV", constants.siInt4,6,1,100,1,100,constants.siClassifUnknown,constants.siPersistable + constants.siAnimatable + constants.siKeyable)
-	prop.AddParameter2("Side", constants.siInt4,0,0,2,0,2,constants.siClassifUnknown,constants.siPersistable + constants.siAnimatable + constants.siKeyable)
+	prop.AddParameter2(
+		"Width", constants.siFloat, 1, 0, 100, 0, 2,
+		constants.siClassifUnknown,constants.siPersistable + constants.siAnimatable + constants.siKeyable
+	)
+	prop.AddParameter2(
+		"Height", constants.siFloat, 1, 0, 100, 0, 2,
+		constants.siClassifUnknown,constants.siPersistable + constants.siAnimatable + constants.siKeyable
+	)
+	prop.AddParameter2(
+		"DivisionsU", constants.siInt4, 6, 1, 100, 1, 100,
+		constants.siClassifUnknown,constants.siPersistable + constants.siAnimatable + constants.siKeyable
+	)
+	prop.AddParameter2(
+		"DivisionsV", constants.siInt4, 6, 1, 100, 1, 100,
+		constants.siClassifUnknown,constants.siPersistable + constants.siAnimatable + constants.siKeyable
+	)
+	prop.AddParameter2(
+		"Side", constants.siInt4, 0, 0, 2, 0, 2,
+		constants.siClassifUnknown,constants.siPersistable + constants.siAnimatable + constants.siKeyable
+	)
 
-	prop.AddParameter2("Symmetrize", constants.siBool,False,False,True,False,True)
-	prop.AddParameter2("SelfSymmetrize", constants.siBool,False,False,True,False,True)
-	prop.AddParameter2("SymmetryAxis", constants.siInt4,0,0,2,0,2)
+	prop.AddParameter2("Symmetrize", constants.siBool, False, False, True, False, True)
+	prop.AddParameter2("SelfSymmetrize", constants.siBool, False, False, True, False, True)
+	prop.AddParameter2("SymmetryAxis", constants.siInt4, 0, 0, 2, 0, 2)
 	
-	prop.AddParameter2("SpringActive", constants.siBool,True,False,True,False,True,constants.siClassifUnknown,constants.siPersistable + constants.siAnimatable + constants.siKeyable)
-	prop.AddParameter2("SpringBlend", constants.siFloat,1,0,1,0,1,constants.siClassifUnknown,constants.siPersistable + constants.siAnimatable + constants.siKeyable)
+	prop.AddParameter2(
+		"SpringActive", constants.siBool, True, False, True, False, True,
+		constants.siClassifUnknown,constants.siPersistable + constants.siAnimatable + constants.siKeyable
+	)
+	prop.AddParameter2(
+		"SpringBlend", constants.siFloat, 1, 0, 1, 0, 1,
+		constants.siClassifUnknown,constants.siPersistable + constants.siAnimatable + constants.siKeyable
+	)
 	
 	prop.AddParameter2("Collide", constants.siBool, False, False, True)
 	prop.AddParameter2("Stick", constants.siBool, False, False, True)
@@ -1396,7 +1452,7 @@ def MuscleElement_RebuildLayout(ppg):
 
 def MuscleElement_GetGuideNode():
 	parent = PPG.Inspected(0).Parent3DObject
-	tree = tre.GetICETreeByName(parent, "Muscle_Guide")
+	tree = ICETree.GetICETreeByName(parent, "Muscle_Guide")
 	if tree:
 		node = tree.Nodes("Muscle Curve Guide")
 		return node
@@ -1443,7 +1499,7 @@ def RigElement_BuildRigControl_OnClicked():
 	ppg = model.Properties("RigBuilder")
 	
 	for n in range(nb):
-		type = PPG.Inspected(n).Parameters("ControlType").Value
+		_type = PPG.Inspected(n).Parameters("ControlType").Value
 		crv = PPG.Inspected(n).Parent3DObject
 		elem = crv.Properties("RigElement")
 		simple = True
@@ -1456,14 +1512,14 @@ def RigElement_BuildRigControl_OnClicked():
 		elif crv.Name[:2] == "R_":
 			side = RIGHT
 		
-		if type == CTRL_IK or type == CTRL_IKFK:
-			ctr.BuildIK2BonesRig(parent, crv, ppg)
-		if type == CTRL_FK or type == CTRL_IKFK:
-			ctr.BuildFKRig(parent, crv, ppg, side, simple)
-		if type == CTRL_SRT:
-			ctr.BuildSRTRig(parent, crv, ppg)
-		if type == CTRL_FOOTROLL:
-			ctr.BuildFootRollRig(parent, crv, ppg)
+		if _type == CTRL_IK or _type == CTRL_IKFK:
+			Control.BuildIK2BonesRig(parent, crv, ppg)
+		if _type == CTRL_FK or _type == CTRL_IKFK:
+			Control.BuildFKRig(parent, crv, ppg, side, simple)
+		if _type == CTRL_SRT:
+			Control.BuildSRTRig(parent, crv, ppg)
+		if _type == CTRL_FOOTROLL:
+			Control.BuildFootRollRig(parent, crv, ppg)
 
 
 def RigControl_OnInit():
@@ -1478,6 +1534,7 @@ def RigControl_ControlType_OnChanged():
 
 def getSelectedUIItem(prop, itemName):
 	return prop.Parameters(itemName).Value
+
 
 # -----------------------------------------------
 # GeometryElement Property
@@ -1504,4 +1561,4 @@ def GeometryElement_Define( in_ctxt ):
 	prop.AddParameter2("AnimationMode",constants.siBool,False,False,True,0,1)
 	'''
 	return True
-	
+

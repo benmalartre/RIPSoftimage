@@ -1,112 +1,102 @@
-# -------------------------------------------------------------------
-# Property
-# -------------------------------------------------------------------
-from win32com.client import constants as siConstants
+from win32com.client import constants
 from Globals import XSI
 from Globals import XSIFactory
-import Utils as uti
+import Utils
 
 
-# ----------------------------------------------------
-# Get Properties by Type
-# ----------------------------------------------------
-def GetProperties(prop_type, model=None):
-	filtered = XSIFactory.CreateActiveXObject("XSI.Collection")
-	props = XSI.FindObjects(None, "{76332571-D242-11d0-B69C-00AA003B3EA6}")
-	for p in props:
-		if p.Type == prop_type:
+def GetProperties(_type, model=None):
+	""" Get all custom properties of propType name under model (or scene)
+	:param str _type: property type name
+	:param Model model: SDK Model object
+	:return XSI.Collection: SDK PPG collection
+	"""
+	filtered = XSIFactory.CreateActiveXObject('XSI.Collection')
+	all_properties = XSI.FindObjects(None, '{76332571-D242-11d0-B69C-00AA003B3EA6}')
+	for _property in all_properties:
+		if _property.Type == _type:
 			if model:
-				if p.Parent3DObject.Model.IsEqualTo(model):
-					filtered.Add(p)
+				if _property.Parent3DObject.Model.IsEqualTo(model):
+					filtered.Add(_property)
 			else:
-				filtered.Add(p)
+				filtered.Add(_property)
 	return filtered
 
 
-# ----------------------------------------------------
-# Update ListItemsUI
-# ----------------------------------------------------
-def UpdateListItemsUI(item, param, uiitems):
-	# update UI list
-	item.UIItems = uiitems
-
-	# look for the previously selected value
-	old = param.Value
+def UpdateListItemsUI(item, param, elements):
+	""" Update list items
+	:param PPGItem item: SDK PPGItem object
+	:param Parameter param: SDK Parameter object
+	:param list elements: ui items list (label, value)
+	"""
+	item.UIItems = elements
+	old_value = param.Value
 	i = 0
-	for i in range(0, len(uiitems), 2):
-		if uiitems[i+1] == old:
+	for i in range(0, len(elements), 2):
+		if elements[i + 1] == old_value:
 			break
 
-	if i >= len(uiitems):
-		# not found, select first entry
-		newvalue = ""
-		if len(uiitems) > 0:
-			newvalue = uiitems[1]
-		if not param.Value == newvalue:
-			param.Value = newvalue
+	if i >= len(elements):
+		new_value = ''
+		if len(elements) > 0:
+			new_value = elements[1]
+		if not param.Value == new_value:
+			param.Value = new_value
 			return True
 
 	return False
 
 
-# ----------------------------------------------------
-# Build List WeightMaps
-# ----------------------------------------------------
-def BuildListWeightMaps(obj, prop, clsname):
+def BuildListWeightMaps(obj, clusterName):
+	""" Build weight maps list
+	:param X3DObject obj: SDK X3DObject
+	:param str clusterName: cluster name
+	:return list: weight maps list (name, value)
+	"""
 	geom = obj.ActivePrimitive.Geometry
-	list = []
-	cnt = 0
+	all_weight_maps = []
+	idx = 0
 	
-	if clsname:
-		cls = geom.Clusters(clsname)
-		if cls:
-			for w in cls.LocalProperties.Filter("wtmap"):
-				list.append(w.Name)
-				list.append(cnt)
-				cnt += 1
-			return list
+	if clusterName:
+		cluster = geom.Clusters(clusterName)
+		if cluster:
+			for weight_map in cluster.LocalProperties.Filter('wtmap'):
+				all_weight_maps.append(weight_map.Name)
+				all_weight_maps.append(idx)
+				idx += 1
+			return all_weight_maps
 			
-	# check all cluster for weightmap already exists
-	for cls in geom.Clusters.Filter("pnt"):
-		for w in cls.LocalProperties.Filter("wtmap"):
-				list.append(w.Name)
-				list.append(cnt)
-				cnt += 1
+	# check all cluster for weight map already exists
+	for cluster in geom.Clusters.Filter('pnt'):
+		for weight_map in cluster.LocalProperties.Filter('wtmap'):
+			all_weight_maps.append(weight_map.Name)
+			all_weight_maps.append(idx)
+			idx += 1
 	
-	return list	
+	return all_weight_maps
 
 
-# ----------------------------------------------------
-# Get Logo
-# ----------------------------------------------------
 def GetLogo(prop):
-	itemName = "ClothLogo"
-	path = "E:\\Projects\\RnD\\bWorkgroup\\Application\\Plugins\\Cloth\\Icons\\Cloth.bmp"
+	name = 'ClothLogo'
+	path = 'E:\\Projects\\RnD\\bWorkgroup\\Application\\Plugins\\Cloth\\Icons\\Cloth.bmp'
 	layout = prop.PPGLayout
-	item = layout.AddItem(itemName, itemName, siConstants.siControlBitmap)
-	item.SetAttribute(siConstants.siUIFilePath, path)
-	item.SetAttribute(siConstants.siUINoLabel, True)
+	item = layout.AddItem(name, name, constants.siControlBitmap)
+	item.SetAttribute(constants.siUIFilePath, path)
+	item.SetAttribute(constants.siUINoLabel, True)
 
 
-# ----------------------------------------------------
-# Find Model Owner of this PPG
-# ----------------------------------------------------
 def FindPPGModel(prop):
 	obj = prop.Parent3DObject
-	if obj.Type == "#model":
+	if obj.Type == '#model':
 		model = obj
 	else:
 		model = obj.Model
 	return model
 
 
-# ----------------------------------------------------
-# Find Child From Parameter Value
-# ----------------------------------------------------
 def FindChildFromParameterValue(prop, param):
 	value = prop.Parameters(param).Value
 	if not value:
-		XSI.LogMessage("[FindChildFromParameterValue] : Parameter " + param + " is Empty... Sorry!")
+		XSI.LogMessage('[FindChildFromParameterValue] Parameter "{}" is empty !'.format(param))
 		return None
 	
 	model = FindPPGModel(prop)
@@ -115,226 +105,168 @@ def FindChildFromParameterValue(prop, param):
 	return out
 
 
-# ----------------------------------------------------
-# Find Property From Parameter Value
-# ----------------------------------------------------
 def FindPropertyFromParameterValue(prop, param, parent):
 	value = prop.Parameters(param).Value
 	if not value:
-		XSI.LogMessage("[FindPropertyFromParameterValue] : Parameter " + param + " is Empty... Skipped!")
+		XSI.LogMessage('[FindPropertyFromParameterValue] Parameter "{}" is empty !'.format(param))
 		return None
 	
 	out = parent.Properties(value)
 	return out
 
 
-# ----------------------------------------------------
-# Find Cluster From Parameter Value
-# ----------------------------------------------------
 def FindClusterFromParameterValue(prop, obj, param):
-	cls = obj.ActivePrimitive.Geometry.Clusters
+	all_clusters = obj.ActivePrimitive.Geometry.Clusters
 	value = prop.Parameters(param).Value
 	if not value:
 		return None
 		
-	for c in cls:
-		if c.Name == value:
-			return c
+	for cluster in all_clusters:
+		if cluster.Name == value:
+			return cluster
 	return None
 
 
-# ----------------------------------------------------
-# Get Object From Selected UIItem
-# ----------------------------------------------------
-def GetObjectFromStringParameter(prop, inname):
-	clsname = prop.Parameters(inname).Value
-	cls = None
+def GetObjectFromStringParameter(prop, name):
+	cluster_name = prop.Parameters(name).Value
+	cluster = None
 	
-	if clsname == "":
-		return cls
+	if cluster_name == '':
+		return cluster
 	try:
-		cls = XSI.Dictionary.GetObject(clsname)
-		return cls
-	except:
+		cluster = XSI.Dictionary.GetObject(cluster_name)
+		return cluster
+	except RuntimeError:
 		return None
 
 
-# ----------------------------------------------------
-# Get Object From Selected UIItem
-# ----------------------------------------------------
-def GetObjectFromSelectedUIItem(prop, inname):
+def GetObjectFromSelectedUIItem(prop, name):
 	obj = prop.Parent3DObject
-	if obj.Type == "#model":
+	if obj.Type == '#model':
 		model = obj
 	else:
 		model = obj.Model
-	_list = prop.Parameters(inname+"List").Value
-	if _list == "":
+	_list = prop.Parameters('{}List'.format(name)).Value
+	if _list == '':
 		return None
 		
-	selected = prop.Parameters(inname+"Chooser").Value
+	selected = prop.Parameters('{}Chooser'.format(name)).Value
 	if selected:
-		split = _list.split("|")
+		split = _list.split('|')
 		split.pop()
-		
-		out = None
 		try:
-			out = model.FindChild(selected)
-		except:
-			XSI.LogMessage("[Property] Can't find Object " + selected + " : Remove it from list...", siConstants.siWarning)
-		return out
+			return model.FindChild(selected)
+		except RuntimeError:
+			XSI.LogMessage('[Property] Can\'t find Object "{}" !', constants.siWarning)
+
 	return None
 
 
-# ----------------------------------------------------
-# Get ID From Selected UIItem
-# ----------------------------------------------------
-def GetIDFromSelectedUIItem(prop, inname):
-	idx = prop.Parameters(inname+"List").Value + 1
+def GetIDFromSelectedUIItem(prop, name):
+	idx = prop.Parameters('{}List'.format(name)).Value + 1
 	return idx
 
 
-# ----------------------------------------------------
-# Build List From Tab String
-# ----------------------------------------------------
 def BuildListFromTabString(names):
-	split = names.split("|")
-	out = []
+	tokens = names.split('|')
+	result = []
 
-	for idx, item in enumerate(split):
-		if item:
-			out.append(item)
-			out.append(idx)
-	return out
+	for idx, token in enumerate(tokens):
+		if token:
+			result.append(token)
+			result.append(idx)
+	return result
 	
 
-# ----------------------------------------------------
-# Add Object List
-# ----------------------------------------------------
-def AddObjectList(prop, inname):
+def AddObjectList(prop, name):
 	layout = prop.PPGLayout
-	layout.AddGroup(inname)
-	sList = prop.Parameters(inname).Value
-	aList = BuildListFromTabString(sList)
+	layout.AddGroup(name)
+	value = prop.Parameters(name).Value
+	elements = BuildListFromTabString(value)
 	
-	item = layout.AddEnumControl(inname+"List", aList, "", siConstants.siControlListBox)
-	item.SetAttribute(siConstants.siUINoLabel, True)
+	item = layout.AddEnumControl('{}List'.format(name), elements, '', constants.siControlListBox)
+	item.SetAttribute(constants.siUINoLabel, True)
 
-	item.UIItems = aList
+	item.UIItems = elements
 	layout.AddRow()
-	layout.AddButton("Add"+inname, "Add")
-	layout.AddButton("Remove"+inname, "Remove")
+	layout.AddButton('Add{}'.format(name), 'Add')
+	layout.AddButton('Remove{}'.format(name), 'Remove')
 	layout.EndRow()
 	layout.EndGroup()
 
 
-# ----------------------------------------------------
-# Add Object To List
-# ----------------------------------------------------
-def AddObjectToList(prop, inname, message):
-	XSI.LogMessage("Add Object To List Called...")
-	
+def AddObjectToList(prop, name, message):
 	obj = prop.Parent3DObject
 	model = obj.Model
 	
-	pick = uti.PickElement(siConstants.siPolyMeshFilter, message)
+	pick = Utils.PickElement(constants.siPolyMeshFilter, message)
 	if pick:
 		if not pick.Model.FullName == model.FullName:
-			XSI.LogMessage("Picked Object MUST be in same Model as Reference Object", siConstants.siWarning)
+			XSI.LogMessage(
+				'Picked Object must be under same model as reference object',
+				constants.siWarning
+			)
 			return
 			
-		if not CheckObjectAlreadyInList(prop, inname, pick.Name):
-			prop.Parameters(inname).Value = prop.Parameters(inname).Value + pick.Name+"|"
+		if not CheckObjectAlreadyInList(prop, name, pick.Name):
+			prop.Parameters(name).Value = '{}{}|'.format(prop.Parameters(name).Value, pick.Name)
 	
 		else:
-			XSI.Logmessage(prop.Name + " : " + pick.Name + " already in list ---> skipped...")
+			XSI.Logmessage('{} : {} already in list !'.format((prop.Name, pick.Name)))
 
 
-# ----------------------------------------------------
-# Check Object Already In List
-# ----------------------------------------------------
-def CheckObjectAlreadyInList(prop, inParamName, inName):
-	names = prop.Parameters(inParamName).Value
-	if names == "":
-		return False
-	
-	split = names.split("|")
-	for s in split:
-		if s == inName:
-			return True
-	return False
+def CheckObjectAlreadyInList(prop, parameter, name):
+	tokens = prop.Parameters(parameter).Value.split("|")
+	return name in tokens
 
 
-# ----------------------------------------------------
-# Remove Object Already From List
-# ----------------------------------------------------
-def RemoveObjectFromList(prop, inname):
-	idx = prop.Parameters(inname+"List").Value
-	sin = prop.Parameters(inname).Value
-	
-	split = sin.split("|")
-	split.pop()
-	keep = [s for i, s in enumerate(split) if not i == idx]
-	sout = "|".join(keep)
-
-	prop.Parameters(inname).Value = sout
-	prop.Parameters(inname+"List").Value = 0
+def RemoveObjectFromList(prop, name):
+	idx = prop.Parameters('{}List'.format(name)).Value
+	tokens = prop.Parameters(name).Value.split('|')
+	del tokens[idx]
+	prop.Parameters(name).Value = '|'.join(tokens)
+	prop.Parameters('{}List'.format(name)).Value = 0
 
 
-# ----------------------------------------------------
-# Check Parameter Exist
-# ----------------------------------------------------
-def CheckParameterExist(prop, paramname, paramtype, mode):
-	if not prop.Parameters(paramname) and mode == 1:
-		item = prop.AddParameter3(paramname, paramtype)
+def CheckParameterExist(prop, paramName, paramType, mode):
+	if not prop.Parameters(paramName) and mode == 1:
+		item = prop.AddParameter3(paramName, paramType)
 		item.Animatable = False
 
-	elif prop.Parameters(paramname) and not mode:
-		prop.RemoveParameter(prop.Parameters(paramname))
+	elif prop.Parameters(paramName) and not mode:
+		prop.RemoveParameter(prop.Parameters(paramName))
 
 
-# ----------------------------------------------------
-# Get Nb Objects in List
-# ----------------------------------------------------
-def GetNbObjectsInList(prop, listname):
-	v = prop.Parameters(listname).Value
-	if not v:
-		return 0
-	split = v.split("|")
-	split.pop()
-	return len(split)
+def GetNbObjectsInList(prop, name):
+	value = prop.Parameters(name).Value
+	return value.count('|') + 1 if value else 0
 
 
-# ----------------------------------------------------
-# Add Collider Object
-# ----------------------------------------------------
 def AddColliderObject(prop):
-	nb = GetNbObjectsInList(prop, "ColliderMeshes")
-	idx = str(nb)
-	pntcls = "CollidePointCluster"+idx
-	polycls = "ColliderPolygonCluster"+idx
+	num_colliders = GetNbObjectsInList(prop, 'ColliderMeshes')
+	idx = str(num_colliders)
+	pnt_cluster = 'CollidePointCluster{}'.format(idx)
+	poly_cluster = 'ColliderPolygonCluster{}'.format(idx)
 	
-	CheckParameterExist(prop, pntcls, siConstants.siString, 1)
-	CheckParameterExist(prop, polycls, siConstants.siString, 1)
+	CheckParameterExist(prop, pnt_cluster, constants.siString, 1)
+	CheckParameterExist(prop, poly_cluster, constants.siString, 1)
 
 
-# ----------------------------------------------------
-# Remove Collider Object
-# ----------------------------------------------------
 def RemoveColliderObject(prop):
-	nb = GetNbObjectsInList(prop, "ColliderMeshes")
-	idx = prop.Parameters("ColliderMeshesList").Value+1
+	num_colliders = GetNbObjectsInList(prop, 'ColliderMeshes')
+	idx = prop.Parameters('ColliderMeshesList').Value+1
 
-	if idx < nb:
-		# transfer infos from next collider if any
-		for i in xrange(idx, nb):
-			prop.Parameters("CollidePointCluster"+str(i)).Value = prop.Parameters("CollidePointCluster"+str(i+1)).Value
-			prop.Parameters("ColliderPolygonCluster"+str(i)).Value = prop.Parameters("ColliderPolygonCluster"+str(i+1)).Value
+	if idx < num_colliders:
+		for i in xrange(idx, num_colliders):
+			prop.Parameters('CollidePointCluster{}'.format(i)).Value = \
+				prop.Parameters('CollidePointCluster{}'.format(i+1)).Value
+			prop.Parameters('ColliderPolygonCluster{}'.format(i)).Value = \
+				prop.Parameters('ColliderPolygonCluster{}'.format(i+1)).Value
 		
-	pntcls = "CollidePointCluster"+str(nb)
-	polycls = "ColliderPolygonCluster"+str(nb)
+	pnt_cluster = 'CollidePointCluster{}'.format(num_colliders)
+	poly_cluster = 'ColliderPolygonCluster{}'.format(num_colliders)
 	
-	CheckParameterExist(prop, pntcls, siConstants.siString, 0)
-	CheckParameterExist(prop, polycls, siConstants.siString, 0)
+	CheckParameterExist(prop, pnt_cluster, constants.siString, 0)
+	CheckParameterExist(prop, poly_cluster, constants.siString, 0)
 
 

@@ -7,34 +7,34 @@
 #include "SynthoxInstruments.h"
 
 // STK Instrument Classes
-#include "Clarinet.h"			//0
-#include "BlowHole.h"			//1
-#include "Saxofony.h"			//2
-#include "Flute.h"				//3
-#include "Brass.h"				//4
-#include "BlowBotl.h"			//5
-#include "Bowed.h"				//6
-#include "Plucked.h"			//7
-#include "StifKarp.h"			//8
-#include "Sitar.h"				//9
-#include "Mandolin.h"			//10
-#include "Rhodey.h"				//11
-#include "Wurley.h"				//12
-#include "TubeBell.h"			//13
-#include "HevyMetl.h"			//14
-#include "PercFlut.h"			//15
-#include "BeeThree.h"			//16
-#include "FMVoices.h"			//17
-#include "VoicForm.h"			//18
-#include "Moog.h"				//19
-#include "Simple.h"				//20
-#include "Drummer.h"			//21	
-#include "BandedWG.h"			//22
-#include "Shakers.h"			//23
-#include "ModalBar.h"			//24
-#include "Mesh2D.h"				//25
-#include "Resonate.h"			//26
-#include "Whistle.h"			//27
+#include "Clarinet.h"     //0
+#include "BlowHole.h"     //1
+#include "Saxofony.h"     //2
+#include "Flute.h"        //3
+#include "Brass.h"        //4
+#include "BlowBotl.h"     //5
+#include "Bowed.h"        //6
+#include "Plucked.h"      //7
+#include "StifKarp.h"     //8
+#include "Sitar.h"        //9
+#include "Mandolin.h"     //10
+#include "Rhodey.h"       //11
+#include "Wurley.h"       //12
+#include "TubeBell.h"     //13
+#include "HevyMetl.h"     //14
+#include "PercFlut.h"     //15
+#include "BeeThree.h"     //16
+#include "FMVoices.h"     //17
+#include "VoicForm.h"     //18
+#include "Moog.h"         //19
+#include "Simple.h"       //20
+#include "Drummer.h"      //21
+#include "BandedWG.h"     //22
+#include "Shakers.h"      //23
+#include "ModalBar.h"     //24
+#include "Mesh2D.h"       //25
+#include "Resonate.h"     //26
+#include "Whistle.h"      //27
 
 #include <xsi_application.h>
 
@@ -54,46 +54,46 @@ char insts[NUM_INSTS][10] = { "Clarinet", "BlowHole", "Saxofony", "Flute", "Bras
 
 Instrmnt* voiceByNumber3(int number)
 {
-	Instrmnt *instrument;
+  Instrmnt *instrument;
 
-	if     (number==0)  instrument = new Clarinet(10.0);
-	else if (number==1)  instrument = new BlowHole(10.0);
-	else if (number==2)  instrument = new Saxofony(10.0);
-	else if (number==3)  instrument = new Flute(10.0);
-	else if (number==4)  instrument = new Brass(10.0);
-	else if (number==5)  instrument = new BlowBotl();
-	else if (number==6)  instrument = new Bowed(10.0);
-	else if (number==7)  instrument = new Plucked(5.0);
-	else if (number==8)  instrument = new StifKarp(5.0);
-	else if (number==9)  instrument = new Sitar(5.0);
-	else if (number==10) instrument = new Mandolin(5.0);
+  if     (number==0)  instrument = new Clarinet(10.0);
+  else if (number==1)  instrument = new BlowHole(10.0);
+  else if (number==2)  instrument = new Saxofony(10.0);
+  else if (number==3)  instrument = new Flute(10.0);
+  else if (number==4)  instrument = new Brass(10.0);
+  else if (number==5)  instrument = new BlowBotl();
+  else if (number==6)  instrument = new Bowed(10.0);
+  else if (number==7)  instrument = new Plucked(5.0);
+  else if (number==8)  instrument = new StifKarp(5.0);
+  else if (number==9)  instrument = new Sitar(5.0);
+  else if (number==10) instrument = new Mandolin(5.0);
 
-	else if (number==11) instrument = new Rhodey;
-	else if (number==12) instrument = new Wurley;
-	else if (number==13) instrument = new TubeBell;
-	else if (number==14) instrument = new HevyMetl();
-	else if (number==15) instrument = new PercFlut();
-	else if (number==16) instrument = new BeeThree;
-	else if (number==17) instrument = new FMVoices;
+  else if (number==11) instrument = new Rhodey;
+  else if (number==12) instrument = new Wurley;
+  else if (number==13) instrument = new TubeBell;
+  else if (number==14) instrument = new HevyMetl();
+  else if (number==15) instrument = new PercFlut();
+  else if (number==16) instrument = new BeeThree;
+  else if (number==17) instrument = new FMVoices;
 
-	else if (number==18) instrument = new VoicForm();
-	else if (number==19) instrument = new Moog();
-	else if (number==20) instrument = new Simple();
-	else if (number==21) instrument = new Drummer();
-	else if (number==22) instrument = new BandedWG();
-	else if (number==23) instrument = new Shakers();
-	else if (number==24) instrument = new ModalBar();
-	else if (number==25) instrument = new Mesh2D(10, 10);
-	else if (number==26) instrument = new Resonate();
-	else if (number==27) instrument = new Whistle();
+  else if (number==18) instrument = new VoicForm();
+  else if (number==19) instrument = new Moog();
+  else if (number==20) instrument = new Simple();
+  else if (number==21) instrument = new Drummer();
+  else if (number==22) instrument = new BandedWG();
+  else if (number==23) instrument = new Shakers();
+  else if (number==24) instrument = new ModalBar();
+  else if (number==25) instrument = new Mesh2D(10, 10);
+  else if (number==26) instrument = new Resonate();
+  else if (number==27) instrument = new Whistle();
 
-	else 
-	{
-		Application().LogMessage(L"\nUnknown instrument requested!\n");
-		instrument = NULL;
-	}
+  else 
+  {
+    Application().LogMessage(L"\nUnknown instrument requested!\n");
+    instrument = NULL;
+  }
 
-	return instrument;
+  return instrument;
 }
 
 int voiceByNumber2(int number, Instrmnt* instrument)

@@ -157,7 +157,7 @@ def Cloth_Rigger_AddDriverTab(prop):
 def Cloth_Rigger_AddWeightMapTab(prop):
 	obj = prop.Parent3DObject
 	layout = prop.PPGLayout
-	all_items = Property.BuildListWeightMaps(obj, prop, 'FurMaps')
+	all_items = Property.BuildListWeightMaps(obj, 'FurMaps')
 	
 	layout.AddGroup('WeightMaps')
 	if len(all_items) == 0:
