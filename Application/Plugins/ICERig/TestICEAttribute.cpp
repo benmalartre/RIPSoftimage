@@ -7,6 +7,6 @@ using namespace XSI;
 
 void Test(X3DObject& obj)
 {
-	Geometry geom = obj.GetActivePrimitive().GetGeometry();
-	//ICEAttribute attr = geom.GetICEAttributes()
+  Geometry geom = obj.GetActivePrimitive().GetGeometry();
+  //ICEAttribute attr = geom.GetICEAttributes()
 }
