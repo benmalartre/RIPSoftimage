@@ -77,7 +77,7 @@ static void U2XRandomColor(pxr::VtArray<pxr::GfVec3f>& ioColors)
       (float)rand() / (float)RAND_MAX);
 }
 
-static double U2XGetBoundingBoxComponent(const pxr::GfBBox3d& bbox, U2XBoundingBoxComponent comp)
+static double U2XGetBoundingBoxComponent(const pxr::GfBBox3d& bbox, short comp)
 {
   switch (comp)
   {

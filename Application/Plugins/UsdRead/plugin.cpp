@@ -27,15 +27,30 @@
 #include "stage.h"
 #include "scene.h"
 #include "window.h"
+#include "callback.h"
 
 
 using namespace XSI::MATH; 
 using namespace XSI; 
 
-#define LOG(msg) Application().LogMessage((msg));
-
 bool GL_EXTENSIONS_LOADED;
 U2XGLSLProgram* GLSL_PROGRAM;
+
+static void _InitializeGL()
+{
+  GarchGLApiLoad();
+  GL_EXTENSIONS_LOADED = true;
+
+  GLSL_PROGRAM = new U2XGLSLProgram();
+  GLSL_PROGRAM->Build("Simple", VERTEX_SHADER, FRAGMENT_SHADER);
+  GLuint pgm = GLSL_PROGRAM->Get();
+  // bind shader program
+  glUseProgram(pgm);
+  glBindAttribLocation(pgm, CHANNEL_POSITION, "position");
+  glBindAttribLocation(pgm, CHANNEL_NORMAL, "normal");
+  glBindAttribLocation(pgm, CHANNEL_COLOR, "color");
+  glLinkProgram(pgm);
+}
 
 SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
 {
@@ -51,11 +66,13 @@ SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
   in_reg.RegisterEvent("UsdReadTimeChange", siOnTimeChange);
 
   in_reg.RegisterCustomDisplay(L"UsdExplorer");
+  in_reg.RegisterDisplayCallback( L"UsdHydraDisplayCallback" );
 
   GL_EXTENSIONS_LOADED = false;
   U2X_HIDDEN_WINDOW = NULL;
-
+  _InitializeGL();
   UsdStageCacheContext context(U2X_USDSTAGE_CACHE);
+
   return CStatus::OK;
 }
 
@@ -232,6 +249,12 @@ SICALLBACK UsdPrimitive_Draw( CRef& in_ctxt )
   GLint currentDepthTest;
   GLint currentDepthFunc;
 
+  glGetIntegerv(GL_CURRENT_PROGRAM, &currentPgm);
+  glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &currentVao);
+  glGetIntegerv(GL_DEPTH_TEST, &currentDepthTest);
+  glGetIntegerv(GL_DEPTH_FUNC, &currentDepthFunc);
+
+  /*
   if (!GL_EXTENSIONS_LOADED) {
     GarchGLApiLoad();
     GL_EXTENSIONS_LOADED = true;
@@ -257,6 +280,7 @@ SICALLBACK UsdPrimitive_Draw( CRef& in_ctxt )
     glGetIntegerv(GL_DEPTH_TEST, &currentDepthTest);
     glGetIntegerv(GL_DEPTH_FUNC, &currentDepthFunc);
   }
+  */
 
   if (stage->IsLoaded())
   {

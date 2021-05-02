@@ -4,6 +4,7 @@ add_definitions(
   -DTASKING_TBB
   -DNOMINMAX
   -DIMGUI_IMPL_OPENGL_LOADER_CUSTOM="${USD_INCLUDE_DIR}/pxr/imaging/garch/glApi.h"
+  -DUSDHYDRACALLBACK_EXPORTS
 )
 
 add_library(${TARGET} SHARED
@@ -19,6 +20,7 @@ add_library(${TARGET} SHARED
   mesh.cpp
   plugin.cpp
   prim.cpp
+  xform.cpp
   scene.cpp
   shader.cpp
   stage.cpp
@@ -27,7 +29,9 @@ add_library(${TARGET} SHARED
   vertexArray.cpp
   vertexBuffer.cpp
   window.cpp
-  xform.cpp
+  engine.cpp
+  callback.cpp
+  
 )
 
 target_include_directories(${TARGET} 
