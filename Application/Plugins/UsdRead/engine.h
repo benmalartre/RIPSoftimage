@@ -6,7 +6,6 @@
 #include <pxr/imaging/hd/driver.h>
 #include <pxr/usdImaging/usdImagingGL/engine.h>
 #include <pxr/usdImaging/usdImagingGL/renderParams.h>
-#include <pxr/imaging/glf/drawTarget.h>
 
 #include "pxr/base/tf/token.h"
 #include "pxr/base/tf/errorMark.h"
@@ -36,8 +35,6 @@ private:
   pxr::UsdImagingGLRenderParams     _renderParams;
   pxr::UsdPrim                      _root;
   //pxr::UsdLuxDomeLight              _light;
-  pxr::GlfDrawTargetRefPtr          _drawTarget;
-
 };
 
 

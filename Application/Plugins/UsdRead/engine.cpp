@@ -24,6 +24,7 @@ _GetUsdImagingDelegateId()
   return delegateId;
 }
 
+/*
 void _InitGL()
 {
   static std::once_flag initFlag;
@@ -41,7 +42,7 @@ void _InitGL()
 
   });
 }
-
+*/
 U2XEngine::U2XEngine(const pxr::HdDriver& driver)
   : U2XEngine(pxr::SdfPath::AbsoluteRootPath(),
     {},
@@ -67,7 +68,7 @@ U2XEngine::U2XEngine(
 {
   LOG("U2XENGINE CONSTRUCTOR CALLED!!!");
   
-  _InitGL();
+  //_InitGL();
 
   if (IsHydraEnabled()) {
 

@@ -1,13 +1,3 @@
-//***************************************************************************************
-//
-// File supervisor: Dominic Laflamme
-//
-//	Copyright 2008 Autodesk, Inc.  All rights reserved.  
-//	Use of this software is subject to the terms of the Autodesk license agreement 
-//	provided at the time of installation or download, or which otherwise accompanies 
-//	this software in either electronic or hard copy form.   
-//***************************************************************************************
-
 #include <assert.h>
 #include <xsi_decl.h>
 #include <xsi_status.h>
@@ -18,12 +8,14 @@
 #include "utils.h"
 #include "callback.h"
 #include "engine.h"
+#include "scene.h"
 
 #include <GL/gl.h>
 
 U2XEngine* HYDRA_ENGINE = NULL;
 
 pxr::UsdStageRefPtr HYDRA_STAGE;
+extern U2XPrimitiveManager U2X_PRIMITIVES;
 
 
 static void _InitializeHydraEngine() {
@@ -31,9 +23,10 @@ static void _InitializeHydraEngine() {
     pxr::SdfPathVector excludedPaths;
     HYDRA_ENGINE = new U2XEngine(pxr::SdfPath("/"), excludedPaths);
     
+    
     pxr::GlfSimpleMaterial material;
     pxr::GlfSimpleLight light;
-    light.SetAmbient(pxr::GfVec4f(0.25, 0.25, 0.25, 1));
+    light.SetAmbient(pxr::GfVec4f(0.25, 0.25, 0.25, 1.0));
     light.SetPosition(pxr::GfVec4f(24, 32, 8, 1));
     pxr::GlfSimpleLightVector lights;
     lights.push_back(light);
@@ -43,6 +36,7 @@ static void _InitializeHydraEngine() {
     HYDRA_ENGINE->SetLightingState(lights,
       material,
       pxr::GfVec4f(0.5, 0.5, 0.5, 1.0));
+    
   }
 }
 
@@ -72,12 +66,11 @@ static pxr::GfMatrix4d _GetProjectionMatrix(const Camera& camera)
     float(prim.GetParameterValue(L"projplanewidth", time)) * 2.54f);
   */
 
-  double m_invf = 1.0 / std::tan(pxr::GfDegreesToRadians(fov) * 0.5);
-  znear = pxr::GfMax(znear, 0.000001);
+  double m_invf = 1.0 / std::tan(pxr::GfDegreesToRadians(fov) *0.5f);
   pxr::GfMatrix4d projectionMatrix(1.0);
 
-  projectionMatrix[0][0] = m_invf / aspect;
-  projectionMatrix[1][1] = m_invf;
+  projectionMatrix[0][0] = m_invf;// / aspect;
+  projectionMatrix[1][1] = m_invf * aspect;
   projectionMatrix[2][2] = (zfar + znear) / (znear - zfar);
   projectionMatrix[3][2] = (2 * zfar * znear) / (znear - zfar);
   projectionMatrix[2][3] = -1;
@@ -102,8 +95,8 @@ void UsdHydraDisplayCallback_Init( XSI::CRef sequencerContext, LPVOID *userData 
   _InitializeHydraEngine();
 
   //HYDRA_STAGE = pxr::UsdStage::Open("C:/Users/graph/Documents/bmal/src/USD_ASSETS/Kitchen_set/Kitchen_set.usd");
-  HYDRA_STAGE = pxr::UsdStage::Open("C:\\Users\\graph\\Documents\\bmal\\src\\USD_ASSETS\\Attic_NVIDIA\\Attic_NVIDIA.usd");
-
+  //HYDRA_STAGE = pxr::UsdStage::Open("C:\\Users\\graph\\Documents\\bmal\\src\\USD_ASSETS\\Attic_NVIDIA\\Attic_NVIDIA.usd");
+  //HYDRA_STAGE = pxr::UsdStage::Open("C:\\Users\\graph\\Documents\\bmal\\src\\USD_ASSETS\\Attic_NVIDIA\\Props\\tv.usd");
 }
 
 void UsdHydraDisplayCallback_Execute( XSI::CRef sequencerContext, LPVOID *userData )
@@ -119,13 +112,14 @@ void UsdHydraDisplayCallback_Execute( XSI::CRef sequencerContext, LPVOID *userDa
   assert(graphicSequencerContext.IsValid());
   XSI::CGraphicSequencer sequencer = graphicSequencerContext.GetGraphicSequencer();
 
-  UINT startX, startY, width, height;
-  sequencer.GetViewportSize(startX, startY, width, height);
+  UINT x, y, width, height;
+  sequencer.GetViewportSize(x, y, width, height);
   double aspectRatio = (double)width / (double)height;
 
   CRef cameraRef = sequencer.GetCamera();
   Camera camera(cameraRef);
 
+  /*
   pxr::GfVec2i renderResolution(width, height);
   pxr::GlfDrawTargetRefPtr drawTarget = pxr::GlfDrawTarget::New(renderResolution);
   drawTarget->Bind();
@@ -143,13 +137,15 @@ void UsdHydraDisplayCallback_Execute( XSI::CRef sequencerContext, LPVOID *userDa
       static_cast<double>(width),
       static_cast<double>(height))
   );
-  /*_engine->SetRenderViewport(
-    pxr::GfVec4f(x, y, w , h)
-  );*/
+  */
 
   HYDRA_ENGINE->SetCameraState(
     _GetViewMatrix(camera),
     _GetProjectionMatrix(camera)
+  );
+
+  HYDRA_ENGINE->SetRenderViewport(
+    pxr::GfVec4f(x, y, width, height)
   );
 
   pxr::UsdImagingGLRenderParams renderParams;
@@ -175,8 +171,9 @@ void UsdHydraDisplayCallback_Execute( XSI::CRef sequencerContext, LPVOID *userDa
   glClearColor(0.25f, 0.25f, 0.25f, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  HYDRA_ENGINE->Render(HYDRA_STAGE->GetPseudoRoot(), renderParams);
-  drawTarget->Unbind();
+  for (const auto& stage : U2X_PRIMITIVES.stages) {
+    HYDRA_ENGINE->Render(stage.second->Get()->GetPseudoRoot(), renderParams);
+  }
 
   glDisable(GL_DEPTH_TEST);
   /*

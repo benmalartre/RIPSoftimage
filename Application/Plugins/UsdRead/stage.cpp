@@ -57,7 +57,7 @@ U2XStage::~U2XStage()
 
 bool U2XStage::HasFilename(const CString& filename, size_t index)
 {
-  if (_rawFilenames.size() == 0 | index >= _rawFilenames.size()) return false;
+  if (!_rawFilenames.size() || index >= _rawFilenames.size()) return false;
   else return (_rawFilenames[index] == filename);
 }
 
@@ -81,6 +81,7 @@ void U2XStage::Reload()
 {
   _isLoaded = false;
   Clear();
+  /*
   _rootLayer = pxr::SdfLayer::CreateAnonymous("U2XStage" + std::to_string(U2X_STAGE_ID));
   //_editLayer = pxr::SdfLayer::CreateAnonymous("U2XStage" + std::to_string(U2X_STAGE_ID) +"_EDIT");
   U2X_STAGE_ID++;
@@ -99,6 +100,8 @@ void U2XStage::Reload()
 
   //pxr::SdfLayerRefPtr rootLayer = pxr::SdfLayer::FindOrOpen(_filename);
   //_stage = pxr::UsdStage::Open(rootLayer);
+  */
+  _rootLayer = pxr::SdfLayer::FindOrOpen(_filenames[0]);
   _stage = pxr::UsdStage::Open(_rootLayer->GetIdentifier());
   _stage->SetEditTarget(_rootLayer);
 

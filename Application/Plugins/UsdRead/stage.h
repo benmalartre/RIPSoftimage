@@ -48,6 +48,7 @@ public:
   bool HasFilename(const XSI::CString& filename, size_t index);
   void SetFilenames(const XSI::CStringArray& filenames);
   void SetTime(double time, bool forceUpdate);
+  SdfLayerRefPtr GetRootLayer() { return _rootLayer; };
   void Reload();
   void Clear();
   void ComputeBoundingBox(const pxr::UsdTimeCode& timeCode);

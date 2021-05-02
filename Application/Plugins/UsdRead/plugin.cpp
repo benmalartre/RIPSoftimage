@@ -58,6 +58,8 @@ SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
   in_reg.PutName(L"UsdRead");
   in_reg.PutVersion(1,0);
   in_reg.RegisterPrimitive(L"UsdPrimitive");
+  in_reg.RegisterProperty(L"UsdPrimitive");
+
   in_reg.RegisterEvent("UsdReadValueChange", siOnValueChange);
   in_reg.RegisterEvent("UsdReadObjectAdded", siOnObjectAdded);
   in_reg.RegisterEvent("UsdReadObjectRemoved", siOnObjectRemoved);
@@ -83,24 +85,25 @@ SICALLBACK XSIUnloadPlugin( const PluginRegistrar& in_reg )
   CString strPluginName;
   strPluginName = in_reg.GetName();
   GarchGLApiUnload();
-  Application().LogMessage(strPluginName + L" has been unloaded.",siVerboseMsg);
+  Application().LogMessage(strPluginName + L" has been unloaded.", siVerboseMsg);
   return CStatus::OK;
 }
 
 SICALLBACK UsdPrimitive_Define( CRef& in_ctxt )
 {
   Context ctxt( in_ctxt );
-  CustomPrimitive oCustomPrimitive;
-  Parameter oParam;
-  CRef oPDef;
-  Factory oFactory = Application().GetFactory();
-  oCustomPrimitive = ctxt.GetSource();
-  oPDef = oFactory.CreateParamDef(L"Filename",CValue::siString,L"");
-  oCustomPrimitive.AddParameter(oPDef,oParam);
-  oPDef = oFactory.CreateParamDef(L"Time", CValue::siDouble, 1.0);
-  oCustomPrimitive.AddParameter(oPDef, oParam);
-  oPDef = oFactory.CreateParamDef(L"Update", CValue::siBool, false);
-  oCustomPrimitive.AddParameter(oPDef, oParam);
+  CustomPrimitive prim;
+  Parameter param;
+  CRef ref;
+  Factory factory = Application().GetFactory();
+  prim = ctxt.GetSource();
+  ref = factory.CreateParamDef(L"Filename", CValue::siString, L"");
+  prim.AddParameter(ref, param);
+  ref = factory.CreateParamDef(L"Time", CValue::siDouble, 1.0);
+  prim.AddParameter(ref, param);
+  ref = factory.CreateParamDef(L"Update", CValue::siBool, false);
+  prim.AddParameter(ref, param);
+
 
   return CStatus::OK;
 }
@@ -110,12 +113,13 @@ SICALLBACK UsdPrimitive_Define( CRef& in_ctxt )
 SICALLBACK UsdPrimitive_DefineLayout( CRef& in_ctxt )
 {
   Context ctxt( in_ctxt );
-  PPGLayout oLayout;
-  PPGItem oItem;
-  oLayout = ctxt.GetSource();
-  oLayout.Clear();
-  oLayout.AddItem(L"Filename");
-  oLayout.AddItem(L"Time");
+  PPGLayout layout;
+  PPGItem item;
+  layout = ctxt.GetSource();
+  layout.Clear();
+  item = layout.AddItem(L"Filename", L"Filename", siControlFilePath);
+  layout.AddItem(L"Time");
+
   return CStatus::OK;
 }
 
@@ -214,9 +218,11 @@ SICALLBACK UsdPrimitive_BoundingBox(CRef& in_ref)
   Context ctxt(in_ref);
 
   CustomPrimitive prim(ctxt.GetSource());
+  LOG("COMPUTE BBOX : " + prim.GetFullName());
   if (!prim.IsValid())return CStatus::Fail;
-
+  LOG("CUSTOM PRIM VALID!");
   U2XStage* stage = U2X_PRIMITIVES.Get(prim);
+  
   if (!stage)
   {
     stage = new U2XStage();
@@ -225,12 +231,13 @@ SICALLBACK UsdPrimitive_BoundingBox(CRef& in_ref)
 
   stage->Update(prim);
 
-  ctxt.PutAttribute("LowerBoundX", U2XGetBoundingBoxComponent(stage->GetBBox(), BBOX_LOWER_X));
-  ctxt.PutAttribute("LowerBoundY", U2XGetBoundingBoxComponent(stage->GetBBox(), BBOX_LOWER_Y));
-  ctxt.PutAttribute("LowerBoundZ", U2XGetBoundingBoxComponent(stage->GetBBox(), BBOX_LOWER_Z));
-  ctxt.PutAttribute("UpperBoundX", U2XGetBoundingBoxComponent(stage->GetBBox(), BBOX_UPPER_X));
-  ctxt.PutAttribute("UpperBoundY", U2XGetBoundingBoxComponent(stage->GetBBox(), BBOX_UPPER_Y));
-  ctxt.PutAttribute("UpperBoundZ", U2XGetBoundingBoxComponent(stage->GetBBox(), BBOX_UPPER_Z));
+  const pxr::GfBBox3d& bbox = stage->GetBBox();
+  ctxt.PutAttribute("LowerBoundX", U2XGetBoundingBoxComponent(bbox, BBOX_LOWER_X));
+  ctxt.PutAttribute("LowerBoundY", U2XGetBoundingBoxComponent(bbox, BBOX_LOWER_Y));
+  ctxt.PutAttribute("LowerBoundZ", U2XGetBoundingBoxComponent(bbox, BBOX_LOWER_Z));
+  ctxt.PutAttribute("UpperBoundX", U2XGetBoundingBoxComponent(bbox, BBOX_UPPER_X));
+  ctxt.PutAttribute("UpperBoundY", U2XGetBoundingBoxComponent(bbox, BBOX_UPPER_Y));
+  ctxt.PutAttribute("UpperBoundZ", U2XGetBoundingBoxComponent(bbox, BBOX_UPPER_Z));
   
   return CStatus::OK;
 
@@ -239,6 +246,7 @@ SICALLBACK UsdPrimitive_BoundingBox(CRef& in_ref)
 
 SICALLBACK UsdPrimitive_Draw( CRef& in_ctxt )
 {
+  /*
   Context ctxt(in_ctxt);
   CustomPrimitive prim = ctxt.GetSource();
   U2XStage* stage = U2X_PRIMITIVES.Get(prim);
@@ -253,34 +261,6 @@ SICALLBACK UsdPrimitive_Draw( CRef& in_ctxt )
   glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &currentVao);
   glGetIntegerv(GL_DEPTH_TEST, &currentDepthTest);
   glGetIntegerv(GL_DEPTH_FUNC, &currentDepthFunc);
-
-  /*
-  if (!GL_EXTENSIONS_LOADED) {
-    GarchGLApiLoad();
-    GL_EXTENSIONS_LOADED = true;
-
-    glGetIntegerv(GL_CURRENT_PROGRAM, &currentPgm);
-    glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &currentVao);
-    glGetIntegerv(GL_DEPTH_TEST, &currentDepthTest);
-    glGetIntegerv(GL_DEPTH_FUNC, &currentDepthFunc);
-
-    GLSL_PROGRAM = new U2XGLSLProgram();
-    GLSL_PROGRAM->Build("Simple", VERTEX_SHADER, FRAGMENT_SHADER);
-    GLuint pgm = GLSL_PROGRAM->Get();
-    // bind shader program
-    glUseProgram(pgm);
-    glBindAttribLocation(pgm, CHANNEL_POSITION, "position");
-    glBindAttribLocation(pgm, CHANNEL_NORMAL, "normal");
-    glBindAttribLocation(pgm, CHANNEL_COLOR, "color");
-    glLinkProgram(pgm);
-  }
-  else {
-    glGetIntegerv(GL_CURRENT_PROGRAM, &currentPgm);
-    glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &currentVao);
-    glGetIntegerv(GL_DEPTH_TEST, &currentDepthTest);
-    glGetIntegerv(GL_DEPTH_FUNC, &currentDepthFunc);
-  }
-  */
 
   if (stage->IsLoaded())
   {
@@ -319,7 +299,7 @@ SICALLBACK UsdPrimitive_Draw( CRef& in_ctxt )
   if (currentDepthTest)glEnable(GL_DEPTH_TEST);
   else glDisable(GL_DEPTH_TEST);
   glDepthFunc(currentDepthFunc);
-
+  */
   return CStatus::OK;
 }
 
