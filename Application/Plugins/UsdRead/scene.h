@@ -31,8 +31,6 @@ struct U2XPrimitiveManager
 
   U2XStage* Get(ObjectID objectId)
   {
-    LOG("SEARCH ID : " + CString(objectId));
-    for (const auto& stage : stages)LOG("IN :" + CString(stage.first));
     auto& it = stages.find(objectId);
     if (it != stages.end())return it->second;
     else return NULL;
@@ -49,7 +47,6 @@ struct U2XPrimitiveManager
   void Set(CustomPrimitive& in_prim, U2XStage* stage)
   {
     ULONG objectId = in_prim.GetObjectID();
-    LOG("SET USD PRIMITIVE IN CACHE : " + CString(objectId));
     stages[objectId] = stage;
     stage->SetObjectID(objectId);
   }
@@ -62,7 +59,6 @@ struct U2XPrimitiveManager
       ProjectItem item = Application().GetObjectFromID(objectId);
       if (!item.IsValid())
       {
-        LOG("DELETE FUCKIN INVALID ITEM!");
         if (stage.second)delete stage.second;
         stages.erase(objectId);
       }

@@ -218,9 +218,7 @@ SICALLBACK UsdPrimitive_BoundingBox(CRef& in_ref)
   Context ctxt(in_ref);
 
   CustomPrimitive prim(ctxt.GetSource());
-  LOG("COMPUTE BBOX : " + prim.GetFullName());
   if (!prim.IsValid())return CStatus::Fail;
-  LOG("CUSTOM PRIM VALID!");
   U2XStage* stage = U2X_PRIMITIVES.Get(prim);
   
   if (!stage)

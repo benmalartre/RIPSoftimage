@@ -16,36 +16,31 @@ SICALLBACK UsdReadValueChange_OnEvent(const XSI::CRef& in_ref)
       KinematicState kineState(object);
       X3DObject x3dobject = kineState.GetParent3DObject();
       if (x3dobject.GetType() == "UsdPrimitive") {
-        //x3dobject.PutParameterValue("Update", CValue(true));
+        x3dobject.PutParameterValue("Update", CValue(true));
         U2XStage* stage = 
           U2X_PRIMITIVES.Get(x3dobject.GetActivePrimitive().GetObjectID());
         if (stage) {
-          LOG("FOUND U2X STAGE IN CACHE !");
+          /*
           pxr::UsdStageRefPtr usdStage = stage->Get();
           if (usdStage) {
             pxr::UsdGeomXformable xformable(usdStage->GetDefaultPrim());
-            LOG("XFORMABLE :" + CString(xformable.GetPath().GetText()));
-            
-            MATH::CMatrix4 matrix = kineState.GetTransform().GetMatrix4();
-            pxr::GfMatrix4d usdMatrix;
-            memcpy((void*)&usdMatrix, (void*)&matrix, 16 * sizeof(double));
-            
-            bool resetXformOpExists;
-            std::vector<pxr::UsdGeomXformOp> xformOps = xformable.GetOrderedXformOps(&resetXformOpExists);
-            if (!xformOps.size()) {
-              pxr::UsdGeomXformOp xformOp = xformable.AddTransformOp(pxr::UsdGeomXformOp::PrecisionDouble);
-              xformOp.Set(pxr::VtValue(usdMatrix));
-              LOG("TRANSFORM THE PSEUDO-ROOT CREATING OP");
+            if (xformable) {
+              MATH::CMatrix4 matrix = kineState.GetTransform().GetMatrix4();
+              pxr::GfMatrix4d usdMatrix;
+              memcpy((void*)&usdMatrix, (void*)&matrix, 16 * sizeof(double));
+
+              bool resetXformOpExists;
+              std::vector<pxr::UsdGeomXformOp> xformOps = xformable.GetOrderedXformOps(&resetXformOpExists);
+              if (!xformOps.size()) {
+                pxr::UsdGeomXformOp xformOp = xformable.AddTransformOp(pxr::UsdGeomXformOp::PrecisionDouble);
+                xformOp.Set(pxr::VtValue(usdMatrix), pxr::UsdTimeCode(CTime().GetTime()));
+              }
+              else {
+                xformOps[0].Set(pxr::VtValue(usdMatrix), pxr::UsdTimeCode(CTime().GetTime()));
+              }
             }
-            else {
-              xformOps[0].Set(pxr::VtValue(usdMatrix));
-              LOG("TRANSFORM THE PSEUDO-ROOT USING EXISTING OP");
-            }
-            
-            //xformable.ClearXformOpOrder();
-            //pxr::UsdGeomXformOp t = xformable.AddTransformOp();
-            //t.Set(usdMatrix, pxr::UsdTimeCode(CTime().GetTime()));
           }
+          */
         }
         
       }

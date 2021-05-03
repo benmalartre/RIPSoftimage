@@ -49,34 +49,28 @@ static pxr::GfMatrix4d _GetViewMatrix(const Camera& camera)
 
 static pxr::GfMatrix4d _GetProjectionMatrix(const Camera& camera)
 {
-  // store the camera data
+  bool orthographic = bool(camera.GetParameterValue(L"proj") == 0);
   double fov = camera.GetParameterValue(L"fov");
   double aspect = camera.GetParameterValue(L"aspect");
   double znear = camera.GetParameterValue(L"near");
   double zfar = camera.GetParameterValue(L"far");
+  if (!orthographic) {
+    double m_invf = 1.0 / std::tan(pxr::GfDegreesToRadians(fov) * 0.5f);
+    pxr::GfMatrix4d projectionMatrix(1.0);
 
-  // const float fAspectR = (float)prim.GetParameterValue(L"aspect",time);
-  // const float fAspect = (float)prim.GetParameterValue(L"projplanewidth",time)
-  // / (float)prim.GetParameterValue(L"projplaneheight",time);
-  /*
-  mCameraSample.setFocalLength(prim.GetParameterValue(L"projplanedist", time));
-  mCameraSample.setVerticalAperture(
-    float(prim.GetParameterValue(L"projplaneheight", time)) * 2.54f);
-  mCameraSample.setHorizontalAperture(
-    float(prim.GetParameterValue(L"projplanewidth", time)) * 2.54f);
-  */
+    projectionMatrix[0][0] = m_invf;
+    projectionMatrix[1][1] = m_invf * aspect;
+    projectionMatrix[2][2] = (zfar + znear) / (znear - zfar);
+    projectionMatrix[3][2] = (2 * zfar * znear) / (znear - zfar);
+    projectionMatrix[2][3] = -1;
+    projectionMatrix[3][3] = 0;
 
-  double m_invf = 1.0 / std::tan(pxr::GfDegreesToRadians(fov) *0.5f);
-  pxr::GfMatrix4d projectionMatrix(1.0);
-
-  projectionMatrix[0][0] = m_invf;// / aspect;
-  projectionMatrix[1][1] = m_invf * aspect;
-  projectionMatrix[2][2] = (zfar + znear) / (znear - zfar);
-  projectionMatrix[3][2] = (2 * zfar * znear) / (znear - zfar);
-  projectionMatrix[2][3] = -1;
-  projectionMatrix[3][3] = 0;
-
-  return projectionMatrix;
+    return projectionMatrix;
+  }
+  else {
+    pxr::GfMatrix4d projectionMatrix(1.0);
+    return projectionMatrix;
+  }
 }
 
 void UsdHydraDisplayCallback_Init( XSI::CRef sequencerContext, LPVOID *userData )
@@ -172,6 +166,8 @@ void UsdHydraDisplayCallback_Execute( XSI::CRef sequencerContext, LPVOID *userDa
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   for (const auto& stage : U2X_PRIMITIVES.stages) {
+    CustomPrimitive prim = Application().GetObjectFromID(stage.first);
+    stage.second->Update(prim);
     HYDRA_ENGINE->Render(stage.second->Get()->GetPseudoRoot(), renderParams);
   }
 

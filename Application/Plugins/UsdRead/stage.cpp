@@ -10,6 +10,7 @@
 #include <pxr/usd/usdGeom/xform.h>
 #include <pxr/usd/usdGeom/mesh.h>
 #include <pxr/usd/usdGeom/points.h>
+#include <pxr/usd/usdGeom/sphere.h>
 #include <pxr/usd/usdGeom/basisCurves.h>
 #include <pxr/usd/usdGeom/bboxCache.h>
 #include <pxr/usd/usdGeom/metrics.h>
@@ -81,8 +82,25 @@ void U2XStage::Reload()
 {
   _isLoaded = false;
   Clear();
+
+  //_rootLayer = pxr::SdfLayer::FindOrOpen(_filenames[0]);
+  //_stageX = pxr::UsdStage::Open(_rootLayer->GetIdentifier());
+
+  _stage = pxr::UsdStage::CreateInMemory("U2XStage" + std::to_string(U2X_STAGE_ID));
+  //_rootLayer = pxr::SdfLayer::CreateAnonymous("U2XLayer" + std::to_string(U2X_STAGE_ID));
+  //_rootLayer = pxr::SdfLayer::FindOrOpen(_filenames[0]);
+
+  pxr::SdfPath rootPath(pxr::TfToken("/"));
   /*
-  _rootLayer = pxr::SdfLayer::CreateAnonymous("U2XStage" + std::to_string(U2X_STAGE_ID));
+  _root = pxr::UsdGeomXform::Define(_stage, rootPath);
+  
+  _stage->GetRootLayer()->SetDefaultPrim(_root.GetPrim().GetName());
+  */
+  _root = _stage->OverridePrim(pxr::SdfPath(pxr::TfToken("/root")));
+  _root.GetReferences().AddReference(_filenames[0]);
+
+  /*
+  
   //_editLayer = pxr::SdfLayer::CreateAnonymous("U2XStage" + std::to_string(U2X_STAGE_ID) +"_EDIT");
   U2X_STAGE_ID++;
 
@@ -101,14 +119,14 @@ void U2XStage::Reload()
   //pxr::SdfLayerRefPtr rootLayer = pxr::SdfLayer::FindOrOpen(_filename);
   //_stage = pxr::UsdStage::Open(rootLayer);
   */
-  _rootLayer = pxr::SdfLayer::FindOrOpen(_filenames[0]);
-  _stage = pxr::UsdStage::Open(_rootLayer->GetIdentifier());
-  _stage->SetEditTarget(_rootLayer);
+  //_rootLayer = pxr::SdfLayer::FindOrOpen(_filenames[0]);
+  //_stage = pxr::UsdStage::Open(_rootLayer->GetIdentifier());
+  //_stage->SetEditTarget(_rootLayer);
 
   _selection.Clear();
   _selection.SetStage(_stage);
-  _root = _stage->GetPseudoRoot();
   _upAxis = pxr::UsdGeomGetStageUpAxis(_stage);
+ 
   if (_upAxis == pxr::UsdGeomTokens->z)
   {
     pxr::UsdGeomXformable xformable(_stage->GetDefaultPrim());
@@ -139,10 +157,10 @@ void U2XStage::SetTime(double time, bool forceUpdate)
 void U2XStage::ComputeBoundingBox(const pxr::UsdTimeCode& timeCode)
 {
   TfTokenVector purposes = { UsdGeomTokens->default_, UsdGeomTokens->render };
-  if (_root.IsValid())
+  if (_root.GetPrim().IsValid())
   {
     _bboxCache->SetTime(timeCode);
-    _bbox = _bboxCache->ComputeWorldBound(_root);
+    _bbox = _bboxCache->ComputeWorldBound(_root.GetPrim());
   }
 }
 
@@ -200,8 +218,6 @@ void U2XStage::Update(CustomPrimitive& prim)
     pxr::GfMatrix4d xfo = *(pxr::GfMatrix4d*)&kineState.GetTransform().GetMatrix4();
     _invXform = pxr::GfMatrix4f(xfo.GetInverse());
     
-    
-
     // check filename
     CString filename = params.GetValue(L"Filename");
     if (!HasFilename(filename, 0) || !_isLoaded)

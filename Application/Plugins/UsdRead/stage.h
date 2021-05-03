@@ -58,6 +58,7 @@ public:
 
 protected:
   std::vector<SdfLayerRefPtr>       _layers;
+  pxr::UsdPrim                      _root;
   SdfLayerRefPtr                    _rootLayer;
   //SdfLayerRefPtr                    _rootLayer;
   std::vector<XSI::CString>         _rawFilenames;
@@ -65,7 +66,6 @@ protected:
   bool                              _isLoaded;
   pxr::UsdStageRefPtr               _stage;
   pxr::TfToken                      _upAxis;
-  pxr::UsdPrim                      _root;
   std::vector<U2XPrim*>             _prims;
   double                            _time;
   LONG                              _lastEvalID;
