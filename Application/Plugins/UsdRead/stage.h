@@ -58,7 +58,8 @@ public:
 
 protected:
   std::vector<SdfLayerRefPtr>       _layers;
-  pxr::UsdPrim                      _root;
+  pxr::UsdGeomXform                 _root;
+  pxr::UsdPrim                      _ref;
   SdfLayerRefPtr                    _rootLayer;
   //SdfLayerRefPtr                    _rootLayer;
   std::vector<XSI::CString>         _rawFilenames;

@@ -96,9 +96,10 @@ void U2XStage::Reload()
   
   _stage->GetRootLayer()->SetDefaultPrim(_root.GetPrim().GetName());
   */
-  _root = _stage->OverridePrim(pxr::SdfPath(pxr::TfToken("/root")));
-  _root.GetReferences().AddReference(_filenames[0]);
-
+  _root = pxr::UsdGeomXform::Define(_stage, pxr::SdfPath("/root"));
+  _ref = _stage->OverridePrim(pxr::SdfPath(pxr::TfToken("/root/ref")));
+  _ref.GetReferences().AddReference(_filenames[0]);
+  _stage->SetDefaultPrim(_root.GetPrim());
   /*
   
   //_editLayer = pxr::SdfLayer::CreateAnonymous("U2XStage" + std::to_string(U2X_STAGE_ID) +"_EDIT");
@@ -134,7 +135,7 @@ void U2XStage::Reload()
     rotateOp.Set(-90.f);
   }
 
-  Recurse(_root, NULL);
+  Recurse(_root.GetPrim(), NULL);
 
   _isLoaded = true;
 }
@@ -210,11 +211,12 @@ void U2XStage::Update(CustomPrimitive& prim)
   CParameterRefArray& params = prim.GetParameters();
   bool forceUpdate = params.GetValue("Update");
 
+  X3DObject parent = prim.GetParent3DObject();
+  KinematicState kineState = parent.GetKinematics().GetGlobal();
+
   if (_lastEvalID != evalID || forceUpdate)
   {
     // get inverse xform
-    X3DObject parent = prim.GetParent3DObject();
-    KinematicState kineState = parent.GetKinematics().GetGlobal();
     pxr::GfMatrix4d xfo = *(pxr::GfMatrix4d*)&kineState.GetTransform().GetMatrix4();
     _invXform = pxr::GfMatrix4f(xfo.GetInverse());
     
@@ -231,8 +233,28 @@ void U2XStage::Update(CustomPrimitive& prim)
       double time = params.GetValue(L"Time");
       SetTime(time, forceUpdate);
     }
+
     prim.PutParameterValue("Update", false);
     _lastEvalID = evalID;
+  }
+
+  if (_stage) {
+    pxr::UsdGeomXformable xformable(_stage->GetDefaultPrim());
+    if (xformable) {
+      MATH::CMatrix4 matrix = kineState.GetTransform().GetMatrix4();
+      pxr::GfMatrix4d usdMatrix;
+      memcpy((void*)&usdMatrix, (void*)&matrix, 16 * sizeof(double));
+
+      bool resetXformOpExists;
+      std::vector<pxr::UsdGeomXformOp> xformOps = xformable.GetOrderedXformOps(&resetXformOpExists);
+      if (!xformOps.size()) {
+        pxr::UsdGeomXformOp xformOp = xformable.AddTransformOp(pxr::UsdGeomXformOp::PrecisionDouble);
+        xformOp.Set(pxr::VtValue(usdMatrix));
+      }
+      else {
+        xformOps[0].Set(pxr::VtValue(usdMatrix));
+      }
+    }
   }
 }
 
