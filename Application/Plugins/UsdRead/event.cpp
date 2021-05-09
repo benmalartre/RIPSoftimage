@@ -3,7 +3,7 @@
 #include "utils.h"
 #include "window.h"
 
-extern U2XPrimitiveManager U2X_PRIMITIVES;
+extern U2XScene*            U2X_SCENE;
 
 SICALLBACK UsdReadValueChange_OnEvent(const XSI::CRef& in_ref)
 {
@@ -17,31 +17,7 @@ SICALLBACK UsdReadValueChange_OnEvent(const XSI::CRef& in_ref)
       X3DObject x3dobject = kineState.GetParent3DObject();
       if (x3dobject.GetType() == "UsdPrimitive") {
         x3dobject.PutParameterValue("Update", CValue(true));
-        U2XStage* stage = 
-          U2X_PRIMITIVES.Get(x3dobject.GetActivePrimitive().GetObjectID());
-        if (stage) {
-          /*
-          pxr::UsdStageRefPtr usdStage = stage->Get();
-          if (usdStage) {
-            pxr::UsdGeomXformable xformable(usdStage->GetDefaultPrim());
-            if (xformable) {
-              MATH::CMatrix4 matrix = kineState.GetTransform().GetMatrix4();
-              pxr::GfMatrix4d usdMatrix;
-              memcpy((void*)&usdMatrix, (void*)&matrix, 16 * sizeof(double));
-
-              bool resetXformOpExists;
-              std::vector<pxr::UsdGeomXformOp> xformOps = xformable.GetOrderedXformOps(&resetXformOpExists);
-              if (!xformOps.size()) {
-                pxr::UsdGeomXformOp xformOp = xformable.AddTransformOp(pxr::UsdGeomXformOp::PrecisionDouble);
-                xformOp.Set(pxr::VtValue(usdMatrix), pxr::UsdTimeCode(CTime().GetTime()));
-              }
-              else {
-                xformOps[0].Set(pxr::VtValue(usdMatrix), pxr::UsdTimeCode(CTime().GetTime()));
-              }
-            }
-          }
-          */
-        }
+       
         
       }
     }
@@ -52,8 +28,9 @@ SICALLBACK UsdReadValueChange_OnEvent(const XSI::CRef& in_ref)
 
 SICALLBACK UsdReadSceneOpen_OnEvent(const XSI::CRef& in_ref)
 {
-  U2X_PRIMITIVES.ClearCache();
-  return XSI::CStatus::False;
+  delete(U2X_SCENE);
+  U2X_SCENE = new U2XScene();
+  return CStatus::False;
 }
 
 SICALLBACK UsdReadObjectAdded_OnEvent(const XSI::CRef& in_ref)
@@ -64,13 +41,15 @@ SICALLBACK UsdReadObjectAdded_OnEvent(const XSI::CRef& in_ref)
 SICALLBACK UsdReadObjectRemoved_OnEvent(const XSI::CRef& in_ref)
 {
   Context ctxt(in_ref);
-  U2X_PRIMITIVES.CheckCache();
+  U2X_SCENE->SyncStagesCache();
   return CStatus::False;
 }
 
 SICALLBACK UsdReadNewScene_OnEvent(const XSI::CRef& in_ref)
 {
-  U2X_PRIMITIVES.ClearCache();
+  delete(U2X_SCENE);
+  U2X_SCENE = new U2XScene();
+ 
   for (auto& ui : U2X_UIS) {
     ui->ClearStage();
   }

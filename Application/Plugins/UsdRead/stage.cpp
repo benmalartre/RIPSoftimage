@@ -18,7 +18,6 @@
 #include <pxr/imaging/garch/glApi.h>
 
 
-int U2X_STAGE_ID = 0;
 pxr::UsdStageRefPtr U2X_STAGE;
 extern U2XScene*    U2X_SCENE;
 
@@ -44,8 +43,8 @@ void U2XSelection::Clear()
 }
 
 
-U2XStage::U2XStage()
-  : _lastEvalID(-1), _isLoaded(false), _time(DBL_MAX)
+U2XStage::U2XStage(CustomPrimitive& prim)
+  : _objectID(prim.GetObjectID()), _lastEvalID(-1), _isLoaded(false), _time(DBL_MAX)
 {
   TfTokenVector purposes = { UsdGeomTokens->default_, UsdGeomTokens->render };
   _bboxCache = new pxr::UsdGeomBBoxCache(pxr::UsdTimeCode::Default(), purposes);
@@ -57,6 +56,7 @@ U2XStage::~U2XStage()
   Clear();
   delete _bboxCache;
   delete _xformCache;
+  _stage = nullptr;
 }
 
 bool U2XStage::HasFilename(const CString& filename, size_t index)
@@ -105,8 +105,7 @@ void U2XStage::Reload()
   }
   
   _stage->SetDefaultPrim(*_stage->Traverse().cbegin());
-  U2X_SCENE->AddStage(this);
-  U2X_STAGE_ID++;
+  U2X_SCENE->ReloadStage(this);
 
   //pxr::SdfLayerRefPtr rootLayer = pxr::SdfLayer::FindOrOpen(_filename);
   //_stage = pxr::UsdStage::Open(rootLayer);
@@ -227,7 +226,7 @@ void U2XStage::Update(CustomPrimitive& prim)
     prim.PutParameterValue("Update", false);
     _lastEvalID = evalID;
   }
-
+  
   MATH::CMatrix4 matrix = kineState.GetTransform().GetMatrix4();
   if (matrix != _xfo) {
     pxr::UsdGeomXformable xformable(U2X_SCENE->GetRootPrim(_objectID));

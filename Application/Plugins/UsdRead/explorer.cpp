@@ -7,7 +7,7 @@
 #include "utils.h"
 
 extern ImFontAtlas* U2X_SHARED_ATLAS;
-
+extern U2XScene* U2X_SCENE;
 
 UsdExplorerWindow::UsdExplorerWindow() 
   : U2XWindow()
@@ -104,12 +104,14 @@ LRESULT UsdExplorerWindow::Notify ( XSI::CRef& in_ctxt)
         {
           X3DObject xObj(cRef);
           Primitive xPrim = xObj.GetActivePrimitive();
-          U2XStage* stage = U2X_PRIMITIVES.Get(CustomPrimitive(xPrim));
+          /*
+          U2XStage* stage = U2X_SCENE->GetStage(CustomPrimitive(xPrim).GetObjectID());
           if (stage)
           {
             _stage = stage;
             RecurseStage();
           }
+          */
         }
       }
     }

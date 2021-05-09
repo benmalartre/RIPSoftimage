@@ -34,7 +34,7 @@ private:
 // Prim base class
 class U2XStage {
 public:
-  U2XStage();
+  U2XStage(CustomPrimitive& prim);
   ~U2XStage();
 
   pxr::UsdStageRefPtr& Get() { return _stage; };

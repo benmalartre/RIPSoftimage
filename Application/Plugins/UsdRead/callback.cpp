@@ -13,9 +13,7 @@
 #include <GL/gl.h>
 
 U2XEngine* HYDRA_ENGINE = NULL;
-
-extern U2XPrimitiveManager U2X_PRIMITIVES;
-
+extern U2XScene* U2X_SCENE;
 
 static void _InitializeHydraEngine() {
   if (!HYDRA_ENGINE) {
@@ -142,15 +140,8 @@ void UsdHydraDisplayCallback_Execute( XSI::CRef sequencerContext, LPVOID *userDa
   glClearColor(0.25f, 0.25f, 0.25f, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  /*
-  for (const auto& stage : U2X_PRIMITIVES.stages) {
-    CustomPrimitive prim = Application().GetObjectFromID(stage.first);
-    stage.second->Update(prim);
-    HYDRA_ENGINE->Render(stage.second->Get()->GetPseudoRoot(), renderParams);
-  }
-  */
   U2X_SCENE->Update();
-  HYDRA_ENGINE->Render(U2X_SCENE->GetStage()->GetPseudoRoot(), renderParams);
+  HYDRA_ENGINE->Render(U2X_SCENE->GetSceneStage()->GetPseudoRoot(), renderParams);
   glDisable(GL_DEPTH_TEST);
   /*
   CValueArray framebufferInfo = sequencer.GetFramebufferInfo();

@@ -74,7 +74,7 @@ SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
   GL_EXTENSIONS_LOADED = false;
   U2X_HIDDEN_WINDOW = NULL;
   _InitializeGL();
-  UsdStageCacheContext context(U2X_USDSTAGE_CACHE);
+  //UsdStageCacheContext context(U2X_USDSTAGE_CACHE);
   U2X_SCENE = new U2XScene();
 
   return CStatus::OK;
@@ -84,10 +84,10 @@ SICALLBACK XSIUnloadPlugin( const PluginRegistrar& in_reg )
 {
   if (U2X_HIDDEN_WINDOW)delete U2X_HIDDEN_WINDOW;
   delete GLSL_PROGRAM;
-  CString strPluginName;
-  strPluginName = in_reg.GetName();
   delete U2X_SCENE;
   GarchGLApiUnload();
+  CString strPluginName;
+  strPluginName = in_reg.GetName();
   Application().LogMessage(strPluginName + L" has been unloaded.", siVerboseMsg);
   return CStatus::OK;
 }
@@ -222,14 +222,14 @@ SICALLBACK UsdPrimitive_BoundingBox(CRef& in_ref)
 
   CustomPrimitive prim(ctxt.GetSource());
   if (!prim.IsValid())return CStatus::Fail;
-  U2XStage* stage = U2X_PRIMITIVES.Get(prim);
-  
+  U2XStage* stage = U2X_SCENE->GetStage(prim);
+ 
   if (!stage)
   {
-    stage = new U2XStage();
-    U2X_PRIMITIVES.Set(prim, stage);
+    stage = new U2XStage(prim);
+    U2X_SCENE->AddStage(prim, stage);
   }
-
+  
   stage->Update(prim);
 
   const pxr::GfBBox3d& bbox = stage->GetBBox();
