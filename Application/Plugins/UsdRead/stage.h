@@ -48,7 +48,7 @@ public:
   bool HasFilename(const XSI::CString& filename, size_t index);
   void SetFilenames(const XSI::CStringArray& filenames);
   void SetTime(double time, bool forceUpdate);
-  SdfLayerRefPtr GetRootLayer() { return _rootLayer; };
+  pxr::SdfLayerHandle GetRootLayer() { return _stage->GetRootLayer(); };
   void Reload();
   void Clear();
   void ComputeBoundingBox(const pxr::UsdTimeCode& timeCode);
@@ -58,10 +58,8 @@ public:
 
 protected:
   std::vector<SdfLayerRefPtr>       _layers;
-  pxr::UsdGeomXform                 _root;
-  pxr::UsdPrim                      _ref;
+  pxr::UsdPrim                      _root;
   SdfLayerRefPtr                    _rootLayer;
-  //SdfLayerRefPtr                    _rootLayer;
   std::vector<XSI::CString>         _rawFilenames;
   std::vector<std::string>          _filenames;
   bool                              _isLoaded;
@@ -76,5 +74,7 @@ protected:
   pxr::GfMatrix4f                   _invXform;
   ULONG                             _objectID;
   U2XSelection                      _selection;
+  MATH::CMatrix4                    _xfo;
+
 };
 

@@ -5,6 +5,7 @@
 #include "mesh.h"
 #include "utils.h"
 #include "shader.h"
+#include "scene.h"
 
 #include <pxr/base/arch/fileSystem.h>
 #include <pxr/usd/usdGeom/xform.h>
@@ -18,6 +19,8 @@
 
 
 int U2X_STAGE_ID = 0;
+pxr::UsdStageRefPtr U2X_STAGE;
+extern U2XScene*    U2X_SCENE;
 
 
 void U2XSelection::AddPrim(const SdfPath& path)
@@ -85,25 +88,9 @@ void U2XStage::Reload()
 
   //_rootLayer = pxr::SdfLayer::FindOrOpen(_filenames[0]);
   //_stageX = pxr::UsdStage::Open(_rootLayer->GetIdentifier());
-
-  _stage = pxr::UsdStage::CreateInMemory("U2XStage" + std::to_string(U2X_STAGE_ID));
-  //_rootLayer = pxr::SdfLayer::CreateAnonymous("U2XLayer" + std::to_string(U2X_STAGE_ID));
-  //_rootLayer = pxr::SdfLayer::FindOrOpen(_filenames[0]);
-
-  pxr::SdfPath rootPath(pxr::TfToken("/"));
-  /*
-  _root = pxr::UsdGeomXform::Define(_stage, rootPath);
-  
-  _stage->GetRootLayer()->SetDefaultPrim(_root.GetPrim().GetName());
-  */
-  _root = pxr::UsdGeomXform::Define(_stage, pxr::SdfPath("/root"));
-  _ref = _stage->OverridePrim(pxr::SdfPath(pxr::TfToken("/root/ref")));
-  _ref.GetReferences().AddReference(_filenames[0]);
-  _stage->SetDefaultPrim(_root.GetPrim());
-  /*
-  
-  //_editLayer = pxr::SdfLayer::CreateAnonymous("U2XStage" + std::to_string(U2X_STAGE_ID) +"_EDIT");
-  U2X_STAGE_ID++;
+  std::string uniqueName = std::to_string(_objectID);
+  _stage = pxr::UsdStage::CreateInMemory("U2XStage_" + uniqueName);
+  _rootLayer = _stage->GetRootLayer();
 
   for (size_t i = 0; i < _filenames.size(); ++i)
   {
@@ -116,14 +103,18 @@ void U2XStage::Reload()
       _rootLayer->InsertSubLayerPath(subLayer->GetIdentifier());
     }
   }
+  
+  _stage->SetDefaultPrim(*_stage->Traverse().cbegin());
+  U2X_SCENE->AddStage(this);
+  U2X_STAGE_ID++;
 
   //pxr::SdfLayerRefPtr rootLayer = pxr::SdfLayer::FindOrOpen(_filename);
   //_stage = pxr::UsdStage::Open(rootLayer);
-  */
+  
   //_rootLayer = pxr::SdfLayer::FindOrOpen(_filenames[0]);
   //_stage = pxr::UsdStage::Open(_rootLayer->GetIdentifier());
   //_stage->SetEditTarget(_rootLayer);
-
+  /*
   _selection.Clear();
   _selection.SetStage(_stage);
   _upAxis = pxr::UsdGeomGetStageUpAxis(_stage);
@@ -134,9 +125,9 @@ void U2XStage::Reload()
     pxr::UsdGeomXformOp rotateOp = xformable.AddRotateXOp();
     rotateOp.Set(-90.f);
   }
-
-  Recurse(_root.GetPrim(), NULL);
-
+  */
+  //Recurse(_root, NULL);
+  
   _isLoaded = true;
 }
 
@@ -233,13 +224,13 @@ void U2XStage::Update(CustomPrimitive& prim)
       double time = params.GetValue(L"Time");
       SetTime(time, forceUpdate);
     }
-
     prim.PutParameterValue("Update", false);
     _lastEvalID = evalID;
   }
 
-  if (_stage) {
-    pxr::UsdGeomXformable xformable(_stage->GetDefaultPrim());
+  MATH::CMatrix4 matrix = kineState.GetTransform().GetMatrix4();
+  if (matrix != _xfo) {
+    pxr::UsdGeomXformable xformable(U2X_SCENE->GetRootPrim(_objectID));
     if (xformable) {
       MATH::CMatrix4 matrix = kineState.GetTransform().GetMatrix4();
       pxr::GfMatrix4d usdMatrix;
@@ -255,6 +246,7 @@ void U2XStage::Update(CustomPrimitive& prim)
         xformOps[0].Set(pxr::VtValue(usdMatrix));
       }
     }
+    _xfo = matrix;
   }
 }
 

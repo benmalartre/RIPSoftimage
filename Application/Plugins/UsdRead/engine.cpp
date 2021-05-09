@@ -24,25 +24,7 @@ _GetUsdImagingDelegateId()
   return delegateId;
 }
 
-/*
-void _InitGL()
-{
-  static std::once_flag initFlag;
 
-  std::call_once(initFlag, [] {
-
-    // Initialize GL library for GL Extensions if needed
-    GarchGLApiLoad();
-
-    // Initialize if needed and switch to shared GL context.
-    pxr::GlfSharedGLContextScopeHolder sharedContext;
-
-    // Initialize GL context caps based on shared context
-    pxr::GlfContextCaps::InitInstance();
-
-  });
-}
-*/
 U2XEngine::U2XEngine(const pxr::HdDriver& driver)
   : U2XEngine(pxr::SdfPath::AbsoluteRootPath(),
     {},

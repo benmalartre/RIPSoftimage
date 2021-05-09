@@ -4,6 +4,11 @@
 #include "stage.h"
 #include "prim.h"
 #include <map>
+#include <pxr/usd/sdf/path.h>
+#include <pxr/usd/usd/prim.h>
+#include <pxr/usd/usd/primRange.h>
+#include <pxr/usd/usd/stage.h>
+
 
 struct U2XSceneLight
 {
@@ -77,5 +82,24 @@ struct U2XPrimitiveManager
   std::map<ObjectID, U2XStage*> stages;
 };
 
-extern U2XPrimitiveManager U2X_PRIMITIVES;
-extern pxr::UsdStageCache U2X_USDSTAGE_CACHE;
+class U2XStage;
+class U2XScene {
+public:
+  U2XScene();
+  ~U2XScene();
+
+  void Update();
+  void AddStage(U2XStage* stage);
+  void ReloadStage(U2XStage* stage);
+  pxr::UsdStageRefPtr GetStage() { return _stage; };
+  pxr::UsdPrim GetRootPrim(ULONG objectId);
+
+private:
+  pxr::UsdStageRefPtr       _stage;
+  std::vector<pxr::UsdPrim> _prims;
+  pxr::SdfPath              _rootPath;
+};
+
+extern U2XPrimitiveManager  U2X_PRIMITIVES;
+extern pxr::UsdStageCache   U2X_USDSTAGE_CACHE;
+extern U2XScene*            U2X_SCENE;

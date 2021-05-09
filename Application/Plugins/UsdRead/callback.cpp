@@ -14,7 +14,6 @@
 
 U2XEngine* HYDRA_ENGINE = NULL;
 
-pxr::UsdStageRefPtr HYDRA_STAGE;
 extern U2XPrimitiveManager U2X_PRIMITIVES;
 
 
@@ -99,9 +98,6 @@ void UsdHydraDisplayCallback_Execute( XSI::CRef sequencerContext, LPVOID *userDa
   // Call OpenGL to clear the frame buffer
   //
 
-  ::glClearColor ( 0.2f, 0.3f, 0.4f, 1.0f );
-  ::glClear ( GL_COLOR_BUFFER_BIT );
-
   XSI::GraphicSequencerContext graphicSequencerContext = sequencerContext;
   assert(graphicSequencerContext.IsValid());
   XSI::CGraphicSequencer sequencer = graphicSequencerContext.GetGraphicSequencer();
@@ -113,26 +109,6 @@ void UsdHydraDisplayCallback_Execute( XSI::CRef sequencerContext, LPVOID *userDa
   CRef cameraRef = sequencer.GetCamera();
   Camera camera(cameraRef);
 
-  /*
-  pxr::GfVec2i renderResolution(width, height);
-  pxr::GlfDrawTargetRefPtr drawTarget = pxr::GlfDrawTarget::New(renderResolution);
-  drawTarget->Bind();
-
-  drawTarget->AddAttachment("color",
-    GL_RGBA, GL_FLOAT, GL_RGBA);
-  drawTarget->AddAttachment("depth",
-    GL_DEPTH_COMPONENT, GL_FLOAT, GL_DEPTH_COMPONENT32F);
-  drawTarget->Unbind();
-
-  HYDRA_ENGINE->SetRenderViewport(
-    pxr::GfVec4d(
-      0.0,
-      0.0,
-      static_cast<double>(width),
-      static_cast<double>(height))
-  );
-  */
-
   HYDRA_ENGINE->SetCameraState(
     _GetViewMatrix(camera),
     _GetProjectionMatrix(camera)
@@ -142,8 +118,9 @@ void UsdHydraDisplayCallback_Execute( XSI::CRef sequencerContext, LPVOID *userDa
     pxr::GfVec4f(x, y, width, height)
   );
 
+  double currentTime = CTime().GetTime();
   pxr::UsdImagingGLRenderParams renderParams;
-  renderParams.frame = pxr::UsdTimeCode(CTime().GetTime());
+  renderParams.frame = pxr::UsdTimeCode(currentTime);
   renderParams.complexity = 1.0f;
   renderParams.drawMode = pxr::UsdImagingGLDrawMode::DRAW_SHADED_SMOOTH;
   renderParams.showGuides = true;
@@ -165,12 +142,15 @@ void UsdHydraDisplayCallback_Execute( XSI::CRef sequencerContext, LPVOID *userDa
   glClearColor(0.25f, 0.25f, 0.25f, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+  /*
   for (const auto& stage : U2X_PRIMITIVES.stages) {
     CustomPrimitive prim = Application().GetObjectFromID(stage.first);
     stage.second->Update(prim);
     HYDRA_ENGINE->Render(stage.second->Get()->GetPseudoRoot(), renderParams);
   }
-
+  */
+  U2X_SCENE->Update();
+  HYDRA_ENGINE->Render(U2X_SCENE->GetStage()->GetPseudoRoot(), renderParams);
   glDisable(GL_DEPTH_TEST);
   /*
   CValueArray framebufferInfo = sequencer.GetFramebufferInfo();
