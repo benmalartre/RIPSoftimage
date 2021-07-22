@@ -5,6 +5,7 @@
 // Mesh 
 class U2XMesh final : public U2XPrim {
 public:
+  U2XMesh() : U2XPrim(pxr::UsdPrim(), NULL){};
   U2XMesh(const pxr::UsdPrim& prim, U2XPrim* parent);
   ~U2XMesh();
 

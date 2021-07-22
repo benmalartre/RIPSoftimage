@@ -34,6 +34,7 @@ private:
 // Prim base class
 class U2XStage {
 public:
+  U2XStage();
   U2XStage(CustomPrimitive& prim);
   ~U2XStage();
 
@@ -47,8 +48,10 @@ public:
   bool IsLoaded() { return _isLoaded; };
   bool HasFilename(const XSI::CString& filename, size_t index);
   void SetFilenames(const XSI::CStringArray& filenames);
+  void SetFromICE(const CustomPrimitive& prim);
   void SetTime(double time, bool forceUpdate);
   pxr::SdfLayerHandle GetRootLayer() { return _stage->GetRootLayer(); };
+  bool HasUsdICEAttribute(CustomPrimitive& prim);
   void Reload();
   void Clear();
   void ComputeBoundingBox(const pxr::UsdTimeCode& timeCode);
@@ -63,6 +66,7 @@ protected:
   std::vector<XSI::CString>         _rawFilenames;
   std::vector<std::string>          _filenames;
   bool                              _isLoaded;
+  bool                              _isRoot;
   pxr::UsdStageRefPtr               _stage;
   pxr::TfToken                      _upAxis;
   std::vector<U2XPrim*>             _prims;

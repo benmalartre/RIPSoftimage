@@ -104,14 +104,9 @@ LRESULT UsdExplorerWindow::Notify ( XSI::CRef& in_ctxt)
         {
           X3DObject xObj(cRef);
           Primitive xPrim = xObj.GetActivePrimitive();
-          /*
-          U2XStage* stage = U2X_SCENE->GetStage(CustomPrimitive(xPrim).GetObjectID());
-          if (stage)
-          {
-            _stage = stage;
-            RecurseStage();
-          }
-          */
+          
+          _stage = U2X_SCENE->GetSceneStage();
+          RecurseStage();
         }
       }
     }
@@ -440,6 +435,7 @@ void UsdExplorerWindow::DrawItemVisibility(UsdExplorerItem* item, bool heritedVi
     if (TF_VERIFY(imageable)) {
       if (item->_visible)imageable.MakeVisible();
       else imageable.MakeInvisible();
+      /*
       Application app;
       XSI::ProjectItem item = app.GetObjectFromID(_stage->GetObjectID());
       if (item.IsValid())
@@ -448,6 +444,7 @@ void UsdExplorerWindow::DrawItemVisibility(UsdExplorerItem* item, bool heritedVi
         item.PutParameterValue(L"Update", CValue(true));
         _needRefresh = true;
       }
+      */
     }
   }
 
@@ -577,7 +574,7 @@ void UsdExplorerWindow::RecurseStage()
   if (_root)delete _root;
   _root = new UsdExplorerItem();
   _root->_expanded = true;
-  _root->_prim = _stage->Get()->GetPseudoRoot();
+  _root->_prim = _stage->GetPseudoRoot();
   _root->_visible = true;
   RecursePrim(_root);
 

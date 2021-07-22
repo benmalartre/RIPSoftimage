@@ -33,8 +33,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "paulslib.h"
-
 using namespace XSI;
 using namespace MATH;
 

@@ -16,6 +16,7 @@
 #include <xsi_ppglayout.h>
 #include <xsi_ppgeventcontext.h>
 #include <xsi_geometry.h>
+#include <xsi_operator.h>
 #include <xsi_iceattribute.h>
 #include <xsi_iceattributedataarray.h>
 #include <map>
@@ -36,6 +37,10 @@ using namespace XSI;
 bool GL_EXTENSIONS_LOADED;
 U2XGLSLProgram* GLSL_PROGRAM;
 extern U2XScene* U2X_SCENE;
+
+XSI::CStatus RegisterUsdStageNode(XSI::PluginRegistrar& in_reg);
+XSI::CStatus RegisterUsdSphereNode(XSI::PluginRegistrar& in_reg);
+XSI::CStatus RegisterUsdCubeNode(XSI::PluginRegistrar& in_reg);
 
 static void _InitializeGL()
 {
@@ -58,6 +63,9 @@ SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
   in_reg.PutAuthor(L"benmalartre");
   in_reg.PutName(L"UsdRead");
   in_reg.PutVersion(1,0);
+
+  in_reg.RegisterOperator(L"UsdMeshGenerator");
+  in_reg.RegisterOperator(L"UsdMeshDeformer");
   in_reg.RegisterPrimitive(L"UsdPrimitive");
   in_reg.RegisterProperty(L"UsdPrimitive");
 
@@ -71,10 +79,14 @@ SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
   in_reg.RegisterCustomDisplay(L"UsdExplorer");
   in_reg.RegisterDisplayCallback( L"UsdHydraDisplayCallback" );
 
+  RegisterUsdStageNode(in_reg);
+  RegisterUsdSphereNode(in_reg);
+  RegisterUsdCubeNode(in_reg);
+
   GL_EXTENSIONS_LOADED = false;
   U2X_HIDDEN_WINDOW = NULL;
   _InitializeGL();
-  //UsdStageCacheContext context(U2X_USDSTAGE_CACHE);
+  pxr::UsdStageCacheContext context(U2X_USDSTAGE_CACHE);
   U2X_SCENE = new U2XScene();
 
   return CStatus::OK;

@@ -92,7 +92,7 @@ public:
   void AddStage(CustomPrimitive& prim, U2XStage* stage);
   void ReloadStage(U2XStage* stage);
   void SyncStagesCache();
-  pxr::UsdStageRefPtr GetSceneStage() { return _stage; };
+  pxr::UsdStageWeakPtr GetSceneStage() { return _stage; };
   U2XStage* GetStage(CustomPrimitive& prim);
   U2XStage* GetStage(ULONG objectId);
   pxr::UsdPrim GetRootPrim(ULONG objectId);
@@ -105,5 +105,5 @@ private:
   U2XPrimitiveManager       _manager;
 };
 
-//extern pxr::UsdStageCache   U2X_USDSTAGE_CACHE;
+extern pxr::UsdStageCache   U2X_USDSTAGE_CACHE;
 extern U2XScene*            U2X_SCENE;

@@ -17,6 +17,7 @@ add_library(${TARGET} SHARED
   attribute.cpp
   event.cpp
   explorer.cpp
+  nodes.cpp
   mesh.cpp
   plugin.cpp
   prim.cpp

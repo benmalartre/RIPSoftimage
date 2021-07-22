@@ -14,6 +14,7 @@
 
 U2XEngine* HYDRA_ENGINE = NULL;
 extern U2XScene* U2X_SCENE;
+U2XScene* LAST_U2X_SCENE = NULL;
 
 static void _InitializeHydraEngine() {
   if (!HYDRA_ENGINE) {
@@ -35,6 +36,11 @@ static void _InitializeHydraEngine() {
       pxr::GfVec4f(0.5, 0.5, 0.5, 1.0));
     
   }
+}
+
+static void _TerminateHydraEngine() {
+  if(HYDRA_ENGINE)delete HYDRA_ENGINE;
+  HYDRA_ENGINE = NULL;
 }
 
 static pxr::GfMatrix4d _GetViewMatrix(const Camera& camera)
@@ -82,20 +88,15 @@ void UsdHydraDisplayCallback_Init( XSI::CRef sequencerContext, LPVOID *userData 
     XSI::siAll, 
     XSI::CString()
   );
-
-  _InitializeHydraEngine();
-
-  //HYDRA_STAGE = pxr::UsdStage::Open("C:/Users/graph/Documents/bmal/src/USD_ASSETS/Kitchen_set/Kitchen_set.usd");
-  //HYDRA_STAGE = pxr::UsdStage::Open("C:\\Users\\graph\\Documents\\bmal\\src\\USD_ASSETS\\Attic_NVIDIA\\Attic_NVIDIA.usd");
-  //HYDRA_STAGE = pxr::UsdStage::Open("C:\\Users\\graph\\Documents\\bmal\\src\\USD_ASSETS\\Attic_NVIDIA\\Props\\tv.usd");
 }
 
 void UsdHydraDisplayCallback_Execute( XSI::CRef sequencerContext, LPVOID *userData )
 {
-  //
-  // Call OpenGL to clear the frame buffer
-  //
-
+  if (U2X_SCENE != LAST_U2X_SCENE) {
+    _TerminateHydraEngine();
+    _InitializeHydraEngine();
+    LAST_U2X_SCENE = U2X_SCENE;
+  }
   XSI::GraphicSequencerContext graphicSequencerContext = sequencerContext;
   assert(graphicSequencerContext.IsValid());
   XSI::CGraphicSequencer sequencer = graphicSequencerContext.GetGraphicSequencer();
@@ -201,10 +202,7 @@ void UsdHydraDisplayCallback_Execute( XSI::CRef sequencerContext, LPVOID *userDa
 
 void UsdHydraDisplayCallback_Term( XSI::CRef sequencerContext, LPVOID *userData )
 {
-	// 
-	// You should free user data and local memory here. 
-	//
-	
+  _TerminateHydraEngine();
 }
 
 void UsdHydraDisplayCallback_InitInstance( XSI::CRef sequencerContext, LPVOID *userData )

@@ -6,6 +6,7 @@
 #include "utils.h"
 #include "shader.h"
 #include "scene.h"
+#include "nodes.h"
 
 #include <pxr/base/arch/fileSystem.h>
 #include <pxr/usd/usdGeom/xform.h>
@@ -42,9 +43,16 @@ void U2XSelection::Clear()
   _items.clear();
 }
 
+U2XStage::U2XStage()
+  : _isRoot(false), _objectID(-1), _lastEvalID(-1), _isLoaded(false), _time(DBL_MAX)
+{
+  TfTokenVector purposes = { UsdGeomTokens->default_, UsdGeomTokens->render };
+  _bboxCache = new pxr::UsdGeomBBoxCache(pxr::UsdTimeCode::Default(), purposes);
+  _xformCache = new pxr::UsdGeomXformCache(pxr::UsdTimeCode::Default());
+}
 
 U2XStage::U2XStage(CustomPrimitive& prim)
-  : _objectID(prim.GetObjectID()), _lastEvalID(-1), _isLoaded(false), _time(DBL_MAX)
+  : _isRoot(true), _objectID(prim.GetObjectID()), _lastEvalID(-1), _isLoaded(false), _time(DBL_MAX)
 {
   TfTokenVector purposes = { UsdGeomTokens->default_, UsdGeomTokens->render };
   _bboxCache = new pxr::UsdGeomBBoxCache(pxr::UsdTimeCode::Default(), purposes);
@@ -63,6 +71,40 @@ bool U2XStage::HasFilename(const CString& filename, size_t index)
 {
   if (!_rawFilenames.size() || index >= _rawFilenames.size()) return false;
   else return (_rawFilenames[index] == filename);
+}
+
+void U2XStage::SetFromICE(const CustomPrimitive& prim)
+{
+  ICEAttribute attr = prim.GetICEAttributeFromName(U2X_PROCEDURAL_ROOT);
+  if (attr.IsValid() && attr.IsDefined()) {
+    CStringArray customDataTypes = attr.GetCustomDataTypes();
+    if (customDataTypes.GetCount() && customDataTypes[0] == "UsdStage") {
+      CICEAttributeDataArrayCustomType customData;
+      attr.GetDataArray(customData);
+
+      for (ULONG i = 0; i < customData.GetCount(); i++)
+      {
+        ULONG nSize;
+        const CICEAttributeDataArrayCustomType::TData* pBuffer;
+        customData.GetData(i, &pBuffer, nSize);
+
+        LOG(CString((void*)pBuffer) + L":" + CString(nSize));
+        U2XStageNodeDatas_t* stageData = (U2XStageNodeDatas_t*)(void*)pBuffer;
+        std::cout << "STAGE DATA : " << stageData->_uri << std::endl;
+      }
+    }
+    //pxr::UsdStageRefPtr stage = 
+
+    /*
+
+
+    // Log the data pointer address and size of data.
+    CICEAttributeDataArrayCustomType customData;
+    attr.GetDataArray( customData );
+
+    
+    */
+  }
 }
 
 void U2XStage::SetFilenames(const CStringArray& filenames)
@@ -193,6 +235,13 @@ void U2XStage::Recurse(const pxr::UsdPrim& prim, U2XPrim* parent)
     Recurse(child, current);
   }
 }
+
+bool U2XStage::HasUsdICEAttribute(CustomPrimitive& prim)
+{
+  ICEAttribute attr(prim.GetICEAttributeFromName(U2X_PROCEDURAL_ROOT));
+  if (attr.IsValid() && attr.IsDefined())return true;
+  return false;
+};
 
 void U2XStage::Update(CustomPrimitive& prim)
 {

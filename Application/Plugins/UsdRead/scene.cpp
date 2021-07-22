@@ -5,23 +5,21 @@
 #include <pxr/usd/usd/prim.h>
 #include <pxr/usd/usdGeom/xform.h>
 
-//U2XPrimitiveManager U2X_PRIMITIVES;
-//pxr::UsdStageCache  U2X_USDSTAGE_CACHE;
+pxr::UsdStageCache  U2X_USDSTAGE_CACHE;
 U2XScene*           U2X_SCENE;
+ULONG               U2X_SCENE_ID = 0;
 
 U2XScene::U2XScene()
 {
-  LOG("CONSTRUCTOR U2XSCENE CALLED");
-  _stage = pxr::UsdStage::CreateInMemory("U2XScene");
+  _stage = pxr::UsdStage::CreateInMemory("U2XScene"+std::to_string(U2X_SCENE_ID));
   _rootPath = pxr::SdfPath(pxr::TfToken("/"));
+  U2X_SCENE_ID++;
 }
 
 U2XScene::~U2XScene()
 {
-  LOG("DESTRUCTOR U2XSCENE CALLED");
   _manager.ClearCache();
   _prims.clear();
-  _stage = nullptr;
 }
 
 
@@ -41,7 +39,6 @@ void U2XScene::AddStage(CustomPrimitive& prim, U2XStage* stage)
   pxr::SdfPath rootPath(pxr::TfToken("/U2XRoot" + std::to_string(stage->GetObjectID())));
   pxr::UsdPrim root = pxr::UsdGeomXform::Define(_stage, rootPath).GetPrim();
   pxr::UsdPrim ref = _stage->OverridePrim(rootPath.AppendChild(pxr::TfToken("ref")));
-  //ref.GetReferences().AddReference(stage->GetRootLayer()->GetIdentifier());
   _prims.push_back(root);
 }
 

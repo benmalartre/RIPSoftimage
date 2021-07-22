@@ -258,3 +258,5 @@ void U2XCastTuppledData(const SRC* src, DST* dst, size_t num, int srcN, int dstN
     for(int j=0;j<minN;++j)dst[i][j] = src[i][j];
   }
 }
+
+static char* U2X_PROCEDURAL_ROOT = "UsdProceduralRoot";

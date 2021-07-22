@@ -100,18 +100,18 @@ public:
   virtual void Reshape(int width, int height);
 
 protected:
-  std::string       _className;
-	HWND              _hWnd;
-  HINSTANCE         _hInstance;
-  HDC               _hDC;
-  HGLRC             _hRC;
-  ImGuiWindowFlags  _flags;
-  ImGuiContext*     _ctxt;
-  bool              _shared;
-  RECT              _rect;
-  bool              _active;
-  bool              _initialized;
-  U2XStage*         _stage;
+  std::string           _className;
+	HWND                  _hWnd;
+  HINSTANCE             _hInstance;
+  HDC                   _hDC;
+  HGLRC                 _hRC;
+  ImGuiWindowFlags      _flags;
+  ImGuiContext*         _ctxt;
+  bool                  _shared;
+  RECT                  _rect;
+  bool                  _active;
+  bool                  _initialized;
+  pxr::UsdStageWeakPtr  _stage;
 };
 
 extern std::vector<U2XWindow*> U2X_UIS;

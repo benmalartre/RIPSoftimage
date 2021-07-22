@@ -128,10 +128,6 @@ void U2XGLSLProgram::_Build()
 void U2XGLSLProgram::Build(const char* name, const char* vertex,
   const char* fragment)
 {
-  std::cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << std::endl;
-  std::cout << name << std::endl;
-  std::cout << vertex << std::endl;
-  std::cout << fragment << std::endl;
   _name = name;
   U2XGLSLShader vertShader;
   vertShader.Set(vertex, GL_VERTEX_SHADER);

@@ -77,6 +77,17 @@ static void U2XRandomColor(pxr::VtArray<pxr::GfVec3f>& ioColors)
       (float)rand() / (float)RAND_MAX);
 }
 
+static bool U2XGetICETree(X3DObject op, CRef& tree)
+{
+  Primitive primitive = op.GetActivePrimitive();
+  CRefArray trees = primitive.GetICETrees();
+  if (trees.GetCount()) {
+    tree = trees[0];
+    return true;
+  }
+  return false;
+}
+
 static double U2XGetBoundingBoxComponent(const pxr::GfBBox3d& bbox, short comp)
 {
   switch (comp)
