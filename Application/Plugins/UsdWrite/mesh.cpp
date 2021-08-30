@@ -413,6 +413,22 @@ bool X2UMesh::_GetNodesUVs(const PolygonMesh& mesh, VtArray<GfVec2f>& ioArray)
 {
   // geometry accessor
   CGeometryAccessor accessor = mesh.GetGeometryAccessor();
+  /*
+  LOG("GET NODES UV ...");
+  LOG("NUM VERTICES = "+CString(accessor.GetVertexCount()));
+  LOG("NUM NODES = "+CString(accessor.GetNodeCount()));
+  LOG("NUM FACES = "+CString(accessor.GetPolygonCount()));
+
+  
+  CLongArray polygonVerticesCounts;
+  accessor.GetPolygonVerticesCount(polygonVerticesCounts);
+  size_t numSamples = 0;
+  for (size_t p = 0; p < polygonVerticesCounts.GetCount(); ++p) {
+    numSamples += polygonVerticesCounts[p];
+  }
+  std::cout << "NUM SAMPLES = " << numSamples << std::endl;
+  */
+
   CRefArray uvs = accessor.GetUVs();
   if (uvs.GetCount())
   {

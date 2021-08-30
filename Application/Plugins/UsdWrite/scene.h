@@ -12,7 +12,8 @@ class X2UScene : public X2UModel{
     void Init() override;
     void Save() override;
 
-    void TimeInfos();
+    void SetTimeInfosFromScene();
+    void SetTimeInfos(double startTime, double endTime, double rate);
     void Process();
 
   private:

@@ -70,6 +70,7 @@ SICALLBACK UsdWrite_Execute( CRef& in_ctxt )
       (std::string) filename.GetAsciiString(),
       root.GetRef()
     );
+    
     exportScene.Init();
     exportScene.Process();
     exportScene.Save();

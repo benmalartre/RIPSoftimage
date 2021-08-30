@@ -28,8 +28,6 @@ void X2UScene::Save()
 
 void X2UScene::Init()
 {
-  TimeInfos();
-
   // Create Usd stage for writing
   _stage = UsdStage::CreateNew(_folder + "/" + _filename);
   UsdGeomXform rootXform = UsdGeomXform::Define(_stage, SdfPath(_rootName));
@@ -39,9 +37,14 @@ void X2UScene::Init()
 
 
 // Get time infos from scene
-void X2UScene::TimeInfos()
+void X2UScene::SetTimeInfosFromScene()
 {
   _timeInfos.InitFromScene();
+}
+
+void X2UScene::SetTimeInfos(double startTime, double endTime, double rate)
+{
+  _timeInfos.InitFromValues(startTime, endTime, rate);
 }
 
 void X2UScene::Process()

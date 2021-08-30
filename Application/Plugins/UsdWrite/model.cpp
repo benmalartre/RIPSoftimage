@@ -104,13 +104,11 @@ void X2UModel::_Recurse(const CRef& ref, const std::string& parentPath)
           _prims.push_back(X2UInstancerSharedPtr(instancer));
           _xObjPathMap[instancer->GetID()] = instancer->GetPath();
         }
-        /*
-        X2UPointCloudContainsInstances(X3DObject(ref));
-        X2UPoints* point = new X2UPoints(objPath, ref);;
-        point->Init(_stage);
-        _prims.push_back(X2UPointSharedPtr(point));
-        */
         
+        //X2UPointCloudContainsInstances(X3DObject(ref));
+        //X2UPoints* point = new X2UPoints(objPath, ref);;
+        //point->Init(_stage);
+        //_prims.push_back(X2UPointSharedPtr(point));
       }
       else if (type == L"camera")
       {
@@ -125,6 +123,7 @@ void X2UModel::_Recurse(const CRef& ref, const std::string& parentPath)
       {
         _Recurse(children[j], objPath);
       }
+      
     }
   }
 }

@@ -119,7 +119,7 @@ struct X2UTimeInfos {
   double framesPerSecond;
 
   void InitFromScene();
-  void Set(double start, double end, double rate);
+  void InitFromValues(double start, double end, double rate);
 };
 
 bool X2UCheckFolder(const CString& folder);

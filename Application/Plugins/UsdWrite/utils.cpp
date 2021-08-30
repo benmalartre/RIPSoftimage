@@ -46,7 +46,7 @@ void X2UTimeInfos::InitFromScene()
   sampleRate = 1;
 }
 
-void X2UTimeInfos::Set(double start, double end, double rate)
+void X2UTimeInfos::InitFromValues(double start, double end, double rate)
 {
   startFrame = start;
   endFrame = end;
