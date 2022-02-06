@@ -75,7 +75,7 @@ void X2UModel::_Recurse(const CRef& ref, const std::string& parentPath)
         _prims.push_back(X2UXformSharedPtr(xform));
         _xObjPathMap[xform->GetID()] = xform->GetPath();
       }
-      else if (type == L"polymsh")
+      else if (type == L"polymsh" & _options & X2U_EXPORT_MESH)
       {
         X2UMesh* mesh = new X2UMesh(objPath, ref);;
         mesh->Init(_stage);

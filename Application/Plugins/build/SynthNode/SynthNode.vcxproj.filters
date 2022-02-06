@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\Stk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\FileWvIn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\FileRead.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\FileLoop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\FM.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\FMVoices.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\FormSwep.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\Modal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\Fir.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\Twang.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\RtAudio.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\Voicer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\DelayA.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\DelayL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\BiQuad.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\OneZero.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\TwoZero.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\PoleZero.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\OnePole.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\Envelope.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\ADSR.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\Noise.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\SineWave.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\SingWave.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\Clarinet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\BlowHole.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\Saxofony.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\Flute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\Brass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\BlowBotl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\Bowed.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\Plucked.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\StifKarp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\Sitar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\Mandolin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\Rhodey.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\Wurley.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\TubeBell.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\HevyMetl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\PercFlut.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\BeeThree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\VoicForm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\Moog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\Simple.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\Drummer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\BandedWG.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\Shakers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\ModalBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\Mesh2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\Resonate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\Whistle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\Phonemes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\Modulate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\Sampler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\stk\src\Sphere.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\SynthNode\SynthoxData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\SynthNode\SynthoxInstrument.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\SynthNode\SynthoxInstruments.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\SynthNode\SynthoxPlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\SynthNode\SynthoxReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\SynthNode\SynthoxRegister.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\SynthNode\SynthoxVoicer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\SynthNode\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{00816234-769A-3229-8315-B7454F6583DB}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,194 @@
+﻿  Building Custom Rule C:/Users/graph/Documents/bmal/src/RIPSoftimage/Application/Plugins/SynthNode/CMakeLists.txt
+  Stk.cpp
+  FileWvIn.cpp
+  FileRead.cpp
+C:\Users\graph\Documents\bmal\src\stk\src\FileRead.cpp(85,9): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  FileLoop.cpp
+  FM.cpp
+  FMVoices.cpp
+  FormSwep.cpp
+  Modal.cpp
+  Fir.cpp
+  Twang.cpp
+C:\Users\graph\Documents\bmal\src\stk\include\DelayA.h(47,41): warning C4267: 'return' : conversion de 'size_t' en 'unsigned long', perte possible de données
+C:\Users\graph\Documents\bmal\src\stk\include\DelayL.h(43,41): warning C4267: 'return' : conversion de 'size_t' en 'unsigned long', perte possible de données
+  RtAudio.cpp
+  Voicer.cpp
+  DelayA.cpp
+C:\Users\graph\Documents\bmal\src\stk\include\DelayA.h(47,41): warning C4267: 'return' : conversion de 'size_t' en 'unsigned long', perte possible de données
+C:\Users\graph\Documents\bmal\src\stk\src\DelayA.cpp(67,40): warning C4267: 'initialisation' : conversion de 'size_t' en 'unsigned long', perte possible de données
+C:\Users\graph\Documents\bmal\src\stk\src\DelayA.cpp(103,26): warning C4267: '+=' : conversion de 'size_t' en 'long', perte possible de données
+C:\Users\graph\Documents\bmal\src\stk\src\DelayA.cpp(112,26): warning C4267: '+=' : conversion de 'size_t' en 'long', perte possible de données
+  DelayL.cpp
+C:\Users\graph\Documents\bmal\src\stk\include\DelayL.h(43,41): warning C4267: 'return' : conversion de 'size_t' en 'unsigned long', perte possible de données
+C:\Users\graph\Documents\bmal\src\stk\src\DelayL.cpp(59,26): warning C4267: '+=' : conversion de 'size_t' en 'long', perte possible de données
+C:\Users\graph\Documents\bmal\src\stk\src\DelayL.cpp(68,26): warning C4267: '+=' : conversion de 'size_t' en 'long', perte possible de données
+  BiQuad.cpp
+  OneZero.cpp
+  TwoZero.cpp
+  PoleZero.cpp
+  OnePole.cpp
+  Envelope.cpp
+  Génération de code en cours...
+  Compilation en cours...
+  ADSR.cpp
+  Noise.cpp
+  SineWave.cpp
+  SingWave.cpp
+  Clarinet.cpp
+C:\Users\graph\Documents\bmal\src\stk\include\DelayL.h(43,41): warning C4267: 'return' : conversion de 'size_t' en 'unsigned long', perte possible de données
+  BlowHole.cpp
+C:\Users\graph\Documents\bmal\src\stk\include\DelayL.h(43,41): warning C4267: 'return' : conversion de 'size_t' en 'unsigned long', perte possible de données
+  Saxofony.cpp
+C:\Users\graph\Documents\bmal\src\stk\include\DelayL.h(43,41): warning C4267: 'return' : conversion de 'size_t' en 'unsigned long', perte possible de données
+  Flute.cpp
+C:\Users\graph\Documents\bmal\src\stk\include\DelayL.h(43,41): warning C4267: 'return' : conversion de 'size_t' en 'unsigned long', perte possible de données
+  Brass.cpp
+C:\Users\graph\Documents\bmal\src\stk\include\DelayA.h(47,41): warning C4267: 'return' : conversion de 'size_t' en 'unsigned long', perte possible de données
+  BlowBotl.cpp
+  Bowed.cpp
+C:\Users\graph\Documents\bmal\src\stk\include\DelayL.h(43,41): warning C4267: 'return' : conversion de 'size_t' en 'unsigned long', perte possible de données
+  Plucked.cpp
+C:\Users\graph\Documents\bmal\src\stk\include\DelayA.h(47,41): warning C4267: 'return' : conversion de 'size_t' en 'unsigned long', perte possible de données
+  StifKarp.cpp
+C:\Users\graph\Documents\bmal\src\stk\include\DelayL.h(43,41): warning C4267: 'return' : conversion de 'size_t' en 'unsigned long', perte possible de données
+C:\Users\graph\Documents\bmal\src\stk\include\DelayA.h(47,41): warning C4267: 'return' : conversion de 'size_t' en 'unsigned long', perte possible de données
+  Sitar.cpp
+C:\Users\graph\Documents\bmal\src\stk\include\DelayA.h(47,41): warning C4267: 'return' : conversion de 'size_t' en 'unsigned long', perte possible de données
+  Mandolin.cpp
+C:\Users\graph\Documents\bmal\src\stk\include\DelayA.h(47,41): warning C4267: 'return' : conversion de 'size_t' en 'unsigned long', perte possible de données
+C:\Users\graph\Documents\bmal\src\stk\include\DelayL.h(43,41): warning C4267: 'return' : conversion de 'size_t' en 'unsigned long', perte possible de données
+  Rhodey.cpp
+  Wurley.cpp
+  TubeBell.cpp
+  HevyMetl.cpp
+  PercFlut.cpp
+  Génération de code en cours...
+  Compilation en cours...
+  BeeThree.cpp
+  VoicForm.cpp
+  Moog.cpp
+  Simple.cpp
+  Drummer.cpp
+  BandedWG.cpp
+C:\Users\graph\Documents\bmal\src\stk\include\DelayL.h(43,41): warning C4267: 'return' : conversion de 'size_t' en 'unsigned long', perte possible de données
+  Shakers.cpp
+  ModalBar.cpp
+  Mesh2D.cpp
+  Resonate.cpp
+  Whistle.cpp
+  Phonemes.cpp
+  Modulate.cpp
+  Sampler.cpp
+  Sphere.cpp
+  SynthoxData.cpp
+C:\Users\graph\Documents\bmal\src\stk\include\DelayA.h(47,41): warning C4267: 'return' : conversion de 'size_t' en 'unsigned long', perte possible de données
+C:\Users\graph\Documents\bmal\src\stk\include\DelayL.h(43,41): warning C4267: 'return' : conversion de 'size_t' en 'unsigned long', perte possible de données
+  SynthoxInstrument.cpp
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector2f.h(310,13): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_matrix3f.h(529,29): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_matrix3f.h(533,29): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_matrix3f.h(537,29): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_matrix3f.h(541,29): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_matrix3f.h(545,29): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_matrix3f.h(549,29): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector3f.h(719,13): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector3f.h(985,15): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector3f.h(994,40): warning C4244: 'argument' : conversion de 'double' en 'const float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector3f.h(994,26): warning C4244: 'argument' : conversion de 'double' en 'const float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector3f.h(994,12): warning C4244: 'argument' : conversion de 'double' en 'const float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector3f.h(1002,15): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector3f.h(1003,15): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector3f.h(1004,15): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector4f.h(680,15): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector4f.h(681,15): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector4f.h(682,15): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector4f.h(683,15): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector4f.h(702,13): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_quaternionf.h(518,14): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_quaternionf.h(737,22): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_quaternionf.h(781,20): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_quaternionf.h(782,22): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_quaternionf.h(784,48): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_quaternionf.h(785,39): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_rotationf.h(842,12): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_rotationf.h(843,12): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+  SynthoxInstruments.cpp
+C:\Users\graph\Documents\bmal\src\stk\include\DelayL.h(43,41): warning C4267: 'return' : conversion de 'size_t' en 'unsigned long', perte possible de données
+C:\Users\graph\Documents\bmal\src\stk\include\DelayA.h(47,41): warning C4267: 'return' : conversion de 'size_t' en 'unsigned long', perte possible de données
+  SynthoxPlayer.cpp
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector4f.h(669,8): warning C4834: abandon de la valeur de retour de la fonction ayant l'attribut 'nodiscard'
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector4f.h(670,8): warning C4834: abandon de la valeur de retour de la fonction ayant l'attribut 'nodiscard'
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector4f.h(671,8): warning C4834: abandon de la valeur de retour de la fonction ayant l'attribut 'nodiscard'
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector4f.h(672,8): warning C4834: abandon de la valeur de retour de la fonction ayant l'attribut 'nodiscard'
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\SynthNode\SynthoxPlayer.cpp(64,38): warning C4267: '+=' : conversion de 'size_t' en 'LONG', perte possible de données
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\SynthNode\SynthoxPlayer.cpp(175,38): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\SynthNode\SynthoxPlayer.cpp(231,18): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+  SynthoxReader.cpp
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector4f.h(669,8): warning C4834: abandon de la valeur de retour de la fonction ayant l'attribut 'nodiscard'
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector4f.h(670,8): warning C4834: abandon de la valeur de retour de la fonction ayant l'attribut 'nodiscard'
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector4f.h(671,8): warning C4834: abandon de la valeur de retour de la fonction ayant l'attribut 'nodiscard'
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector4f.h(672,8): warning C4834: abandon de la valeur de retour de la fonction ayant l'attribut 'nodiscard'
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\SynthNode\SynthoxReader.cpp(73,38): warning C4267: '+=' : conversion de 'size_t' en 'LONG', perte possible de données
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\SynthNode\SynthoxReader.cpp(190,38): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\SynthNode\SynthoxReader.cpp(259,19): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\SynthNode\SynthoxReader.cpp(305,50): warning C4244: '=' : conversion de 'stk::StkFloat' en 'T', perte possible de données
+          with
+          [
+              T=float
+          ]
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\SynthNode\SynthoxReader.cpp(326,66): warning C4244: '=' : conversion de 'stk::StkFloat' en 'T', perte possible de données
+          with
+          [
+              T=float
+          ]
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\SynthNode\SynthoxReader.cpp(327,51): warning C4244: '=' : conversion de 'stk::StkFloat' en 'T', perte possible de données
+          with
+          [
+              T=float
+          ]
+  Génération de code en cours...
+  Compilation en cours...
+  SynthoxRegister.cpp
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector2f.h(310,13): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_matrix3f.h(529,29): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_matrix3f.h(533,29): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_matrix3f.h(537,29): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_matrix3f.h(541,29): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_matrix3f.h(545,29): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_matrix3f.h(549,29): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector3f.h(719,13): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector3f.h(985,15): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector3f.h(994,40): warning C4244: 'argument' : conversion de 'double' en 'const float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector3f.h(994,26): warning C4244: 'argument' : conversion de 'double' en 'const float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector3f.h(994,12): warning C4244: 'argument' : conversion de 'double' en 'const float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector3f.h(1002,15): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector3f.h(1003,15): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector3f.h(1004,15): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector4f.h(680,15): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector4f.h(681,15): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector4f.h(682,15): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector4f.h(683,15): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector4f.h(702,13): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_quaternionf.h(518,14): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_quaternionf.h(737,22): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_quaternionf.h(781,20): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_quaternionf.h(782,22): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_quaternionf.h(784,48): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_quaternionf.h(785,39): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_rotationf.h(842,12): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_rotationf.h(843,12): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+  SynthoxVoicer.cpp
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector4f.h(669,8): warning C4834: abandon de la valeur de retour de la fonction ayant l'attribut 'nodiscard'
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector4f.h(670,8): warning C4834: abandon de la valeur de retour de la fonction ayant l'attribut 'nodiscard'
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector4f.h(671,8): warning C4834: abandon de la valeur de retour de la fonction ayant l'attribut 'nodiscard'
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector4f.h(672,8): warning C4834: abandon de la valeur de retour de la fonction ayant l'attribut 'nodiscard'
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\SynthNode\SynthoxVoicer.cpp(120,23): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\SynthNode\SynthoxVoicer.cpp(141,23): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\SynthNode\SynthoxVoicer.cpp(260,17): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\SynthNode\SynthoxVoicer.cpp(361,19): warning C4101: 'error' : variable locale non référencée
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\SynthNode\SynthoxVoicer.cpp(387,20): warning C4101: 'error' : variable locale non référencée
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\SynthNode\SynthoxVoicer.cpp(401,17): warning C4018: '<' : incompatibilité signed/unsigned
+  Génération de code en cours...
+     Création de la bibliothèque C:/Users/graph/Documents/bmal/src/RIPSoftimage/Application/Plugins/build/SynthNode/Release/SynthNode.lib et de l'objet C:/Users/graph/Documents/bmal/src/RIPSoftimage/Application/Plugins/build/SynthNode/Release/SynthNode.exp
+  SynthNode.vcxproj -> C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\build\SynthNode\Release\SynthNode.dll

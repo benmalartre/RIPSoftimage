@@ -37,9 +37,9 @@ void X2UScene::Init()
 
 
 // Get time infos from scene
-void X2UScene::SetTimeInfosFromScene()
+void X2UScene::SetTimeInfosFromScene(double rate)
 {
-  _timeInfos.InitFromScene();
+  _timeInfos.InitFromScene(rate);
 }
 
 void X2UScene::SetTimeInfos(double startTime, double endTime, double rate)

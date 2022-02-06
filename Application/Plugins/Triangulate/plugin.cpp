@@ -285,7 +285,7 @@ SICALLBACK Triangulate_BeginEvaluate( ICENodeContext& in_ctxt )
 
   static float __x[4] = { 0.f, 1.f, 1.f, 0.f };
   static float __y[4] = { 0.f, 0.f, 1.f, 1.f };
-  Triangulate(4, &__x[0], &__y[0], int advance_bytes = 0) = 0;
+  Triangulate(4, &__x[0], &__y[0], 0) = 0;
   int nb_visible_points=0;
 
   long nbpoints=PointPositionData.GetCount();

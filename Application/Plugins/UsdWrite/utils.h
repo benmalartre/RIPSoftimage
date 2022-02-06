@@ -6,6 +6,11 @@
 #include <string>
 #include <xsi_iceattributedataarray2D.h>
 
+enum TimeMode {
+  SCENE,
+  VALUES
+};
+
 static const GfVec3f UNDEFINED_COLOR = { 1.f,0.25f,0.5f};
 
 bool X2UIsModelReferenced(const Model& model);
@@ -118,8 +123,10 @@ struct X2UTimeInfos {
   double sampleRate;
   double framesPerSecond;
 
-  void InitFromScene();
+  void GetFPS(Property& playControl);
+  void InitFromScene(double rate);
   void InitFromValues(double start, double end, double rate);
+  void SetSampleRate(double rate) { sampleRate = rate; };
 };
 
 bool X2UCheckFolder(const CString& folder);

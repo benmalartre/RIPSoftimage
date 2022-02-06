@@ -13,6 +13,7 @@ struct X2UPrototype {
   ULONG     ID;
   SdfPath   path;
 };
+
 // Model
 class X2UModel {
   public:
@@ -23,6 +24,7 @@ class X2UModel {
 
     ULONG GetID() { return _root.GetObjectID(); };
     void SetPath(const std::string& path) { _path = SdfPath(path); };
+    void SetOptions(size_t options) {_options = options;};
     SdfPath GetPath() { return _path; };
     void _Recurse(const CRef& ref, const std::string& parentPath);
     void _WriteSample(double t);
@@ -41,6 +43,7 @@ class X2UModel {
     std::vector<X2UModel>     _models;
     X2UObjectPathMap          _xObjPathMap;
     std::vector<X2UPrototype> _prototypes;
+    size_t                    _options;
 };
 
 typedef std::vector<X2UModel> X2UModelList;

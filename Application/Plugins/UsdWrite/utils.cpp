@@ -4,17 +4,8 @@
 #include <xsi_shape.h>
 #include <sys/stat.h>
 
-void X2UTimeInfos::InitFromScene()
+void X2UTimeInfos::GetFPS(Property& playControl)
 {
-  // Get the current project
-  Application app;
-  Project project = app.GetActiveProject();
-
-  // The PlayControl property set is stored with scene data under the project
-  Property playControl = project.GetProperties().GetItem(L"Play Control");
-
-  startFrame = playControl.GetParameterValue(L"In");
-  endFrame = playControl.GetParameterValue(L"Out");
   switch ((int)playControl.GetParameterValue(L"Format"))
   {
   case 13:
@@ -42,16 +33,37 @@ void X2UTimeInfos::InitFromScene()
     framesPerSecond = 24.0; // FILM
     break;
   }
+}
 
-  sampleRate = 1;
+void X2UTimeInfos::InitFromScene(double rate)
+{
+  // Get the current project
+  Application app;
+  Project project = app.GetActiveProject();
+
+  // The PlayControl property set is stored with scene data under the project
+  Property playControl = project.GetProperties().GetItem(L"Play Control");
+
+  startFrame = playControl.GetParameterValue(L"In");
+  endFrame = playControl.GetParameterValue(L"Out");
+  GetFPS(playControl);
+
+  sampleRate = rate;
 }
 
 void X2UTimeInfos::InitFromValues(double start, double end, double rate)
 {
+  // Get the current project
+  Application app;
+  Project project = app.GetActiveProject();
+
+  // The PlayControl property set is stored with scene data under the project
+  Property playControl = project.GetProperties().GetItem(L"Play Control");
+
   startFrame = start;
   endFrame = end;
   sampleRate = rate;
-  framesPerSecond = 24;
+  GetFPS(playControl);
 }
 
 bool X2UIsModelReferenced(Model& model)

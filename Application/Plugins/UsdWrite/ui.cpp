@@ -8,12 +8,15 @@ CString kFolder = "Folder";
 CString kFilename = "Filename";
 CString kTimeMode = "TimeMode";
 CString kExportMeshes = "ExportMeshes";
+CString kExportUVs = "ExportUVs";
+CString kExportColors = "ExportColors";
 CString kExportPoints = "ExportPoints";
 CString kExportCurves = "ExportCurves";
 CString kExportCameras = "ExportCameras";
 CString kExportLights = "ExportLights";
 CString kStartFrame = "StartFrame";
 CString kEndFrame = "EndFrame";
+CString kSampleRate = "SampleRate";
 CString kWrite = "Write";
 
 SICALLBACK UsdWriteUI_Define(CRef& in_ctxt)
@@ -26,12 +29,15 @@ SICALLBACK UsdWriteUI_Define(CRef& in_ctxt)
   prop.AddParameter(kFilename, CValue::siString, siPersistable | siKeyable, "", "", "", param);
   prop.AddParameter(kTimeMode, CValue::siUInt1, siPersistable | siKeyable, "", "", 0l, 0l, 1l, 0l, 1l, param);
   prop.AddParameter(kExportMeshes, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
+  prop.AddParameter(kExportUVs, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
+  prop.AddParameter(kExportColors, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
   prop.AddParameter(kExportPoints, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
   prop.AddParameter(kExportCurves, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
   prop.AddParameter(kExportCameras, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
   prop.AddParameter(kExportLights, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
   prop.AddParameter(kStartFrame, CValue::siFloat, siPersistable, "", "", 1l, -10000l, 10000l, -10000l, 10000l, param);
   prop.AddParameter(kEndFrame, CValue::siFloat, siPersistable, "", "", 100l, -10000l, 10000l, -10000l, 10000l, param);
+  prop.AddParameter(kSampleRate, CValue::siFloat, siPersistable, "", "", 1.f, 0.01f, 100.f, 0.01f, 100.f, param);
   return CStatus::OK;
 }
 
@@ -56,9 +62,12 @@ SICALLBACK UsdWriteUI_DefineLayout(CRef& in_ctxt)
   layout.AddEnumControl(kTimeMode, timeModeItems, "Mode", siControlCombo);
   layout.AddItem(kStartFrame);
   layout.AddItem(kEndFrame);
+  layout.AddItem(kSampleRate);
   layout.EndGroup();
   layout.AddGroup("Export Options");
   layout.AddItem(kExportMeshes, "Meshes");
+  layout.AddItem(kExportUVs, "UVs");
+  layout.AddItem(kExportColors, "Colors");
   layout.AddItem(kExportPoints, "Points");
   layout.AddItem(kExportCurves, "Curves");
   layout.AddItem(kExportCameras, "Cameras");
@@ -152,8 +161,12 @@ SICALLBACK UsdWriteUI_PPGEvent(const CRef& in_ctxt)
           CValueArray args;
           args.Add(params.GetValue(kFolder));
           args.Add(params.GetValue(kFilename));
+          args.Add(params.GetValue(kTimeMode));
           args.Add(params.GetValue(kStartFrame));
           args.Add(params.GetValue(kEndFrame));
+          args.Add(params.GetValue(kSampleRate));
+          args.Add(params.GetValue(kExportUVs));
+          args.Add(params.GetValue(kExportColors));
 
           app.ExecuteCommand("UsdWrite", args, CValue());
         }

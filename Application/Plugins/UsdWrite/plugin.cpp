@@ -42,8 +42,10 @@ SICALLBACK UsdWrite_Init( CRef& in_ctxt )
   args = cmd.GetArguments();
   args.Add(kFolder, "");
   args.Add(kFilename, "");
+  args.Add(kTimeMode, 0L);
   args.Add(kStartFrame, 1.0);
   args.Add(kEndFrame, 100.0);
+  args.Add(kSampleRate, 1.f);
 
   return CStatus::OK;
 }
@@ -56,8 +58,10 @@ SICALLBACK UsdWrite_Execute( CRef& in_ctxt )
   ArgumentArray args = cmd.GetArguments();
   CString folder = args.GetItem(kFolder).GetValue();
   CString filename = args.GetItem(kFilename).GetValue();
+  LONG timeMode = args.GetItem(kTimeMode).GetValue();
   double startFrame = args.GetItem(kStartFrame).GetValue();
   double endFrame = args.GetItem(kEndFrame).GetValue();
+  double sampleRate = args.GetItem(kSampleRate).GetValue();
 
   Application app;
   Model root = app.GetActiveSceneRoot();
@@ -72,11 +76,15 @@ SICALLBACK UsdWrite_Execute( CRef& in_ctxt )
     );
     
     exportScene.Init();
+    if (timeMode == TimeMode::SCENE) {
+      exportScene.SetTimeInfosFromScene(sampleRate);
+    }
+    else {
+      exportScene.SetTimeInfos(startFrame, endFrame, sampleRate);
+    }
     exportScene.Process();
     exportScene.Save();
   }
-
-  
 
   // Return a value by setting this attribute:
   ctxt.PutAttribute( L"ReturnValue", true );

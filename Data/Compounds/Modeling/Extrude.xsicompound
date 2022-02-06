@@ -192,7 +192,7 @@
 				<param name="in.in_31" type="4" value="0.000000"></param>
 				<param name="in.in_32" type="4" value="0.000000"></param>
 				<param name="in.in_33" type="4" value="1.000000"></param>
-				<portdef name="in" type="256" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="in" type="256" structure="1" group="0" instance="0" port="0"></portdef>
 				<datablob category="ui_infos">
 					<prop name="posx">-3214</prop>
 					<prop name="posy">38</prop>
@@ -348,7 +348,7 @@
 				<param name="array.array_32" type="4" value="0.000000"></param>
 				<param name="array.array_33" type="4" value="1.000000"></param>
 				<portdef name="index" type="2" structure="2" group="0" instance="0" port="0"></portdef>
-				<portdef name="array" type="256" structure="2" group="0" instance="0" port="1"></portdef>
+				<portdef name="array" type="256" structure="1" group="0" instance="0" port="1"></portdef>
 				<datablob category="ui_infos">
 					<prop name="posx">-574</prop>
 					<prop name="posy">-40</prop>
@@ -535,7 +535,7 @@
 				</datablob>
 			</node>
 			<node type="PassThroughNode" index="43">
-				<param name="in" type="11" value="false"></param>
+				<param name="in" type="11" value="true"></param>
 				<portdef name="in" type="1" structure="1" group="0" instance="0" port="0"></portdef>
 				<datablob category="ui_infos">
 					<prop name="posx">-2820</prop>
@@ -702,7 +702,7 @@
 				<param name="array.array_31" type="4" value="0.000000"></param>
 				<param name="array.array_32" type="4" value="0.000000"></param>
 				<param name="array.array_33" type="4" value="1.000000"></param>
-				<portdef name="array" type="256" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="array" type="256" structure="1" group="0" instance="0" port="0"></portdef>
 				<datablob category="ui_infos">
 					<prop name="posx">-2988</prop>
 					<prop name="posy">123</prop>
@@ -788,7 +788,7 @@
 				<param name="in2.in2_y" type="4" value="0.000000"></param>
 				<param name="in2.in2_z" type="4" value="0.000000"></param>
 				<portdef name="in1" type="16" structure="2" group="0" instance="0" port="0"></portdef>
-				<portdef name="in2" type="16" structure="2" group="0" instance="1" port="0"></portdef>
+				<portdef name="in2" type="16" structure="1" group="0" instance="1" port="0"></portdef>
 				<datablob category="ui_infos">
 					<prop name="posx">-3719</prop>
 					<prop name="posy">345</prop>
@@ -806,25 +806,6 @@
 					<prop name="state">Normal</prop>
 				</datablob>
 			</node>
-			<node type="LinearInterpolateNode" index="66">
-				<param name="first.first_x" type="4" value="0.000000"></param>
-				<param name="first.first_y" type="4" value="0.000000"></param>
-				<param name="first.first_z" type="4" value="0.000000"></param>
-				<param name="second.second_x" type="4" value="0.000000"></param>
-				<param name="second.second_y" type="4" value="0.000000"></param>
-				<param name="second.second_z" type="4" value="0.000000"></param>
-				<param name="blend" type="4" value="0.239000"></param>
-				<param name="clamp" type="11" value="false"></param>
-				<portdef name="first" type="16" structure="2" group="0" instance="0" port="0"></portdef>
-				<portdef name="second" type="16" structure="2" group="0" instance="0" port="1"></portdef>
-				<portdef name="blend" type="4" structure="1" group="0" instance="0" port="2"></portdef>
-				<portdef name="clamp" type="1" structure="1" group="0" instance="0" port="3"></portdef>
-				<datablob category="ui_infos">
-					<prop name="posx">664</prop>
-					<prop name="posy">146</prop>
-					<prop name="state">Normal</prop>
-				</datablob>
-			</node>
 			<node type="GetArraySizeNode" index="67">
 				<param name="array.array_x" type="4" value="0.000000"></param>
 				<param name="array.array_y" type="4" value="0.000000"></param>
@@ -833,70 +814,6 @@
 				<datablob category="ui_infos">
 					<prop name="posx">-3510</prop>
 					<prop name="posy">379</prop>
-					<prop name="state">Normal</prop>
-				</datablob>
-			</node>
-			<node type="ScalarTo3DVectorNode" index="68">
-				<param name="x" type="4" value="0.000000"></param>
-				<param name="y" type="4" value="0.000000"></param>
-				<param name="z" type="4" value="0.000000"></param>
-				<portdef name="x" type="4" structure="1" group="0" instance="0" port="0"></portdef>
-				<portdef name="y" type="4" structure="1" group="0" instance="0" port="1"></portdef>
-				<portdef name="z" type="4" structure="1" group="0" instance="0" port="2"></portdef>
-				<datablob category="ui_infos">
-					<prop name="posx">-206</prop>
-					<prop name="posy">205</prop>
-					<prop name="state">Normal</prop>
-				</datablob>
-			</node>
-			<node type="TurbulenceNode" index="69">
-				<param name="noisetype" type="3" value="0"></param>
-				<param name="seed" type="3" value="1"></param>
-				<param name="timevarying" type="11" value="false"></param>
-				<param name="position.position_x" type="4" value="0.000000"></param>
-				<param name="position.position_y" type="4" value="0.000000"></param>
-				<param name="position.position_z" type="4" value="0.000000"></param>
-				<param name="timefrequency" type="4" value="0.000000"></param>
-				<param name="spacefrequency.spacefrequency_x" type="4" value="0.100000"></param>
-				<param name="spacefrequency.spacefrequency_y" type="4" value="0.100000"></param>
-				<param name="spacefrequency.spacefrequency_z" type="4" value="0.100000"></param>
-				<param name="complexity" type="3" value="1"></param>
-				<portdef name="seed" type="2" structure="1" group="0" instance="0" port="0"></portdef>
-				<portdef name="timevarying" type="1" structure="1" group="0" instance="0" port="1"></portdef>
-				<portdef name="position" type="16" structure="2" group="0" instance="0" port="2"></portdef>
-				<portdef name="timefrequency" type="4" structure="1" group="0" instance="0" port="3"></portdef>
-				<portdef name="spacefrequency" type="16" structure="1" group="0" instance="0" port="4"></portdef>
-				<portdef name="complexity" type="2" structure="1" group="0" instance="0" port="5"></portdef>
-				<datablob category="ui_infos">
-					<prop name="posx">141</prop>
-					<prop name="posy">247</prop>
-					<prop name="state">Normal</prop>
-				</datablob>
-			</node>
-			<node type="AddNode" index="70">
-				<param name="value1.value1_x" type="4" value="0.000000"></param>
-				<param name="value1.value1_y" type="4" value="0.000000"></param>
-				<param name="value1.value1_z" type="4" value="0.000000"></param>
-				<param name="value2.value2_x" type="4" value="0.000000"></param>
-				<param name="value2.value2_y" type="4" value="0.000000"></param>
-				<param name="value2.value2_z" type="4" value="0.000000"></param>
-				<portdef name="value1" type="16" structure="2" group="0" instance="0" port="0"></portdef>
-				<portdef name="value2" type="16" structure="2" group="0" instance="1" port="0"></portdef>
-				<datablob category="ui_infos">
-					<prop name="posx">377</prop>
-					<prop name="posy">203</prop>
-					<prop name="state">Normal</prop>
-				</datablob>
-			</node>
-			<node type="PassThroughNode" index="71">
-				<param name="in" type="4" value="0.614000"></param>
-				<portdef name="in" type="4" structure="1" group="0" instance="0" port="0"></portdef>
-				<datablob category="passthrough">
-					<prop name="private">true</prop>
-				</datablob>
-				<datablob category="ui_infos">
-					<prop name="posx">-1187</prop>
-					<prop name="posy">149</prop>
 					<prop name="state">Normal</prop>
 				</datablob>
 			</node>
@@ -1043,12 +960,24 @@
 					<prop name="state">Normal</prop>
 				</datablob>
 			</node>
-			<node type="Build Index Array" version="1.0" index="86">
-				<param name="Size" type="3" value="0"></param>
-				<portdef name="Size" type="2" structure="1" group="-1" instance="-1" port="-1"></portdef>
+			<node type="SelectCaseNode" index="86">
+				<param name="condition" type="3" value="0"></param>
+				<param name="case0" type="3" value="0"></param>
+				<param name="case1" type="3" value="0"></param>
+				<param name="case2" type="3" value="0"></param>
+				<param name="case3" type="3" value="0"></param>
+				<param name="case4" type="3" value="-2"></param>
+				<param name="default" type="3" value="-2"></param>
+				<portdef name="condition" type="2" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="case0" type="2" structure="2" group="1" instance="0" port="0"></portdef>
+				<portdef name="case1" type="2" structure="2" group="1" instance="1" port="0"></portdef>
+				<portdef name="case2" type="2" structure="2" group="1" instance="2" port="0"></portdef>
+				<portdef name="case3" type="2" structure="2" group="1" instance="3" port="0"></portdef>
+				<portdef name="case4" type="2" structure="1" group="1" instance="4" port="0"></portdef>
+				<portdef name="default" type="2" structure="1" group="2" instance="0" port="0"></portdef>
 				<datablob category="ui_infos">
-					<prop name="posx">852</prop>
-					<prop name="posy">976</prop>
+					<prop name="posx">1976</prop>
+					<prop name="posy">959</prop>
 					<prop name="state">Normal</prop>
 				</datablob>
 			</node>
@@ -1096,24 +1025,14 @@
 					<prop name="state">Normal</prop>
 				</datablob>
 			</node>
-			<node type="SelectCaseNode" index="91">
-				<param name="condition" type="3" value="0"></param>
-				<param name="case0" type="3" value="0"></param>
-				<param name="case1" type="3" value="0"></param>
-				<param name="case2" type="3" value="0"></param>
-				<param name="case3" type="3" value="0"></param>
-				<param name="case4" type="3" value="-2"></param>
-				<param name="default" type="3" value="-2"></param>
-				<portdef name="condition" type="2" structure="2" group="0" instance="0" port="0"></portdef>
-				<portdef name="case0" type="2" structure="2" group="1" instance="0" port="0"></portdef>
-				<portdef name="case1" type="2" structure="2" group="1" instance="1" port="0"></portdef>
-				<portdef name="case2" type="2" structure="2" group="1" instance="2" port="0"></portdef>
-				<portdef name="case3" type="2" structure="2" group="1" instance="3" port="0"></portdef>
-				<portdef name="case4" type="2" structure="1" group="1" instance="4" port="0"></portdef>
-				<portdef name="default" type="2" structure="1" group="2" instance="0" port="0"></portdef>
+			<node type="MultiplyNode" index="91">
+				<param name="value1" type="3" value="1"></param>
+				<param name="value2" type="3" value="1"></param>
+				<portdef name="value1" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value2" type="2" structure="1" group="0" instance="1" port="0"></portdef>
 				<datablob category="ui_infos">
-					<prop name="posx">1976</prop>
-					<prop name="posy">959</prop>
+					<prop name="posx">698</prop>
+					<prop name="posy">934</prop>
 					<prop name="state">Normal</prop>
 				</datablob>
 			</node>
@@ -1173,6 +1092,11 @@
 					<prop name="posy">392</prop>
 					<prop name="state">Normal</prop>
 				</datablob>
+				<datablob category="vis_1">
+					<prop name="displaymode">0</prop>
+					<prop name="enable">1</prop>
+					<prop name="port">condition</prop>
+				</datablob>
 			</node>
 			<node type="IfNode" index="97">
 				<param name="condition" type="11" value="false"></param>
@@ -1200,7 +1124,18 @@
 					<prop name="state">Normal</prop>
 				</datablob>
 			</node>
-			<node type="DivideByScalarNode" index="99">
+			<node type="ModuloNode" index="99">
+				<param name="value" type="3" value="0"></param>
+				<param name="moduloby" type="3" value="1"></param>
+				<portdef name="value" type="2" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="moduloby" type="2" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1222</prop>
+					<prop name="posy">962</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="DivideByScalarNode" index="100">
 				<param name="value" type="3" value="0"></param>
 				<param name="divideby" type="4" value="1.000000"></param>
 				<portdef name="value" type="2" structure="2" group="0" instance="0" port="0"></portdef>
@@ -1208,17 +1143,6 @@
 				<datablob category="ui_infos">
 					<prop name="posx">1289</prop>
 					<prop name="posy">1051</prop>
-					<prop name="state">Normal</prop>
-				</datablob>
-			</node>
-			<node type="MultiplyNode" index="100">
-				<param name="value1" type="3" value="1"></param>
-				<param name="value2" type="3" value="1"></param>
-				<portdef name="value1" type="2" structure="1" group="0" instance="0" port="0"></portdef>
-				<portdef name="value2" type="2" structure="1" group="0" instance="1" port="0"></portdef>
-				<datablob category="ui_infos">
-					<prop name="posx">698</prop>
-					<prop name="posy">934</prop>
 					<prop name="state">Normal</prop>
 				</datablob>
 			</node>
@@ -1255,14 +1179,12 @@
 					<prop name="state">Normal</prop>
 				</datablob>
 			</node>
-			<node type="ModuloNode" index="104">
-				<param name="value" type="3" value="0"></param>
-				<param name="moduloby" type="3" value="1"></param>
-				<portdef name="value" type="2" structure="2" group="0" instance="0" port="0"></portdef>
-				<portdef name="moduloby" type="2" structure="1" group="0" instance="0" port="1"></portdef>
+			<node type="Build Index Array" version="1.0" index="104">
+				<param name="Size" type="3" value="0"></param>
+				<portdef name="Size" type="2" structure="1" group="-1" instance="-1" port="-1"></portdef>
 				<datablob category="ui_infos">
-					<prop name="posx">1222</prop>
-					<prop name="posy">962</prop>
+					<prop name="posx">852</prop>
+					<prop name="posy">976</prop>
 					<prop name="state">Normal</prop>
 				</datablob>
 			</node>
@@ -1273,188 +1195,175 @@
 			<port index="43" portname="in" username="CloseU" basename="CloseU" portlabel="CloseU" exposetype="single"> </port>
 			<port index="47" portname="in" username="Section" basename="Section" portlabel="Section" exposetype="single"> </port>
 			<port index="64" portname="in2" username="Input_Position" basename="Input Position" portlabel="Input Position" exposetype="single"> </port>
-			<port index="66" portname="blend" username="PerlinBlend" basename="PerlinBlend" portlabel="PerlinBlend" exposetype="single"> </port>
-			<port index="69" portname="complexity" username="PerlinComplexity" basename="PerlinComplexity" portlabel="PerlinComplexity" exposetype="single"> </port>
-			<port index="69" portname="seed" username="PerlinSeed" basename="PerlinSeed" portlabel="PerlinSeed" exposetype="single"> </port>
-			<port index="71" portname="in" username="PerlinSpaceFrequency" basename="PerlinSpaceFrequency" portlabel="PerlinSpaceFrequency" exposetype="single"> </port>
 			<port index="72" portname="in" username="CapEnd" basename="CapEnd" portlabel="CapEnd" exposetype="single"> </port>
 			<port index="75" portname="in" username="CapStart" basename="CapStart" portlabel="CapStart" exposetype="single"> </port>
 			<port index="76" portname="in" username="CloseV" basename="CloseV" portlabel="CloseV" exposetype="single"> </port>
 		</exposed_ports>
 		<connections>
-			<cnx from_node="6" from_port="result" to_node="7" to_port="value"> </cnx>
-			<cnx from_node="73" from_port="result" to_node="90" to_port="first"> </cnx>
-			<cnx from_node="73" from_port="result" to_node="93" to_port="value1"> </cnx>
-			<cnx from_node="73" from_port="result" to_node="92" to_port="moduloby"> </cnx>
-			<cnx from_node="73" from_port="result" to_node="87" to_port="value1"> </cnx>
-			<cnx from_node="73" from_port="result" to_node="102" to_port="iftrue"> </cnx>
-			<cnx from_node="73" from_port="result" to_node="94" to_port="moduloby"> </cnx>
-			<cnx from_node="41" from_port="value" to_node="42" to_port="sourceend"> </cnx>
-			<cnx from_node="41" from_port="value" to_node="42" to_port="targetstart"> </cnx>
-			<cnx from_node="3" from_port="result" to_node="56" to_port="value2"> </cnx>
-			<cnx from_node="72" from_port="out" to_node="97" to_port="iffalse"> </cnx>
-			<cnx from_node="74" from_port="result" to_node="98" to_port="iftrue"> </cnx>
-			<cnx from_node="74" from_port="result" to_node="97" to_port="iftrue"> </cnx>
-			<cnx from_node="24" from_port="result" to_node="4" to_port="value"> </cnx>
-			<cnx from_node="43" from_port="out" to_node="8" to_port="condition"> </cnx>
-			<cnx from_node="43" from_port="out" to_node="60" to_port="condition"> </cnx>
-			<cnx from_node="43" from_port="out" to_node="32" to_port="condition"> </cnx>
-			<cnx from_node="43" from_port="out" to_node="63" to_port="value1"> </cnx>
-			<cnx from_node="43" from_port="out" to_node="102" to_port="condition"> </cnx>
 			<cnx from_node="101" from_port="result" to_node="94" to_port="value"> </cnx>
-			<cnx from_node="82" from_port="value" to_node="91" to_port="case1"> </cnx>
-			<cnx from_node="75" from_port="out" to_node="98" to_port="iffalse"> </cnx>
-			<cnx from_node="15" from_port="out" to_node="57" to_port="array"> </cnx>
-			<cnx from_node="15" from_port="out" to_node="28" to_port="array"> </cnx>
-			<cnx from_node="4" from_port="array" to_node="29" to_port="array"> </cnx>
-			<cnx from_node="47" from_port="out" to_node="10" to_port="inname"> </cnx>
-			<cnx from_node="47" from_port="out" to_node="0" to_port="inname"> </cnx>
-			<cnx from_node="54" from_port="result" to_node="63" to_port="value2"> </cnx>
-			<cnx from_node="17" from_port="result" to_node="16" to_port="value3"> </cnx>
-			<cnx from_node="17" from_port="result" to_node="19" to_port="integer"> </cnx>
-			<cnx from_node="17" from_port="result" to_node="14" to_port="moduloby"> </cnx>
-			<cnx from_node="25" from_port="result" to_node="26" to_port="condition"> </cnx>
-			<cnx from_node="28" from_port="value" to_node="30" to_port="matrix"> </cnx>
-			<cnx from_node="18" from_port="result" to_node="5" to_port="second"> </cnx>
-			<cnx from_node="20" from_port="value" to_node="30" to_port="vector"> </cnx>
-			<cnx from_node="63" from_port="result" to_node="31" to_port="condition"> </cnx>
-			<cnx from_node="63" from_port="result" to_node="36" to_port="condition"> </cnx>
-			<cnx from_node="7" from_port="array" to_node="21" to_port="array"> </cnx>
-			<cnx from_node="71" from_port="out" to_node="68" to_port="x"> </cnx>
-			<cnx from_node="71" from_port="out" to_node="68" to_port="y"> </cnx>
-			<cnx from_node="71" from_port="out" to_node="68" to_port="z"> </cnx>
-			<cnx from_node="76" from_port="out" to_node="98" to_port="condition"> </cnx>
-			<cnx from_node="76" from_port="out" to_node="97" to_port="condition"> </cnx>
-			<cnx from_node="76" from_port="out" to_node="96" to_port="condition"> </cnx>
+			<cnx from_node="74" from_port="result" to_node="97" to_port="iftrue"> </cnx>
+			<cnx from_node="74" from_port="result" to_node="98" to_port="iftrue"> </cnx>
 			<cnx from_node="77" from_port="result" to_node="87" to_port="value2"> </cnx>
 			<cnx from_node="77" from_port="result" to_node="90" to_port="second"> </cnx>
 			<cnx from_node="77" from_port="result" to_node="89" to_port="second"> </cnx>
+			<cnx from_node="79" from_port="result" to_node="99" to_port="moduloby"> </cnx>
+			<cnx from_node="79" from_port="result" to_node="103" to_port="integer"> </cnx>
+			<cnx from_node="79" from_port="result" to_node="91" to_port="value2"> </cnx>
+			<cnx from_node="81" from_port="value" to_node="86" to_port="case3"> </cnx>
+			<cnx from_node="82" from_port="value" to_node="86" to_port="case1"> </cnx>
 			<cnx from_node="83" from_port="result" to_node="88" to_port="value1"> </cnx>
 			<cnx from_node="83" from_port="result" to_node="92" to_port="value"> </cnx>
-			<cnx from_node="85" from_port="value" to_node="91" to_port="case0"> </cnx>
-			<cnx from_node="84" from_port="value" to_node="91" to_port="case2"> </cnx>
-			<cnx from_node="81" from_port="value" to_node="91" to_port="case3"> </cnx>
-			<cnx from_node="79" from_port="result" to_node="100" to_port="value2"> </cnx>
-			<cnx from_node="79" from_port="result" to_node="103" to_port="integer"> </cnx>
-			<cnx from_node="79" from_port="result" to_node="104" to_port="moduloby"> </cnx>
-			<cnx from_node="78" from_port="Indices" to_node="101" to_port="array"> </cnx>
-			<cnx from_node="78" from_port="Indices" to_node="83" to_port="array"> </cnx>
-			<cnx from_node="86" from_port="Indices" to_node="104" to_port="value"> </cnx>
-			<cnx from_node="86" from_port="Indices" to_node="99" to_port="value"> </cnx>
+			<cnx from_node="85" from_port="value" to_node="86" to_port="case0"> </cnx>
+			<cnx from_node="76" from_port="out" to_node="98" to_port="condition"> </cnx>
+			<cnx from_node="76" from_port="out" to_node="97" to_port="condition"> </cnx>
+			<cnx from_node="76" from_port="out" to_node="96" to_port="condition"> </cnx>
+			<cnx from_node="84" from_port="value" to_node="86" to_port="case2"> </cnx>
+			<cnx from_node="75" from_port="out" to_node="98" to_port="iffalse"> </cnx>
 			<cnx from_node="40" from_port="Indices" to_node="41" to_port="array"> </cnx>
 			<cnx from_node="40" from_port="Indices" to_node="42" to_port="value"> </cnx>
 			<cnx from_node="40" from_port="Indices" to_node="45" to_port="value1"> </cnx>
-			<cnx from_node="0" from_port="value" to_node="9" to_port="Value"> </cnx>
+			<cnx from_node="78" from_port="Indices" to_node="101" to_port="array"> </cnx>
+			<cnx from_node="78" from_port="Indices" to_node="83" to_port="array"> </cnx>
+			<cnx from_node="104" from_port="Indices" to_node="99" to_port="value"> </cnx>
+			<cnx from_node="104" from_port="Indices" to_node="100" to_port="value"> </cnx>
 			<cnx from_node="9" from_port="Array" to_node="64" to_port="in1"> </cnx>
+			<cnx from_node="0" from_port="value" to_node="9" to_port="Value"> </cnx>
 			<cnx from_node="10" from_port="value" to_node="65" to_port="in1"> </cnx>
-			<cnx from_node="35" from_port="result" to_node="39" to_port="value2"> </cnx>
-			<cnx from_node="98" from_port="result" to_node="62" to_port="condition"> </cnx>
-			<cnx from_node="65" from_port="out" to_node="73" to_port="value"> </cnx>
-			<cnx from_node="65" from_port="out" to_node="40" to_port="Size"> </cnx>
-			<cnx from_node="65" from_port="out" to_node="27" to_port="value2"> </cnx>
-			<cnx from_node="65" from_port="out" to_node="8" to_port="iftrue"> </cnx>
-			<cnx from_node="65" from_port="out" to_node="5" to_port="first"> </cnx>
-			<cnx from_node="65" from_port="out" to_node="11" to_port="integer"> </cnx>
-			<cnx from_node="65" from_port="out" to_node="12" to_port="moduloby"> </cnx>
-			<cnx from_node="65" from_port="out" to_node="33" to_port="integer"> </cnx>
-			<cnx from_node="65" from_port="out" to_node="53" to_port="first"> </cnx>
-			<cnx from_node="65" from_port="out" to_node="59" to_port="second"> </cnx>
-			<cnx from_node="65" from_port="out" to_node="52" to_port="value2"> </cnx>
-			<cnx from_node="65" from_port="out" to_node="34" to_port="second"> </cnx>
-			<cnx from_node="31" from_port="result" to_node="13" to_port="case1"> </cnx>
-			<cnx from_node="32" from_port="result" to_node="51" to_port="value1"> </cnx>
-			<cnx from_node="44" from_port="result" to_node="38" to_port="value2"> </cnx>
-			<cnx from_node="8" from_port="result" to_node="16" to_port="value2"> </cnx>
-			<cnx from_node="8" from_port="result" to_node="55" to_port="moduloby"> </cnx>
-			<cnx from_node="8" from_port="result" to_node="58" to_port="first"> </cnx>
-			<cnx from_node="36" from_port="result" to_node="13" to_port="case2"> </cnx>
-			<cnx from_node="60" from_port="result" to_node="13" to_port="case0"> </cnx>
-			<cnx from_node="60" from_port="result" to_node="50" to_port="value1"> </cnx>
-			<cnx from_node="60" from_port="result" to_node="52" to_port="value1"> </cnx>
-			<cnx from_node="102" from_port="result" to_node="100" to_port="value1"> </cnx>
-			<cnx from_node="91" from_port="result" to_node="80" to_port="value2"> </cnx>
-			<cnx from_node="62" from_port="result" to_node="39" to_port="value1"> </cnx>
-			<cnx from_node="62" from_port="result" to_node="46" to_port="iffalse"> </cnx>
-			<cnx from_node="13" from_port="result" to_node="38" to_port="value1"> </cnx>
-			<cnx from_node="13" from_port="result" to_node="62" to_port="iffalse"> </cnx>
-			<cnx from_node="97" from_port="result" to_node="46" to_port="condition"> </cnx>
-			<cnx from_node="64" from_port="out" to_node="67" to_port="array"> </cnx>
-			<cnx from_node="64" from_port="out" to_node="20" to_port="array"> </cnx>
-			<cnx from_node="96" from_port="result" to_node="2" to_port="polygonaldescription"> </cnx>
-			<cnx from_node="46" from_port="result" to_node="96" to_port="iffalse"> </cnx>
-			<cnx from_node="46" from_port="result" to_node="80" to_port="value1"> </cnx>
-			<cnx from_node="69" from_port="result" to_node="70" to_port="value2"> </cnx>
-			<cnx from_node="39" from_port="array" to_node="46" to_port="iftrue"> </cnx>
 			<cnx from_node="38" from_port="array" to_node="62" to_port="iftrue"> </cnx>
-			<cnx from_node="80" from_port="array" to_node="96" to_port="iftrue"> </cnx>
-			<cnx from_node="94" from_port="result" to_node="95" to_port="value1"> </cnx>
-			<cnx from_node="94" from_port="result" to_node="84" to_port="array"> </cnx>
-			<cnx from_node="99" from_port="result" to_node="81" to_port="index"> </cnx>
-			<cnx from_node="99" from_port="result" to_node="84" to_port="index"> </cnx>
-			<cnx from_node="99" from_port="result" to_node="85" to_port="index"> </cnx>
-			<cnx from_node="99" from_port="result" to_node="82" to_port="index"> </cnx>
-			<cnx from_node="92" from_port="result" to_node="81" to_port="array"> </cnx>
-			<cnx from_node="90" from_port="result" to_node="102" to_port="iffalse"> </cnx>
-			<cnx from_node="100" from_port="result" to_node="86" to_port="Size"> </cnx>
-			<cnx from_node="95" from_port="result" to_node="82" to_port="array"> </cnx>
-			<cnx from_node="89" from_port="result" to_node="93" to_port="value2"> </cnx>
-			<cnx from_node="93" from_port="result" to_node="95" to_port="value2"> </cnx>
-			<cnx from_node="93" from_port="result" to_node="88" to_port="value2"> </cnx>
-			<cnx from_node="103" from_port="scalar" to_node="99" to_port="divideby"> </cnx>
-			<cnx from_node="37" from_port="result" to_node="32" to_port="iftrue"> </cnx>
+			<cnx from_node="39" from_port="array" to_node="46" to_port="iftrue"> </cnx>
+			<cnx from_node="52" from_port="result" to_node="61" to_port="first"> </cnx>
+			<cnx from_node="52" from_port="result" to_node="48" to_port="value1"> </cnx>
+			<cnx from_node="52" from_port="result" to_node="13" to_port="case3"> </cnx>
+			<cnx from_node="29" from_port="indices" to_node="12" to_port="value"> </cnx>
+			<cnx from_node="29" from_port="indices" to_node="1" to_port="value"> </cnx>
+			<cnx from_node="34" from_port="result" to_node="45" to_port="value2"> </cnx>
+			<cnx from_node="88" from_port="result" to_node="85" to_port="array"> </cnx>
 			<cnx from_node="48" from_port="result" to_node="36" to_port="iffalse"> </cnx>
-			<cnx from_node="12" from_port="result" to_node="20" to_port="index"> </cnx>
-			<cnx from_node="1" from_port="result" to_node="28" to_port="index"> </cnx>
-			<cnx from_node="21" from_port="indices" to_node="22" to_port="value"> </cnx>
-			<cnx from_node="21" from_port="indices" to_node="14" to_port="value"> </cnx>
-			<cnx from_node="2" from_port="result" to_node="26" to_port="iffalse"> </cnx>
-			<cnx from_node="45" from_port="result" to_node="35" to_port="array"> </cnx>
-			<cnx from_node="49" from_port="scalar" to_node="23" to_port="divideby"> </cnx>
-			<cnx from_node="11" from_port="scalar" to_node="1" to_port="divideby"> </cnx>
-			<cnx from_node="58" from_port="result" to_node="54" to_port="second"> </cnx>
-			<cnx from_node="58" from_port="result" to_node="61" to_port="second"> </cnx>
-			<cnx from_node="61" from_port="result" to_node="36" to_port="iftrue"> </cnx>
 			<cnx from_node="23" from_port="result" to_node="32" to_port="iffalse"> </cnx>
+			<cnx from_node="45" from_port="result" to_node="35" to_port="array"> </cnx>
+			<cnx from_node="51" from_port="result" to_node="60" to_port="iffalse"> </cnx>
 			<cnx from_node="22" from_port="result" to_node="55" to_port="value"> </cnx>
 			<cnx from_node="22" from_port="result" to_node="60" to_port="iftrue"> </cnx>
 			<cnx from_node="22" from_port="result" to_node="37" to_port="value"> </cnx>
 			<cnx from_node="22" from_port="result" to_node="23" to_port="value"> </cnx>
 			<cnx from_node="22" from_port="result" to_node="51" to_port="value2"> </cnx>
+			<cnx from_node="55" from_port="result" to_node="54" to_port="first"> </cnx>
 			<cnx from_node="27" from_port="result" to_node="4" to_port="size"> </cnx>
 			<cnx from_node="27" from_port="result" to_node="34" to_port="first"> </cnx>
-			<cnx from_node="16" from_port="result" to_node="7" to_port="size"> </cnx>
-			<cnx from_node="5" from_port="result" to_node="8" to_port="iffalse"> </cnx>
-			<cnx from_node="14" from_port="result" to_node="13" to_port="condition"> </cnx>
-			<cnx from_node="19" from_port="scalar" to_node="22" to_port="divideby"> </cnx>
-			<cnx from_node="29" from_port="indices" to_node="1" to_port="value"> </cnx>
-			<cnx from_node="29" from_port="indices" to_node="12" to_port="value"> </cnx>
-			<cnx from_node="30" from_port="result" to_node="70" to_port="value1"> </cnx>
-			<cnx from_node="30" from_port="result" to_node="69" to_port="position"> </cnx>
-			<cnx from_node="30" from_port="result" to_node="66" to_port="first"> </cnx>
-			<cnx from_node="33" from_port="scalar" to_node="37" to_port="divideby"> </cnx>
-			<cnx from_node="34" from_port="result" to_node="45" to_port="value2"> </cnx>
-			<cnx from_node="42" from_port="result" to_node="44" to_port="array"> </cnx>
-			<cnx from_node="51" from_port="result" to_node="60" to_port="iffalse"> </cnx>
-			<cnx from_node="52" from_port="result" to_node="61" to_port="first"> </cnx>
-			<cnx from_node="52" from_port="result" to_node="48" to_port="value1"> </cnx>
-			<cnx from_node="52" from_port="result" to_node="13" to_port="case3"> </cnx>
-			<cnx from_node="53" from_port="result" to_node="49" to_port="integer"> </cnx>
-			<cnx from_node="104" from_port="result" to_node="91" to_port="condition"> </cnx>
+			<cnx from_node="49" from_port="scalar" to_node="23" to_port="divideby"> </cnx>
 			<cnx from_node="50" from_port="result" to_node="59" to_port="first"> </cnx>
 			<cnx from_node="50" from_port="result" to_node="31" to_port="iffalse"> </cnx>
-			<cnx from_node="55" from_port="result" to_node="54" to_port="first"> </cnx>
+			<cnx from_node="53" from_port="result" to_node="49" to_port="integer"> </cnx>
+			<cnx from_node="33" from_port="scalar" to_node="37" to_port="divideby"> </cnx>
 			<cnx from_node="56" from_port="result" to_node="16" to_port="value1"> </cnx>
+			<cnx from_node="59" from_port="result" to_node="31" to_port="iftrue"> </cnx>
+			<cnx from_node="61" from_port="result" to_node="36" to_port="iftrue"> </cnx>
+			<cnx from_node="30" from_port="result" to_node="2" to_port="vertexpositionarray"> </cnx>
+			<cnx from_node="87" from_port="result" to_node="78" to_port="Size"> </cnx>
 			<cnx from_node="57" from_port="size" to_node="89" to_port="first"> </cnx>
 			<cnx from_node="57" from_port="size" to_node="56" to_port="value1"> </cnx>
 			<cnx from_node="57" from_port="size" to_node="27" to_port="value1"> </cnx>
 			<cnx from_node="57" from_port="size" to_node="25" to_port="first"> </cnx>
-			<cnx from_node="59" from_port="result" to_node="31" to_port="iftrue"> </cnx>
-			<cnx from_node="66" from_port="result" to_node="2" to_port="vertexpositionarray"> </cnx>
+			<cnx from_node="37" from_port="result" to_node="32" to_port="iftrue"> </cnx>
+			<cnx from_node="42" from_port="result" to_node="44" to_port="array"> </cnx>
+			<cnx from_node="58" from_port="result" to_node="54" to_port="second"> </cnx>
+			<cnx from_node="58" from_port="result" to_node="61" to_port="second"> </cnx>
 			<cnx from_node="67" from_port="size" to_node="65" to_port="in2"> </cnx>
-			<cnx from_node="68" from_port="vector" to_node="69" to_port="spacefrequency"> </cnx>
-			<cnx from_node="70" from_port="result" to_node="66" to_port="second"> </cnx>
-			<cnx from_node="87" from_port="result" to_node="78" to_port="Size"> </cnx>
-			<cnx from_node="88" from_port="result" to_node="85" to_port="array"> </cnx>
+			<cnx from_node="89" from_port="result" to_node="93" to_port="value2"> </cnx>
+			<cnx from_node="93" from_port="result" to_node="95" to_port="value2"> </cnx>
+			<cnx from_node="93" from_port="result" to_node="88" to_port="value2"> </cnx>
+			<cnx from_node="92" from_port="result" to_node="81" to_port="array"> </cnx>
+			<cnx from_node="94" from_port="result" to_node="95" to_port="value1"> </cnx>
+			<cnx from_node="94" from_port="result" to_node="84" to_port="array"> </cnx>
+			<cnx from_node="95" from_port="result" to_node="82" to_port="array"> </cnx>
+			<cnx from_node="99" from_port="result" to_node="86" to_port="condition"> </cnx>
+			<cnx from_node="90" from_port="result" to_node="102" to_port="iffalse"> </cnx>
+			<cnx from_node="100" from_port="result" to_node="81" to_port="index"> </cnx>
+			<cnx from_node="100" from_port="result" to_node="84" to_port="index"> </cnx>
+			<cnx from_node="100" from_port="result" to_node="85" to_port="index"> </cnx>
+			<cnx from_node="100" from_port="result" to_node="82" to_port="index"> </cnx>
+			<cnx from_node="103" from_port="scalar" to_node="100" to_port="divideby"> </cnx>
+			<cnx from_node="91" from_port="result" to_node="104" to_port="Size"> </cnx>
+			<cnx from_node="21" from_port="indices" to_node="22" to_port="value"> </cnx>
+			<cnx from_node="21" from_port="indices" to_node="14" to_port="value"> </cnx>
+			<cnx from_node="8" from_port="result" to_node="16" to_port="value2"> </cnx>
+			<cnx from_node="8" from_port="result" to_node="55" to_port="moduloby"> </cnx>
+			<cnx from_node="8" from_port="result" to_node="58" to_port="first"> </cnx>
+			<cnx from_node="13" from_port="result" to_node="38" to_port="value1"> </cnx>
+			<cnx from_node="13" from_port="result" to_node="62" to_port="iffalse"> </cnx>
+			<cnx from_node="31" from_port="result" to_node="13" to_port="case1"> </cnx>
+			<cnx from_node="32" from_port="result" to_node="51" to_port="value1"> </cnx>
+			<cnx from_node="35" from_port="result" to_node="39" to_port="value2"> </cnx>
+			<cnx from_node="44" from_port="result" to_node="38" to_port="value2"> </cnx>
+			<cnx from_node="36" from_port="result" to_node="13" to_port="case2"> </cnx>
+			<cnx from_node="5" from_port="result" to_node="8" to_port="iffalse"> </cnx>
+			<cnx from_node="11" from_port="scalar" to_node="1" to_port="divideby"> </cnx>
+			<cnx from_node="1" from_port="result" to_node="28" to_port="index"> </cnx>
+			<cnx from_node="12" from_port="result" to_node="20" to_port="index"> </cnx>
+			<cnx from_node="14" from_port="result" to_node="13" to_port="condition"> </cnx>
+			<cnx from_node="16" from_port="result" to_node="7" to_port="size"> </cnx>
+			<cnx from_node="2" from_port="result" to_node="26" to_port="iffalse"> </cnx>
+			<cnx from_node="19" from_port="scalar" to_node="22" to_port="divideby"> </cnx>
+			<cnx from_node="18" from_port="result" to_node="5" to_port="second"> </cnx>
+			<cnx from_node="15" from_port="out" to_node="57" to_port="array"> </cnx>
+			<cnx from_node="15" from_port="out" to_node="28" to_port="array"> </cnx>
+			<cnx from_node="20" from_port="value" to_node="30" to_port="vector"> </cnx>
+			<cnx from_node="43" from_port="out" to_node="102" to_port="condition"> </cnx>
+			<cnx from_node="43" from_port="out" to_node="8" to_port="condition"> </cnx>
+			<cnx from_node="43" from_port="out" to_node="60" to_port="condition"> </cnx>
+			<cnx from_node="43" from_port="out" to_node="32" to_port="condition"> </cnx>
+			<cnx from_node="43" from_port="out" to_node="63" to_port="value1"> </cnx>
+			<cnx from_node="63" from_port="result" to_node="31" to_port="condition"> </cnx>
+			<cnx from_node="63" from_port="result" to_node="36" to_port="condition"> </cnx>
+			<cnx from_node="41" from_port="value" to_node="42" to_port="sourceend"> </cnx>
+			<cnx from_node="41" from_port="value" to_node="42" to_port="targetstart"> </cnx>
+			<cnx from_node="54" from_port="result" to_node="63" to_port="value2"> </cnx>
+			<cnx from_node="24" from_port="result" to_node="4" to_port="value"> </cnx>
+			<cnx from_node="47" from_port="out" to_node="10" to_port="inname"> </cnx>
+			<cnx from_node="47" from_port="out" to_node="0" to_port="inname"> </cnx>
+			<cnx from_node="72" from_port="out" to_node="97" to_port="iffalse"> </cnx>
+			<cnx from_node="28" from_port="value" to_node="30" to_port="matrix"> </cnx>
+			<cnx from_node="73" from_port="result" to_node="87" to_port="value1"> </cnx>
+			<cnx from_node="73" from_port="result" to_node="102" to_port="iftrue"> </cnx>
+			<cnx from_node="73" from_port="result" to_node="90" to_port="first"> </cnx>
+			<cnx from_node="73" from_port="result" to_node="92" to_port="moduloby"> </cnx>
+			<cnx from_node="73" from_port="result" to_node="94" to_port="moduloby"> </cnx>
+			<cnx from_node="73" from_port="result" to_node="93" to_port="value1"> </cnx>
+			<cnx from_node="3" from_port="result" to_node="56" to_port="value2"> </cnx>
+			<cnx from_node="6" from_port="result" to_node="7" to_port="value"> </cnx>
+			<cnx from_node="4" from_port="array" to_node="29" to_port="array"> </cnx>
+			<cnx from_node="7" from_port="array" to_node="21" to_port="array"> </cnx>
+			<cnx from_node="17" from_port="result" to_node="16" to_port="value3"> </cnx>
+			<cnx from_node="17" from_port="result" to_node="14" to_port="moduloby"> </cnx>
+			<cnx from_node="17" from_port="result" to_node="19" to_port="integer"> </cnx>
+			<cnx from_node="25" from_port="result" to_node="26" to_port="condition"> </cnx>
+			<cnx from_node="60" from_port="result" to_node="13" to_port="case0"> </cnx>
+			<cnx from_node="60" from_port="result" to_node="50" to_port="value1"> </cnx>
+			<cnx from_node="60" from_port="result" to_node="52" to_port="value1"> </cnx>
+			<cnx from_node="86" from_port="result" to_node="80" to_port="value2"> </cnx>
+			<cnx from_node="102" from_port="result" to_node="91" to_port="value1"> </cnx>
+			<cnx from_node="65" from_port="out" to_node="73" to_port="value"> </cnx>
+			<cnx from_node="65" from_port="out" to_node="40" to_port="Size"> </cnx>
+			<cnx from_node="65" from_port="out" to_node="27" to_port="value2"> </cnx>
+			<cnx from_node="65" from_port="out" to_node="12" to_port="moduloby"> </cnx>
+			<cnx from_node="65" from_port="out" to_node="8" to_port="iftrue"> </cnx>
+			<cnx from_node="65" from_port="out" to_node="5" to_port="first"> </cnx>
+			<cnx from_node="65" from_port="out" to_node="11" to_port="integer"> </cnx>
+			<cnx from_node="65" from_port="out" to_node="33" to_port="integer"> </cnx>
+			<cnx from_node="65" from_port="out" to_node="53" to_port="first"> </cnx>
+			<cnx from_node="65" from_port="out" to_node="59" to_port="second"> </cnx>
+			<cnx from_node="65" from_port="out" to_node="52" to_port="value2"> </cnx>
+			<cnx from_node="65" from_port="out" to_node="34" to_port="second"> </cnx>
+			<cnx from_node="98" from_port="result" to_node="62" to_port="condition"> </cnx>
+			<cnx from_node="46" from_port="result" to_node="96" to_port="iffalse"> </cnx>
+			<cnx from_node="46" from_port="result" to_node="80" to_port="value1"> </cnx>
+			<cnx from_node="62" from_port="result" to_node="39" to_port="value1"> </cnx>
+			<cnx from_node="62" from_port="result" to_node="46" to_port="iffalse"> </cnx>
+			<cnx from_node="64" from_port="out" to_node="67" to_port="array"> </cnx>
+			<cnx from_node="64" from_port="out" to_node="20" to_port="array"> </cnx>
+			<cnx from_node="97" from_port="result" to_node="46" to_port="condition"> </cnx>
+			<cnx from_node="96" from_port="result" to_node="2" to_port="polygonaldescription"> </cnx>
+			<cnx from_node="80" from_port="array" to_node="96" to_port="iftrue"> </cnx>
 		</connections>
 		<layout>
 			<item type="input" name="Points"> </item>
@@ -1464,10 +1373,6 @@
 			<item type="input" name="CloseV"> </item>
 			<item type="input" name="CapStart"> </item>
 			<item type="input" name="CapEnd"> </item>
-			<item type="input" name="PerlinSeed"> </item>
-			<item type="input" name="PerlinComplexity"> </item>
-			<item type="input" name="PerlinBlend"> </item>
-			<item type="input" name="PerlinSpaceFrequency"> </item>
 			<item type="output" name="Result"> </item>
 		</layout>
 	</definition>

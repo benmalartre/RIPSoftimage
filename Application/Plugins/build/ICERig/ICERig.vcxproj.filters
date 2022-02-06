@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\ICERig\IRBrushTool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\ICERig\IRBuildElementID.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\ICERig\IRCubicBezier.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\ICERig\IRCubicBezierGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\ICERig\IRCubicBezierPoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\ICERig\IRDeltaMush.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\ICERig\IRDeltaMushHelpFunction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\ICERig\IRDeltaMushInit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\ICERig\IRElement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\ICERig\IRFabrik.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\ICERig\IRJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\ICERig\IRManipulator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\ICERig\IRMoveHandle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\ICERig\IROffsetHandle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\ICERig\IRRegister.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\ICERig\IRResampleCurve.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\ICERig\IRRotateHandle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\ICERig\IRScaleHandle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\ICERig\IRSetElement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\ICERig\IRShapeHandle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\ICERig\IRSkeletonHandle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\ICERig\IRSmooth.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\ICERig\IRSmoothWeights.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\ICERig\IRToolButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\ICERig\IRToolHandle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\ICERig\IRUpVectorHandle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\ICERig\TestICEAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\ICERig\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{00816234-769A-3229-8315-B7454F6583DB}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -79,10 +79,22 @@ extern CString kExportCameras;
 extern CString kExportLights;
 extern CString kStartFrame;
 extern CString kEndFrame;
+extern CString kSampleRate;
 extern CString kWrite;
 
 // softimage log message
 #define LOG(msg) Application().LogMessage(msg);
+
+enum X2UExportOptions {
+  X2U_EXPORT_MESHES = 1,
+  X2U_EXPORT_UVS = 2,
+  X2U_EXPORT_COLORS = 4,
+  X2U_EXPORT_POINTS = 8,
+  X2U_EXPORT_CURVES = 16,
+  X2U_EXPORT_CAMERAS = 32,
+  X2U_EXPORT_LIGHTS = 64,
+  X2U_EXPORT_CUSTOM = 128
+};
 
 enum X2UDataType {
   X2U_DATA_NULL,
@@ -113,13 +125,6 @@ enum X2UPrimvarInterpolation {
   X2U_INTERPOLATION_VARYING,
   X2U_INTERPOLATION_VERTEX,
   X2U_INTERPOLATION_FACEVARYING
-};
-
-enum X2UWriteOptions {
-  X2U_WRITE_COLORS  = 1,
-  X2U_WRITE_NORMALS = 2,
-  X2U_WRITE_UVS     = 4,
-  X2U_WRITE_CUSTOM  = 8
 };
 
 static size_t X2UGetDataSize(X2UDataType type, X2UDataPrecision precision)
@@ -274,3 +279,9 @@ void X2UCastRotationData(const SRC* src, DST* dst, size_t num)
     dst[i].SetReal(src[i].GetQuaternion().GetW());
   }
 }
+
+// x=target variable, y=mask
+#define BITMASK_SET(x,y) ((x) |= (y))
+#define BITMASK_CLEAR(x,y) ((x) &= (~(y)))
+#define BITMASK_FLIP(x,y) ((x) ^= (y))
+#define BITMASK_CHECK(x,y) ((x) & (y))

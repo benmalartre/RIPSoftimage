@@ -62,7 +62,7 @@ void X2UPrim::InitVisibilityAttribute()
 
   // set default value
   X2UAttribute& item = GetAttribute("visibility");
-  if (visibility)item.WriteSample(UsdGeomTokens->inherited, UsdTimeCode::Default());
+  if (visibility)item.WriteSample(UsdGeomTokens->visible, UsdTimeCode::Default());
   else item.WriteSample(UsdGeomTokens->invisible, UsdTimeCode::Default());
 }
 

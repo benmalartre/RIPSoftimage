@@ -1,0 +1,69 @@
+﻿  Building Custom Rule C:/Users/graph/Documents/bmal/src/RIPSoftimage/Application/Plugins/Triangulate/CMakeLists.txt
+  triangulate.cpp
+  plugin.cpp
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector2f.h(310,13): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_matrix3f.h(529,29): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_matrix3f.h(533,29): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_matrix3f.h(537,29): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_matrix3f.h(541,29): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_matrix3f.h(545,29): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_matrix3f.h(549,29): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector3f.h(719,13): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector3f.h(985,15): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector3f.h(994,40): warning C4244: 'argument' : conversion de 'double' en 'const float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector3f.h(994,26): warning C4244: 'argument' : conversion de 'double' en 'const float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector3f.h(994,12): warning C4244: 'argument' : conversion de 'double' en 'const float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector3f.h(1002,15): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector3f.h(1003,15): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector3f.h(1004,15): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector4f.h(680,15): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector4f.h(681,15): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector4f.h(682,15): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector4f.h(683,15): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_vector4f.h(702,13): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_quaternionf.h(518,14): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_quaternionf.h(737,22): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_quaternionf.h(781,20): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_quaternionf.h(782,22): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_quaternionf.h(784,48): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_quaternionf.h(785,39): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_rotationf.h(842,12): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Program Files\Autodesk\Softimage 2015 SP2\XSISDK\include\xsi_rotationf.h(843,12): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(206,19): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(210,34): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(212,34): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(217,34): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(219,34): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(288,40): error C2062: type 'int' inattendu
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(295,5): error C2065: 'p' : identificateur non déclaré
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(295,10): error C2065: 'XYZ' : identificateur non déclaré
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(295,15): error C2059: erreur de syntaxe : ')'
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(296,5): error C2065: 'v' : identificateur non déclaré
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(296,10): error C2065: 'ITRIANGLE' : identificateur non déclaré
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(296,21): error C2059: erreur de syntaxe : ')'
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(306,12): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(305,9): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(312,7): error C2065: 'p' : identificateur non déclaré
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(313,7): error C2065: 'p' : identificateur non déclaré
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(314,7): error C2065: 'p' : identificateur non déclaré
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(326,7): error C2065: 'p' : identificateur non déclaré
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(327,7): error C2065: 'p' : identificateur non déclaré
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(328,7): error C2065: 'p' : identificateur non déclaré
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(334,11): error C2065: 'p' : identificateur non déclaré
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(334,38): error C2065: 'XYZ' : identificateur non déclaré
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(334,43): error C2065: 'XYZCompare' : identificateur non déclaré
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(335,35): error C2065: 'p' : identificateur non déclaré
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(335,37): error C2065: 'v' : identificateur non déclaré
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(335,5): error C3861: 'Triangulate' : identificateur introuvable
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(339,30): error C2065: 'p' : identificateur non déclaré
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(339,46): error C2065: 'p' : identificateur non déclaré
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(339,62): error C2065: 'p' : identificateur non déclaré
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(339,69): error C2661: 'XSI::MATH::CVector3f::Set' : aucune fonction surchargée ne nécessite 1 arguments
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(346,24): error C2065: 'v' : identificateur non déclaré
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(347,25): error C2065: 'v' : identificateur non déclaré
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(348,25): error C2065: 'v' : identificateur non déclaré
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(352,10): error C2065: 'p' : identificateur non déclaré
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(353,10): error C2065: 'v' : identificateur non déclaré
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(375,74): warning C4267: 'argument' : conversion de 'size_t' en 'ULONG', perte possible de données
+C:\Users\graph\Documents\bmal\src\RIPSoftimage\Application\Plugins\Triangulate\plugin.cpp(388,70): warning C4267: 'argument' : conversion de 'size_t' en 'ULONG', perte possible de données
+  Génération de code en cours...
