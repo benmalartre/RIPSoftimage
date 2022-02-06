@@ -1,8 +1,0 @@
-C:/Users/graph/Documents/bmal/src/RIPSoftimage/Application/Plugins/build/CMakeFiles/ALL_BUILD.dir
-C:/Users/graph/Documents/bmal/src/RIPSoftimage/Application/Plugins/build/CMakeFiles/ZERO_CHECK.dir
-C:/Users/graph/Documents/bmal/src/RIPSoftimage/Application/Plugins/build/UsdRead/CMakeFiles/UsdRead.dir
-C:/Users/graph/Documents/bmal/src/RIPSoftimage/Application/Plugins/build/UsdWrite/CMakeFiles/UsdWrite.dir
-C:/Users/graph/Documents/bmal/src/RIPSoftimage/Application/Plugins/build/ICERig/CMakeFiles/ICERig.dir
-C:/Users/graph/Documents/bmal/src/RIPSoftimage/Application/Plugins/build/SynthNode/CMakeFiles/SynthNode.dir
-C:/Users/graph/Documents/bmal/src/RIPSoftimage/Application/Plugins/build/Triangulate/CMakeFiles/Triangulate.dir
-C:/Users/graph/Documents/bmal/src/RIPSoftimage/Application/Plugins/build/Voronoi/CMakeFiles/Voronoi.dir
