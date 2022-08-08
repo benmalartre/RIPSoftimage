@@ -11,7 +11,7 @@ X2UPoints::~X2UPoints()
 {
 }
 
-void X2UPoints::Init(UsdStageRefPtr& stage, size_t options)
+void X2UPoints::Init(UsdStageRefPtr& stage)
 {
   UsdGeomPoints points = UsdGeomPoints::Define(stage, SdfPath(_fullname));
   _prim = points.GetPrim();

@@ -78,14 +78,20 @@ SICALLBACK UsdWrite_Execute( CRef& in_ctxt )
   bool exportCurves = args.GetItem(kExportCurves).GetValue();
   bool exportCameras = args.GetItem(kExportCameras).GetValue();
 
+  LOG("EXPORT MESH " + exportMeshes);
+  LOG("EXPORT Cameras " + exportCameras);
+
   if (exportMeshes) options += X2U_EXPORT_MESHES;
   if (exportUVs) options += X2U_EXPORT_UVS;
   if (exportColors) options += X2U_EXPORT_COLORS;
+  if (exportCameras) options += X2U_EXPORT_CAMERAS;
+  /*
   BITMASK_SET(options, (bool)args.GetItem(kExportUVs).GetValue());
   BITMASK_SET(options, (bool)args.GetItem(kExportColors).GetValue());
   BITMASK_SET(options, bool(args.GetItem(kExportCurves).GetValue()));
   BITMASK_SET(options, bool(args.GetItem(kExportPoints).GetValue()));
   BITMASK_SET(options, bool(args.GetItem(kExportCameras).GetValue()));
+  */
 
   Application app;
   Model root = app.GetActiveSceneRoot();
@@ -99,7 +105,7 @@ SICALLBACK UsdWrite_Execute( CRef& in_ctxt )
       root.GetRef()
     );
     
-    exportScene.Init(options);
+    exportScene.Init();
     if (timeMode == TimeMode::SCENE) {
       exportScene.SetTimeInfosFromScene(sampleRate);
     }

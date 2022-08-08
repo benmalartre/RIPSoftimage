@@ -10,7 +10,7 @@ X2UCamera::~X2UCamera()
 { 
 }
 
-void X2UCamera::Init(UsdStageRefPtr& stage, size_t options)
+void X2UCamera::Init(UsdStageRefPtr& stage)
 {
   UsdTimeCode timeCode = UsdTimeCode::Default();
   UsdGeomCamera camera = UsdGeomCamera::Define(stage, SdfPath(_fullname));

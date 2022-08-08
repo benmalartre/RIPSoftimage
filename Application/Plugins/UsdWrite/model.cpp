@@ -27,18 +27,21 @@ void X2UModel::Save()
 }
 
 
-void X2UModel::Init(size_t options)
+void X2UModel::Init()
 {
-  _options = options;
   // Create Usd stage for writing
   _stage = UsdStage::CreateNew(_folder + "/" + _filename);
   _rootXform = X2UXformSharedPtr(new X2UXform(_rootName, _root));
-  _rootXform->Init(_stage, options);
+  _rootXform->Init(_stage);
 }
 
 
 void X2UModel::_Recurse(const CRef& ref, const std::string& parentPath)
 {
+  size_t exportOptions = 0
+    | X2U_EXPORT_MESHES
+    | X2U_EXPORT_CAMERAS;
+
   if (ref.IsA(siX3DObjectID))
   {
     X3DObject obj(ref);
@@ -50,7 +53,7 @@ void X2UModel::_Recurse(const CRef& ref, const std::string& parentPath)
       std::string modelFileName = ref.GetAsText().GetAsciiString();
       modelFileName += ".usda";
       X2UModel childModel(_folder, modelFileName, ref);
-      childModel.Init(_options);
+      childModel.Init();
 
       std::string modelPath = childModel._GetRootName();
 
@@ -73,36 +76,36 @@ void X2UModel::_Recurse(const CRef& ref, const std::string& parentPath)
       if (type == L"null" || type == L"CameraRoot")
       {
         X2UXform* xform = new X2UXform(objPath, ref);;
-        xform->Init(_stage, _options);
+        xform->Init(_stage);
         _prims.push_back(X2UXformSharedPtr(xform));
         _xObjPathMap[xform->GetID()] = xform->GetPath();
       }
-      else if (type == L"polymsh" && _options & X2U_EXPORT_MESHES)
+      else if (type == L"polymsh" && exportOptions & X2U_EXPORT_MESHES)
       {
         X2UMesh* mesh = new X2UMesh(objPath, ref);;
-        mesh->Init(_stage, _options);
+        mesh->Init(_stage);
         _prims.push_back(X2UMeshSharedPtr(mesh));
         _xObjPathMap[mesh->GetID()] = mesh->GetPath();
       }
-      else if (type == L"crvlist" && _options & X2U_EXPORT_CURVES)
+      else if (type == L"crvlist" && exportOptions & X2U_EXPORT_CURVES)
       {
         X2UCurve* curve = new X2UCurve(objPath, ref, X2U_CURVE_NURBS);;
-        curve->Init(_stage, _options);
+        curve->Init(_stage);
         _prims.push_back(X2UCurveSharedPtr(curve));
         _xObjPathMap[curve->GetID()] = curve->GetPath();
       }
-      else if (type == L"pointcloud" && _options & X2U_EXPORT_POINTS)
+      else if (type == L"pointcloud" && exportOptions & X2U_EXPORT_POINTS)
       {
         bool isStrandPointCloud = X2UIsStrandPointCloud(obj);
         if (isStrandPointCloud) {
           X2UCurve* curve = new X2UCurve(objPath, ref, X2U_CURVE_STRANDS);
-          curve->Init(_stage, _options);
+          curve->Init(_stage);
           _prims.push_back(X2UCurveSharedPtr(curve));
           _xObjPathMap[curve->GetID()] = curve->GetPath();
         }
         else {
           X2UInstancer* instancer = new X2UInstancer(objPath, ref);
-          instancer->Init(_stage, _options);
+          instancer->Init(_stage);
           _prims.push_back(X2UInstancerSharedPtr(instancer));
           _xObjPathMap[instancer->GetID()] = instancer->GetPath();
         }
@@ -112,10 +115,10 @@ void X2UModel::_Recurse(const CRef& ref, const std::string& parentPath)
         //point->Init(_stage);
         //_prims.push_back(X2UPointSharedPtr(point));
       }
-      else if (type == L"camera" && _options & X2U_EXPORT_CAMERAS)
+      else if (type == L"camera" && exportOptions & X2U_EXPORT_CAMERAS)
       {
         X2UCamera* camera = new X2UCamera(objPath, ref);
-        camera->Init(_stage, _options);
+        camera->Init(_stage);
         _prims.push_back(X2UCameraSharedPtr(camera));
         _xObjPathMap[camera->GetID()] = camera->GetPath();
       }

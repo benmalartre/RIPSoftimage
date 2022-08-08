@@ -125,7 +125,7 @@ void X2UInstancer::AddPrototypesRelationship(UsdStageRefPtr& stage, const std::m
   }
 }
 
-void X2UInstancer::Init(UsdStageRefPtr& stage, size_t options)
+void X2UInstancer::Init(UsdStageRefPtr& stage)
 {
   UsdTimeCode timeCode = UsdTimeCode::Default();
   UsdGeomPointInstancer instancer = UsdGeomPointInstancer::Define(stage, SdfPath(_fullname));

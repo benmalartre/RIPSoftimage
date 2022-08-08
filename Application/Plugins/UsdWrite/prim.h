@@ -11,7 +11,7 @@ public:
   X2UPrim(std::string path, const CRef& ref);
   virtual ~X2UPrim();
 
-  virtual void Init(UsdStageRefPtr& stage, size_t options=0) = 0;
+  virtual void Init(UsdStageRefPtr& stage) = 0;
   virtual void WriteSample(double t )= 0;
   virtual void Term(UsdStageRefPtr& stage, const X2UObjectPathMap& objPathMap) {};
 

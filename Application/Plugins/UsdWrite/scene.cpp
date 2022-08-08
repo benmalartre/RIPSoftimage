@@ -26,13 +26,13 @@ void X2UScene::Save()
 }
 
 
-void X2UScene::Init(size_t options)
+void X2UScene::Init()
 {
   // Create Usd stage for writing
   _stage = UsdStage::CreateNew(_folder + "/" + _filename);
   UsdGeomXform rootXform = UsdGeomXform::Define(_stage, SdfPath(_rootName));
   _rootXform = X2UXformSharedPtr(new X2UXform(_rootName, _root));
-  _rootXform->Init(_stage, options);
+  _rootXform->Init(_stage);
 }
 
 

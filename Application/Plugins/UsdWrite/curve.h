@@ -19,7 +19,7 @@ public:
   X2UCurve(std::string path, const CRef& ref, X2UCurveSourceType srcType);
   ~X2UCurve();
 
-  void Init(UsdStageRefPtr& stage, size_t options) override;
+  void Init(UsdStageRefPtr& stage) override;
   void WriteSample(double t) override;
 
   void InitFromNurbsCurve();

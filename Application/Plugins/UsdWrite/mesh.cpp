@@ -13,7 +13,7 @@ X2UMesh::~X2UMesh()
 {
 }
 
-void X2UMesh::Init(UsdStageRefPtr& stage, size_t options)
+void X2UMesh::Init(UsdStageRefPtr& stage)
 {
   UsdGeomMesh mesh = UsdGeomMesh::Define(stage, SdfPath(_fullname));
   _prim = mesh.GetPrim();

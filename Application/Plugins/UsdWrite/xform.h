@@ -9,7 +9,7 @@ public:
   X2UXform(std::string path, const CRef& ref);
   ~X2UXform();
 
-  void Init(UsdStageRefPtr& stage, size_t options) override;
+  void Init(UsdStageRefPtr& stage) override;
   void WriteSample(double t) override;
 };
 

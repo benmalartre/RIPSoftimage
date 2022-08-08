@@ -9,7 +9,7 @@ public:
   X2UPoints(std::string path, const CRef& ref);
   ~X2UPoints();
 
-  void Init(UsdStageRefPtr& stage, size_t options) override;
+  void Init(UsdStageRefPtr& stage) override;
   void WriteSample(double t) override;
   void InitColorAttribute(const Geometry& geom);
 

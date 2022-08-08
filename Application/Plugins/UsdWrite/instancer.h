@@ -22,7 +22,7 @@ public:
   X2UInstancer(std::string path, const CRef& ref);
   ~X2UInstancer();
 
-  void Init(UsdStageRefPtr& stage, size_t options) override;
+  void Init(UsdStageRefPtr& stage) override;
   void WriteSample(double t) override;
   void Term(UsdStageRefPtr& stage, const X2UObjectPathMap& objPathMap) override;
 

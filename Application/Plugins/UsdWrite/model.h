@@ -19,7 +19,7 @@ class X2UModel {
   public:
     X2UModel(const std::string& folder, const std::string& filename, const CRef& root);
     ~X2UModel();
-    virtual void Init(size_t options);
+    virtual void Init();
     virtual void Save();
 
     ULONG GetID() { return _root.GetObjectID(); };
@@ -42,7 +42,6 @@ class X2UModel {
     std::vector<X2UModel>     _models;
     X2UObjectPathMap          _xObjPathMap;
     std::vector<X2UPrototype> _prototypes;
-    size_t                    _options;
 
 };
 
