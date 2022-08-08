@@ -56,9 +56,9 @@ void U2XPrim::GetXform(const pxr::UsdTimeCode& timeCode)
 
 U2XAttributeType U2XPrim::HasAttribute(const pxr::TfToken& name)
 {
-  pxr::UsdGeomGprim gprim(_prim);
+  pxr::UsdGeomPrimvarsAPI api(_prim);
 
-  if (gprim.GetPrimvar(name).IsDefined())
+  if (api.GetPrimvar(name).IsDefined())
     return ATTR_PRIMVAR;
   else if (_prim.GetAttribute(name).IsDefined())
     return ATTR_NORMAL;
@@ -70,7 +70,7 @@ U2XAttribute U2XPrim::CreateAttribute(const pxr::TfToken& name, U2XAttributeType
 {
   if (type == ATTR_PRIMVAR)
   {
-    return U2XAttribute(pxr::UsdGeomGprim(_prim).GetPrimvar(name).GetAttr(), ATTR_PRIMVAR);
+    return U2XAttribute(pxr::UsdGeomPrimvarsAPI(_prim).GetPrimvar(name).GetAttr(), ATTR_PRIMVAR);
   }
   else if (type == ATTR_NORMAL)
   {

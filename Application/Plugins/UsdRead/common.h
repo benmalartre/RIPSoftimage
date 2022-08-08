@@ -39,6 +39,7 @@
 #include <pxr/usd/usdGeom/basisCurves.h>
 #include <pxr/usd/usdGeom/points.h>
 #include <pxr/usd/usdGeom/mesh.h>
+#include <pxr/usd/usdGeom/primvarsApi.h>
 
 #include <pxr/base/gf/vec2i.h>
 #include <pxr/base/gf/vec2f.h>

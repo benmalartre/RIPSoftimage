@@ -178,7 +178,7 @@ SICALLBACK IRLeastSquareFitPlane_Evaluate(ICENodeContext& in_ctxt)
         // output
         if (inputMethod[0]) {
           outputNormal[it] = IRLeastSquareFitPlane_ComputeNormal2(inputPosition);
-        else {
+        } else {
           outputNormal[it] = IRLeastSquareFitPlane_ComputeNormal(inputPosition);
         }
 

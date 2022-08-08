@@ -11,6 +11,7 @@
 #include <pxr/usd/usdGeom/gprim.h>
 #include <pxr/imaging/garch/glApi.h>
 
+#include "common.h"
 #include "vertexBuffer.h"
 #include "vertexArray.h"
 #include "attribute.h"
