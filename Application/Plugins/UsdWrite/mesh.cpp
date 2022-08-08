@@ -13,7 +13,7 @@ X2UMesh::~X2UMesh()
 {
 }
 
-void X2UMesh::Init(UsdStageRefPtr& stage)
+void X2UMesh::Init(UsdStageRefPtr& stage, size_t options)
 {
   UsdGeomMesh mesh = UsdGeomMesh::Define(stage, SdfPath(_fullname));
   _prim = mesh.GetPrim();
@@ -302,8 +302,9 @@ void X2UMesh::InitUVsAttribute()
   if (_GetNodesUVs(xsiMesh, dstUVs))
   {
     // create uv primvar
-    UsdGeomPrimvar dstUVPrimvar = 
-      UsdGeomMesh(_prim).CreatePrimvar(TfToken("st"), SdfValueTypeNames->TexCoord2dArray, UsdGeomTokens->faceVarying);
+    UsdGeomPrimvarsAPI api(_prim);
+    UsdGeomPrimvar dstUVPrimvar =
+      api.CreatePrimvar(TfToken("st"), SdfValueTypeNames->TexCoord2dArray, UsdGeomTokens->faceVarying);
 
     // get attribute
     UsdAttribute dstUVsAttr = dstUVPrimvar.GetAttr();

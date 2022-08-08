@@ -4,21 +4,6 @@
 #include <xsi_ppglayout.h>
 #include <xsi_ppgeventcontext.h>
 
-CString kFolder = "Folder";
-CString kFilename = "Filename";
-CString kTimeMode = "TimeMode";
-CString kExportMeshes = "ExportMeshes";
-CString kExportUVs = "ExportUVs";
-CString kExportColors = "ExportColors";
-CString kExportPoints = "ExportPoints";
-CString kExportCurves = "ExportCurves";
-CString kExportCameras = "ExportCameras";
-CString kExportLights = "ExportLights";
-CString kStartFrame = "StartFrame";
-CString kEndFrame = "EndFrame";
-CString kSampleRate = "SampleRate";
-CString kWrite = "Write";
-
 SICALLBACK UsdWriteUI_Define(CRef& in_ctxt)
 {
   Context ctxt(in_ctxt);
@@ -165,12 +150,15 @@ SICALLBACK UsdWriteUI_PPGEvent(const CRef& in_ctxt)
           args.Add(params.GetValue(kStartFrame));
           args.Add(params.GetValue(kEndFrame));
           args.Add(params.GetValue(kSampleRate));
+          args.Add(params.GetValue(kExportMeshes));
           args.Add(params.GetValue(kExportUVs));
           args.Add(params.GetValue(kExportColors));
+          args.Add(params.GetValue(kExportCurves));
+          args.Add(params.GetValue(kExportPoints));
+          args.Add(params.GetValue(kExportCameras));
 
           app.ExecuteCommand("UsdWrite", args, CValue());
         }
-
       }
       break;
     }
@@ -185,7 +173,6 @@ SICALLBACK UsdWriteUI_PPGEvent(const CRef& in_ctxt)
       for (LONG i = 0; i < props.GetCount(); i++)
       {
         CustomProperty prop(props[i]);
-        app.LogMessage("Tab changed to: " + tabLabel.GetAsText() + CString(" while inspecting ") + prop.GetFullName());
       }
       break;
     }

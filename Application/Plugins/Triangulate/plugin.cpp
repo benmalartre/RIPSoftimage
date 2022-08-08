@@ -293,7 +293,7 @@ SICALLBACK Triangulate_BeginEvaluate( ICENodeContext& in_ctxt )
   if (nbpoints>3) 
   {
     p = (XYZ *)malloc((nbpoints+3)*sizeof(XYZ)); 
-    v = (ITRIANGLE *)malloc(3*nbpoints*sizeof(TRIANGLE));
+    v = (TRIANGLE *)malloc(3*nbpoints*sizeof(TRIANGLE));
 
     // Note: Specific CIndexSet for PointPosition is required in single-threading mode			
     CIndexSet PointPositionIndexSet(in_ctxt, ID_IN_PointPosition);

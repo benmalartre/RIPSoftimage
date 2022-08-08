@@ -10,7 +10,7 @@ X2UXform::~X2UXform()
 { 
 }
 
-void X2UXform::Init(UsdStageRefPtr& stage)
+void X2UXform::Init(UsdStageRefPtr& stage, size_t options)
 {
   UsdGeomXform xform = UsdGeomXform::Define(stage, SdfPath(_fullname));
   _prim = xform.GetPrim();

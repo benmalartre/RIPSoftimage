@@ -7,6 +7,8 @@
 #include "IRRegister.h"
 #include "IRDeltaMush.h"
 #include "IRCubicBezier.h"
+#include "IRLeastSquareFitLine.h"
+#include "IRLeastSquareFitPlane.h"
 
 XSI::CStatus RegisterIRSmoothWeights( XSI::PluginRegistrar& in_reg );
 XSI::CStatus RegisterIRCubicBezier( XSI::PluginRegistrar& in_reg );
@@ -17,6 +19,8 @@ XSI::CStatus RegisterIRDeltaMushInit(XSI::PluginRegistrar& in_reg);
 XSI::CStatus RegisterIRDeltaMush(XSI::PluginRegistrar& in_reg);
 XSI::CStatus RegisterIRResampleCurve(XSI::PluginRegistrar& in_reg);
 XSI::CStatus RegisterIRFabrik(XSI::PluginRegistrar& in_reg);
+XSI::CStatus RegisterIRLeastSquareFitLine(XSI::PluginRegistrar& in_reg);
+XSI::CStatus RegisterIRLeastSquareFitPlane(XSI::PluginRegistrar& in_reg);
 
 SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
 {
@@ -33,6 +37,8 @@ SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
   RegisterIRDeltaMush(in_reg);
   RegisterIRResampleCurve(in_reg);
   RegisterIRFabrik(in_reg);
+  RegisterIRLeastSquareFitLine(in_reg);
+  RegisterIRLeastSquareFitPlane(in_reg);
 
   in_reg.RegisterTool(L"IRSetElement");
 	in_reg.RegisterTool(L"IRSimpleBrush");

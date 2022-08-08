@@ -26,13 +26,13 @@ void X2UScene::Save()
 }
 
 
-void X2UScene::Init()
+void X2UScene::Init(size_t options)
 {
   // Create Usd stage for writing
   _stage = UsdStage::CreateNew(_folder + "/" + _filename);
   UsdGeomXform rootXform = UsdGeomXform::Define(_stage, SdfPath(_rootName));
   _rootXform = X2UXformSharedPtr(new X2UXform(_rootName, _root));
-  _rootXform->Init(_stage);
+  _rootXform->Init(_stage, options);
 }
 
 
@@ -47,7 +47,7 @@ void X2UScene::SetTimeInfos(double startTime, double endTime, double rate)
   _timeInfos.InitFromValues(startTime, endTime, rate);
 }
 
-void X2UScene::Process()
+void X2UScene::Process(size_t options)
 {
   Application app;
   UIToolkit kit = app.GetUIToolkit();
@@ -55,6 +55,7 @@ void X2UScene::Process()
   // first build usd structure
   std::string rootPath = _rootName;
   CRefArray children = _root.GetChildren();
+
   for (int j = 0; j < children.GetCount(); ++j)
   {
     _Recurse(children[j], rootPath);

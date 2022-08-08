@@ -10,7 +10,7 @@ public:
   X2UCamera(std::string path, const CRef& ref);
   ~X2UCamera();
 
-  void Init(UsdStageRefPtr& stage) override;
+  void Init(UsdStageRefPtr& stage, size_t options) override;
   void WriteSample(double t) override;
 
 };

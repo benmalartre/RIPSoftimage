@@ -10,12 +10,12 @@ class X2UScene : public X2UModel{
   
     X2UScene(const std::string& folder, const std::string& filename, const CRef& root);
     ~X2UScene();
-    void Init() override;
+    void Init(size_t options) override;
     void Save() override;
 
     void SetTimeInfosFromScene(double rate);
     void SetTimeInfos(double startTime, double endTime, double rate);
-    void Process();
+    void Process(size_t options);
 
   private:
     X2UTimeInfos     _timeInfos;

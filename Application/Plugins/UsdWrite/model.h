@@ -19,12 +19,11 @@ class X2UModel {
   public:
     X2UModel(const std::string& folder, const std::string& filename, const CRef& root);
     ~X2UModel();
-    virtual void Init();
+    virtual void Init(size_t options);
     virtual void Save();
 
     ULONG GetID() { return _root.GetObjectID(); };
     void SetPath(const std::string& path) { _path = SdfPath(path); };
-    void SetOptions(size_t options) {_options = options;};
     SdfPath GetPath() { return _path; };
     void _Recurse(const CRef& ref, const std::string& parentPath);
     void _WriteSample(double t);
@@ -44,6 +43,7 @@ class X2UModel {
     X2UObjectPathMap          _xObjPathMap;
     std::vector<X2UPrototype> _prototypes;
     size_t                    _options;
+
 };
 
 typedef std::vector<X2UModel> X2UModelList;

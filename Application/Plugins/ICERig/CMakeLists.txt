@@ -8,6 +8,8 @@ add_library(${TARGET} SHARED
   #ICERigTools.cpp
   IRBrushTool.cpp
   IRBuildElementID.cpp
+  IRLeastSquareFitLine.cpp
+  IRLeastSquareFitPlane.cpp
   IRCubicBezier.cpp
   IRCubicBezierGenerator.cpp
   IRCubicBezierPoint.cpp

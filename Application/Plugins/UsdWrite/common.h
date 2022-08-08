@@ -40,6 +40,7 @@
 #include <pxr/usd/usdGeom/points.h>
 #include <pxr/usd/usdGeom/mesh.h>
 #include <pxr/usd/usdGeom/pointInstancer.h>
+#include <pxr/usd/usdGeom/primvarsAPI.h>
 
 #include <pxr/base/gf/vec2i.h>
 #include <pxr/base/gf/vec2f.h>
@@ -69,18 +70,20 @@
 using namespace XSI;
 using namespace pxr;
 
-extern CString kFolder;
-extern CString kFilename;
-extern CString kTimeMode;
-extern CString kExportMeshes;
-extern CString kExportPoints;
-extern CString kExportCurves;
-extern CString kExportCameras;
-extern CString kExportLights;
-extern CString kStartFrame;
-extern CString kEndFrame;
-extern CString kSampleRate;
-extern CString kWrite;
+const CString kFolder = "Folder";
+const CString kFilename = "Filename";
+const CString kTimeMode = "TimeMode";
+const CString kExportMeshes = "ExportMeshes";
+const CString kExportUVs = "ExportUVs";
+const CString kExportColors = "ExportColors";
+const CString kExportPoints = "ExportPoints";
+const CString kExportCurves = "ExportCurves";
+const CString kExportCameras = "ExportCameras";
+const CString kExportLights = "ExportLights";
+const CString kStartFrame = "StartFrame";
+const CString kEndFrame = "EndFrame";
+const CString kSampleRate = "SampleRate";
+const CString kWrite = "Write";
 
 // softimage log message
 #define LOG(msg) Application().LogMessage(msg);

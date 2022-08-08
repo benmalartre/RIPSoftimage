@@ -16,7 +16,7 @@ X2UCurve::~X2UCurve()
 { 
 }
 
-void X2UCurve::Init(UsdStageRefPtr& stage)
+void X2UCurve::Init(UsdStageRefPtr& stage, size_t options)
 {
   UsdTimeCode timeCode = UsdTimeCode::Default();
   UsdGeomBasisCurves crv = UsdGeomBasisCurves::Define(stage, SdfPath(_fullname));
