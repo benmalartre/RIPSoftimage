@@ -1,8 +1,8 @@
 #include "mesh.h"
 #include "utils.h"
 
-X2UMesh::X2UMesh(X2UModel* model, std::string path, const CRef& ref)
-  : X2UPrim(model, path, ref)
+X2UMesh::X2UMesh(std::string path, const CRef& ref)
+  : X2UPrim(path, ref)
   , _haveNormals(false)
   , _haveColors(false)
   , _haveUVs(false)

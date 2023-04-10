@@ -16,7 +16,7 @@ enum X2UCurveSourceType {
 // Mesh 
 class X2UCurve final : public X2UPrim {
 public:
-  X2UCurve(X2UModel* model, std::string path, const CRef& ref, X2UCurveSourceType srcType);
+  X2UCurve(std::string path, const CRef& ref, X2UCurveSourceType srcType);
   ~X2UCurve();
 
   void Init(UsdStageRefPtr& stage) override;

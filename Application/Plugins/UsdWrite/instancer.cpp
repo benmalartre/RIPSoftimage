@@ -1,8 +1,8 @@
 #include "instancer.h"
 #include "utils.h"
 
-X2UInstancer::X2UInstancer(X2UModel* model, std::string path, const CRef& ref)
-  : X2UPrim(model, path, ref)
+X2UInstancer::X2UInstancer(std::string path, const CRef& ref)
+  : X2UPrim(path, ref)
   , _protoHash(0)
 {
 }

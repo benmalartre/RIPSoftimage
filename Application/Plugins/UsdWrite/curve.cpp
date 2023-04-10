@@ -2,8 +2,8 @@
 #include "utils.h"
 
 
-X2UCurve::X2UCurve(X2UModel* model, std::string path, const CRef& ref, X2UCurveSourceType srcType)
-  : X2UPrim(model, path, ref)
+X2UCurve::X2UCurve(std::string path, const CRef& ref, X2UCurveSourceType srcType)
+  : X2UPrim(path, ref)
   , _haveNormals(false)
   , _haveWidths(false)
   , _haveColors(false)

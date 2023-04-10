@@ -19,7 +19,7 @@ struct X2UInstancerShape {
 // Mesh 
 class X2UInstancer final : public X2UPrim {
 public:
-  X2UInstancer(X2UModel* model, std::string path, const CRef& ref);
+  X2UInstancer(std::string path, const CRef& ref);
   ~X2UInstancer();
 
   void Init(UsdStageRefPtr& stage) override;

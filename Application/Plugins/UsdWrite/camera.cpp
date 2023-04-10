@@ -1,8 +1,8 @@
 #include "camera.h"
 #include "utils.h"
 
-X2UCamera::X2UCamera(X2UModel* model, std::string path, const CRef& ref)
-  : X2UPrim(model, path, ref)
+X2UCamera::X2UCamera(std::string path, const CRef& ref)
+  : X2UPrim(path, ref)
 {
 }
 

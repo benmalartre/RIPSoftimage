@@ -22,7 +22,7 @@ SICALLBACK UsdWriteUI_Define(CRef& in_ctxt)
   prop.AddParameter(kExportCameras, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
   prop.AddParameter(kExportLights, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
   prop.AddParameter(kExportAttributes, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
-  prop.AddParameter( kExportAttributesList, CValue::siString, siPersistable, L"Attributes", L"ICE Attributes to Export", L"", param );
+  prop.AddParameter(kExportAttributesList, CValue::siString, siPersistable, L"Attributes", L"ICE Attributes to Export", L"", param );
   prop.AddParameter(kStartFrame, CValue::siFloat, siPersistable, "", "", 1l, -10000l, 10000l, -10000l, 10000l, param);
   prop.AddParameter(kEndFrame, CValue::siFloat, siPersistable, "", "", 100l, -10000l, 10000l, -10000l, 10000l, param);
   prop.AddParameter(kSampleRate, CValue::siFloat, siPersistable, "", "", 1.f, 0.01f, 100.f, 0.01f, 100.f, param);
@@ -163,6 +163,8 @@ SICALLBACK UsdWriteUI_PPGEvent(const CRef& in_ctxt)
           args.Add(params.GetValue(kExportCurves));
           args.Add(params.GetValue(kExportPoints));
           args.Add(params.GetValue(kExportCameras));
+          args.Add(params.GetValue(kExportAttributes));
+          args.Add(params.GetValue(kExportAttributesList));
 
           app.ExecuteCommand("UsdWrite", args, CValue());
         }

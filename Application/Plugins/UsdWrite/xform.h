@@ -6,7 +6,7 @@
 // Xform 
 class X2UXform final : public X2UPrim {
 public:
-  X2UXform(X2UModel* model, std::string path, const CRef& ref);
+  X2UXform(std::string path, const CRef& ref);
   ~X2UXform();
 
   void Init(UsdStageRefPtr& stage) override;

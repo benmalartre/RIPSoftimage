@@ -1,8 +1,8 @@
 #include "points.h"
 #include "utils.h"
 
-X2UPoints::X2UPoints(X2UModel* model, std::string path, const CRef& ref)
-  : X2UPrim(model, path, ref)
+X2UPoints::X2UPoints(std::string path, const CRef& ref)
+  : X2UPrim(path, ref)
   , _numPoints(0)
 {
 }

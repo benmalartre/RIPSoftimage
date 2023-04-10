@@ -30,4 +30,9 @@ class X2UScene : public X2UModel{
     CStringArray        _attributes;
 };
 
+static X2UScene* X2U_CURRENT_SCENE = NULL;
+X2UScene* GetCurrentScene();
+void SetCurrentScene(X2UScene* scene);
+
+
 typedef std::vector<X2UScene> X2USceneList;

@@ -1,5 +1,18 @@
 #include "scene.h"
 
+
+
+X2UScene* GetCurrentScene()
+{
+  return X2U_CURRENT_SCENE;
+}
+
+void SetCurrentScene(X2UScene* scene)
+{
+  X2U_CURRENT_SCENE = scene;
+}
+
+
 X2UScene::X2UScene(const std::string& folder, const std::string& filename,
   const CRef& root)
   : X2UModel(folder, filename, root)
@@ -83,6 +96,10 @@ void X2UScene::Process()
   UIToolkit kit = app.GetUIToolkit();
 
   _GetSelection();
+  if (_options & X2U_EXPORT_SELECTION && !_selection.GetCount()) {
+    LOG("Nothing Selected and Export Selection Option Activated, Aborted!!");
+    return;
+  }
  
   // first build usd structure
   std::string rootPath = _rootName;

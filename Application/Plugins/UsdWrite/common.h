@@ -33,6 +33,7 @@
 
 #include <pxr/pxr.h>
 #include <pxr/base/arch/hash.h>
+#include <pxr/usd/sdf/types.h>
 #include <pxr/usd/usd/stage.h>
 #include <pxr/usd/usd/prim.h>
 #include <pxr/usd/usdGeom/camera.h>
@@ -235,6 +236,87 @@ static X2UDataType X2UDataTypeFromICEType(siICENodeDataType type)
   default:
     return X2U_DATA_NULL;
   }
+}
+
+static pxr::SdfValueTypeName X2USdfValueTypeFromICEAttribute(const ICEAttribute& attribute)
+{
+  siICENodeStructureType structType = attribute.GetStructureType();
+  siICENodeDataType dataType = attribute.GetDataType();
+  if (structType == siICENodeStructureSingle) {
+    switch (dataType)
+    {
+    case siICENodeDataBool:
+      return pxr::SdfValueTypeNames->Bool;
+
+    case siICENodeDataLong:
+      return pxr::SdfValueTypeNames->Int;
+
+    case siICENodeDataFloat:
+      return pxr::SdfValueTypeNames->Float;
+
+    case siICENodeDataVector2:
+      return pxr::SdfValueTypeNames->Float2;
+
+    case siICENodeDataVector3:
+      return pxr::SdfValueTypeNames->Float3;
+
+    case siICENodeDataVector4:
+      return pxr::SdfValueTypeNames->Float4;
+
+    case siICENodeDataRotation:
+      return pxr::SdfValueTypeNames->Float4;
+
+    case siICENodeDataQuaternion:
+      return pxr::SdfValueTypeNames->Quatf;
+
+    case siICENodeDataColor4:
+      return pxr::SdfValueTypeNames->Color4f;;
+
+    case siICENodeDataMatrix33:
+      return pxr::SdfValueTypeNames->Matrix3d;
+
+    case siICENodeDataMatrix44:
+      return pxr::SdfValueTypeNames->Matrix4d;
+    }
+  }
+  else if (structType == siICENodeStructureArray) {
+    switch (dataType)
+    {
+    case siICENodeDataBool:
+      return pxr::SdfValueTypeNames->BoolArray;
+
+    case siICENodeDataLong:
+      return pxr::SdfValueTypeNames->IntArray;
+
+    case siICENodeDataFloat:
+      return pxr::SdfValueTypeNames->FloatArray;
+
+    case siICENodeDataVector2:
+      return pxr::SdfValueTypeNames->Float2Array;
+
+    case siICENodeDataVector3:
+      return pxr::SdfValueTypeNames->Float3Array;
+
+    case siICENodeDataVector4:
+      return pxr::SdfValueTypeNames->Float4Array;
+
+    case siICENodeDataRotation:
+      return pxr::SdfValueTypeNames->Float4Array;
+
+    case siICENodeDataQuaternion:
+      return pxr::SdfValueTypeNames->QuatfArray;
+
+    case siICENodeDataColor4:
+      return pxr::SdfValueTypeNames->Color4fArray;
+
+    case siICENodeDataMatrix33:
+      return pxr::SdfValueTypeNames->Matrix3dArray;
+
+    case siICENodeDataMatrix44:
+      return pxr::SdfValueTypeNames->Matrix4dArray;
+    }
+  }
+  return pxr::SdfValueTypeName();
 }
 
 // templated copy data

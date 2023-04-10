@@ -53,6 +53,8 @@ SICALLBACK UsdWrite_Init( CRef& in_ctxt )
   args.Add(kExportCurves, true);
   args.Add(kExportPoints, true);
   args.Add(kExportCameras, true);
+  args.Add(kExportAttributes, false);
+  args.Add(kExportAttributesList, CValue());
 
   return CStatus::OK;
 }
@@ -81,14 +83,22 @@ SICALLBACK UsdWrite_Execute( CRef& in_ctxt )
   bool exportCameras = args.GetItem(kExportCameras).GetValue();
   bool exportAttributes = args.GetItem(kExportAttributes).GetValue();
 
-  CString exportAttributesListStr = args.GetItem(kExportAttributes).GetValue();
+  CString exportAttributesListStr = args.GetItem(kExportAttributesList).GetValue();
   CStringArray exportAttributesList = exportAttributesListStr.Split(";");
-
-  LOG("EXPORT ATTRIBUTES : " + exportAttributes);
-  LOG(exportAttributesListStr);
-
-  LOG("EXPORT MESH " + exportMeshes);
-  LOG("EXPORT Cameras " + exportCameras);
+  
+  LOG("------------------------------------------------------------------------");
+  LOG("Export Options :");
+  LOG("   Meshes    : " + CString(exportMeshes));
+  LOG("   Cameras   : " + CString(exportCameras));
+  LOG("   Points    : " + CString(exportPoints));
+  LOG("   Curves    : " + CString(exportCurves));
+  LOG("   Attribute : " + CString(exportAttributes));
+  if (exportAttributes) {
+    for (size_t i = 0; i < exportAttributesList.GetCount(); ++i) {
+      LOG("     |___" + exportAttributesList[i]);
+    }
+  }
+  LOG("------------------------------------------------------------------------");
 
   if (exportSelection) options += X2U_EXPORT_SELECTION;
   if (exportMeshes) options += X2U_EXPORT_MESHES;
@@ -108,6 +118,7 @@ SICALLBACK UsdWrite_Execute( CRef& in_ctxt )
       (std::string) filename.GetAsciiString(),
       root.GetRef()
     );
+    SetCurrentScene(&exportScene);
     
     exportScene.Init();
     if (timeMode == TimeMode::SCENE) {

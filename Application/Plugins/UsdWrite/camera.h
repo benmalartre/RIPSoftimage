@@ -7,7 +7,7 @@
 // Mesh 
 class X2UCamera final : public X2UPrim {
 public:
-  X2UCamera(X2UModel* model, std::string path, const CRef& ref);
+  X2UCamera(std::string path, const CRef& ref);
   ~X2UCamera();
 
   void Init(UsdStageRefPtr& stage) override;

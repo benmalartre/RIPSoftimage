@@ -1,10 +1,9 @@
 #include "prim.h"
 #include "utils.h"
-#include "model.h"
+#include "scene.h"
 
-X2UPrim::X2UPrim(X2UModel* model, std::string path, const CRef& ref)
-  : _model(model)
-  , _fullname(path)
+X2UPrim::X2UPrim(std::string path, const CRef& ref)
+  : _fullname(path)
 {
   _xObj = X3DObject(ref);
   _xPrim = _xObj.GetActivePrimitive();
@@ -14,11 +13,6 @@ X2UPrim::X2UPrim(X2UModel* model, std::string path, const CRef& ref)
 X2UPrim::~X2UPrim()
 {
 
-}
-
-X2UModel* X2UPrim::GetModel()
-{ 
-  return _model; 
 }
 
 void X2UPrim::InitExtentAttribute()
@@ -74,6 +68,28 @@ void X2UPrim::InitVisibilityAttribute()
 
 void X2UPrim::InitExtraAttributes()
 {
+  Geometry geometry = _xPrim.GetGeometry();
+
+  /*
+  CRefArray allAttributes = geometry.GetICEAttributes();
+  for (size_t i = 0; i < allAttributes.GetCount(); ++i) {
+    ICEAttribute attr(allAttributes[i]);
+    LOG("ICE : " + attr.GetName());
+  }
+  */
+  
+  const CStringArray& attributes = GetCurrentScene()->GetAttributes();
+  for (size_t i = 0; i < attributes.GetCount(); ++i) {
+    
+    ICEAttribute attribute = geometry.GetICEAttributeFromName(attributes[i]);
+    if (!attribute.IsValid()) continue;
+    LOG("EXPORT ATTRIBUTE : " + attributes[i]);
+    pxr::SdfValueTypeName usdDataType = X2USdfValueTypeFromICEAttribute(attribute);
+    if (usdDataType.IsScalar() || usdDataType.IsArray()) {
+      InitAttributeFromICE(geometry, attributes[i], attributes[i], usdDataType);
+      LOG("INIT ATTRIBUTE FROM ICE ! " + attributes[i]);
+    }
+  }
 }
 
 void X2UPrim::WriteExtentSample(double t)
