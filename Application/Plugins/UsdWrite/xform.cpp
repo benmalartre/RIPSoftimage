@@ -1,8 +1,8 @@
 #include "xform.h"
 #include "utils.h"
 
-X2UXform::X2UXform(std::string path, const CRef& ref)
-  : X2UPrim(path, ref)
+X2UXform::X2UXform(X2UModel* model, std::string path, const CRef& ref)
+  : X2UPrim(model, path, ref)
 {
 }
 

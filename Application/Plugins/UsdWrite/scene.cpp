@@ -47,10 +47,42 @@ void X2UScene::SetTimeInfos(double startTime, double endTime, double rate)
   _timeInfos.InitFromValues(startTime, endTime, rate);
 }
 
-void X2UScene::Process(size_t options)
+void X2UScene::SetOptions(size_t options)
+{
+  _options = options;
+}
+
+void X2UScene::SetAttributes(const CStringArray& attributes)
+{
+  _attributes = attributes;
+}
+
+bool X2UScene::IsSelected(const CRef& ref)
+{
+  for (size_t i = 0; i < _selection.GetCount(); ++i)
+    if (ref == _selection.GetItem(i))return true;
+
+  return false;
+}
+
+void X2UScene::_GetSelection()
+{
+  Selection selection = Application().GetSelection();
+  size_t numSelectedObjects = selection.GetCount();
+  for (size_t i = 0; i < numSelectedObjects; ++i) {
+    CRef ref = selection.GetItem(i);
+    if(ref.GetClassIDName() == L"X3DObject") {
+      _selection.Add(ref);
+    }
+  }
+}
+
+void X2UScene::Process()
 {
   Application app;
   UIToolkit kit = app.GetUIToolkit();
+
+  _GetSelection();
  
   // first build usd structure
   std::string rootPath = _rootName;
@@ -58,7 +90,7 @@ void X2UScene::Process(size_t options)
 
   for (int j = 0; j < children.GetCount(); ++j)
   {
-    _Recurse(children[j], rootPath);
+    _Recurse(children[j], rootPath, _options);
   }
 
   // then loop over time range writing samples

@@ -29,6 +29,7 @@
 #include <xsi_matrix4f.h>
 #include <xsi_uitoolkit.h>
 #include <xsi_progressbar.h>
+#include <xsi_selection.h>
 
 #include <pxr/pxr.h>
 #include <pxr/base/arch/hash.h>
@@ -73,6 +74,7 @@ using namespace pxr;
 const CString kFolder = "Folder";
 const CString kFilename = "Filename";
 const CString kTimeMode = "TimeMode";
+const CString kExportSelection = "ExportSelection";
 const CString kExportMeshes = "ExportMeshes";
 const CString kExportUVs = "ExportUVs";
 const CString kExportColors = "ExportColors";
@@ -80,6 +82,8 @@ const CString kExportPoints = "ExportPoints";
 const CString kExportCurves = "ExportCurves";
 const CString kExportCameras = "ExportCameras";
 const CString kExportLights = "ExportLights";
+const CString kExportAttributes = "ExportAttributes";
+const CString kExportAttributesList = "ExportAttributesList";
 const CString kStartFrame = "StartFrame";
 const CString kEndFrame = "EndFrame";
 const CString kSampleRate = "SampleRate";
@@ -89,14 +93,16 @@ const CString kWrite = "Write";
 #define LOG(msg) Application().LogMessage(msg);
 
 enum X2UExportOptions {
-  X2U_EXPORT_MESHES = 1,
-  X2U_EXPORT_UVS = 2,
-  X2U_EXPORT_COLORS = 4,
-  X2U_EXPORT_POINTS = 8,
-  X2U_EXPORT_CURVES = 16,
-  X2U_EXPORT_CAMERAS = 32,
-  X2U_EXPORT_LIGHTS = 64,
-  X2U_EXPORT_CUSTOM = 128
+  X2U_EXPORT_SELECTION  = 1 << 0,
+  X2U_EXPORT_MESHES     = 1 << 1,
+  X2U_EXPORT_UVS        = 1 << 2,
+  X2U_EXPORT_COLORS     = 1 << 3,
+  X2U_EXPORT_POINTS     = 1 << 4,
+  X2U_EXPORT_CURVES     = 1 << 5,
+  X2U_EXPORT_CAMERAS    = 1 << 6,
+  X2U_EXPORT_LIGHTS     = 1 << 7,
+  X2U_EXPORT_ATTRIBUTES = 1 << 8,
+  X2U_EXPORT_CUSTOM     = 1 << 9
 };
 
 enum X2UDataType {

@@ -1,9 +1,10 @@
 #include "prim.h"
 #include "utils.h"
+#include "model.h"
 
-
-X2UPrim::X2UPrim(std::string path, const CRef& ref)
-  : _fullname(path)
+X2UPrim::X2UPrim(X2UModel* model, std::string path, const CRef& ref)
+  : _model(model)
+  , _fullname(path)
 {
   _xObj = X3DObject(ref);
   _xPrim = _xObj.GetActivePrimitive();
@@ -13,6 +14,11 @@ X2UPrim::X2UPrim(std::string path, const CRef& ref)
 X2UPrim::~X2UPrim()
 {
 
+}
+
+X2UModel* X2UPrim::GetModel()
+{ 
+  return _model; 
 }
 
 void X2UPrim::InitExtentAttribute()
@@ -64,6 +70,10 @@ void X2UPrim::InitVisibilityAttribute()
   X2UAttribute& item = GetAttribute("visibility");
   if (visibility)item.WriteSample(UsdGeomTokens->visible, UsdTimeCode::Default());
   else item.WriteSample(UsdGeomTokens->invisible, UsdTimeCode::Default());
+}
+
+void X2UPrim::InitExtraAttributes()
+{
 }
 
 void X2UPrim::WriteExtentSample(double t)

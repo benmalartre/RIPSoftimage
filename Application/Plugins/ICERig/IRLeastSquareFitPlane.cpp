@@ -60,6 +60,8 @@ static CVector3f IRLeastSquareFitPlane_ComputeNormal(CDataArray2DVector3f::Acces
       result[2] += data[6 + i] * Y[i];
     }
     result.NormalizeInPlace();
+  } else {
+    result = CVector3f(0.f, 1.f, 0.f);
   }
 
   return result;
@@ -67,34 +69,59 @@ static CVector3f IRLeastSquareFitPlane_ComputeNormal(CDataArray2DVector3f::Acces
 
 static CVector3f IRLeastSquareFitPlane_ComputeNormal2(CDataArray2DVector3f::Accessor& points)
 {
-  CVector3f Y(0.f, 0.f, 0.f);;
-  CMatrix3f matrix, invMatrix;
-  CVector3f result(0.f, 0.f, 0.f);
-
-  float* data = matrix.Get();
-  memset(data, 0.f, 9 * sizeof(float));
-
-  for (int j = 0; j < 3; ++j) {
-    for (int i = 0; i < points.GetCount(); ++i) {
-      data[0 + j] += points[i][0] * points[i][j];
-      data[3 + j] += points[i][1] * points[i][j];
-      data[6 + j] += points[i][2] * points[i][j];
-      Y[j] -= points[i][j];
-    }
+  if (!points.GetCount()) {
+    return CVector3f(0.f, 1.f, 0.f);
   }
 
-  if (invMatrix.Invert(matrix))
-  {
-    data = invMatrix.Get();
-    for (int i = 0; i < 3; ++i) {
-      result[0] += data[0 + i] * Y[i];
-      result[1] += data[3 + i] * Y[i];
-      result[2] += data[6 + i] * Y[i];
-    }
+  CVector3f sum(0.f, 0.f, 0.f);
+  
+  for (size_t index = 0; index < points.GetCount(); ++index) {
+    sum += points[index];
+  }
+  CVector3f centroid = sum.ScaleInPlace(1.f / (float)points.GetCount());
+
+  // Calc full 3x3 covariance matrix, excluding symmetries:
+  float xx = 0.0; float xy = 0.0; float xz = 0.0;
+  float yy = 0.0; float yz = 0.0; float zz = 0.0;
+
+  for (int i = 0; i < points.GetCount(); ++i) {
+    CVector3f r;
+    r.Sub(points[i], centroid);
+    xx += r[0] * r[0];
+    xy += r[0] * r[1];
+    xz += r[0] * r[2];
+    yy += r[1] * r[1];
+    yz += r[1] * r[2];
+    zz += r[2] * r[2];
+  }
+
+  float det_x = yy * zz - yz * yz;
+  float det_y = xx * zz - xz * xz;
+  float det_z = xx * yy - xy * xy;
+
+  float det_max = det_x;
+  if (det_y > det_max)det_max = det_y;
+  if (det_z > det_max) det_max = det_z;
+  if (det_max <= 0.0) {
+    return CVector3f(0.f, 1.f, 0.f);
+  }
+
+  // Pick path with best conditioning:
+  if (det_max == det_x) {
+    CVector3f result(det_x, xz * yz - xy * zz, xy * yz - xz * yy);
     result.NormalizeInPlace();
+    return result;
   }
-
-  return result;
+  else if (det_max == det_y) {
+    CVector3f result(xz * yz - xy * zz, det_y, xy * xz - yz * xx);
+    result.NormalizeInPlace();
+    return result;
+  }
+  else {
+    CVector3f result(xy * yz - xz * yy, xy * xz - yz * xx, det_z);
+    result.NormalizeInPlace();
+    return result;
+  };
 }
 
 CStatus RegisterIRLeastSquareFitPlane( PluginRegistrar& in_reg )
@@ -116,6 +143,12 @@ CStatus RegisterIRLeastSquareFitPlane( PluginRegistrar& in_reg )
   st = nodeDef.AddInputPort(
     ID_IN_Position, ID_G_100, siICENodeDataVector3, siICENodeStructureArray, siICENodeContextAny, 
     L"Position", L"Position", MATH::CVector3f(1.0, 1.0, 1.0), CValue(), CValue(), ID_UNDEF, ID_UNDEF, ID_CTXT_CNS
+  );
+  st.AssertSucceeded();
+
+  st = nodeDef.AddInputPort(
+    ID_IN_Method, ID_G_100, siICENodeDataLong, siICENodeStructureSingle, siICENodeContextAny,
+    L"Method", L"Method", 0, 0, 1, ID_UNDEF, ID_UNDEF, ID_CTXT_CNS
   );
   st.AssertSucceeded();
 

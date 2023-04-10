@@ -15,9 +15,11 @@ struct X2UPrototype {
 };
 
 // Model
+class X2UScene;
 class X2UModel {
   public:
-    X2UModel(const std::string& folder, const std::string& filename, const CRef& root);
+    X2UModel(const std::string& folder, const std::string& filename, 
+      const CRef& root, X2UModel* parent=NULL);
     ~X2UModel();
     virtual void Init();
     virtual void Save();
@@ -25,12 +27,17 @@ class X2UModel {
     ULONG GetID() { return _root.GetObjectID(); };
     void SetPath(const std::string& path) { _path = SdfPath(path); };
     SdfPath GetPath() { return _path; };
-    void _Recurse(const CRef& ref, const std::string& parentPath);
-    void _WriteSample(double t);
-    void _Finalize();
-    inline std::string _GetRootName() { return _rootName; }
+
+    X2UScene* GetScene();
+    X2UModel* GetParent();
 
   protected:
+    inline std::string        _GetRootName() { return _rootName; }
+    void                      _Recurse(const CRef& ref, const std::string& parentPath, size_t options);
+    void                      _WriteSample(double t);
+    void                      _Finalize();
+
+    X2UModel*                 _parent;
     X3DObject                 _root;
     SdfPath                   _path;
     std::string               _rootName;
@@ -42,6 +49,7 @@ class X2UModel {
     std::vector<X2UModel>     _models;
     X2UObjectPathMap          _xObjPathMap;
     std::vector<X2UPrototype> _prototypes;
+    bool                      _selected;
 
 };
 

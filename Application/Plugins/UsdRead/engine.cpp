@@ -52,17 +52,11 @@ U2XEngine::U2XEngine(
   
   //_InitGL();
 
-  if (IsHydraEnabled()) {
-
-    // _renderIndex, _taskController, and _sceneDelegate are initialized
-    // by the plugin system.
-    if (!SetRendererPlugin(_GetDefaultRendererPluginId())) {
-      TF_CODING_ERROR("No renderer plugins found! "
-        "Check before creation.");
-    }
-  }
-  else {
-    TF_CODING_ERROR("Hydra is NOT supported! ");
+  // _renderIndex, _taskController, and _sceneDelegate are initialized
+  // by the plugin system.
+  if (!SetRendererPlugin(_GetDefaultRendererPluginId())) {
+    TF_CODING_ERROR("No renderer plugins found! "
+      "Check before creation.");
   }
 
 }

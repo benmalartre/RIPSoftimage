@@ -46,6 +46,7 @@ SICALLBACK UsdWrite_Init( CRef& in_ctxt )
   args.Add(kStartFrame, 1.0);
   args.Add(kEndFrame, 100.0);
   args.Add(kSampleRate, 1.f);
+  args.Add(kExportSelection, false);
   args.Add(kExportMeshes, true);
   args.Add(kExportUVs, true);
   args.Add(kExportColors, true);
@@ -71,27 +72,30 @@ SICALLBACK UsdWrite_Execute( CRef& in_ctxt )
 
   size_t options = 0;
  
+  bool exportSelection = args.GetItem(kExportSelection).GetValue();
   bool exportMeshes = args.GetItem(kExportMeshes).GetValue();
   bool exportUVs = args.GetItem(kExportUVs).GetValue();
   bool exportColors = args.GetItem(kExportColors).GetValue();
   bool exportPoints = args.GetItem(kExportPoints).GetValue();
   bool exportCurves = args.GetItem(kExportCurves).GetValue();
   bool exportCameras = args.GetItem(kExportCameras).GetValue();
+  bool exportAttributes = args.GetItem(kExportAttributes).GetValue();
+
+  CString exportAttributesListStr = args.GetItem(kExportAttributes).GetValue();
+  CStringArray exportAttributesList = exportAttributesListStr.Split(";");
+
+  LOG("EXPORT ATTRIBUTES : " + exportAttributes);
+  LOG(exportAttributesListStr);
 
   LOG("EXPORT MESH " + exportMeshes);
   LOG("EXPORT Cameras " + exportCameras);
 
+  if (exportSelection) options += X2U_EXPORT_SELECTION;
   if (exportMeshes) options += X2U_EXPORT_MESHES;
   if (exportUVs) options += X2U_EXPORT_UVS;
   if (exportColors) options += X2U_EXPORT_COLORS;
   if (exportCameras) options += X2U_EXPORT_CAMERAS;
-  /*
-  BITMASK_SET(options, (bool)args.GetItem(kExportUVs).GetValue());
-  BITMASK_SET(options, (bool)args.GetItem(kExportColors).GetValue());
-  BITMASK_SET(options, bool(args.GetItem(kExportCurves).GetValue()));
-  BITMASK_SET(options, bool(args.GetItem(kExportPoints).GetValue()));
-  BITMASK_SET(options, bool(args.GetItem(kExportCameras).GetValue()));
-  */
+  if (exportAttributes) options += X2U_EXPORT_ATTRIBUTES;
 
   Application app;
   Model root = app.GetActiveSceneRoot();
@@ -112,7 +116,9 @@ SICALLBACK UsdWrite_Execute( CRef& in_ctxt )
     else {
       exportScene.SetTimeInfos(startFrame, endFrame, sampleRate);
     }
-    exportScene.Process(options);
+    exportScene.SetOptions(options);
+    exportScene.SetAttributes(exportAttributesList);
+    exportScene.Process();
     exportScene.Save();
   }
 

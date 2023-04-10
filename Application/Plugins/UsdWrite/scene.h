@@ -15,11 +15,19 @@ class X2UScene : public X2UModel{
 
     void SetTimeInfosFromScene(double rate);
     void SetTimeInfos(double startTime, double endTime, double rate);
-    void Process(size_t options);
+    void SetOptions(size_t options);
+    void SetAttributes(const CStringArray& attributes);
+    void Process();
+
+    const CStringArray& GetAttributes(){return _attributes;};
+    bool IsSelected(const CRef& ref);
 
   private:
-    X2UTimeInfos     _timeInfos;
-
+    void                _GetSelection();
+    X2UTimeInfos        _timeInfos;
+    size_t              _options;
+    CRefArray           _selection;
+    CStringArray        _attributes;
 };
 
 typedef std::vector<X2UScene> X2USceneList;

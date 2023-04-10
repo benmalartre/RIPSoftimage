@@ -6,9 +6,10 @@
 typedef std::map<ULONG, SdfPath> X2UObjectPathMap;
 
 // Prim base class
+class X2UModel;
 class X2UPrim {
 public:
-  X2UPrim(std::string path, const CRef& ref);
+  X2UPrim(X2UModel* model, std::string path, const CRef& ref);
   virtual ~X2UPrim();
 
   virtual void Init(UsdStageRefPtr& stage) = 0;
@@ -21,10 +22,12 @@ public:
   inline ULONG GetID() { return _xID; };
   inline UsdPrim GetPrim() { return _prim; };
   inline SdfPath GetPath() { return _prim.GetPath(); };
+  X2UModel* GetModel();
 
   void InitExtentAttribute();
   void InitTransformAttribute();
   void InitVisibilityAttribute();
+  void InitExtraAttributes();
 
   void WriteExtentSample(double t);
   void WriteTransformSample(double t);
@@ -40,6 +43,7 @@ public:
   void WriteSampleFromICE(const Geometry& geom, UsdTimeCode t, const std::string& attrName);
 
 protected:
+  X2UModel*               _model;
   X2UPrim *               _parent;
   X3DObject               _xObj;
   ULONG                   _xID;

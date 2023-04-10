@@ -13,13 +13,16 @@ SICALLBACK UsdWriteUI_Define(CRef& in_ctxt)
   prop.AddParameter(kFolder, CValue::siString, siPersistable | siKeyable, "", "", "", param);
   prop.AddParameter(kFilename, CValue::siString, siPersistable | siKeyable, "", "", "", param);
   prop.AddParameter(kTimeMode, CValue::siUInt1, siPersistable | siKeyable, "", "", 0l, 0l, 1l, 0l, 1l, param);
-  prop.AddParameter(kExportMeshes, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
-  prop.AddParameter(kExportUVs, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
-  prop.AddParameter(kExportColors, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
-  prop.AddParameter(kExportPoints, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
-  prop.AddParameter(kExportCurves, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
+  prop.AddParameter(kExportSelection, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
+  prop.AddParameter(kExportMeshes, CValue::siBool, siPersistable, "", "", true, CValue(), CValue(), CValue(), CValue(), param);
+  prop.AddParameter(kExportUVs, CValue::siBool, siPersistable, "", "", true, CValue(), CValue(), CValue(), CValue(), param);
+  prop.AddParameter(kExportColors, CValue::siBool, siPersistable, "", "", true, CValue(), CValue(), CValue(), CValue(), param);
+  prop.AddParameter(kExportPoints, CValue::siBool, siPersistable, "", "", true, CValue(), CValue(), CValue(), CValue(), param);
+  prop.AddParameter(kExportCurves, CValue::siBool, siPersistable, "", "", true, CValue(), CValue(), CValue(), CValue(), param);
   prop.AddParameter(kExportCameras, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
   prop.AddParameter(kExportLights, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
+  prop.AddParameter(kExportAttributes, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
+  prop.AddParameter( kExportAttributesList, CValue::siString, siPersistable, L"Attributes", L"ICE Attributes to Export", L"", param );
   prop.AddParameter(kStartFrame, CValue::siFloat, siPersistable, "", "", 1l, -10000l, 10000l, -10000l, 10000l, param);
   prop.AddParameter(kEndFrame, CValue::siFloat, siPersistable, "", "", 100l, -10000l, 10000l, -10000l, 10000l, param);
   prop.AddParameter(kSampleRate, CValue::siFloat, siPersistable, "", "", 1.f, 0.01f, 100.f, 0.01f, 100.f, param);
@@ -50,6 +53,7 @@ SICALLBACK UsdWriteUI_DefineLayout(CRef& in_ctxt)
   layout.AddItem(kSampleRate);
   layout.EndGroup();
   layout.AddGroup("Export Options");
+  layout.AddItem(kExportSelection, "Selection Only");
   layout.AddItem(kExportMeshes, "Meshes");
   layout.AddItem(kExportUVs, "UVs");
   layout.AddItem(kExportColors, "Colors");
@@ -57,6 +61,8 @@ SICALLBACK UsdWriteUI_DefineLayout(CRef& in_ctxt)
   layout.AddItem(kExportCurves, "Curves");
   layout.AddItem(kExportCameras, "Cameras");
   layout.AddItem(kExportLights, "Lights");
+  layout.AddItem(kExportAttributes, "Attributes");
+  layout.AddItem(kExportAttributesList, "Names");
   layout.EndGroup();
 
   layout.AddGroup("");
@@ -150,6 +156,7 @@ SICALLBACK UsdWriteUI_PPGEvent(const CRef& in_ctxt)
           args.Add(params.GetValue(kStartFrame));
           args.Add(params.GetValue(kEndFrame));
           args.Add(params.GetValue(kSampleRate));
+          args.Add(params.GetValue(kExportSelection));
           args.Add(params.GetValue(kExportMeshes));
           args.Add(params.GetValue(kExportUVs));
           args.Add(params.GetValue(kExportColors));
