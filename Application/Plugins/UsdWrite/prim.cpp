@@ -129,8 +129,6 @@ X2UAttribute* X2UPrim::InitAttributeFromICE(
   SdfValueTypeName usdDataType
 )
 {
-
-  
   CRefArray attributes = geom.GetICEAttributes();
   int iceAttrIndex;
   ICEAttribute iceAttr = X2UGetICEAttributeFromArray(attributes, iceAttrName, iceAttrIndex);
@@ -142,7 +140,8 @@ X2UAttribute* X2UPrim::InitAttributeFromICE(
     _attributes[usdAttrName.GetAsciiString()] =
       X2UAttribute(
         usdAttr,
-        iceAttrIndex
+        iceAttrIndex,
+        (iceAttr.GetStructureType() == siICENodeStructureArray)
       );
     return &_attributes[usdAttrName.GetAsciiString()];
   }

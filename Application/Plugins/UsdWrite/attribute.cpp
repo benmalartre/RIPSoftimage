@@ -827,6 +827,75 @@ void X2UAttribute::WriteSample(const TfToken& token, const UsdTimeCode& timeCode
   }
 }
 
+template<typename T>
+void _WriteSample(X2UAttribute* dstAttribute,
+  const ICEAttribute& srcAttribute, const UsdTimeCode& timeCode)
+{
+  CICEAttributeDataArray<T> datas;
+  srcAttribute.GetDataArray(datas);
+  dstAttribute->WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+}
+
+template<>
+void _WriteSample<bool>(X2UAttribute* dstAttribute,
+  const ICEAttribute& srcAttribute, const UsdTimeCode& timeCode)
+{
+  CICEAttributeDataArrayBool datas;
+  srcAttribute.GetDataArray(datas);
+  dstAttribute->WriteSample((void*)&datas, datas.GetCount(), timeCode);
+}
+
+template<typename T>
+void _WriteArraySample(X2UAttribute* dstAttribute, 
+  const ICEAttribute& srcAttribute, const UsdTimeCode& timeCode)
+{
+  CICEAttributeDataArray2D<T> datas;
+  CICEAttributeDataArray<T> data;
+  srcAttribute.GetDataArray2D(datas);
+  if (datas.GetCount() == 1) {
+    datas.GetSubArray(0, data);
+    dstAttribute->WriteSample((void*)&data[0], data.GetCount(), timeCode);
+  }
+  else if (datas.GetCount() > 1) {
+    std::vector<T> accum;
+    size_t offset = 0;
+    for (size_t x = 0; x < datas.GetCount(); ++x) {
+      datas.GetSubArray(x, data);
+      accum.resize(accum.size() + data.GetCount());
+      for (size_t y = 0; y < data.GetCount(); ++y) {
+        accum[offset++] = data[y];
+      }
+    }
+    dstAttribute->WriteSample((void*)&accum[0], accum.size(), timeCode);
+  }
+}
+
+template<>
+void _WriteArraySample<bool>(X2UAttribute* dstAttribute,
+  const ICEAttribute& srcAttribute, const UsdTimeCode& timeCode)
+{
+  CICEAttributeDataArray2D<bool> datas;
+  CICEAttributeDataArray<bool> data;
+  srcAttribute.GetDataArray2D(datas);
+
+  if (datas.GetCount() == 1) {
+    datas.GetSubArray(0, data);
+    dstAttribute->WriteSample((void*)&data, data.GetCount(), timeCode);
+  }
+  else if (datas.GetCount() > 1) {
+    std::vector<bool> accum;
+    size_t offset = 0;
+    for (size_t x = 0; x < datas.GetCount(); ++x) {
+      datas.GetSubArray(x, data);
+      accum.resize(accum.size() + data.GetCount());
+      for (size_t y = 0; y < data.GetCount(); ++y) {
+        accum[offset++] = data[y];
+      }
+    }
+    dstAttribute->WriteSample((void*)&accum, accum.size(), timeCode);
+  }
+}
+
 void X2UAttribute::WriteSample(const Geometry& geom, const UsdTimeCode& timeCode)
 {
   
@@ -846,94 +915,48 @@ void X2UAttribute::WriteSample(const Geometry& geom, const UsdTimeCode& timeCode
     switch (_srcDataType)
     {
     case X2U_DATA_BOOL:
-    {
-      CICEAttributeDataArrayBool datas;
-      srcAttribute.GetDataArray(datas);
-      WriteSample((void*)&datas, datas.GetCount(), timeCode);
+      _WriteSample<bool>(this, srcAttribute, timeCode);
       break;
-    }
 
     case X2U_DATA_LONG:
-    {
-      CICEAttributeDataArrayLong datas;
-      srcAttribute.GetDataArray(datas);
-      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      _WriteSample<LONG>(this, srcAttribute, timeCode);
       break;
-    }
 
     case X2U_DATA_FLOAT:
-    {
-      CICEAttributeDataArrayFloat datas;
-      srcAttribute.GetDataArray(datas);
-      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      _WriteSample<float>(this, srcAttribute, timeCode);
       break;
-    }
 
     case X2U_DATA_VECTOR2:
-    {
-      CICEAttributeDataArrayVector2f datas;
-      srcAttribute.GetDataArray(datas);
-      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      _WriteSample<MATH::CVector2f>(this, srcAttribute, timeCode);
       break;
-    }
 
     case X2U_DATA_VECTOR3:
-    {
-      CICEAttributeDataArrayVector3f datas;
-      srcAttribute.GetDataArray(datas);
-      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      _WriteSample<MATH::CVector3f>(this, srcAttribute, timeCode);
       break;
-    }
 
     case X2U_DATA_VECTOR4:
-    {
-      CICEAttributeDataArrayVector4f datas;
-      srcAttribute.GetDataArray(datas);
-      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      _WriteSample<MATH::CVector4f>(this, srcAttribute, timeCode);
       break;
-    }
 
     case X2U_DATA_COLOR4:
-    {
-      CICEAttributeDataArrayColor4f datas;
-      srcAttribute.GetDataArray(datas);
-      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      _WriteSample<MATH::CColor4f>(this, srcAttribute, timeCode);
       break;
-    }
 
     case X2U_DATA_ROTATION:
-    {
-      LOG("WRITE ROTATION SAMPLE !!!");
-      CICEAttributeDataArrayRotationf datas;
-      srcAttribute.GetDataArray(datas);
-      LOG("DATA ARRAY COUNT : " + CString(datas.GetCount()));
-      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      _WriteSample<MATH::CRotationf>(this, srcAttribute, timeCode);
       break;
-    }
 
     case X2U_DATA_QUATERNION:
-    {
-      CICEAttributeDataArrayQuaternionf datas;
-      srcAttribute.GetDataArray(datas);
-      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      _WriteSample<MATH::CQuaternionf>(this, srcAttribute, timeCode);
       break;
-    }
 
     case X2U_DATA_MATRIX3:
-    {
-      CICEAttributeDataArrayMatrix3f datas;
-      srcAttribute.GetDataArray(datas);
-      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      _WriteSample<MATH::CMatrix3f>(this, srcAttribute, timeCode);
       break;
-    }
 
     case X2U_DATA_MATRIX4:
-    {
-      CICEAttributeDataArrayMatrix3f datas;
-      srcAttribute.GetDataArray(datas);
-      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      _WriteSample<MATH::CMatrix4f>(this, srcAttribute, timeCode);
       break;
-    }
     }
   }
   // 2D
@@ -944,186 +967,50 @@ void X2UAttribute::WriteSample(const Geometry& geom, const UsdTimeCode& timeCode
     switch (_srcDataType)
     {
     case X2U_DATA_BOOL:
-    {
-      CICEAttributeDataArrayBool datas;
-      srcAttribute.GetDataArray(datas);
-      WriteSample((void*)&datas, datas.GetCount(), timeCode);
+      _WriteArraySample<bool>(this, srcAttribute, timeCode);
       break;
-    }
 
     case X2U_DATA_LONG:
-    {
-      CICEAttributeDataArrayLong datas;
-      srcAttribute.GetDataArray(datas);
-      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      _WriteArraySample<LONG>(this, srcAttribute, timeCode);
       break;
-    }
 
     case X2U_DATA_FLOAT:
-    {
-      CICEAttributeDataArrayFloat datas;
-      srcAttribute.GetDataArray(datas);
-      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      _WriteArraySample<float>(this, srcAttribute, timeCode);
       break;
-    }
 
     case X2U_DATA_VECTOR2:
-    {
-      CICEAttributeDataArrayVector2f datas;
-      srcAttribute.GetDataArray(datas);
-      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      _WriteArraySample<MATH::CVector2f>(this, srcAttribute, timeCode);
       break;
-    }
 
     case X2U_DATA_VECTOR3:
-    {
-      CICEAttributeDataArrayVector3f datas;
-      srcAttribute.GetDataArray(datas);
-      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      _WriteArraySample<MATH::CVector3f>(this, srcAttribute, timeCode);
       break;
-    }
 
     case X2U_DATA_VECTOR4:
-    {
-      LOG("WE got ARRAY FLOAT 4");
-      CICEAttributeDataArray2DVector4f datas;
-      CICEAttributeDataArrayVector4f data;
-      srcAttribute.GetDataArray2D(datas);
-      if (!datas.GetCount()) {
-        LOG("DATA EMPTY SKIPPED !!");
-      } else if (datas.GetCount() == 1) {
-        LOG("TRUTHY 1D ARRAY ZOB!");
-        datas.GetSubArray(0, data);
-        WriteSample((void*)&data[0], data.GetCount(), timeCode);
-      }
-      else {
-        LOG("UNFORTUNATLY HERE WE NEED SOME WORK");
-      } 
+      _WriteArraySample<MATH::CVector4f>(this, srcAttribute, timeCode);
       break;
-    }
 
     case X2U_DATA_COLOR4:
-    {
-      CICEAttributeDataArrayColor4f datas;
-      srcAttribute.GetDataArray(datas);
-      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      _WriteArraySample<MATH::CColor4f>(this, srcAttribute, timeCode);
       break;
-    }
 
     case X2U_DATA_ROTATION:
-    {
-      LOG("WRITE ROTATION SAMPLE !!!");
-      CICEAttributeDataArrayRotationf datas;
-      srcAttribute.GetDataArray(datas);
-      LOG("DATA ARRAY COUNT : " + CString(datas.GetCount()));
-      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      _WriteArraySample<MATH::CRotationf>(this, srcAttribute, timeCode);
       break;
-    }
 
     case X2U_DATA_QUATERNION:
-    {
-      CICEAttributeDataArrayQuaternionf datas;
-      srcAttribute.GetDataArray(datas);
-      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      _WriteArraySample<MATH::CQuaternionf>(this, srcAttribute, timeCode);
       break;
-    }
 
     case X2U_DATA_MATRIX3:
-    {
-      CICEAttributeDataArrayMatrix3f datas;
-      srcAttribute.GetDataArray(datas);
-      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      _WriteArraySample<MATH::CMatrix3f>(this, srcAttribute, timeCode);
       break;
-    }
 
     case X2U_DATA_MATRIX4:
-    {
-      CICEAttributeDataArrayMatrix3f datas;
-      srcAttribute.GetDataArray(datas);
-      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      _WriteArraySample<MATH::CMatrix4f>(this, srcAttribute, timeCode);
       break;
-    }
     }
   }
-}
-
-void X2UAttribute::WriteEmptySample(const UsdTimeCode& timeCode)
-{
-  /*
-  //if (_isArray)
-  {
-
-    // get ICE data array
-    _srcDataType = X2UDataTypeFromICEType(_srcAttribute.GetDataType());
-    _srcDataPrecision = X2U_PRECISION_SINGLE;
-
-    switch (_srcDataType)
-    {
-    case X2U_DATA_BOOL:
-    {
-      CICEAttributeDataArrayBool datas;
-      _srcAttribute.GetDataArray(datas);
-      WriteSample((void*)&datas, datas.GetCount(), timeCode);
-      break;
-    }
-    case X2U_DATA_FLOAT:
-    {
-      CICEAttributeDataArrayFloat datas;
-      _srcAttribute.GetDataArray(datas);
-      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
-      break;
-    }
-
-    case X2U_DATA_VECTOR2:
-    {
-      CICEAttributeDataArrayVector2f datas;
-      _srcAttribute.GetDataArray(datas);
-      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
-      break;
-    }
-
-    case X2U_DATA_VECTOR3:
-    {
-      CICEAttributeDataArrayVector2f datas;
-      _srcAttribute.GetDataArray(datas);
-      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
-      break;
-    }
-
-    case X2U_DATA_VECTOR4:
-    {
-      CICEAttributeDataArrayVector2f datas;
-      _srcAttribute.GetDataArray(datas);
-      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
-      break;
-    }
-
-    case X2U_DATA_COLOR4:
-    {
-      CICEAttributeDataArrayColor4f datas;
-      _srcAttribute.GetDataArray(datas);
-      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
-      break;
-    }
-
-    case X2U_DATA_MATRIX3:
-    {
-      CICEAttributeDataArrayMatrix3f datas;
-      _srcAttribute.GetDataArray(datas);
-      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
-      break;
-    }
-
-    case X2U_DATA_MATRIX4:
-    {
-      CICEAttributeDataArrayMatrix3f datas;
-      _srcAttribute.GetDataArray(datas);
-      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
-      break;
-    }
-    }
-  }
-  */
 }
 
 void X2UAttribute::WriteInterpolation()
