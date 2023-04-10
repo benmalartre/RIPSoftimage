@@ -77,19 +77,18 @@ void X2UPrim::InitExtraAttributes()
     LOG("ICE : " + attr.GetName());
   }
   */
-  
   const CStringArray& attributes = GetCurrentScene()->GetAttributes();
   for (size_t i = 0; i < attributes.GetCount(); ++i) {
     
     ICEAttribute attribute = geometry.GetICEAttributeFromName(attributes[i]);
     if (!attribute.IsValid()) continue;
-    LOG("EXPORT ATTRIBUTE : " + attributes[i]);
     pxr::SdfValueTypeName usdDataType = X2USdfValueTypeFromICEAttribute(attribute);
     if (usdDataType.IsScalar() || usdDataType.IsArray()) {
-      InitAttributeFromICE(geometry, attributes[i], attributes[i], usdDataType);
-      LOG("INIT ATTRIBUTE FROM ICE ! " + attributes[i]);
+      _extraAttributes.push_back(InitAttributeFromICE(geometry, attributes[i], attributes[i], usdDataType));
     }
   }
+
+  LOG("NUM EXTRA ATTRIBUTES : " + _extraAttributes.size());
 }
 
 void X2UPrim::WriteExtentSample(double t)
@@ -114,7 +113,16 @@ void X2UPrim::WriteVisibilitySample(double t)
   else item.WriteSample(UsdGeomTokens->invisible, UsdTimeCode(t));
 }
 
-bool X2UPrim::InitAttributeFromICE(
+void X2UPrim::WriteExtraAttributes(double t)
+{
+  Geometry geometry = _xPrim.GetGeometry();
+  for (auto& extra : _extraAttributes) {
+    LOG("WRITE SAMPLE for " + CString(_fullname.c_str()) + ":" + extra->GetOutput().GetName().GetText());
+    extra->WriteSample(geometry, t);
+  }
+}
+
+X2UAttribute* X2UPrim::InitAttributeFromICE(
   const Geometry& geom,
   const CString& iceAttrName,
   const CString& usdAttrName,
@@ -122,6 +130,7 @@ bool X2UPrim::InitAttributeFromICE(
 )
 {
 
+  
   CRefArray attributes = geom.GetICEAttributes();
   int iceAttrIndex;
   ICEAttribute iceAttr = X2UGetICEAttributeFromArray(attributes, iceAttrName, iceAttrIndex);
@@ -135,9 +144,13 @@ bool X2UPrim::InitAttributeFromICE(
         usdAttr,
         iceAttrIndex
       );
-    return true;
+    return &_attributes[usdAttrName.GetAsciiString()];
   }
-  else return false;
+  else {
+    LOG("Attribute Not Found : " + iceAttrName);
+    return NULL;
+  }
+
 }
 
 void X2UPrim::WriteSampleFromICE(const Geometry& geom, UsdTimeCode t, const std::string& attrName)

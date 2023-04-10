@@ -3,7 +3,6 @@
 
 X2UAttribute::X2UAttribute()
   : _dstAttribute()
-  , _srcAttributeName("")
   , _fromICE(false)
   , _hash(0)
 {
@@ -830,10 +829,15 @@ void X2UAttribute::WriteSample(const TfToken& token, const UsdTimeCode& timeCode
 
 void X2UAttribute::WriteSample(const Geometry& geom, const UsdTimeCode& timeCode)
 {
-  //if (_isArray)
-  {
-    CRefArray attributes = geom.GetICEAttributes();
-    ICEAttribute srcAttribute = attributes[_srcAttributeIndex];
+  
+  CRefArray attributes = geom.GetICEAttributes();
+  ICEAttribute srcAttribute = attributes[_srcAttributeIndex];
+  siICENodeStructureType structType = srcAttribute.GetStructureType();
+
+  LOG("Write Sample struct " + srcAttribute.GetName() + " : " + CString(structType));
+
+  // 1D
+  if (structType == siICENodeStructureSingle) {
     if (srcAttribute.GetElementCount() == 0)return;
 
     _srcDataType = X2UDataTypeFromICEType(srcAttribute.GetDataType());
@@ -864,7 +868,7 @@ void X2UAttribute::WriteSample(const Geometry& geom, const UsdTimeCode& timeCode
       WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
       break;
     }
-      
+
     case X2U_DATA_VECTOR2:
     {
       CICEAttributeDataArrayVector2f datas;
@@ -932,11 +936,119 @@ void X2UAttribute::WriteSample(const Geometry& geom, const UsdTimeCode& timeCode
     }
     }
   }
+  // 2D
+  else if (structType == siICENodeStructureArray) {
+    _srcDataType = X2UDataTypeFromICEType(srcAttribute.GetDataType());
+    _srcDataPrecision = X2U_PRECISION_SINGLE;
+
+    switch (_srcDataType)
+    {
+    case X2U_DATA_BOOL:
+    {
+      CICEAttributeDataArrayBool datas;
+      srcAttribute.GetDataArray(datas);
+      WriteSample((void*)&datas, datas.GetCount(), timeCode);
+      break;
+    }
+
+    case X2U_DATA_LONG:
+    {
+      CICEAttributeDataArrayLong datas;
+      srcAttribute.GetDataArray(datas);
+      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      break;
+    }
+
+    case X2U_DATA_FLOAT:
+    {
+      CICEAttributeDataArrayFloat datas;
+      srcAttribute.GetDataArray(datas);
+      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      break;
+    }
+
+    case X2U_DATA_VECTOR2:
+    {
+      CICEAttributeDataArrayVector2f datas;
+      srcAttribute.GetDataArray(datas);
+      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      break;
+    }
+
+    case X2U_DATA_VECTOR3:
+    {
+      CICEAttributeDataArrayVector3f datas;
+      srcAttribute.GetDataArray(datas);
+      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      break;
+    }
+
+    case X2U_DATA_VECTOR4:
+    {
+      LOG("WE got ARRAY FLOAT 4");
+      CICEAttributeDataArray2DVector4f datas;
+      CICEAttributeDataArrayVector4f data;
+      srcAttribute.GetDataArray2D(datas);
+      if (!datas.GetCount()) {
+        LOG("DATA EMPTY SKIPPED !!");
+      } else if (datas.GetCount() == 1) {
+        LOG("TRUTHY 1D ARRAY ZOB!");
+        datas.GetSubArray(0, data);
+        WriteSample((void*)&data[0], data.GetCount(), timeCode);
+      }
+      else {
+        LOG("UNFORTUNATLY HERE WE NEED SOME WORK");
+      } 
+      break;
+    }
+
+    case X2U_DATA_COLOR4:
+    {
+      CICEAttributeDataArrayColor4f datas;
+      srcAttribute.GetDataArray(datas);
+      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      break;
+    }
+
+    case X2U_DATA_ROTATION:
+    {
+      LOG("WRITE ROTATION SAMPLE !!!");
+      CICEAttributeDataArrayRotationf datas;
+      srcAttribute.GetDataArray(datas);
+      LOG("DATA ARRAY COUNT : " + CString(datas.GetCount()));
+      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      break;
+    }
+
+    case X2U_DATA_QUATERNION:
+    {
+      CICEAttributeDataArrayQuaternionf datas;
+      srcAttribute.GetDataArray(datas);
+      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      break;
+    }
+
+    case X2U_DATA_MATRIX3:
+    {
+      CICEAttributeDataArrayMatrix3f datas;
+      srcAttribute.GetDataArray(datas);
+      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      break;
+    }
+
+    case X2U_DATA_MATRIX4:
+    {
+      CICEAttributeDataArrayMatrix3f datas;
+      srcAttribute.GetDataArray(datas);
+      WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
+      break;
+    }
+    }
+  }
 }
 
 void X2UAttribute::WriteEmptySample(const UsdTimeCode& timeCode)
 {
-  LOG("WRITE FUCKIN EMPTY SAMPLE FOR " + _srcAttributeName);
   /*
   //if (_isArray)
   {

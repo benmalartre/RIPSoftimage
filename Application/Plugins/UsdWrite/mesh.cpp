@@ -186,6 +186,9 @@ void X2UMesh::WriteSample(double t)
       }
     }
   }
+
+  // extras
+  WriteExtraAttributes(t);
 }
 
 void X2UMesh::InitColorAttribute()

@@ -36,13 +36,12 @@ public:
   void WriteEmptySample(const UsdTimeCode& timeCode);
   void WriteInterpolation();
   void SetSourceType(X2UDataType type, X2UDataPrecision precision);
-  const CString& GetSourceAttributeName() { return _srcAttributeName; };
+  pxr::UsdAttribute& GetOutput() { return _dstAttribute; };
 
 private:
   X2UDataType                     _srcDataType;
   X2UDataPrecision                _srcDataPrecision;
   SdfValueTypeName                _dstDataType;
-  CString                         _srcAttributeName;
   int                             _srcAttributeIndex;
   UsdAttribute                    _dstAttribute;
   bool                            _isArray;
@@ -58,3 +57,4 @@ private:
 };
 
 typedef std::map<std::string, X2UAttribute> X2UAttributeMap;
+typedef std::vector<X2UAttribute*> X2UAttributePtrList;

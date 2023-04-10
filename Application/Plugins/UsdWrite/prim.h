@@ -30,8 +30,9 @@ public:
   void WriteExtentSample(double t);
   void WriteTransformSample(double t);
   void WriteVisibilitySample(double t);
+  void WriteExtraAttributes(double t);
 
-  bool InitAttributeFromICE(
+  X2UAttribute* InitAttributeFromICE(
     const Geometry& geom,
     const CString& iceAttrName,
     const CString& usdAttrName,
@@ -48,6 +49,7 @@ protected:
   UsdPrim                 _prim;
   std::string             _fullname;
   X2UAttributeMap         _attributes;
+  X2UAttributePtrList     _extraAttributes;
   GfBBox3d                _bbox;
   UsdGeomXformOp          _xformOp;
 };
