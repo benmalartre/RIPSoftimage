@@ -855,8 +855,7 @@ void _WriteArraySample(X2UAttribute* dstAttribute,
   if (datas.GetCount() == 1) {
     datas.GetSubArray(0, data);
     dstAttribute->WriteSample((void*)&data[0], data.GetCount(), timeCode);
-  }
-  else if (datas.GetCount() > 1) {
+  } else if (datas.GetCount() > 1) {
     std::vector<T> accum;
     size_t offset = 0;
     for (size_t x = 0; x < datas.GetCount(); ++x) {
@@ -902,8 +901,6 @@ void X2UAttribute::WriteSample(const Geometry& geom, const UsdTimeCode& timeCode
   CRefArray attributes = geom.GetICEAttributes();
   ICEAttribute srcAttribute = attributes[_srcAttributeIndex];
   siICENodeStructureType structType = srcAttribute.GetStructureType();
-
-  LOG("Write Sample struct " + srcAttribute.GetName() + " : " + CString(structType));
 
   // 1D
   if (structType == siICENodeStructureSingle) {
