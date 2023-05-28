@@ -285,15 +285,15 @@ SICALLBACK Triangulate_BeginEvaluate( ICENodeContext& in_ctxt )
 
   static float __x[4] = { 0.f, 1.f, 1.f, 0.f };
   static float __y[4] = { 0.f, 0.f, 1.f, 1.f };
-  Triangulate(4, &__x[0], &__y[0], 0) = 0;
+  Triangulate(4, &__x[0], &__y[0], 0) = 0;  
   int nb_visible_points=0;
 
   long nbpoints=PointPositionData.GetCount();
 	
   if (nbpoints>3) 
   {
-    p = (XYZ *)malloc((nbpoints+3)*sizeof(XYZ)); 
-    v = (TRIANGLE *)malloc(3*nbpoints*sizeof(TRIANGLE));
+    Vertex* p = (Vertex_t *)malloc((nbpoints+3)*sizeof(Vertex_t)); 
+    Triangle_t* v = (Triangle_t *)malloc(3*nbpoints*sizeof(Triangle_t));
 
     // Note: Specific CIndexSet for PointPosition is required in single-threading mode			
     CIndexSet PointPositionIndexSet(in_ctxt, ID_IN_PointPosition);
@@ -309,7 +309,7 @@ SICALLBACK Triangulate_BeginEvaluate( ICENodeContext& in_ctxt )
 
     for (CIndexSet::Iterator itPointPosition = PointPositionIndexSet.Begin(); itPointPosition.HasNext(); itPointPosition.Next()) {
       pos = PointPositionData[itPointPosition];
-      p[nb_visible_points].x0 = pos.GetX();
+      p[nb_visible_points].x = pos.GetX();
       p[nb_visible_points].y0 = pos.GetY();
       p[nb_visible_points].z0 = pos.GetZ();
 
@@ -331,7 +331,7 @@ SICALLBACK Triangulate_BeginEvaluate( ICENodeContext& in_ctxt )
     }
 
 
-    qsort(p,nb_visible_points,sizeof(XYZ),XYZCompare);
+    std::sort(p,nb_visible_points,sizeof(Vertex_t),XYZCompare);
     Triangulate(nb_visible_points,p,v,&ntri);
     data->_pos.resize(nb_visible_points);
     for(int i=0;i<nb_visible_points;i++)

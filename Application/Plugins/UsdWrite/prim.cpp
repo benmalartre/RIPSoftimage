@@ -136,12 +136,17 @@ X2UAttribute* X2UPrim::InitAttributeFromICE(
   if (iceAttrIndex >= 0)
   {
     UsdAttribute usdAttr = _prim.CreateAttribute(TfToken(usdAttrName.GetAsciiString()), usdDataType);
+    bool isArray = true;
+    if (iceAttr.GetStructureType() == siICENodeStructureArray && iceAttr.GetContextType() == siICENodeContextSingleton)
+      isArray = false;
+
+    LOG("Init Attribute From ICE : "+iceAttrName+" is Array  ? " + CString(isArray));
 
     _attributes[usdAttrName.GetAsciiString()] =
       X2UAttribute(
         usdAttr,
         iceAttrIndex,
-        (iceAttr.GetStructureType() == siICENodeStructureArray)
+        isArray
       );
     return &_attributes[usdAttrName.GetAsciiString()];
   }

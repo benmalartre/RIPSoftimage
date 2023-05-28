@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xsi_file type="CompoundNode" name="Tree Visibility Options" tasks="Strand Tree/Rendering" author="Fabricio Chamon" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="12369084">
+	<definition>
+		<nodes>
+			<node type="[embedded_0]" index="0">
+				<param name="Hide" type="11" value="false"></param>
+				<portdef name="Hide" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">41</prop>
+					<prop name="posy">236</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="[embedded_4]" index="1">
+				<param name="Hide" type="11" value="false"></param>
+				<portdef name="Hide" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">34</prop>
+					<prop name="posy">152</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="[embedded_7]" index="2">
+				<param name="Hide" type="11" value="false"></param>
+				<portdef name="Hide" type="1" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">30</prop>
+					<prop name="posy">68</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ExecuteNode" index="3">
+				<portdef name="port1" type="4096" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="port2" type="4096" structure="1" group="0" instance="1" port="0"></portdef>
+				<portdef name="port3" type="4096" structure="1" group="0" instance="2" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">238</prop>
+					<prop name="posy">70</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="Hide" username="Hide_Leaves" basename="Hide Leaves" portlabel="Hide Leaves" exposetype="single"> </port>
+			<port index="1" portname="Hide" username="Hide_Strands" basename="Hide Strands" portlabel="Hide Strands" exposetype="single"> </port>
+			<port index="2" portname="Hide" username="Hide_Particles" basename="Hide Particles" portlabel="Hide Particles" exposetype="single"> </port>
+			<port index="3" portname="execute" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="2" from_port="Execute" to_node="3" to_port="port1"> </cnx>
+			<cnx from_node="0" from_port="Execute" to_node="3" to_port="port3"> </cnx>
+			<cnx from_node="1" from_port="Execute" to_node="3" to_port="port2"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Hide_Particles"> </item>
+			<item type="input" name="Hide_Strands"> </item>
+			<item type="input" name="Hide_Leaves"> </item>
+			<item type="output" name="Execute"> </item>
+		</layout>
+		<blob_dictionary>
+		</blob_dictionary>
+	</definition>
+	<embedded_2 name="Get Particle State ID" tasks="Particles/States,Particles/Getters" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="10652328">
+	<description><![CDATA[This compound gets the ID of the State compound in which the particle is currently defined. You can output this Value as an integer.]]></description>
+		<nodes>
+			<node type="GetDataNode" index="0">
+				<param name="reference" type="31" value="Self.State_ID"></param>
+				<param_ext name="reference" type="31" value="Self.State_ID"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1796</prop>
+					<prop name="posy">3344</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="value" username="Value" basename="Value" portlabel="Value" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+		</connections>
+		<layout>
+			<item type="output" name="Value"> </item>
+		</layout>
+	</embedded_2>
+	<embedded_1 name="Test Particle State ID" tasks="Particles/Conditionals" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="6732954">
+		<nodes>
+			<node type="[embedded_2]" index="0">
+				<datablob category="ui_infos">
+					<prop name="posx">817</prop>
+					<prop name="posy">1402</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IfNode" index="1">
+				<param name="condition" type="11" value="false"></param>
+				<param name="iftrue" type="11" value="true"></param>
+				<param name="iffalse" type="11" value="false"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="1" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="iffalse" type="1" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1141</prop>
+					<prop name="posy">1402</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="CompareNode" index="2">
+				<param name="type" type="3" value="0"></param>
+				<param name="epsilon" type="5" value="0.001000"></param>
+				<param name="first" type="3" value="0"></param>
+				<param name="second" type="3" value="0"></param>
+				<portdef name="first" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="2" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1022</prop>
+					<prop name="posy">1408</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IntegerNode" index="3">
+				<param name="value" type="3" value="0"></param>
+				<portdef name="value" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">921</prop>
+					<prop name="posy">1488</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="1" portname="result" username="Result" basename="Result" portlabel="Result" exposetype="single"> </port>
+			<port index="2" portname="type" username="Type" basename="Type" portlabel="Type" exposetype="single"> </port>
+			<port index="3" portname="value" username="State_ID" basename="State_ID" portlabel="State_ID" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="3" from_port="result" to_node="2" to_port="second"> </cnx>
+			<cnx from_node="2" from_port="result" to_node="1" to_port="condition"> </cnx>
+			<cnx from_node="0" from_port="Value" to_node="2" to_port="first"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="State_ID"> </item>
+			<item type="input" name="Type"> </item>
+			<item type="output" name="Result"> </item>
+		</layout>
+	</embedded_1>
+	<embedded_3 name="Set Particle Size" tasks="Particles/Setters" formatversion="1.4" compoundversion="1.0" constructionmode="Modeling" backgroundcolor="12228200">
+	<description><![CDATA[This compound lets you set the particle's size, using the particle's Size attribute as a reference. Plug its Execute output into the Execute on Emit port of an Emit compound to set this value once, or plug it into the ICETree node to update at every frame.]]></description>
+		<nodes>
+			<node type="SetOneDataNode" index="0">
+				<param name="reference" type="31" value="Self.Size"></param>
+				<param name="source" type="4" value="0.000000"></param>
+				<param_ext name="reference" type="31" value="Self.Size"></param_ext>
+				<portdef name="source" type="4" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">187</prop>
+					<prop name="posy">211</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="source" username="Size" basename="Size" portlabel="Size" exposetype="single">
+				<description><![CDATA[Sets the particle's size in Softimage units when drawn on screen. Some compounds use the size value to help with collision detection or to define motion, such as Stick to Surface, for example.]]></description>
+			</port>
+			<port index="0" portname="reference" username="Reference" basename="Reference" portlabel="Reference" exposetype="single">
+				<description><![CDATA[The particle's Size attribute. Click the Explorer button to open up an explorer and select a different particle attribute.]]></description>
+			</port>
+			<port index="0" portname="value" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+		</connections>
+		<layout>
+			<item type="input" name="Size" min="0" max="0"> </item>
+			<item type="input" name="Reference"> </item>
+			<item type="output" name="Execute"> </item>
+		</layout>
+	</embedded_3>
+	<embedded_0 name="Leaf Visibility" tasks="Strand Tree/Rendering" author="Fabricio Chamon" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="12369084">
+		<nodes>
+			<node type="[embedded_1]" index="0">
+				<param name="Type" type="3" value="0"></param>
+				<param name="State_ID" type="3" value="0"></param>
+				<portdef name="State_ID" type="2" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-404</prop>
+					<prop name="posy">223</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="[embedded_3]" index="1">
+				<param name="Reference" type="31" value="Self.Size"></param>
+				<param name="Size" type="4" value="0.000000"></param>
+				<param_ext name="Reference" type="31" value="Self.Size"></param_ext>
+				<portdef name="Size" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-370</prop>
+					<prop name="posy">327</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="2">
+				<param name="reference" type="31" value="self.__strandTree_BranchIterations"></param>
+				<param_ext name="reference" type="31" value="self.__strandTree_BranchIterations"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-729</prop>
+					<prop name="posy">209</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IfNode" index="3">
+				<param name="condition" type="11" value="false"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="4096" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="iffalse" type="4096" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">51</prop>
+					<prop name="posy">262</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IfNode" index="4">
+				<param name="condition" type="11" value="false"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="4096" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="iffalse" type="4096" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-127</prop>
+					<prop name="posy">244</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="3" portname="condition" username="Hide" basename="Hide" portlabel="Hide" exposetype="single"> </port>
+			<port index="3" portname="result" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="1" from_port="Execute" to_node="4" to_port="iftrue"> </cnx>
+			<cnx from_node="0" from_port="Result" to_node="4" to_port="condition"> </cnx>
+			<cnx from_node="2" from_port="value" to_node="0" to_port="State_ID"> </cnx>
+			<cnx from_node="4" from_port="result" to_node="3" to_port="iftrue"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Hide"> </item>
+			<item type="output" name="Execute"> </item>
+		</layout>
+	</embedded_0>
+	<embedded_5 name="Set Data" category="Data Access" author="Softimage" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="12228200">
+	<description><![CDATA[Sets the specified attributes to the supplied values.]]></description>
+		<nodes>
+			<node type="PassThroughNode" index="0">
+				<portdef name="in" type="8192" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">49</prop>
+					<prop name="posy">114</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="SetOneDataNode" index="1">
+				<param name="reference" type="31" value="self.strandposition"></param>
+				<param name="source.source_x" type="4" value="0.000000"></param>
+				<param name="source.source_y" type="4" value="0.000000"></param>
+				<param name="source.source_z" type="4" value="0.000000"></param>
+				<param_ext name="reference" type="31" value="self.strandposition"></param_ext>
+				<portdef name="source" type="16" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">209</prop>
+					<prop name="posy">114</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ExecuteNode" index="2">
+				<portdef name="port1" type="4096" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">368</prop>
+					<prop name="posy">114</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="in" username="In_Name" basename="In Name" portlabel="In Name" exposetype="single">
+				<description><![CDATA[Name prefixed to each attribute to be set. Use this to specify the object name, and then specify each attribute in the Reference ports.]]></description>
+			</port>
+			<port index="1" portname="source" username="Value" basename="Value" overridelabel="Reference" portlabel="Value" exposetype="use_node_import">
+				<description><![CDATA[The value to set.]]></description>
+			</port>
+			<port index="1" portname="reference" username="Reference" basename="Reference" portlabel="Reference" exposetype="use_node_import">
+				<description><![CDATA[The name of the attribute to set.]]></description>
+			</port>
+			<port index="2" portname="execute" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="1" from_port="value" to_node="2" to_port="port1"> </cnx>
+			<cnx from_node="0" from_port="out" to_node="1" to_port="inname"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="In_Name"> </item>
+			<item type="input" name="Value" min="0" max="0"> </item>
+			<item type="input" name="Reference"> </item>
+			<item type="output" name="Execute"> </item>
+		</layout>
+	</embedded_5>
+	<embedded_6 name="Get Point Position" tasks="Deformation/Getters" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="12228200">
+	<description><![CDATA[Returns the position of each point on the ""self"" object.]]></description>
+		<nodes>
+			<node type="GetDataNode" index="0">
+				<param name="reference" type="31" value="Self.PointPosition"></param>
+				<param_ext name="reference" type="31" value="Self.PointPosition"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">559</prop>
+					<prop name="posy">-368</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="value" username="Value" basename="Value" portlabel="Value" exposetype="single"> </port>
+			<port index="0" portname="reference" username="Reference" basename="Reference" portlabel="Reference" exposetype="single">
+				<description><![CDATA[The attribute to get, in this case ""Self.PointPosition"".]]></description>
+			</port>
+		</exposed_ports>
+		<connections>
+		</connections>
+		<layout>
+			<item type="input" name="Reference"> </item>
+			<item type="output" name="Value"> </item>
+		</layout>
+	</embedded_6>
+	<embedded_4 name="Strand Visibility" tasks="Strand Tree/Rendering" author="Fabricio Chamon" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="12369084">
+		<nodes>
+			<node type="IfNode" index="0">
+				<param name="condition" type="11" value="false"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="4096" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="iffalse" type="4096" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">154</prop>
+					<prop name="posy">151</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="[embedded_5]" index="1">
+				<param name="Reference" type="31" value="self.strandposition"></param>
+				<param name="Value.Value_x" type="4" value="0.000000"></param>
+				<param name="Value.Value_y" type="4" value="0.000000"></param>
+				<param name="Value.Value_z" type="4" value="0.000000"></param>
+				<param_ext name="Reference" type="31" value="self.strandposition"></param_ext>
+				<portdef name="Value" type="16" structure="1" group="2" instance="0" port="0" groupname="Value"></portdef>
+				<portdef name="In_Name" type="8192" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-6</prop>
+					<prop name="posy">206</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="[embedded_6]" index="2">
+				<param name="Reference" type="31" value="Self.PointPosition"></param>
+				<param_ext name="Reference" type="31" value="Self.PointPosition"></param_ext>
+				<datablob category="ui_infos">
+					<prop name="posx">-580</prop>
+					<prop name="posy">171</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="MultiplyByScalarNode" index="3">
+				<param name="value.value_x" type="4" value="0.000000"></param>
+				<param name="value.value_y" type="4" value="0.000000"></param>
+				<param name="value.value_z" type="4" value="0.000000"></param>
+				<param name="factor" type="4" value="0.000100"></param>
+				<portdef name="value" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="factor" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-358</prop>
+					<prop name="posy">271</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="AddNode" index="4">
+				<param name="value1.value1_x" type="4" value="0.000000"></param>
+				<param name="value1.value1_y" type="4" value="0.000000"></param>
+				<param name="value1.value1_z" type="4" value="0.000000"></param>
+				<param name="value2.value2_x" type="4" value="0.000000"></param>
+				<param name="value2.value2_y" type="4" value="0.000000"></param>
+				<param name="value2.value2_z" type="4" value="0.000000"></param>
+				<portdef name="value1" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value2" type="16" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-153</prop>
+					<prop name="posy">210</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="result" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+			<port index="0" portname="condition" username="Hide" basename="Hide" portlabel="Hide" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="3" from_port="result" to_node="4" to_port="value2"> </cnx>
+			<cnx from_node="2" from_port="Value" to_node="3" to_port="value"> </cnx>
+			<cnx from_node="2" from_port="Value" to_node="4" to_port="value1"> </cnx>
+			<cnx from_node="4" from_port="result" to_node="1" to_port="Value"> </cnx>
+			<cnx from_node="1" from_port="Execute" to_node="0" to_port="iftrue"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Hide"> </item>
+			<item type="output" name="Execute"> </item>
+		</layout>
+	</embedded_4>
+	<embedded_8 name="Set Particle Size" tasks="Particles/Setters" formatversion="1.4" compoundversion="1.0" constructionmode="Modeling" backgroundcolor="12228200">
+	<description><![CDATA[This compound lets you set the particle's size, using the particle's Size attribute as a reference. Plug its Execute output into the Execute on Emit port of an Emit compound to set this value once, or plug it into the ICETree node to update at every frame.]]></description>
+		<nodes>
+			<node type="SetOneDataNode" index="0">
+				<param name="reference" type="31" value="Self.Size"></param>
+				<param name="source" type="4" value="0.000000"></param>
+				<param_ext name="reference" type="31" value="Self.Size"></param_ext>
+				<portdef name="source" type="4" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">187</prop>
+					<prop name="posy">211</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="source" username="Size" basename="Size" portlabel="Size" exposetype="single">
+				<description><![CDATA[Sets the particle's size in Softimage units when drawn on screen. Some compounds use the size value to help with collision detection or to define motion, such as Stick to Surface, for example.]]></description>
+			</port>
+			<port index="0" portname="reference" username="Reference" basename="Reference" portlabel="Reference" exposetype="single">
+				<description><![CDATA[The particle's Size attribute. Click the Explorer button to open up an explorer and select a different particle attribute.]]></description>
+			</port>
+			<port index="0" portname="value" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+		</connections>
+		<layout>
+			<item type="input" name="Size" min="0" max="0"> </item>
+			<item type="input" name="Reference"> </item>
+			<item type="output" name="Execute"> </item>
+		</layout>
+	</embedded_8>
+	<embedded_10 name="Get Particle State ID" tasks="Particles/States,Particles/Getters" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="10652328">
+	<description><![CDATA[This compound gets the ID of the State compound in which the particle is currently defined. You can output this Value as an integer.]]></description>
+		<nodes>
+			<node type="GetDataNode" index="0">
+				<param name="reference" type="31" value="Self.State_ID"></param>
+				<param_ext name="reference" type="31" value="Self.State_ID"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1796</prop>
+					<prop name="posy">3344</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="value" username="Value" basename="Value" portlabel="Value" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+		</connections>
+		<layout>
+			<item type="output" name="Value"> </item>
+		</layout>
+	</embedded_10>
+	<embedded_9 name="Test Particle State ID" tasks="Particles/Conditionals" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="6732954">
+		<nodes>
+			<node type="IntegerNode" index="0">
+				<param name="value" type="3" value="0"></param>
+				<portdef name="value" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">921</prop>
+					<prop name="posy">1488</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="CompareNode" index="1">
+				<param name="type" type="3" value="2"></param>
+				<param name="epsilon" type="5" value="0.001000"></param>
+				<param name="first" type="3" value="0"></param>
+				<param name="second" type="3" value="0"></param>
+				<portdef name="first" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="2" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1022</prop>
+					<prop name="posy">1408</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IfNode" index="2">
+				<param name="condition" type="11" value="false"></param>
+				<param name="iftrue" type="11" value="true"></param>
+				<param name="iffalse" type="11" value="false"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="1" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="iffalse" type="1" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1141</prop>
+					<prop name="posy">1402</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="[embedded_10]" index="3">
+				<datablob category="ui_infos">
+					<prop name="posx">817</prop>
+					<prop name="posy">1402</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="value" username="State_ID" basename="State_ID" portlabel="State_ID" exposetype="single"> </port>
+			<port index="1" portname="type" username="Type" basename="Type" portlabel="Type" exposetype="single"> </port>
+			<port index="2" portname="result" username="Result" basename="Result" portlabel="Result" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="1" from_port="result" to_node="2" to_port="condition"> </cnx>
+			<cnx from_node="0" from_port="result" to_node="1" to_port="second"> </cnx>
+			<cnx from_node="3" from_port="Value" to_node="1" to_port="first"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="State_ID"> </item>
+			<item type="input" name="Type"> </item>
+			<item type="output" name="Result"> </item>
+		</layout>
+	</embedded_9>
+	<embedded_7 name="Particle Visibility" tasks="Strand Tree/Rendering" author="Fabricio Chamon" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="12369084">
+		<nodes>
+			<node type="[embedded_8]" index="0">
+				<param name="Reference" type="31" value="Self.Size"></param>
+				<param name="Size" type="4" value="0.000000"></param>
+				<param_ext name="Reference" type="31" value="Self.Size"></param_ext>
+				<portdef name="Size" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-369</prop>
+					<prop name="posy">292</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IfNode" index="1">
+				<param name="condition" type="11" value="false"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="4096" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="iffalse" type="4096" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">37</prop>
+					<prop name="posy">211</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="[embedded_9]" index="2">
+				<param name="Type" type="3" value="2"></param>
+				<param name="State_ID" type="3" value="0"></param>
+				<portdef name="State_ID" type="2" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-392</prop>
+					<prop name="posy">193</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="GetDataNode" index="3">
+				<param name="reference" type="31" value="self.__strandTree_BranchIterations"></param>
+				<param_ext name="reference" type="31" value="self.__strandTree_BranchIterations"></param_ext>
+				<portdef name="source" type="2048" structure="1" group="1" instance="0" port="0"></portdef>
+				<portdef name="inname" type="8192" structure="1" group="3" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-725</prop>
+					<prop name="posy">176</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IfNode" index="4">
+				<param name="condition" type="11" value="false"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="4096" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="iffalse" type="4096" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">-127</prop>
+					<prop name="posy">244</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="1" portname="condition" username="Hide" basename="Hide" portlabel="Hide" exposetype="single"> </port>
+			<port index="1" portname="result" username="Execute" basename="Execute" portlabel="Execute" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="0" from_port="Execute" to_node="4" to_port="iftrue"> </cnx>
+			<cnx from_node="2" from_port="Result" to_node="4" to_port="condition"> </cnx>
+			<cnx from_node="3" from_port="value" to_node="2" to_port="State_ID"> </cnx>
+			<cnx from_node="4" from_port="result" to_node="1" to_port="iftrue"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Hide"> </item>
+			<item type="output" name="Execute"> </item>
+		</layout>
+	</embedded_7>
+</xsi_file>

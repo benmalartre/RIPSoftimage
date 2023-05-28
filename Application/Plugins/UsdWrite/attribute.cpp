@@ -96,7 +96,9 @@ void X2UAttribute::WriteSample(const void* datas, uint32_t numElements, const Us
 
       case X2U_DATA_FLOAT:
       {
+        LOG("FLOAT DATA" + CString(GetOutput().GetName().GetText()));
         TfToken typeNameToken = _dstAttribute.GetTypeName().GetAsToken();
+        LOG(typeNameToken.GetText());
         if (typeNameToken == SdfValueTypeNames->DoubleArray)
         {
           VtArray<double> vtArray(numElements);
@@ -831,8 +833,10 @@ template<typename T>
 void _WriteSample(X2UAttribute* dstAttribute,
   const ICEAttribute& srcAttribute, const UsdTimeCode& timeCode)
 {
+  LOG("WRITE SAMPLE " + srcAttribute.GetName());
   CICEAttributeDataArray<T> datas;
   srcAttribute.GetDataArray(datas);
+  LOG("DATA SIZE : " + CString(datas.GetCount()));
   dstAttribute->WriteSample((void*)&datas[0], datas.GetCount(), timeCode);
 }
 

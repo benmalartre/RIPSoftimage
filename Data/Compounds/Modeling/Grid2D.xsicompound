@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsi_file type="CompoundNode" name="Grid2D" category="Modeling" author="Softimage" formatversion="1.4" compoundversion="1.1" versiontag="Fix rounding errors and size parameter" constructionmode="Modeling" backgroundcolor="6993340">
+	<description><![CDATA[Generates a three dimension grid of points by specifying the number of points and the spacing in each dimension. You need to connect this node to a port on the ICE Tree node of an empty point cloud. You can also generate a 3D Point grid by using the ApplyICEOp command. For example:GetPrim PointCloud,""PointCloud"" ApplyICEOp ""Generate Point Grid""]]></description>
+	<definition>
+		<nodes>
+			<node type="GetArraySubIndicesNode" index="0">
+				<param name="array.array_x" type="4" value="0.000000"></param>
+				<param name="array.array_y" type="4" value="0.000000"></param>
+				<param name="array.array_z" type="4" value="0.000000"></param>
+				<portdef name="array" type="16" structure="2" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1970</prop>
+					<prop name="posy">2773</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="[embedded_0]" index="1">
+				<param name="Positions" type="4" value="0.000000"></param>
+				<param name="Size" type="4" value="1.000000"></param>
+				<portdef name="Positions" type="4" structure="2" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Size" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2799</prop>
+					<prop name="posy">2816</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="BuildArrayFromConstantNode" index="5">
+				<param name="size" type="3" value="1000"></param>
+				<param name="value.value_x" type="4" value="0.000000"></param>
+				<param name="value.value_y" type="4" value="0.000000"></param>
+				<param name="value.value_z" type="4" value="0.000000"></param>
+				<portdef name="size" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value" type="16" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1687</prop>
+					<prop name="posy">2730</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+				<comment type="node" state="maximized" wordwrap="true" autoresize="false" background="0" background_alpha="0.000000" title="14876671" title_text="0" offsetx="-7" offsety="-68" sizex="222" sizey="45"><![CDATA[Build the array of Positions. The number of elements is specified by the number of Positions in X, Z and Y]]></comment>
+			</node>
+			<node type="[embedded_1]" index="6">
+				<param name="Value" type="3" value="0"></param>
+				<param name="Divide_By" type="3" value="0"></param>
+				<portdef name="Value" type="2" structure="2" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Divide_By" type="2" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2413</prop>
+					<prop name="posy">3191</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="MultiplyNode" index="7">
+				<param name="value1" type="3" value="1"></param>
+				<param name="value2" type="3" value="1"></param>
+				<portdef name="value1" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value2" type="2" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2063</prop>
+					<prop name="posy">2898</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+				<comment type="node" state="maximized" wordwrap="false" autoresize="false" background="0" background_alpha="0.000000" title="14876671" title_text="0" offsetx="-4" offsety="-27" sizex="36" sizey="19"><![CDATA[X x Z]]></comment>
+			</node>
+			<node type="IntegerToScalarNode" index="10">
+				<param name="integer" type="3" value="0"></param>
+				<portdef name="integer" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2405</prop>
+					<prop name="posy">3293</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="ModuloNode" index="12">
+				<param name="value" type="3" value="0"></param>
+				<param name="moduloby" type="3" value="100"></param>
+				<portdef name="value" type="2" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="moduloby" type="2" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2293</prop>
+					<prop name="posy">2819</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="ModuloNode" index="14">
+				<param name="value" type="3" value="0"></param>
+				<param name="moduloby" type="3" value="100"></param>
+				<portdef name="value" type="2" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="moduloby" type="2" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2452</prop>
+					<prop name="posy">2830</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="SubtractNode" index="15">
+				<param name="first" type="4" value="0.000000"></param>
+				<param name="second" type="4" value="1.000000"></param>
+				<portdef name="first" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2635</prop>
+					<prop name="posy">3292</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+				<comment type="node" state="minimized" wordwrap="true" autoresize="true" background="0" background_alpha="0.000000" title="14876671" title_text="0"><![CDATA[Number of points to number of intervals]]></comment>
+			</node>
+			<node type="IntegerToScalarNode" index="16">
+				<param name="integer" type="3" value="0"></param>
+				<portdef name="integer" type="2" structure="2" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2605</prop>
+					<prop name="posy">3193</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="MultiplyByScalarNode" index="17">
+				<param name="value" type="4" value="0.000000"></param>
+				<param name="factor" type="4" value="8.000000"></param>
+				<portdef name="value" type="4" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="factor" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">3032</prop>
+					<prop name="posy">3237</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IntegerNode" index="18">
+				<param name="value" type="3" value="1"></param>
+				<portdef name="value" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1201</prop>
+					<prop name="posy">3082</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+				<comment type="node" state="maximized" wordwrap="false" autoresize="false" background="0" background_alpha="0.000000" title="14876671" title_text="0" offsetx="-4" offsety="-25" sizex="18" sizey="19"><![CDATA[Z]]></comment>
+			</node>
+			<node type="IntegerToScalarNode" index="19">
+				<param name="integer" type="3" value="0"></param>
+				<portdef name="integer" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2405</prop>
+					<prop name="posy">2931</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="MultiplyNode" index="20">
+				<param name="value1" type="3" value="10"></param>
+				<param name="value2" type="3" value="10"></param>
+				<param name="value3" type="3" value="1"></param>
+				<portdef name="value1" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value2" type="2" structure="1" group="0" instance="1" port="0"></portdef>
+				<portdef name="value3" type="2" structure="1" group="0" instance="2" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1527</prop>
+					<prop name="posy">2713</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+				<comment type="node" state="maximized" wordwrap="true" autoresize="false" background="0" background_alpha="0.000000" title="14876671" title_text="0" offsetx="-36" offsety="-51" sizex="166" sizey="45"><![CDATA[The total number of Point is the number of Points in X Times Z Times Y]]></comment>
+			</node>
+			<node type="IntegerNode" index="22">
+				<param name="value" type="3" value="16"></param>
+				<portdef name="value" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1201</prop>
+					<prop name="posy">2996</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+				<comment type="node" state="maximized" wordwrap="false" autoresize="false" background="0" background_alpha="0.000000" title="14876671" title_text="0" offsetx="-3" offsety="-29" sizex="19" sizey="19"><![CDATA[X]]></comment>
+			</node>
+			<node type="IntegerNode" index="23">
+				<param name="value" type="3" value="16"></param>
+				<portdef name="value" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1193</prop>
+					<prop name="posy">3172</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+				<comment type="node" state="maximized" wordwrap="false" autoresize="false" background="0" background_alpha="0.000000" title="14876671" title_text="0" offsetx="-6" offsety="-29" sizex="22" sizey="19"><![CDATA[Y]]></comment>
+			</node>
+			<node type="3DVectorNode" index="24">
+				<param name="value.value_x" type="4" value="0.000000"></param>
+				<param name="value.value_y" type="4" value="0.000000"></param>
+				<param name="value.value_z" type="4" value="0.000000"></param>
+				<portdef name="value" type="16" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1532</prop>
+					<prop name="posy">2854</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="ScalarTo3DVectorNode" index="25">
+				<param name="x" type="4" value="0.000000"></param>
+				<param name="y" type="4" value="0.000000"></param>
+				<param name="z" type="4" value="0.000000"></param>
+				<portdef name="x" type="4" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="y" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="z" type="4" structure="2" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">3395</prop>
+					<prop name="posy">2975</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="MultiplyByScalarNode" index="27">
+				<param name="value" type="4" value="0.000000"></param>
+				<param name="factor" type="4" value="1.000000"></param>
+				<portdef name="value" type="4" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="factor" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">3030</prop>
+					<prop name="posy">2867</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IntegerToScalarNode" index="28">
+				<param name="integer" type="3" value="0"></param>
+				<portdef name="integer" type="2" structure="2" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2604</prop>
+					<prop name="posy">2839</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="29">
+				<param name="in" type="4" value="1.000000"></param>
+				<portdef name="in" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">1915</prop>
+					<prop name="posy">3087</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="PassThroughNode" index="31">
+				<param name="in" type="4" value="1.000000"></param>
+				<portdef name="in" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="passthrough">
+					<prop name="private">true</prop>
+				</datablob>
+				<datablob category="ui_infos">
+					<prop name="posx">1913</prop>
+					<prop name="posy">3203</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="DivideByScalarNode" index="33">
+				<param name="value" type="4" value="0.000000"></param>
+				<param name="divideby" type="4" value="1.000000"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="divideby" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2798</prop>
+					<prop name="posy">2910</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="[embedded_2]" index="34">
+				<param name="Positions" type="4" value="0.000000"></param>
+				<param name="Size" type="4" value="1.000000"></param>
+				<portdef name="Size" type="4" structure="1" group="-1" instance="-1" port="-1"></portdef>
+				<portdef name="Positions" type="4" structure="2" group="-1" instance="-1" port="-1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2789</prop>
+					<prop name="posy">3224</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="SubtractNode" index="35">
+				<param name="first" type="4" value="0.000000"></param>
+				<param name="second" type="4" value="1.000000"></param>
+				<portdef name="first" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2633</prop>
+					<prop name="posy">2930</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+				<comment type="node" state="minimized" wordwrap="true" autoresize="true" background="0" background_alpha="0.000000" title="14876671" title_text="0"><![CDATA[Number of points to number of intervals]]></comment>
+			</node>
+			<node type="DivideByScalarNode" index="36">
+				<param name="value" type="4" value="0.000000"></param>
+				<param name="divideby" type="4" value="1.000000"></param>
+				<portdef name="value" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="divideby" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2795</prop>
+					<prop name="posy">3311</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="IfNode" index="37">
+				<param name="condition" type="11" value="false"></param>
+				<param name="iftrue" type="4" value="0.000000"></param>
+				<param name="iffalse" type="4" value="0.000000"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="iffalse" type="4" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2951</prop>
+					<prop name="posy">2932</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+			<node type="IfNode" index="38">
+				<param name="condition" type="11" value="false"></param>
+				<param name="iftrue" type="4" value="0.000000"></param>
+				<param name="iffalse" type="4" value="0.000000"></param>
+				<portdef name="condition" type="1" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="iftrue" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<portdef name="iffalse" type="4" structure="1" group="0" instance="0" port="2"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2958</prop>
+					<prop name="posy">3335</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="22" portname="value" username="Number_in_X" basename="Number in X" portlabel="Number in X" exposetype="single">
+				<description><![CDATA[The number of rows along the X Axis]]></description>
+			</port>
+			<port index="23" portname="value" username="Number_in_Z" basename="Number in Z" portlabel="Number in Z" exposetype="single">
+				<description><![CDATA[The number of rows along the Z Axis]]></description>
+			</port>
+			<port index="25" portname="vector" username="Points" basename="Points" portlabel="Points" exposetype="single"> </port>
+			<port index="29" portname="in" username="Size_in_X" basename="Size in X" portlabel="Size in X" exposetype="single">
+				<description><![CDATA[The spacing between rows in X]]></description>
+			</port>
+			<port index="31" portname="in" username="Size_in_Z" basename="Size in Z" portlabel="Size in Z" exposetype="single">
+				<description><![CDATA[The spacing between rows in Z]]></description>
+			</port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="38" from_port="result" to_node="17" to_port="factor"> </cnx>
+			<cnx from_node="37" from_port="result" to_node="27" to_port="factor"> </cnx>
+			<cnx from_node="28" from_port="scalar" to_node="1" to_port="Positions"> </cnx>
+			<cnx from_node="35" from_port="result" to_node="33" to_port="divideby"> </cnx>
+			<cnx from_node="35" from_port="result" to_node="1" to_port="Size"> </cnx>
+			<cnx from_node="19" from_port="scalar" to_node="35" to_port="first"> </cnx>
+			<cnx from_node="24" from_port="result" to_node="5" to_port="value"> </cnx>
+			<cnx from_node="5" from_port="array" to_node="0" to_port="array"> </cnx>
+			<cnx from_node="23" from_port="result" to_node="10" to_port="integer"> </cnx>
+			<cnx from_node="23" from_port="result" to_node="20" to_port="value3"> </cnx>
+			<cnx from_node="18" from_port="result" to_node="20" to_port="value1"> </cnx>
+			<cnx from_node="18" from_port="result" to_node="7" to_port="value2"> </cnx>
+			<cnx from_node="29" from_port="out" to_node="33" to_port="value"> </cnx>
+			<cnx from_node="22" from_port="result" to_node="19" to_port="integer"> </cnx>
+			<cnx from_node="22" from_port="result" to_node="20" to_port="value2"> </cnx>
+			<cnx from_node="22" from_port="result" to_node="7" to_port="value1"> </cnx>
+			<cnx from_node="22" from_port="result" to_node="14" to_port="moduloby"> </cnx>
+			<cnx from_node="31" from_port="out" to_node="36" to_port="value"> </cnx>
+			<cnx from_node="14" from_port="result" to_node="28" to_port="integer"> </cnx>
+			<cnx from_node="12" from_port="result" to_node="14" to_port="value"> </cnx>
+			<cnx from_node="7" from_port="result" to_node="12" to_port="moduloby"> </cnx>
+			<cnx from_node="7" from_port="result" to_node="6" to_port="Divide_By"> </cnx>
+			<cnx from_node="27" from_port="result" to_node="25" to_port="z"> </cnx>
+			<cnx from_node="1" from_port="Centered_Positions" to_node="27" to_port="value"> </cnx>
+			<cnx from_node="10" from_port="scalar" to_node="15" to_port="first"> </cnx>
+			<cnx from_node="36" from_port="valid" to_node="38" to_port="condition"> </cnx>
+			<cnx from_node="36" from_port="result" to_node="38" to_port="iftrue"> </cnx>
+			<cnx from_node="15" from_port="result" to_node="36" to_port="divideby"> </cnx>
+			<cnx from_node="15" from_port="result" to_node="34" to_port="Size"> </cnx>
+			<cnx from_node="34" from_port="Centered_Positions" to_node="17" to_port="value"> </cnx>
+			<cnx from_node="6" from_port="Result" to_node="16" to_port="integer"> </cnx>
+			<cnx from_node="33" from_port="valid" to_node="37" to_port="condition"> </cnx>
+			<cnx from_node="33" from_port="result" to_node="37" to_port="iftrue"> </cnx>
+			<cnx from_node="16" from_port="scalar" to_node="34" to_port="Positions"> </cnx>
+			<cnx from_node="17" from_port="result" to_node="25" to_port="x"> </cnx>
+			<cnx from_node="0" from_port="indices" to_node="12" to_port="value"> </cnx>
+			<cnx from_node="0" from_port="indices" to_node="6" to_port="Value"> </cnx>
+			<cnx from_node="20" from_port="result" to_node="5" to_port="size"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Number_in_X" min="1" max="10"> </item>
+			<item type="input" name="Number_in_Z" min="1" max="10"> </item>
+			<item type="input" name="Size_in_X" min="0" max="0"> </item>
+			<item type="input" name="Size_in_Z" min="0" max="0"> </item>
+			<item type="output" name="Points"> </item>
+		</layout>
+	</definition>
+	<embedded_0 name="Center Positions" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="6732954">
+		<nodes>
+			<node type="MultiplyNode" index="0">
+				<param name="value1" type="4" value="0.500000"></param>
+				<param name="value2" type="4" value="1.000000"></param>
+				<portdef name="value1" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value2" type="4" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2615</prop>
+					<prop name="posy">2739</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="SubtractNode" index="1">
+				<param name="first" type="4" value="0.000000"></param>
+				<param name="second" type="4" value="0.000000"></param>
+				<portdef name="first" type="4" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2822</prop>
+					<prop name="posy">2717</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="value2" username="Size" basename="Size" portlabel="Size" exposetype="single"> </port>
+			<port index="1" portname="result" username="Centered_Positions" basename="Centered Positions" portlabel="Centered Positions" exposetype="single"> </port>
+			<port index="1" portname="first" username="Positions" basename="Positions" portlabel="Positions" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="0" from_port="result" to_node="1" to_port="second"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Positions"> </item>
+			<item type="input" name="Size"> </item>
+			<item type="output" name="Centered_Positions"> </item>
+		</layout>
+	</embedded_0>
+	<embedded_1 name="Divide Integers" formatversion="1.4" compoundversion="1.0" constructionmode="Current" backgroundcolor="6732954">
+		<nodes>
+			<node type="SubtractNode" index="0">
+				<param name="first" type="4" value="0.000000"></param>
+				<param name="second" type="4" value="0.001000"></param>
+				<portdef name="first" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1714</prop>
+					<prop name="posy">2813</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+				<comment type="node" state="maximized" wordwrap="true" autoresize="true" background="0" background_alpha="0.000000" title="14876671" title_text="0" offsetx="-9" offsety="-33" sizex="115" sizey="32"><![CDATA[Remove epsilon to avoid rounding errors]]></comment>
+			</node>
+			<node type="DivideByScalarNode" index="15">
+				<param name="value" type="3" value="0"></param>
+				<param name="divideby" type="4" value="100.000000"></param>
+				<portdef name="value" type="2" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="divideby" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1851</prop>
+					<prop name="posy">2733</prop>
+					<prop name="state">Normal</prop>
+				</datablob>
+			</node>
+			<node type="IntegerToScalarNode" index="26">
+				<param name="integer" type="3" value="0"></param>
+				<portdef name="integer" type="2" structure="1" group="0" instance="0" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">1546</prop>
+					<prop name="posy">2812</prop>
+					<prop name="state">Collapsed</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="15" portname="value" username="Value" basename="Value" portlabel="Value" exposetype="single"> </port>
+			<port index="15" portname="result" username="Result" basename="Result" portlabel="Result" exposetype="single"> </port>
+			<port index="15" portname="valid" username="Valid" basename="Valid" portlabel="Valid" exposetype="single"> </port>
+			<port index="26" portname="integer" username="Divide_By" basename="Divide By" portlabel="Divide By" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="0" from_port="result" to_node="15" to_port="divideby"> </cnx>
+			<cnx from_node="26" from_port="scalar" to_node="0" to_port="first"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Value"> </item>
+			<item type="input" name="Divide_By"> </item>
+			<item type="output" name="Result"> </item>
+			<item type="output" name="Valid"> </item>
+		</layout>
+	</embedded_1>
+	<embedded_2 name="Center Positions" formatversion="1.4" compoundversion="1.0" constructionmode="Modeling" backgroundcolor="6732954">
+		<nodes>
+			<node type="SubtractNode" index="0">
+				<param name="first" type="4" value="0.000000"></param>
+				<param name="second" type="4" value="0.000000"></param>
+				<portdef name="first" type="4" structure="2" group="0" instance="0" port="0"></portdef>
+				<portdef name="second" type="4" structure="1" group="0" instance="0" port="1"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2822</prop>
+					<prop name="posy">2717</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+			<node type="MultiplyNode" index="2">
+				<param name="value1" type="4" value="0.500000"></param>
+				<param name="value2" type="4" value="1.000000"></param>
+				<portdef name="value1" type="4" structure="1" group="0" instance="0" port="0"></portdef>
+				<portdef name="value2" type="4" structure="1" group="0" instance="1" port="0"></portdef>
+				<datablob category="ui_infos">
+					<prop name="posx">2615</prop>
+					<prop name="posy">2739</prop>
+					<prop name="state">ConnectedOnly</prop>
+				</datablob>
+			</node>
+		</nodes>
+		<exposed_ports>
+			<port index="0" portname="result" username="Centered_Positions" basename="Centered Positions" portlabel="Centered Positions" exposetype="single"> </port>
+			<port index="0" portname="first" username="Positions" basename="Positions" portlabel="Positions" exposetype="single"> </port>
+			<port index="2" portname="value2" username="Size" basename="Size" portlabel="Size" exposetype="single"> </port>
+		</exposed_ports>
+		<connections>
+			<cnx from_node="2" from_port="result" to_node="0" to_port="second"> </cnx>
+		</connections>
+		<layout>
+			<item type="input" name="Positions"> </item>
+			<item type="input" name="Size"> </item>
+			<item type="output" name="Centered_Positions"> </item>
+		</layout>
+	</embedded_2>
+</xsi_file>
