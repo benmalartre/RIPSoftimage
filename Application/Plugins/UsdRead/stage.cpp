@@ -299,23 +299,8 @@ void U2XStage::Update(CustomPrimitive& prim)
 
 void U2XStage::Draw()
 {
-  GLint pgm = GLSL_PROGRAM->Get();
-  GLint modelUniform = glGetUniformLocation(pgm, "model");
-  GLint normalMatrixUniform = glGetUniformLocation(pgm, "normalMatrix");
-  
-  // light position
-  GLint lightUniform = glGetUniformLocation(pgm, "light");
-  pxr::GfVec3f lightDir(5.0, 10.0, 6.0);
-  lightDir = _invXform.Transform(lightDir);
-  glUniform3fv(lightUniform, 1, &lightDir[0]);
-
   for (int i = 0; i < _prims.size(); ++i)
   {
     if (!_prims[i]->IsVisible())continue;
-    /// model matrix
-    glUniformMatrix4fv(modelUniform, 1, GL_FALSE, _prims[i]->GetMatrix());
-    glUniformMatrix4fv(normalMatrixUniform, 1, GL_FALSE, _prims[i]->GetNormalMatrix());
-    _prims[i]->Prepare();
-    _prims[i]->Draw();
   }
 }

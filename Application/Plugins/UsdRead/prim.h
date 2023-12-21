@@ -24,8 +24,6 @@ public:
   virtual void Init()=0;
   virtual void Term()=0;
   virtual void Update(double t, bool forceUpdate)=0;
-  virtual void Prepare() = 0;
-  virtual void Draw()=0;
 
   const pxr::UsdPrim& Get() { return _prim; };
   void GetBoundingBox(pxr::UsdGeomBBoxCache& bboxCache);

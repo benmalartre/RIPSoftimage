@@ -148,60 +148,6 @@ void UsdHydraDisplayCallback_Execute( XSI::CRef context, LPVOID *data )
   U2X_SCENE->Update();
   HYDRA_ENGINE->Render(U2X_SCENE->GetSceneStage()->GetPseudoRoot(), renderParams);
   glDisable(GL_DEPTH_TEST);
-  LOG("DRAW ALL IN ONE...");
-  /*
-  CValueArray framebufferInfo = sequencer.GetFramebufferInfo();
-
-  for (size_t i = 0; i < framebufferInfo.GetCount(); ++i) {
-    LOG(framebufferInfo[i]);
-  }
-
-
-
-  /*
-  XSI::GraphicSequencerContext graphicSequencerContext = sequencerContext;
-  assert(graphicSequencerContext.IsValid());
-  XSI::CGraphicSequencer sequencer = graphicSequencerContext.GetGraphicSequencer();
-
-
-  //
-  // Grab the current selection list
-  //
-
-  using namespace XSI;
-  Application app;
-  Selection sel = app.GetSelection();
-  CRefArray array(sel.GetArray());
-
-  //
-  // Render the scene in hidden line
-  //
-
-  sequencer.RenderSceneUsingMode(siHiddenLineRemoval, siRenderDefault);
-
-  //
-  // Now render over the selection list using the material attached to the realtime port
-  //
-
- // sequencer.RenderListUsingMode(array, siRealtimePortMaterial);
-
-  //
-  // Note that for the sake of simplicity, we are rendering the object using built in passes 
-  // (HiddenLine and RealtimePort).But you have much more flexibility when using RenderSceneUsingMaterial 
-  // and provide your own shader ie: in_pSequencer->RenderSceneUsingMaterial ( L"MySuperShader", siRenderDefault );
-  //
-
-  //
-  // Using Custom Display passes become very interesting when they are use in conjuncture with pixel buffers
-  // (ie. accelerated offscreen OpenGL buffers). You can create your pbuffer, make it the current rendering
-  // context and use the Sequencer to render the scene. Then, you can composite this pbuffer with other 
-  // buffers, use multipass, blur them. etc. etc.
-  //
-  // Using this technique, you can do stuff like realtime shadows, reflections or other scene-wide effects.
-  //
-
-  return;
-  */
 
 }
 
@@ -217,5 +163,4 @@ void UsdHydraDisplayCallback_InitInstance( XSI::CRef sequencerContext, LPVOID *u
 void UsdHydraDisplayCallback_TermInstance( XSI::CRef sequencerContext, LPVOID *userData )
 {
   _TerminateHydraEngine();
-  GarchGLApiUnload();
 }

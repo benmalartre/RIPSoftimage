@@ -11,6 +11,4 @@ public:
   void Init() override;
   void Term() override;
   void Update(double t, bool forceUpdate) override;
-  void Prepare() override;
-  void Draw() override;
 };

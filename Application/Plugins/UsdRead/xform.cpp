@@ -31,13 +31,3 @@ void U2XXform::Update(double t, bool forceUpdate)
   GetVisibility(timeCode, forceUpdate);
   GetXform(timeCode);
 }
-
-void U2XXform::Prepare()
-{
-
-}
-
-void U2XXform::Draw()
-{
-
-}

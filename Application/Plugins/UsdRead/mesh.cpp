@@ -107,14 +107,6 @@ void U2XMesh::Update(double t, bool forceUpdate)
  
 }
 
-void U2XMesh::Prepare()
-{
-}
-
-void U2XMesh::Draw()
-{
-}
-
 XSIPLUGINCALLBACK CStatus UsdMeshGenerator_Define(CRef& in_ctxt)
 {
   Context ctxt(in_ctxt);
