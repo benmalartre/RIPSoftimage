@@ -1,11 +1,10 @@
 #include "event.h"
 #include "scene.h"
 #include "utils.h"
-#include "window.h"
 
-extern U2XScene*            U2X_SCENE;
+extern U2IScene*            U2I_SCENE;
 
-SICALLBACK UsdReadValueChange_OnEvent(const XSI::CRef& in_ref)
+SICALLBACK UsdICEValueChange_OnEvent(const XSI::CRef& in_ref)
 {
   Context ctxt(in_ref);
   CRef object = ctxt.GetAttribute("Object");
@@ -26,37 +25,34 @@ SICALLBACK UsdReadValueChange_OnEvent(const XSI::CRef& in_ref)
   return XSI::CStatus::False;
 }
 
-SICALLBACK UsdReadSceneOpen_OnEvent(const XSI::CRef& in_ref)
+SICALLBACK UsdICESceneOpen_OnEvent(const XSI::CRef& in_ref)
 {
-  delete(U2X_SCENE);
-  U2X_SCENE = new U2XScene();
+  delete(U2I_SCENE);
+  U2I_SCENE = new U2IScene();
   return CStatus::False;
 }
 
-SICALLBACK UsdReadObjectAdded_OnEvent(const XSI::CRef& in_ref)
+SICALLBACK UsdICEObjectAdded_OnEvent(const XSI::CRef& in_ref)
 {
   return CStatus::False;
 }
 
-SICALLBACK UsdReadObjectRemoved_OnEvent(const XSI::CRef& in_ref)
+SICALLBACK UsdICEObjectRemoved_OnEvent(const XSI::CRef& in_ref)
 {
   Context ctxt(in_ref);
-  U2X_SCENE->SyncStagesCache();
+  U2I_SCENE->SyncStagesCache();
   return CStatus::False;
 }
 
-SICALLBACK UsdReadNewScene_OnEvent(const XSI::CRef& in_ref)
+SICALLBACK UsdICENewScene_OnEvent(const XSI::CRef& in_ref)
 {
-  delete(U2X_SCENE);
-  U2X_SCENE = new U2XScene();
+  delete(U2I_SCENE);
+  U2I_SCENE = new U2IScene();
  
-  for (auto& ui : U2X_UIS) {
-    ui->ClearStage();
-  }
   return CStatus::False;
 }
 
-SICALLBACK UsdReadTimeChange_OnEvent(const XSI::CRef& in_ref)
+SICALLBACK UsdICETimeChange_OnEvent(const XSI::CRef& in_ref)
 {
   /*
   LOG("USD READ TIME CHANGE EVENT!!!");

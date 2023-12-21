@@ -1,12 +1,14 @@
-#pragma once
+#ifndef U2I_XFORM_H
+#define U2I_XFORM_H
 
 #include "prim.h"
+#include "node.h"
 
 // Xform 
-class U2XXform final : public U2XPrim {
+class U2IXform final : public U2IPrim {
 public:
-  U2XXform(const pxr::UsdPrim& prim, U2XPrim* parent);
-  ~U2XXform();
+  U2IXform(const pxr::UsdPrim& prim, U2IPrim* parent);
+  ~U2IXform();
 
   void Init() override;
   void Term() override;
@@ -14,3 +16,5 @@ public:
   void Prepare() override;
   void Draw() override;
 };
+
+#endif

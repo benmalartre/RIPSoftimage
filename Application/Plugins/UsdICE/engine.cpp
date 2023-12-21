@@ -12,21 +12,21 @@
 
 PXR_NAMESPACE_USING_DIRECTIVE
 
-TF_DEFINE_ENV_SETTING(U2X_ENGINE_DEBUG_SCENE_DELEGATE_ID, "/",
+TF_DEFINE_ENV_SETTING(U2I_ENGINE_DEBUG_SCENE_DELEGATE_ID, "/",
   "usd to softimage scene delegate id");
 
 pxr::SdfPath const&
 _GetUsdImagingDelegateId()
 {
   static pxr::SdfPath const delegateId =
-    pxr::SdfPath(pxr::TfGetEnvSetting(U2X_ENGINE_DEBUG_SCENE_DELEGATE_ID));
+    pxr::SdfPath(pxr::TfGetEnvSetting(U2I_ENGINE_DEBUG_SCENE_DELEGATE_ID));
 
   return delegateId;
 }
 
 
-U2XEngine::U2XEngine(const pxr::HdDriver& driver)
-  : U2XEngine(pxr::SdfPath::AbsoluteRootPath(),
+U2IEngine::U2IEngine(const pxr::HdDriver& driver)
+  : U2IEngine(pxr::SdfPath::AbsoluteRootPath(),
     {},
     {},
     _GetUsdImagingDelegateId(),
@@ -35,7 +35,7 @@ U2XEngine::U2XEngine(const pxr::HdDriver& driver)
 {
 }
 
-U2XEngine::U2XEngine(
+U2IEngine::U2IEngine(
   const pxr::SdfPath& rootPath,
   const pxr::SdfPathVector& excludedPaths,
   const pxr::SdfPathVector& invisedPaths,
@@ -48,29 +48,24 @@ U2XEngine::U2XEngine(
     sceneDelegateID,
     driver)
 {
-  LOG("U2XENGINE CONSTRUCTOR CALLED!!!");
+  LOG("U2IENGINE CONSTRUCTOR CALLED!!!");
   
   //_InitGL();
 
-  if (IsHydraEnabled()) {
+  // _renderIndex, _taskController, and _sceneDelegate are initialized
+  // by the plugin system.
+  if (!SetRendererPlugin(_GetDefaultRendererPluginId())) {
+    TF_CODING_ERROR("No renderer plugins found! "
+      "Check before creation.");
+  }
 
-    // _renderIndex, _taskController, and _sceneDelegate are initialized
-    // by the plugin system.
-    if (!SetRendererPlugin(_GetDefaultRendererPluginId())) {
-      TF_CODING_ERROR("No renderer plugins found! "
-        "Check before creation.");
-    }
-  }
-  else {
-    TF_CODING_ERROR("Hydra is NOT supported! ");
-  }
 
 }
 
-U2XEngine::~U2XEngine() = default;
+U2IEngine::~U2IEngine() = default;
 
 /*
-U2XEngine::Fuck()
+U2IEngine::Fuck()
 {
   pxr::GfVec2i renderResolution(GetWidth(), GetHeight());
   _drawTarget = pxr::GlfDrawTarget::New(renderResolution);

@@ -38,24 +38,12 @@ bool GL_EXTENSIONS_LOADED;
 U2XGLSLProgram* GLSL_PROGRAM;
 extern U2XScene* U2X_SCENE;
 
-XSI::CStatus RegisterUsdStageNode(XSI::PluginRegistrar& in_reg);
-XSI::CStatus RegisterUsdSphereNode(XSI::PluginRegistrar& in_reg);
-XSI::CStatus RegisterUsdCubeNode(XSI::PluginRegistrar& in_reg);
-
 static void _InitializeGL()
 {
   GarchGLApiLoad();
+  
   GL_EXTENSIONS_LOADED = true;
-
-  GLSL_PROGRAM = new U2XGLSLProgram();
-  GLSL_PROGRAM->Build("Simple", VERTEX_SHADER, FRAGMENT_SHADER);
-  GLuint pgm = GLSL_PROGRAM->Get();
-  // bind shader program
-  glUseProgram(pgm);
-  glBindAttribLocation(pgm, CHANNEL_POSITION, "position");
-  glBindAttribLocation(pgm, CHANNEL_NORMAL, "normal");
-  glBindAttribLocation(pgm, CHANNEL_COLOR, "color");
-  glLinkProgram(pgm);
+  
 }
 
 SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
@@ -79,10 +67,6 @@ SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
   in_reg.RegisterCustomDisplay(L"UsdExplorer");
   in_reg.RegisterDisplayCallback( L"UsdHydraDisplayCallback" );
 
-  RegisterUsdStageNode(in_reg);
-  RegisterUsdSphereNode(in_reg);
-  RegisterUsdCubeNode(in_reg);
-
   GL_EXTENSIONS_LOADED = false;
   U2X_HIDDEN_WINDOW = NULL;
   _InitializeGL();
@@ -94,10 +78,12 @@ SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
 
 SICALLBACK XSIUnloadPlugin( const PluginRegistrar& in_reg )
 {
+  
   if (U2X_HIDDEN_WINDOW)delete U2X_HIDDEN_WINDOW;
   delete GLSL_PROGRAM;
   delete U2X_SCENE;
   GarchGLApiUnload();
+  
   CString strPluginName;
   strPluginName = in_reg.GetName();
   Application().LogMessage(strPluginName + L" has been unloaded.", siVerboseMsg);

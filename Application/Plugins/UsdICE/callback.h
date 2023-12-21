@@ -1,8 +1,7 @@
-#ifndef unix
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
+#ifndef U2I_CALLBACK_H
+#define U2I_CALLBACK_H
 
+#ifdef _WIN32
 // Insert your headers here
 #define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
 
@@ -34,12 +33,14 @@
 #ifdef __cplusplus
 extern "C" 
 {
-// Display callbacks
-USDHYDRACALLBACK_API void	UsdHydraDisplayCallback_Execute( XSI::CRef, LPVOID * );
-USDHYDRACALLBACK_API void	UsdHydraDisplayCallback_Init( XSI::CRef, LPVOID * );
-USDHYDRACALLBACK_API void	UsdHydraDisplayCallback_Term( XSI::CRef, LPVOID * );
-USDHYDRACALLBACK_API void	UsdHydraDisplayCallback_InitInstance( XSI::CRef, LPVOID * );
-USDHYDRACALLBACK_API void	UsdHydraDisplayCallback_TermInstance( XSI::CRef, LPVOID * );
+  // Display callbacks
+  USDHYDRACALLBACK_API void	UsdHydra_Execute( XSI::CRef, LPVOID * );
+  USDHYDRACALLBACK_API void	UsdHydra_Init( XSI::CRef, LPVOID * );
+  USDHYDRACALLBACK_API void	UsdHydra_Term( XSI::CRef, LPVOID * );
+  USDHYDRACALLBACK_API void	UsdHydra_InitInstance( XSI::CRef, LPVOID * );
+  USDHYDRACALLBACK_API void	UsdHydra_TermInstance( XSI::CRef, LPVOID * );
 
 };
+#endif
+
 #endif

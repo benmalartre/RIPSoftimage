@@ -1,5 +1,5 @@
-#ifndef U2X_ICONS_H
-#define U2X_ICONS_H
+#ifndef U2I_ICONS_H
+#define U2I_ICONS_H
 #pragma once
 
 #include <map>
@@ -32,13 +32,13 @@ struct Icon {
   //GLuint  _texHovered;
 };
 
-static size_t U2X_NUM_ICONS = 2;
-static const char* U2X_ICON_NAMES[] = {
+static size_t U2I_NUM_ICONS = 2;
+static const char* U2I_ICON_NAMES[] = {
   "visible.png",
   "invisible.png"
 };
 
-extern std::map<const char*, Icon> U2X_ICONS;
+extern std::map<const char*, Icon> U2I_ICONS;
 
 static void IconHoverDatas(pxr::HioImage::StorageSpec* storage, int nchannels)
 {
@@ -82,7 +82,7 @@ static void CreateIconFromImage(const char* filename,
   //IconHoverDatas(&storage, img->GetBytesPerPixel());
   LOG("CREATE ICON FROM IMAGE : " + CString(filename));
 
-  if (U2X_ICONS.find(name) == U2X_ICONS.end())
+  if (U2I_ICONS.find(name) == U2I_ICONS.end())
   {
     LOG("NOT FOUND CREATE IT");
     GLuint tex;
@@ -100,34 +100,34 @@ static void CreateIconFromImage(const char* filename,
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, size, size, 0,
       ICON_FORMAT, ICON_TYPE, storage.data);
 
-    U2X_ICONS[name] = { size, tex };
+    U2I_ICONS[name] = { size, tex };
 
-    LOG("MAPPED : " + CString((int)U2X_ICONS[name]._tex));
+    LOG("MAPPED : " + CString((int)U2I_ICONS[name]._tex));
   }
 }
 
 
 
-static void U2XInitializeIcons()
+static void U2IInitializeIcons()
 {
-  CString pluginDir = U2XGetInstallationFolder();
+  CString pluginDir = U2IGetInstallationFolder();
   std::string iconDir =std::string( pluginDir.GetAsciiString()) + "\\icons";
   std::vector<std::string> filenames;
   
-  for (size_t i = 0; i < U2X_NUM_ICONS; ++i) {
-    std::string iconFilename(iconDir + "\\" + std::string(U2X_ICON_NAMES[i]));
+  for (size_t i = 0; i < U2I_NUM_ICONS; ++i) {
+    std::string iconFilename(iconDir + "\\" + std::string(U2I_ICON_NAMES[i]));
     LOG(CString(iconFilename.c_str()));
     if (pxr::HioImage::IsSupportedImageFile(iconFilename))
     {
       LOG("CREATE ICON FORM FILE : " + CString(iconFilename.c_str()));
-      CreateIconFromImage(iconFilename.c_str(), U2X_ICON_NAMES[i], ICON_LOW);
+      CreateIconFromImage(iconFilename.c_str(), U2I_ICON_NAMES[i], ICON_LOW);
     }
   }
 }
 
-static void U2XTerminateIcons()
+static void U2ITerminateIcons()
 {
 
 }
 
-#endif // U2X_ICONS_H
+#endif // U2I_ICONS_H

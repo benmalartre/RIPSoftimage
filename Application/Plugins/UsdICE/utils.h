@@ -20,13 +20,13 @@ using namespace XSI;
 
 #define LOG(msg) Application().LogMessage(msg);
 
-static CString U2XGetInstallationFolder()
+static CString U2IGetInstallationFolder()
 {
-  Plugin thisPlugin = Application().GetPlugins().GetItem(L"UsdRead");
+  Plugin thisPlugin = Application().GetPlugins().GetItem(L"UsdICE");
   return thisPlugin.GetOriginPath();
 }
 
-static CStringArray U2XGetNamesFromObjectNamesList(const CString& objectNames)
+static CStringArray U2IGetNamesFromObjectNamesList(const CString& objectNames)
 {
   CString strippedNames = objectNames;
   ULONG npos = strippedNames.FindString(L"(");
@@ -40,7 +40,7 @@ static CStringArray U2XGetNamesFromObjectNamesList(const CString& objectNames)
 }
 
 template<typename T>
-static void U2XRandomXform(T& m)
+static void U2IRandomXform(T& m)
 {
   m = T(1);
 
@@ -61,14 +61,14 @@ static void U2XRandomXform(T& m)
       (((float)rand() / (float)RAND_MAX) - 0.5f) * 12.f));
 }
 
-static void U2XTransformPoints(pxr::VtArray<pxr::GfVec3f>& ioPoints, const pxr::GfMatrix4f& m)
+static void U2ITransformPoints(pxr::VtArray<pxr::GfVec3f>& ioPoints, const pxr::GfMatrix4f& m)
 {
   for (int i = 0; i < ioPoints.size(); ++i) {
     ioPoints[i] = m.Transform(ioPoints[i]);
   }
 }
 
-static void U2XRandomColor(pxr::VtArray<pxr::GfVec3f>& ioColors)
+static void U2IRandomColor(pxr::VtArray<pxr::GfVec3f>& ioColors)
 {
   for (int i = 0; i < ioColors.size(); ++i)
     ioColors[i] = pxr::GfVec3f(
@@ -77,7 +77,7 @@ static void U2XRandomColor(pxr::VtArray<pxr::GfVec3f>& ioColors)
       (float)rand() / (float)RAND_MAX);
 }
 
-static bool U2XGetICETree(X3DObject op, CRef& tree)
+static bool U2IGetICETree(X3DObject op, CRef& tree)
 {
   Primitive primitive = op.GetActivePrimitive();
   CRefArray trees = primitive.GetICETrees();
@@ -88,7 +88,7 @@ static bool U2XGetICETree(X3DObject op, CRef& tree)
   return false;
 }
 
-static double U2XGetBoundingBoxComponent(const pxr::GfBBox3d& bbox, short comp)
+static double U2IGetBoundingBoxComponent(const pxr::GfBBox3d& bbox, short comp)
 {
   switch (comp)
   {
@@ -119,13 +119,13 @@ static double U2XGetBoundingBoxComponent(const pxr::GfBBox3d& bbox, short comp)
 ///  - X[1] Face index on original topology
 ///  - X[2] Sample index on original topology
 int
-U2XTriangulateMesh(const pxr::VtArray<int>& counts,
+U2ITriangulateMesh(const pxr::VtArray<int>& counts,
   const pxr::VtArray<int>& indices,
   pxr::VtArray<pxr::GfVec3i>& samples);
 
 /// Compute smooth vertex normals on a triangulated polymesh
 void
-U2XComputeVertexNormals(const pxr::VtArray<pxr::GfVec3f>& positions,
+U2IComputeVertexNormals(const pxr::VtArray<pxr::GfVec3f>& positions,
   const pxr::VtArray<int>& counts,
   const pxr::VtArray<int>& indices,
   const pxr::VtArray<pxr::GfVec3i>& samples,
@@ -133,13 +133,13 @@ U2XComputeVertexNormals(const pxr::VtArray<pxr::GfVec3f>& positions,
 
 /// Compute random vertex color
 void
-U2XComputeVertexColors(const pxr::VtArray<pxr::GfVec3f>& positions,
+U2IComputeVertexColors(const pxr::VtArray<pxr::GfVec3f>& positions,
   pxr::VtArray<pxr::GfVec3f>& colors);
 
 /// Triangulate data
 template<typename T>
 void
-U2XTriangulateDatas(const pxr::VtArray<pxr::GfVec3i>& samples,
+U2ITriangulateDatas(const pxr::VtArray<pxr::GfVec3i>& samples,
   const pxr::VtArray<T>& datas,
   pxr::VtArray<T>& result)
 {

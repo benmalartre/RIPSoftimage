@@ -11,6 +11,7 @@
 #include "scene.h"
 
 #include <GL/gl.h>
+#include <pxr/imaging/garch/glApi.h>
 
 U2XEngine* HYDRA_ENGINE = NULL;
 extern U2XScene* U2X_SCENE;
@@ -76,30 +77,33 @@ static pxr::GfMatrix4d _GetProjectionMatrix(const Camera& camera)
   }
 }
 
-void UsdHydraDisplayCallback_Init( XSI::CRef sequencerContext, LPVOID *userData )
+void UsdHydraDisplayCallback_Init( XSI::CRef context, LPVOID *data )
 {
-  XSI::GraphicSequencerContext graphicSequencerContext = sequencerContext;
-  assert ( graphicSequencerContext.IsValid() );
-  XSI::CGraphicSequencer sequencer = graphicSequencerContext.GetGraphicSequencer ();
+  XSI::GraphicSequencerContext sequencerContext = context;
+  assert ( sequencerContext.IsValid() );
+  XSI::CGraphicSequencer sequencer = sequencerContext.GetGraphicSequencer ();
   sequencer.RegisterDisplayCallback(
     L"UsdHydraDisplayCallback", 
     0, 
     XSI::siPostBeginFrame, 
     XSI::siAll, 
-    XSI::CString()
+    L"UsdHydra"
   );
+  LOG("Hydra Init Done");
 }
 
-void UsdHydraDisplayCallback_Execute( XSI::CRef sequencerContext, LPVOID *userData )
+void UsdHydraDisplayCallback_Execute( XSI::CRef context, LPVOID *data )
 {
+  LOG("Hydra Display Callback");
+  
   if (U2X_SCENE != LAST_U2X_SCENE) {
     _TerminateHydraEngine();
     _InitializeHydraEngine();
     LAST_U2X_SCENE = U2X_SCENE;
   }
-  XSI::GraphicSequencerContext graphicSequencerContext = sequencerContext;
-  assert(graphicSequencerContext.IsValid());
-  XSI::CGraphicSequencer sequencer = graphicSequencerContext.GetGraphicSequencer();
+  XSI::GraphicSequencerContext sequencerContext = context;
+  assert(sequencerContext.IsValid());
+  XSI::CGraphicSequencer sequencer = sequencerContext.GetGraphicSequencer();
 
   UINT x, y, width, height;
   sequencer.GetViewportSize(x, y, width, height);
@@ -144,6 +148,7 @@ void UsdHydraDisplayCallback_Execute( XSI::CRef sequencerContext, LPVOID *userDa
   U2X_SCENE->Update();
   HYDRA_ENGINE->Render(U2X_SCENE->GetSceneStage()->GetPseudoRoot(), renderParams);
   glDisable(GL_DEPTH_TEST);
+  LOG("DRAW ALL IN ONE...");
   /*
   CValueArray framebufferInfo = sequencer.GetFramebufferInfo();
 
@@ -202,7 +207,7 @@ void UsdHydraDisplayCallback_Execute( XSI::CRef sequencerContext, LPVOID *userDa
 
 void UsdHydraDisplayCallback_Term( XSI::CRef sequencerContext, LPVOID *userData )
 {
-  _TerminateHydraEngine();
+ 
 }
 
 void UsdHydraDisplayCallback_InitInstance( XSI::CRef sequencerContext, LPVOID *userData )
@@ -211,4 +216,6 @@ void UsdHydraDisplayCallback_InitInstance( XSI::CRef sequencerContext, LPVOID *u
 
 void UsdHydraDisplayCallback_TermInstance( XSI::CRef sequencerContext, LPVOID *userData )
 {
+  _TerminateHydraEngine();
+  GarchGLApiUnload();
 }

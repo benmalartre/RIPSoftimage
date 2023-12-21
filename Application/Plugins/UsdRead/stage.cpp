@@ -6,7 +6,6 @@
 #include "utils.h"
 #include "shader.h"
 #include "scene.h"
-#include "nodes.h"
 
 #include <pxr/base/arch/fileSystem.h>
 #include <pxr/usd/usdGeom/xform.h>
@@ -89,8 +88,8 @@ void U2XStage::SetFromICE(const CustomPrimitive& prim)
         customData.GetData(i, &pBuffer, nSize);
 
         LOG(CString((void*)pBuffer) + L":" + CString(nSize));
-        U2XStageNodeDatas_t* stageData = (U2XStageNodeDatas_t*)(void*)pBuffer;
-        std::cout << "STAGE DATA : " << stageData->_uri << std::endl;
+        //U2XStageNodeDatas_t* stageData = (U2XStageNodeDatas_t*)(void*)pBuffer;
+        //std::cout << "STAGE DATA : " << stageData->_uri << std::endl;
       }
     }
     //pxr::UsdStageRefPtr stage = 

@@ -316,6 +316,7 @@ LRESULT UsdExplorerWindow::Notify ( XSI::CRef& in_ctxt)
 
 void UsdExplorerWindow::InitGL()
 {
+  wglMakeCurrent(_hDC, _hRC);
   GarchGLApiLoad();
 
   _ctxt = ImGui::CreateContext(U2X_SHARED_ATLAS);

@@ -24,15 +24,15 @@
 #include <xsi_icenodecontext.h>
 #include <pxr/usd/usd/stage.h>
 
-#define U2XNodeR 128
-#define U2XNodeG 192
-#define U2XNodeB 168
+#define U2INodeR 128
+#define U2INodeG 192
+#define U2INodeB 168
 
-#define U2XLayerDataR 90
-#define U2XLayerDataG 130
-#define U2XLayerDataB 150
+#define U2ILayerDataR 90
+#define U2ILayerDataG 130
+#define U2ILayerDataB 150
 
-enum U2XReadStageNodeIDs
+enum U2IReadStageNodeIDs
 {
   ID_IN_Filename = 0,
   ID_IN_DefaultPrim = 1,
@@ -40,6 +40,7 @@ enum U2XReadStageNodeIDs
 
   ID_G_100 = 100,
   ID_OUT_Stage = 200,
+  ID_OUT_Eval = 201,
 
   ID_TYPE_CNS = 400,
   ID_STRUCT_CNS,
@@ -47,34 +48,37 @@ enum U2XReadStageNodeIDs
   ID_UNDEF = ULONG_MAX
 };
 
-enum U2XAddPrimNodeIDs
+enum U2IAddPrimNodeIDs
 {
   ID_IN_Stage = 0,
   ID_IN_Name = 1,
   ID_IN_Xform = 2
 };
 
-enum U2XAddSphereNodeIDs
+enum U2IAddSphereNodeIDs
 {
   ID_IN_Radius = 3
 };
 
-enum U2XAddCubeNodeIDs
+enum U2IAddCubeNodeIDs
 {
   ID_IN_Width = 3,
   ID_IN_Depth = 4,
   ID_IN_Height = 5
 };
 
-struct U2XPrimNodeDatas_t {
+struct U2IPrimNodeDatas_t {
 
 };
 
-struct U2XStageNodeDatas_t {
+struct U2IStageNodeDatas_t {
   pxr::UsdStageWeakPtr _stage;
   std::string _uri;
+  std::string _lastUri;
 
-  U2XStageNodeDatas_t() : _stage(nullptr), _uri("") {};
+  bool UriChanged(){return _lastUri != _uri;};
+  void SetUri(const std::string& path){_lastUri = _uri; _uri = path;};
+  U2IStageNodeDatas_t() : _stage(nullptr), _uri(""), _lastUri("") {};
 };
 
 

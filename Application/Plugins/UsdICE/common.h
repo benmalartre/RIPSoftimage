@@ -67,24 +67,24 @@
 using namespace XSI;
 using namespace pxr;
 
-class U2XGLSLProgram;
+class U2IGLSLProgram;
 
 extern bool GL_EXTENSIONS_LOADED;
 extern bool IMGUI_INITIALIZED;
-extern U2XGLSLProgram* GLSL_PROGRAM;
+extern U2IGLSLProgram* GLSL_PROGRAM;
 
 // softimage log message
 #define LOG(msg) Application().LogMessage(msg);
 
 // Scene time infos
-struct U2XTimeInfos {
+struct U2ITimeInfos {
   double startFrame;
   double endFrame;
   double sampleRate;
   double framesPerSecond;
 };
 
-enum U2XDataType {
+enum U2IDataType {
   X2U_DATA_NULL,
   X2U_DATA_BOOL,
   X2U_DATA_LONG,
@@ -101,12 +101,12 @@ enum U2XDataType {
   X2U_DATA_STRING
 };
 
-enum U2XDataPrecision {
+enum U2IDataPrecision {
   X2U_PRECISION_SINGLE,
   X2U_PRECISION_DOUBLE
 };
 
-enum U2XPrimvarInterpolation {
+enum U2IPrimvarInterpolation {
   X2U_INTERPOLATION_CONSTANT,
   X2U_INTERPOLATION_UNIFORM,
   X2U_INTERPOLATION_VARYING,
@@ -114,14 +114,14 @@ enum U2XPrimvarInterpolation {
   X2U_INTERPOLATION_FACEVARYING
 };
 
-enum U2XWriteOptions {
+enum U2IWriteOptions {
   X2U_WRITE_COLORS  = 1,
   X2U_WRITE_NORMALS = 2,
   X2U_WRITE_UVS     = 4,
   X2U_WRITE_CUSTOM  = 8
 };
 
-enum U2XBoundingBoxComponent {
+enum U2IBoundingBoxComponent {
   BBOX_LOWER_X,
   BBOX_LOWER_Y,
   BBOX_LOWER_Z,
@@ -130,7 +130,7 @@ enum U2XBoundingBoxComponent {
   BBOX_UPPER_Z
 };
 
-static size_t U2XGetDataSize(U2XDataType type, U2XDataPrecision precision)
+static size_t U2IGetDataSize(U2IDataType type, U2IDataPrecision precision)
 {
   switch (type)
   {
@@ -189,7 +189,7 @@ static size_t U2XGetDataSize(U2XDataType type, U2XDataPrecision precision)
   }
 }
 
-static U2XDataType U2XDataTypeFromICEType(siICENodeDataType type)
+static U2IDataType U2IDataTypeFromICEType(siICENodeDataType type)
 {
   switch (type)
   {
@@ -233,7 +233,7 @@ static U2XDataType U2XDataTypeFromICEType(siICENodeDataType type)
 
 // templated copy data
 template<typename SRC, typename DST>
-void U2XCopyData(const SRC* src, DST* dst, size_t num)
+void U2ICopyData(const SRC* src, DST* dst, size_t num)
 {
   if (sizeof(SRC) == sizeof(DST))
   {
@@ -250,7 +250,7 @@ void U2XCopyData(const SRC* src, DST* dst, size_t num)
 
 // templated cast tuppled data
 template<typename SRC, typename DST>
-void U2XCastTuppledData(const SRC* src, DST* dst, size_t num, int srcN, int dstN)
+void U2ICastTuppledData(const SRC* src, DST* dst, size_t num, int srcN, int dstN)
 {
   int minN = srcN > dstN ? dstN : srcN;
   for (int i = 0; i < num; ++i)
@@ -259,4 +259,4 @@ void U2XCastTuppledData(const SRC* src, DST* dst, size_t num, int srcN, int dstN
   }
 }
 
-static char* U2X_PROCEDURAL_ROOT = "UsdProceduralRoot";
+static char* U2I_PROCEDURAL_ROOT = "UsdProceduralRoot";

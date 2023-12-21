@@ -17,7 +17,6 @@ add_library(${TARGET} SHARED
   attribute.cpp
   event.cpp
   explorer.cpp
-  nodes.cpp
   mesh.cpp
   plugin.cpp
   prim.cpp
@@ -27,8 +26,6 @@ add_library(${TARGET} SHARED
   stage.cpp
   topology.cpp
   utils.cpp
-  vertexArray.cpp
-  vertexBuffer.cpp
   window.cpp
   engine.cpp
   callback.cpp

@@ -148,6 +148,7 @@ set (ADDITIONAL_LIBRARIES Comctl32)
 
 add_subdirectory (UsdRead)
 add_subdirectory (UsdWrite)
+add_subdirectory (UsdIce)
 add_subdirectory (IceRig)
 add_subdirectory (SynthNode)
 add_subdirectory (Triangulate)

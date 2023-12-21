@@ -1,5 +1,7 @@
-#pragma once
+#ifndef U2I_STAGE_H
+#define U2I_STAGE_H
 
+// usd includes
 #include <pxr/pxr.h>
 #include <pxr/usd/usd/prim.h>
 #include <pxr/usd/usd/stage.h>
@@ -11,32 +13,22 @@
 #include <pxr/base/gf/matrix4f.h>
 #include <pxr/base/gf/matrix4d.h>
 
-#include "common.h"
-#include "shader.h"
+// softimage include
 #include <xsi_string.h>
 #include <xsi_customprimitive.h>
 
-class U2XPrim;
-extern int U2X_STAGE_ID;
+// project includes
+#include "common.h"
 
-class U2XSelection {
-public:
-  void AddPrim(const SdfPath& path);
-  void RemovePrim(const SdfPath& path);
-  void Clear();
-  void SetStage(pxr::UsdStageRefPtr& stage) { _stage = stage;}
-
-private:
-  pxr::UsdStageRefPtr                         _stage;
-  TfHashMap<SdfPath, UsdPrim, SdfPath::Hash>  _items;
-};
+class U2IPrim;
+extern int U2I_STAGE_ID;
 
 // Prim base class
-class U2XStage {
+class U2IStage {
 public:
-  U2XStage();
-  U2XStage(CustomPrimitive& prim);
-  ~U2XStage();
+  U2IStage();
+  U2IStage(CustomPrimitive& prim);
+  ~U2IStage();
 
   pxr::UsdStageRefPtr& Get() { return _stage; };
   void SetObjectID(ULONG objectID) { _objectID = objectID; };
@@ -55,7 +47,7 @@ public:
   void Reload();
   void Clear();
   void ComputeBoundingBox(const pxr::UsdTimeCode& timeCode);
-  void Recurse(const pxr::UsdPrim& prim, U2XPrim* parent);
+  void Recurse(const pxr::UsdPrim& prim, U2IPrim* parent);
   void Update(XSI::CustomPrimitive& prim);
   void Draw();
 
@@ -69,7 +61,7 @@ protected:
   bool                              _isRoot;
   pxr::UsdStageRefPtr               _stage;
   pxr::TfToken                      _upAxis;
-  std::vector<U2XPrim*>             _prims;
+  std::vector<U2IPrim*>             _prims;
   double                            _time;
   LONG                              _lastEvalID;
   pxr::GfBBox3d                     _bbox;
@@ -77,8 +69,8 @@ protected:
   pxr::UsdGeomXformCache*           _xformCache;
   pxr::GfMatrix4f                   _invXform;
   ULONG                             _objectID;
-  U2XSelection                      _selection;
   MATH::CMatrix4                    _xfo;
 
 };
 
+#endif // U2I_STAGE_H

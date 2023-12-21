@@ -12,8 +12,6 @@
 #include <pxr/imaging/garch/glApi.h>
 
 #include "common.h"
-#include "vertexBuffer.h"
-#include "vertexArray.h"
 #include "attribute.h"
 
 
@@ -59,5 +57,4 @@ protected:
   bool                         _visibilityVarying;
   bool                         _haveAuthoredColors;
   bool                         _haveAuthoredOpacities;
-  U2XVertexArray               _vao;
 };

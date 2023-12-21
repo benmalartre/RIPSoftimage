@@ -1,4 +1,4 @@
-set(TARGET UsdRead)
+set(TARGET UsdICE)
 
 add_definitions(
   -DTASKING_TBB
@@ -8,31 +8,15 @@ add_definitions(
 )
 
 add_library(${TARGET} SHARED
-  imgui/imgui.cpp
-  imgui/imgui_draw.cpp
-  imgui/imgui_impl_win32.cpp
-  imgui/imgui_impl_opengl3.cpp
-  imgui/imgui_demo.cpp
-  imgui/imgui_widgets.cpp
-  attribute.cpp
-  event.cpp
-  explorer.cpp
-  nodes.cpp
-  mesh.cpp
-  plugin.cpp
-  prim.cpp
-  xform.cpp
-  scene.cpp
-  shader.cpp
-  stage.cpp
-  topology.cpp
-  utils.cpp
-  vertexArray.cpp
-  vertexBuffer.cpp
-  window.cpp
-  engine.cpp
   callback.cpp
-  
+  data.cpp
+  event.cpp
+  nodes.cpp
+  plugin.cpp
+  scene.cpp
+  stage.cpp
+  utils.cpp
+  engine.cpp
 )
 
 target_include_directories(${TARGET} 

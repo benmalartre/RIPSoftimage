@@ -2,6 +2,7 @@
 //--------------------------------------------------------------------
 #include "plugin.h"
 #include "triangulate.h"
+
 typedef struct {
   double A,B,C,D;
 }plane;
@@ -179,7 +180,7 @@ SICALLBACK Triangulate_BeginEvaluate( ICENodeContext& in_ctxt )
   {
     return CStatus::OK;
   }
-
+  LOG("Triangulate BEGIN EVALUATE");
   TriangulateData* data = (TriangulateData*)(CValue::siPtrType)userData;
 
   // Get the input data buffers for each port
@@ -283,16 +284,22 @@ SICALLBACK Triangulate_BeginEvaluate( ICENodeContext& in_ctxt )
   ConstructPlane(far_plane,FarLU,FarRU,FarRD);
   //----------------------------------------------------------------------------------------------------------
 
-  static float __x[4] = { 0.f, 1.f, 1.f, 0.f };
-  static float __y[4] = { 0.f, 0.f, 1.f, 1.f };
-  Triangulate(4, &__x[0], &__y[0], 0) = 0;  
+  long nbPoints = PointPositionData.GetCount();
+  LOG("NUM POINTS " + nbPoints);
+
+  ITriangulate<float>* triangles = ITriangulate<float>::Create();
+
+  CVector3f* positions = &PointPositionData[0];
+  int verts = triangles->Triangulate(nbPoints, &positions[0][0], &positions[0][1], sizeof(CVector3f));
+
+  /*
   int nb_visible_points=0;
 
-  long nbpoints=PointPositionData.GetCount();
+
 	
   if (nbpoints>3) 
   {
-    Vertex* p = (Vertex_t *)malloc((nbpoints+3)*sizeof(Vertex_t)); 
+    Vertex_t* p = (Vertex_t *)malloc((nbpoints+3)*sizeof(Vertex_t)); 
     Triangle_t* v = (Triangle_t *)malloc(3*nbpoints*sizeof(Triangle_t));
 
     // Note: Specific CIndexSet for PointPosition is required in single-threading mode			
@@ -352,6 +359,8 @@ SICALLBACK Triangulate_BeginEvaluate( ICENodeContext& in_ctxt )
     free(p);
     free(v);
   }
+
+  */
   return CStatus::OK;
 }
 

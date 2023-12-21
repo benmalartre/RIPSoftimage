@@ -1,23 +1,23 @@
 #include "prim.h"
 #include "utils.h"
 
-U2XPrim::U2XPrim(const pxr::UsdPrim& prim, U2XPrim* parent)
+U2IPrim::U2IPrim(const pxr::UsdPrim& prim, U2IPrim* parent)
   : _prim(prim)
   , _xform(pxr::GfMatrix4f(1))
   , _parent(parent)
 {
 }
 
-U2XPrim::~U2XPrim()
+U2IPrim::~U2IPrim()
 {
 }
 
-void U2XPrim::GetBoundingBox(pxr::UsdGeomBBoxCache& bboxCache)
+void U2IPrim::GetBoundingBox(pxr::UsdGeomBBoxCache& bboxCache)
 {
   _bbox = bboxCache.ComputeWorldBound(_prim);
 }
 
-void U2XPrim::GetVisibility(const pxr::UsdTimeCode& timeCode, bool init)
+void U2IPrim::GetVisibility(const pxr::UsdTimeCode& timeCode, bool init)
 {
   if (init || !_parent)
   {
@@ -43,7 +43,7 @@ void U2XPrim::GetVisibility(const pxr::UsdTimeCode& timeCode, bool init)
   }
 }
 
-void U2XPrim::GetXform(const pxr::UsdTimeCode& timeCode)
+void U2IPrim::GetXform(const pxr::UsdTimeCode& timeCode)
 {
   pxr::GfMatrix4d xform;
   bool resetXformStack;
@@ -54,11 +54,12 @@ void U2XPrim::GetXform(const pxr::UsdTimeCode& timeCode)
 }
 
 
-U2XAttributeType U2XPrim::HasAttribute(const pxr::TfToken& name)
+U2IAttributeType U2IPrim::HasAttribute(const pxr::TfToken& name)
 {
   pxr::UsdGeomGprim gprim(_prim);
 
-  if (gprim.GetPrimvar(name).IsDefined())
+  pxr::UsdGeomPrimvarsAPI api(gprim);
+  if (api.GetPrimvar(name).IsDefined())
     return ATTR_PRIMVAR;
   else if (_prim.GetAttribute(name).IsDefined())
     return ATTR_NORMAL;
@@ -66,19 +67,20 @@ U2XAttributeType U2XPrim::HasAttribute(const pxr::TfToken& name)
     return ATTR_UNAUTHORED;
 }
 
-U2XAttribute U2XPrim::CreateAttribute(const pxr::TfToken& name, U2XAttributeType type) 
+U2IAttribute U2IPrim::CreateAttribute(const pxr::TfToken& name, U2IAttributeType type) 
 {
   if (type == ATTR_PRIMVAR)
   {
-    return U2XAttribute(pxr::UsdGeomGprim(_prim).GetPrimvar(name).GetAttr(), ATTR_PRIMVAR);
+    pxr::UsdGeomPrimvarsAPI api(_prim);
+    return U2IAttribute(api.GetPrimvar(name).GetAttr(), ATTR_PRIMVAR);
   }
   else if (type == ATTR_NORMAL)
   {
-    return U2XAttribute(_prim.GetAttribute(name), ATTR_NORMAL);
+    return U2IAttribute(_prim.GetAttribute(name), ATTR_NORMAL);
   }
 }
 
-void U2XPrim::GetAttributeValue(U2XAttribute& attr, const pxr::UsdTimeCode& timeCode)
+void U2IPrim::GetAttributeValue(U2IAttribute& attr, const pxr::UsdTimeCode& timeCode)
 {
   attr.GetValue(timeCode);
 }

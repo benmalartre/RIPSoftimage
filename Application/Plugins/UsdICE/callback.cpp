@@ -12,14 +12,18 @@
 
 #include <GL/gl.h>
 
-U2XEngine* HYDRA_ENGINE = NULL;
-extern U2XScene* U2X_SCENE;
-U2XScene* LAST_U2X_SCENE = NULL;
+bool GL_EXTENSIONS_LOADED;
+
+U2IEngine* HYDRA_ENGINE = NULL;
+extern U2IScene* U2I_SCENE;
+U2IScene* LAST_U2I_SCENE = NULL;
+bool USDHYDRAPASSINITIALIZED = false;
 
 static void _InitializeHydraEngine() {
   if (!HYDRA_ENGINE) {
+    LOG("Initialize HYDRA ENGINE !!");
     pxr::SdfPathVector excludedPaths;
-    HYDRA_ENGINE = new U2XEngine(pxr::SdfPath("/"), excludedPaths);
+    HYDRA_ENGINE = new U2IEngine(pxr::SdfPath("/"), excludedPaths);
     
     
     pxr::GlfSimpleMaterial material;
@@ -76,38 +80,70 @@ static pxr::GfMatrix4d _GetProjectionMatrix(const Camera& camera)
   }
 }
 
-void UsdHydraDisplayCallback_Init( XSI::CRef sequencerContext, LPVOID *userData )
+static void _InitializeGL()
 {
-  XSI::GraphicSequencerContext graphicSequencerContext = sequencerContext;
-  assert ( graphicSequencerContext.IsValid() );
-  XSI::CGraphicSequencer sequencer = graphicSequencerContext.GetGraphicSequencer ();
-  sequencer.RegisterDisplayCallback(
-    L"UsdHydraDisplayCallback", 
-    0, 
-    XSI::siPostBeginFrame, 
-    XSI::siAll, 
-    XSI::CString()
+  GarchGLApiLoad();
+  GL_EXTENSIONS_LOADED = true;
+}
+
+
+void UsdHydra_Init ( XSI::CRef in_pSequencerContext, LPVOID *in_pUserData )
+{
+  GL_EXTENSIONS_LOADED = false;
+  _InitializeGL();
+
+	// Cast the CRef into a GraphicSequencerContext SDK object
+	XSI::GraphicSequencerContext l_vGraphicSequencerContext = in_pSequencerContext;
+	
+	// make sure the cast succeeded
+	assert ( l_vGraphicSequencerContext.IsValid() );
+
+	// get the sequencer from the context object
+	XSI::CGraphicSequencer in_pSequencer = l_vGraphicSequencerContext.GetGraphicSequencer ();
+
+	// use the sequencer to register the callback
+	in_pSequencer.RegisterDisplayCallback(
+    L"UsdHydra",
+    0,
+    XSI::siPostPass,
+    XSI::siCustom,
+    L""
   );
 }
 
-void UsdHydraDisplayCallback_Execute( XSI::CRef sequencerContext, LPVOID *userData )
+void UsdHydra_InitInstance( XSI::CRef in_pSequencerContext, LPVOID *in_pUserData )
 {
-  if (U2X_SCENE != LAST_U2X_SCENE) {
+}
+
+void UsdHydra_TermInstance( XSI::CRef in_pSequencerContext, LPVOID *in_pUserData )
+{
+}
+
+void UsdHydra_Execute( XSI::CRef sequencerContext, LPVOID *userData )
+{
+  LOG("OoooooooooOOOOOOO");
+ 
+  if (U2I_SCENE != LAST_U2I_SCENE) {
     _TerminateHydraEngine();
     _InitializeHydraEngine();
-    LAST_U2X_SCENE = U2X_SCENE;
+    LAST_U2I_SCENE = U2I_SCENE;
   }
+  if (!U2I_SCENE) return;
   XSI::GraphicSequencerContext graphicSequencerContext = sequencerContext;
   assert(graphicSequencerContext.IsValid());
   XSI::CGraphicSequencer sequencer = graphicSequencerContext.GetGraphicSequencer();
 
   UINT x, y, width, height;
   sequencer.GetViewportSize(x, y, width, height);
+
   double aspectRatio = (double)width / (double)height;
 
   CRef cameraRef = sequencer.GetCamera();
   Camera camera(cameraRef);
 
+  LOG("Hydra engine : " + CString(CValue(HYDRA_ENGINE)));
+
+  LOG("SET CAMERA STATE..");
   HYDRA_ENGINE->SetCameraState(
     _GetViewMatrix(camera),
     _GetProjectionMatrix(camera)
@@ -135,80 +171,15 @@ void UsdHydraDisplayCallback_Execute( XSI::CRef sequencerContext, LPVOID *userDa
   //_renderParams.colorCorrectionMode = ???
   renderParams.clearColor = pxr::GfVec4f(0.0, 0.0, 0.0, 1.0);
 
-
   glViewport(0, 0, width, height);
-  // clear to black
-  glClearColor(0.25f, 0.25f, 0.25f, 1.0);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  U2X_SCENE->Update();
-  HYDRA_ENGINE->Render(U2X_SCENE->GetSceneStage()->GetPseudoRoot(), renderParams);
+  U2I_SCENE->Update();
+  HYDRA_ENGINE->Render(U2I_SCENE->GetSceneStage()->GetPseudoRoot(), renderParams);
   glDisable(GL_DEPTH_TEST);
-  /*
-  CValueArray framebufferInfo = sequencer.GetFramebufferInfo();
-
-  for (size_t i = 0; i < framebufferInfo.GetCount(); ++i) {
-    LOG(framebufferInfo[i]);
-  }
-
-
-
-  /*
-  XSI::GraphicSequencerContext graphicSequencerContext = sequencerContext;
-  assert(graphicSequencerContext.IsValid());
-  XSI::CGraphicSequencer sequencer = graphicSequencerContext.GetGraphicSequencer();
-
-
-  //
-  // Grab the current selection list
-  //
-
-  using namespace XSI;
-  Application app;
-  Selection sel = app.GetSelection();
-  CRefArray array(sel.GetArray());
-
-  //
-  // Render the scene in hidden line
-  //
-
-  sequencer.RenderSceneUsingMode(siHiddenLineRemoval, siRenderDefault);
-
-  //
-  // Now render over the selection list using the material attached to the realtime port
-  //
-
- // sequencer.RenderListUsingMode(array, siRealtimePortMaterial);
-
-  //
-  // Note that for the sake of simplicity, we are rendering the object using built in passes 
-  // (HiddenLine and RealtimePort).But you have much more flexibility when using RenderSceneUsingMaterial 
-  // and provide your own shader ie: in_pSequencer->RenderSceneUsingMaterial ( L"MySuperShader", siRenderDefault );
-  //
-
-  //
-  // Using Custom Display passes become very interesting when they are use in conjuncture with pixel buffers
-  // (ie. accelerated offscreen OpenGL buffers). You can create your pbuffer, make it the current rendering
-  // context and use the Sequencer to render the scene. Then, you can composite this pbuffer with other 
-  // buffers, use multipass, blur them. etc. etc.
-  //
-  // Using this technique, you can do stuff like realtime shadows, reflections or other scene-wide effects.
-  //
-
-  return;
-  */
 
 }
 
-void UsdHydraDisplayCallback_Term( XSI::CRef sequencerContext, LPVOID *userData )
+void UsdHydra_Term( XSI::CRef sequencerContext, LPVOID *userData )
 {
   _TerminateHydraEngine();
-}
-
-void UsdHydraDisplayCallback_InitInstance( XSI::CRef sequencerContext, LPVOID *userData )
-{
-}
-
-void UsdHydraDisplayCallback_TermInstance( XSI::CRef sequencerContext, LPVOID *userData )
-{
 }

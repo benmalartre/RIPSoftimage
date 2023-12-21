@@ -1,6 +1,7 @@
 #pragma once
 
 #include "prim.h"
+#include "topology.h"
 
 // Mesh 
 class U2XMesh final : public U2XPrim {

@@ -1,7 +1,7 @@
 #include "utils.h"
 
 int
-U2XTriangulateMesh(const pxr::VtArray<int>& counts,
+U2ITriangulateMesh(const pxr::VtArray<int>& counts,
   const pxr::VtArray<int>& indices,
   pxr::VtArray<pxr::GfVec3i>& samples)
 {
@@ -31,7 +31,7 @@ U2XTriangulateMesh(const pxr::VtArray<int>& counts,
 }
 
 void
-U2XComputeVertexNormals(const pxr::VtArray<pxr::GfVec3f>& positions,
+U2IComputeVertexNormals(const pxr::VtArray<pxr::GfVec3f>& positions,
   const pxr::VtArray<int>& counts,
   const pxr::VtArray<int>& indices,
   const pxr::VtArray<pxr::GfVec3i>& samples,
@@ -87,7 +87,7 @@ U2XComputeVertexNormals(const pxr::VtArray<pxr::GfVec3f>& positions,
 }
 
 void
-U2XComputeVertexColors(const pxr::VtArray<pxr::GfVec3f>& positions,
+U2IComputeVertexColors(const pxr::VtArray<pxr::GfVec3f>& positions,
   pxr::VtArray<pxr::GfVec3f>& colors)
 {
   // we want smooth vertex normals

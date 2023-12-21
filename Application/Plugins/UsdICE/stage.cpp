@@ -1,13 +1,3 @@
-#include "common.h"
-#include "stage.h"
-#include "prim.h"
-#include "xform.h"
-#include "mesh.h"
-#include "utils.h"
-#include "shader.h"
-#include "scene.h"
-#include "nodes.h"
-
 #include <pxr/base/arch/fileSystem.h>
 #include <pxr/usd/usdGeom/xform.h>
 #include <pxr/usd/usdGeom/mesh.h>
@@ -18,32 +8,18 @@
 #include <pxr/usd/usdGeom/metrics.h>
 #include <pxr/imaging/garch/glApi.h>
 
+#include "stage.h"
+#include "prim.h"
+#include "utils.h"
+#include "scene.h"
+#include "nodes.h"
 
-pxr::UsdStageRefPtr U2X_STAGE;
-extern U2XScene*    U2X_SCENE;
+
+pxr::UsdStageRefPtr U2I_STAGE;
+extern U2IScene*    U2I_SCENE;
 
 
-void U2XSelection::AddPrim(const SdfPath& path)
-{
-  if(_stage)
-    if (_items.find(path) == _items.end())
-      _items[path] = _stage->GetPrimAtPath(path);
-}
-
-void U2XSelection::RemovePrim(const SdfPath& path)
-{
-  if (_stage) {
-    auto it = _items.find(path);
-    if (it != _items.end()) _items.erase(it);
-  }
-}
-
-void U2XSelection::Clear()
-{
-  _items.clear();
-}
-
-U2XStage::U2XStage()
+U2IStage::U2IStage()
   : _isRoot(false), _objectID(-1), _lastEvalID(-1), _isLoaded(false), _time(DBL_MAX)
 {
   TfTokenVector purposes = { UsdGeomTokens->default_, UsdGeomTokens->render };
@@ -51,7 +27,7 @@ U2XStage::U2XStage()
   _xformCache = new pxr::UsdGeomXformCache(pxr::UsdTimeCode::Default());
 }
 
-U2XStage::U2XStage(CustomPrimitive& prim)
+U2IStage::U2IStage(CustomPrimitive& prim)
   : _isRoot(true), _objectID(prim.GetObjectID()), _lastEvalID(-1), _isLoaded(false), _time(DBL_MAX)
 {
   TfTokenVector purposes = { UsdGeomTokens->default_, UsdGeomTokens->render };
@@ -59,7 +35,7 @@ U2XStage::U2XStage(CustomPrimitive& prim)
   _xformCache = new pxr::UsdGeomXformCache(pxr::UsdTimeCode::Default());
 }
 
-U2XStage::~U2XStage()
+U2IStage::~U2IStage()
 {
   Clear();
   delete _bboxCache;
@@ -67,15 +43,15 @@ U2XStage::~U2XStage()
   _stage = nullptr;
 }
 
-bool U2XStage::HasFilename(const CString& filename, size_t index)
+bool U2IStage::HasFilename(const CString& filename, size_t index)
 {
   if (!_rawFilenames.size() || index >= _rawFilenames.size()) return false;
   else return (_rawFilenames[index] == filename);
 }
 
-void U2XStage::SetFromICE(const CustomPrimitive& prim)
+void U2IStage::SetFromICE(const CustomPrimitive& prim)
 {
-  ICEAttribute attr = prim.GetICEAttributeFromName(U2X_PROCEDURAL_ROOT);
+  ICEAttribute attr = prim.GetICEAttributeFromName(U2I_PROCEDURAL_ROOT);
   if (attr.IsValid() && attr.IsDefined()) {
     CStringArray customDataTypes = attr.GetCustomDataTypes();
     if (customDataTypes.GetCount() && customDataTypes[0] == "UsdStage") {
@@ -89,7 +65,7 @@ void U2XStage::SetFromICE(const CustomPrimitive& prim)
         customData.GetData(i, &pBuffer, nSize);
 
         LOG(CString((void*)pBuffer) + L":" + CString(nSize));
-        U2XStageNodeDatas_t* stageData = (U2XStageNodeDatas_t*)(void*)pBuffer;
+        U2IStageNodeDatas_t* stageData = (U2IStageNodeDatas_t*)(void*)pBuffer;
         std::cout << "STAGE DATA : " << stageData->_uri << std::endl;
       }
     }
@@ -107,7 +83,7 @@ void U2XStage::SetFromICE(const CustomPrimitive& prim)
   }
 }
 
-void U2XStage::SetFilenames(const CStringArray& filenames)
+void U2IStage::SetFilenames(const CStringArray& filenames)
 {
   size_t numFiles = filenames.GetCount();
   _rawFilenames.resize(numFiles);
@@ -123,7 +99,7 @@ void U2XStage::SetFilenames(const CStringArray& filenames)
   Reload();
 }
 
-void U2XStage::Reload()
+void U2IStage::Reload()
 {
   _isLoaded = false;
   Clear();
@@ -131,7 +107,7 @@ void U2XStage::Reload()
   //_rootLayer = pxr::SdfLayer::FindOrOpen(_filenames[0]);
   //_stageX = pxr::UsdStage::Open(_rootLayer->GetIdentifier());
   std::string uniqueName = std::to_string(_objectID);
-  _stage = pxr::UsdStage::CreateInMemory("U2XStage_" + uniqueName);
+  _stage = pxr::UsdStage::CreateInMemory("U2IStage_" + uniqueName);
   _rootLayer = _stage->GetRootLayer();
 
   for (size_t i = 0; i < _filenames.size(); ++i)
@@ -147,7 +123,7 @@ void U2XStage::Reload()
   }
   
   _stage->SetDefaultPrim(*_stage->Traverse().cbegin());
-  U2X_SCENE->ReloadStage(this);
+  U2I_SCENE->ReloadStage(this);
 
   //pxr::SdfLayerRefPtr rootLayer = pxr::SdfLayer::FindOrOpen(_filename);
   //_stage = pxr::UsdStage::Open(rootLayer);
@@ -172,22 +148,24 @@ void U2XStage::Reload()
   _isLoaded = true;
 }
 
-void U2XStage::SetTime(double time, bool forceUpdate)
+void U2IStage::SetTime(double time, bool forceUpdate)
 {
   if (time != _time || forceUpdate)
   {
     _xformCache->SetTime(pxr::UsdTimeCode(time));
+    /*
     for (auto& prim : _prims)
     {
       prim->Update(time, forceUpdate);
       prim->SetMatrix(_xformCache->GetLocalToWorldTransform(prim->Get()));
     }
+    */
     ComputeBoundingBox(pxr::UsdTimeCode(time));
     _time = time;
   }
 }
 
-void U2XStage::ComputeBoundingBox(const pxr::UsdTimeCode& timeCode)
+void U2IStage::ComputeBoundingBox(const pxr::UsdTimeCode& timeCode)
 {
   TfTokenVector purposes = { UsdGeomTokens->default_, UsdGeomTokens->render };
   if (_root.GetPrim().IsValid())
@@ -197,7 +175,7 @@ void U2XStage::ComputeBoundingBox(const pxr::UsdTimeCode& timeCode)
   }
 }
 
-void U2XStage::Clear()
+void U2IStage::Clear()
 {
   for (auto prim : _prims) {
     if (prim)delete prim;
@@ -207,12 +185,13 @@ void U2XStage::Clear()
 }
 
 
-void U2XStage::Recurse(const pxr::UsdPrim& prim, U2XPrim* parent)
+void U2IStage::Recurse(const pxr::UsdPrim& prim, U2IPrim* parent)
 {
-  U2XPrim* current = NULL;
+  /*
+  U2IPrim* current = NULL;
   if (prim.IsA<pxr::UsdGeomMesh>())
   {
-    U2XMesh* mesh = new U2XMesh(prim, parent);
+    U2IMesh* mesh = new U2IMesh(prim, parent);
     mesh->Init();
     mesh->SetMatrix(_xformCache->GetLocalToWorldTransform(prim));
     _prims.push_back(mesh);
@@ -224,7 +203,7 @@ void U2XStage::Recurse(const pxr::UsdPrim& prim, U2XPrim* parent)
   }
   if (prim.IsA<pxr::UsdGeomXform>())
   {
-    U2XXform* xform = new U2XXform(prim, parent);
+    U2IXform* xform = new U2IXform(prim, parent);
     xform->Init();
     xform->SetMatrix(_xformCache->GetLocalToWorldTransform(prim));
     _prims.push_back(xform);
@@ -234,16 +213,17 @@ void U2XStage::Recurse(const pxr::UsdPrim& prim, U2XPrim* parent)
   {
     Recurse(child, current);
   }
+  */
 }
 
-bool U2XStage::HasUsdICEAttribute(CustomPrimitive& prim)
+bool U2IStage::HasUsdICEAttribute(CustomPrimitive& prim)
 {
-  ICEAttribute attr(prim.GetICEAttributeFromName(U2X_PROCEDURAL_ROOT));
+  ICEAttribute attr(prim.GetICEAttributeFromName(U2I_PROCEDURAL_ROOT));
   if (attr.IsValid() && attr.IsDefined())return true;
   return false;
 };
 
-void U2XStage::Update(CustomPrimitive& prim)
+void U2IStage::Update(CustomPrimitive& prim)
 {
   const LONG objectID = prim.GetObjectID();
   const LONG evalID = prim.GetEvaluationID();
@@ -278,7 +258,7 @@ void U2XStage::Update(CustomPrimitive& prim)
   
   MATH::CMatrix4 matrix = kineState.GetTransform().GetMatrix4();
   if (matrix != _xfo) {
-    pxr::UsdGeomXformable xformable(U2X_SCENE->GetRootPrim(_objectID));
+    pxr::UsdGeomXformable xformable(U2I_SCENE->GetRootPrim(_objectID));
     if (xformable) {
       MATH::CMatrix4 matrix = kineState.GetTransform().GetMatrix4();
       pxr::GfMatrix4d usdMatrix;
@@ -298,25 +278,7 @@ void U2XStage::Update(CustomPrimitive& prim)
   }
 }
 
-void U2XStage::Draw()
+void U2IStage::Draw()
 {
-  GLint pgm = GLSL_PROGRAM->Get();
-  GLint modelUniform = glGetUniformLocation(pgm, "model");
-  GLint normalMatrixUniform = glGetUniformLocation(pgm, "normalMatrix");
   
-  // light position
-  GLint lightUniform = glGetUniformLocation(pgm, "light");
-  pxr::GfVec3f lightDir(5.0, 10.0, 6.0);
-  lightDir = _invXform.Transform(lightDir);
-  glUniform3fv(lightUniform, 1, &lightDir[0]);
-
-  for (int i = 0; i < _prims.size(); ++i)
-  {
-    if (!_prims[i]->IsVisible())continue;
-    /// model matrix
-    glUniformMatrix4fv(modelUniform, 1, GL_FALSE, _prims[i]->GetMatrix());
-    glUniformMatrix4fv(normalMatrixUniform, 1, GL_FALSE, _prims[i]->GetNormalMatrix());
-    _prims[i]->Prepare();
-    _prims[i]->Draw();
-  }
 }

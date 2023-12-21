@@ -1,5 +1,5 @@
-#ifndef U2X_ENGINE_H
-#define U2X_ENGINE_H
+#ifndef U2I_ENGINE_H
+#define U2I_ENGINE_H
 
 #include <pxr/pxr.h>
 #include <pxr/usd/sdf/path.h>
@@ -16,16 +16,16 @@
 #include <memory>
 
 
-class U2XEngine : public pxr::UsdImagingGLEngine {
+class U2IEngine : public pxr::UsdImagingGLEngine {
 public:
-  U2XEngine(const pxr::HdDriver& driver);
-  U2XEngine(const pxr::SdfPath& rootPath,
+  U2IEngine(const pxr::HdDriver& driver);
+  U2IEngine(const pxr::SdfPath& rootPath,
     const pxr::SdfPathVector& excludedPaths,
     const pxr::SdfPathVector& invisedPaths = pxr::SdfPathVector(),
     const pxr::SdfPath& sceneDelegateID =
     pxr::SdfPath::AbsoluteRootPath(),
     const pxr::HdDriver& driver = pxr::HdDriver());
-  ~U2XEngine();
+  ~U2IEngine();
 
   /*
   pxr::HdSelectionSharedPtr _Pick(pxr::GfVec2i const& startPos,
