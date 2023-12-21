@@ -97,6 +97,7 @@ public:
   U2XStage* GetStage(ULONG objectId);
   pxr::UsdPrim GetRootPrim(ULONG objectId);
   pxr::UsdPrim GetRefPrim(ULONG objectId);
+  bool IsEmpty();
 
 private:
   pxr::UsdStageRefPtr       _stage;

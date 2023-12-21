@@ -22,7 +22,9 @@ U2XScene::~U2XScene()
   _prims.clear();
 }
 
-
+bool U2XScene::IsEmpty() {
+  return !_prims.size();
+}
 pxr::UsdPrim U2XScene::GetRootPrim(ULONG objectId)
 {
   return _stage->GetPrimAtPath(pxr::SdfPath("/U2XRoot" + std::to_string(objectId)));

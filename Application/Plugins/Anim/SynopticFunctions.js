@@ -3,47 +3,47 @@
 function XSILoadPlugin( in_reg )
 {
 	in_reg.Author = "benmalartre";
-	in_reg.Name = "SynopticFunctionsPlugin";
+	in_reg.Name = "SynopticFn";
 	in_reg.Email = "";
 	in_reg.URL = "";
 	in_reg.Major = 1;
 	in_reg.Minor = 0;
 
-	in_reg.RegisterCommand("SynopticFunctions","SynopticFunctions");
-	in_reg.RegisterCommand("SynopticSelect","SynopticSelect");
+	in_reg.RegisterCommand("SynopticFn","SynopticFn");
+	in_reg.RegisterCommand("SynopticSel","SynopticSel");
 
 	return true;
 }
 
 function XSIUnloadPlugin( in_reg )
 {
-	strPluginName = in_reg.Name;
-	Application.LogMessage(strPluginName + " has been unloaded.");
+	pluginName = in_reg.Name;
+	Application.LogMessage(pluginName + " has been unloaded.");
 	return true;
 }
 
-function eSynopticFunctions_Init( ctxt )
+function SynopticFn_Init( ctxt )
 {
-	var oCmd;
-	oCmd = ctxt.Source;
-	oCmd.Description = "Synoptic Functions";
-	oCmd.ReturnValue = true;
+	var cmd;
+	cmd = ctxt.Source;
+	cmd.Description = "Synoptic Functions";
+	cmd.ReturnValue = true;
 
 	var oArgs;
-	oArgs = oCmd.Arguments;
+	oArgs = cmd.Arguments;
 	oArgs.Add("inObj",siArgumentInput);
 	oArgs.Add("inFunction",siArgumentInput);
 	return true;
 }
 
-function eSynopticFunctions_Execute( inModel,inFunction )
+function SynopticFn_Execute( model, fn )
 {	
-	switch (inFunction) 
+	switch (fn) 
 	{
 		case "Sel_All" :	// Select all controllers find in Control Group
-			if(inModel.Groups.Item("Controls"))
+			if(model.Groups.Item("Controls"))
 			{
-				SelectObj(inModel.Groups.Item("Controls").Members);	
+				SelectObj(model.Groups.Item("Controls").Members);	
 			}
 			break;	
 			
@@ -86,35 +86,35 @@ function eSynopticFunctions_Execute( inModel,inFunction )
 			break;
 			
 		case "Pose_Sel" : // Will pose Selected object using keyable parameters
-			eSynopticFunctions_Pose_Sel(inModel);
+			SynopticFn_Pose_Sel(inModel);
 			break;	
 			
 		case "Pose_All" : // Will pose All controls objects using keyable parameters
-			eSynopticFunctions_Pose_All(inModel,"Controls");
+			SynopticFn_Pose_All(inModel,"Controls");
 			break;	
 			
 		case "Store_Sel" : // Will store Selected object using keyable parameters
-			eSynopticFunctions_Store_Sel(inModel);
+			SynopticFn_Store_Sel(inModel);
 			break;	
 			
 		case "Store_All" : // Will store All controls objects using keyable parameters
-			eSynopticFunctions_Store_All(inModel,"Controls");
+			SynopticFn_Store_All(inModel,"Controls");
 			break;	
 			
 		case "Remove_Sel" : // Will remove Animation on selected object using keyable parameters
-			eSynopticFunctions_Remove_Sel(inModel);
+			SynopticFn_Remove_Sel(inModel);
 			break;	
 		
 		case "Remove_All" : // Will remove Animation on all control objects using keyable parameters
-			eSynopticFunctions_Remove_All(inModel,"Controls");
+			SynopticFn_Remove_All(inModel,"Controls");
 			break;	
 			
 		case "Reset_Sel" : // Will reset selected object using keyable parameters
-			eSynopticFunctions_Reset_Sel(inModel);
+			SynopticFn_Reset_Sel(inModel);
 			break;	
 		
 		case "Reset_All" : // Will reset all control objects using keyable parameters
-			eSynopticFunctions_Reset_All(inModel,"DefaultPose","Controls");
+			SynopticFn_Reset_All(inModel,"DefaultPose","Controls");
 			break;
 			
 		case "Sel_All_Face" : // Will select all controls in Face Control Group
@@ -152,23 +152,23 @@ function eSynopticFunctions_Execute( inModel,inFunction )
 			break;
 			
 		case "Pose_All_Face" : // Will pose All face controls objects using keyable parameters
-			eSynopticFunctions_Pose_All(inModel, "FaceAnims");
+			SynopticFn_Pose_All(inModel, "FaceAnims");
 			break;	
 			
 		case "Store_All_Face" : // Will store facecontrol  objects using keyable parameters
-			eSynopticFunctions_Store_All_Face(inModel);
+			SynopticFn_Store_All_Face(inModel);
 			break;	
 			
 		case "Remove_All_Face" : // Will remove Animation on facecontrol objects using keyable parameters
-			eSynopticFunctions_Remove_All(inModel,"FaceAnims");
+			SynopticFn_Remove_All(inModel,"FaceAnims");
 			break;	
 		
 		case "Reset_All_Face" : // Will reset facecontrol objects using keyable parameters
-			eSynopticFunctions_Reset_All(inModel,"FaceDefaultPose","FaceAnims");
+			SynopticFn_Reset_All(inModel,"FaceDefaultPose","FaceAnims");
 			break;
 			
 		case "Load_Pose" : // Will open an explorer and load a pose in the model's mixer
-			eSynopticFunctions_Load_Pose(inModel);
+			SynopticFn_Load_Pose(inModel);
 			break;
 		
 		/*	
@@ -195,21 +195,21 @@ function eSynopticFunctions_Execute( inModel,inFunction )
 
 // Synoptic Select
 //---------------------------------------------
-function eSynopticSelect_Init( ctxt )
+function SynopticSel__Init( ctxt )
 {
-	var oCmd;
-	oCmd = ctxt.Source;
-	oCmd.Description = "Synoptic Functions";
-	oCmd.ReturnValue = true;
+	var cmd;
+	cmd = ctxt.Source;
+	cmd.Description = "Synoptic Functions";
+	cmd.ReturnValue = true;
 
 	var oArgs;
-	oArgs = oCmd.Arguments;
+	oArgs = cmd.Arguments;
 	oArgs.Add("inObj",siArgumentInput);
 	oArgs.Add("inNameArray",siArgumentInput,0,siDispatch);
 	return true;
 }
 
-function eSynopticSelect_Execute(inModel, inNameArray)
+function SynopticSel__Execute(inModel, inNameArray)
 {
 	var toSel = XSIFactory.CreateActiveXObject("XSI.Collection");
 	
@@ -256,7 +256,7 @@ function eSynopticSelect_Execute(inModel, inNameArray)
 }
 
 //-----------------------------------------------------
-function eSynopticFunctions_Pose_Sel(inModel)
+function SynopticFn_Pose_Sel(inModel)
 {
 	var cFrame = getFrame("Current");
 	var oSel = GetValue("SelectionList");
@@ -298,7 +298,7 @@ function eSynopticFunctions_Pose_Sel(inModel)
 }
 
 //-----------------------------------------------------
-function eSynopticFunctions_Pose_All(inModel,inCtrlGroup)
+function SynopticFn_Pose_All(inModel,inCtrlGroup)
 {
 	var cFrame = getFrame("Current");
 	var oSel = GetValue("SelectionList");
@@ -354,7 +354,7 @@ function eSynopticFunctions_Pose_All(inModel,inCtrlGroup)
 
 
 //-----------------------------------------------------
-function eSynopticFunctions_Store_Sel(inModel)
+function SynopticFn_Store_Sel(inModel)
 {
 	var cFrame = getFrame("Current");
 	var oSel = GetValue("SelectionList");
@@ -407,7 +407,7 @@ function eSynopticFunctions_Store_Sel(inModel)
 }
 
 //-----------------------------------------------------
-function eSynopticFunctions_Store_All(inModel,inCtrlGroup)
+function SynopticFn_Store_All(inModel,inCtrlGroup)
 {
 	var cFrame = getFrame("Current");
 	var oSel = GetValue("SelectionList");
@@ -462,7 +462,7 @@ function eSynopticFunctions_Store_All(inModel,inCtrlGroup)
 
 
 //-----------------------------------------------------
-function eSynopticFunctions_Store_All_Face(inModel)
+function SynopticFn_Store_All_Face(inModel)
 {
 	var cFrame = getFrame("Current");
 	var oSel = GetValue("SelectionList");
@@ -523,7 +523,7 @@ function eSynopticFunctions_Store_All_Face(inModel)
 	SelectObj(oSel);
 }
 //-----------------------------------------------------
-function eSynopticFunctions_Remove_Sel(inModel)
+function SynopticFn_Remove_Sel(inModel)
 {
 	var oSel = GetValue("SelectionList");
 	
@@ -553,7 +553,7 @@ function eSynopticFunctions_Remove_Sel(inModel)
 }
 
 //-----------------------------------------------------
-function eSynopticFunctions_Remove_All(inModel,inCtrlGroup)
+function SynopticFn_Remove_All(inModel,inCtrlGroup)
 {
 	var oSel = GetValue("SelectionList");
 	var oMsg = "warning : this action will delete all keys on " + inModel.name +"\n"+
@@ -583,7 +583,7 @@ function eSynopticFunctions_Remove_All(inModel,inCtrlGroup)
 }
 
 //-----------------------------------------------------
-function eSynopticFunctions_Reset_Sel(inModel)
+function SynopticFn_Reset_Sel(inModel)
 {
 	var oSel = GetValue("SelectionList");
 	
@@ -601,7 +601,7 @@ function eSynopticFunctions_Reset_Sel(inModel)
 }
 
 //-----------------------------------------------------
-function eSynopticFunctions_Reset_All(inModel,inPose,inGroup)
+function SynopticFn_Reset_All(inModel,inPose,inGroup)
 {
 	var oSel = GetValue("SelectionList");
 	
@@ -772,7 +772,7 @@ function StoreExport_OnChanged()
 
 // Load Pose UI
 //---------------------------------------------
-function eSynopticFunctions_Load_Pose(inModel)
+function SynopticFn_Load_Pose(inModel)
 {
 
 }

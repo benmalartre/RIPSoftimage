@@ -78,7 +78,7 @@ struct TriangulateData{
 SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
 {
   in_reg.PutAuthor(L"benmalartre");
-  in_reg.PutName(L"Triangulate Plugin");
+  in_reg.PutName(L"Triangulate");
   in_reg.PutVersion(1,0);
 
   RegisterTriangulate( in_reg );

@@ -101,6 +101,7 @@ void UsdHydraDisplayCallback_Execute( XSI::CRef context, LPVOID *data )
     _InitializeHydraEngine();
     LAST_U2X_SCENE = U2X_SCENE;
   }
+  if (U2X_SCENE->IsEmpty())return;
   XSI::GraphicSequencerContext sequencerContext = context;
   assert(sequencerContext.IsValid());
   XSI::CGraphicSequencer sequencer = sequencerContext.GetGraphicSequencer();

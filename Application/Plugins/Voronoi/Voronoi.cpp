@@ -9,7 +9,7 @@ XSI::CStatus RegisterIMVoronoi(XSI::PluginRegistrar& in_reg);
 SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
 {
 	in_reg.PutAuthor(L"benmalartre");
-	in_reg.PutName(L"VoronoiPlugin");
+	in_reg.PutName(L"Voronoi");
 	in_reg.PutEmail(L"");
 	in_reg.PutURL(L"");
 	in_reg.PutVersion(1,0);

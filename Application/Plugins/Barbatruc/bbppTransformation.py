@@ -12,7 +12,7 @@ true = 1
 
 def XSILoadPlugin( in_reg ):
 	in_reg.Author = "benmalartre"
-	in_reg.Name = "bbppTransformationPlugin"
+	in_reg.Name = "bbppTransformation"
 	in_reg.Major = 1
 	in_reg.Minor = 0
 

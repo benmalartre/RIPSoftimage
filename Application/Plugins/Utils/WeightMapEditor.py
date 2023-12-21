@@ -8,7 +8,7 @@ import Utils as uti
 
 def XSILoadPlugin( in_reg ):
 	in_reg.Author = "benmalartre"
-	in_reg.Name = "WeightMapEditorPlugin"
+	in_reg.Name = "WeightMapEditor"
 	in_reg.Major = 1
 	in_reg.Minor = 0
 
