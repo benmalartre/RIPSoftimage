@@ -9,17 +9,19 @@ add_definitions(
 add_library(${TARGET} SHARED
   attribute.cpp
   camera.cpp
+  prim.cpp
+  xform.cpp
+  model.cpp
+  points.cpp
+  mesh.cpp
   curve.cpp
   instancer.cpp
-  mesh.cpp
-  model.cpp
+  skeleton.cpp
   plugin.cpp
-  points.cpp
-  prim.cpp
   scene.cpp
   ui.cpp
   utils.cpp
-  xform.cpp
+  
 )
 
 target_include_directories(${TARGET} 

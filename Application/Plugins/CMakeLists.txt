@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 2.8.11)
 project (RIPSoftimage)
 
 # Require C++14
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -76,7 +76,7 @@ if(UNIX)
 
   endif()
 else()
-	set(BOOST_INCLUDE_DIR "${USD_INCLUDE_DIR}/boost-1_70")
+	set(BOOST_INCLUDE_DIR "${USD_INCLUDE_DIR}/boost-1_76")
 endif()
 
 set(BOOST_LIBRARY_DIR "{USD_LIBRARY_DIR}")
@@ -90,7 +90,7 @@ list(APPEND BOOST_LIB_NAMES
 set(BOOST_LIBRARIES "")
 set(BOOST_VERSION "")
 if(NOT UNIX)
-	set(BOOST_VERSION "-vc142-mt-x64-1_70")
+	set(BOOST_VERSION "-vc142-mt-x64-1_76")
 endif()
 foreach(BOOST_LIB_NAME IN LISTS BOOST_LIB_NAMES)
   set(BOOST_LIBRARIES 
