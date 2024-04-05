@@ -53,7 +53,7 @@ SICALLBACK UsdWrite_Init( CRef& in_ctxt )
   args.Add(kExportCurves, true);
   args.Add(kExportPoints, true);
   args.Add(kExportCameras, true);
-  args.Add(kExportSkeleton, true);
+  args.Add(kExportSkeletons, true);
   args.Add(kExportAttributes, false);
   args.Add(kExportAttributesList, CValue());
 
@@ -95,7 +95,7 @@ SICALLBACK UsdWrite_Execute( CRef& in_ctxt )
   LOG("   Points    : " + CString(exportPoints));
   LOG("   Curves    : " + CString(exportCurves));
   LOG("   Attribute : " + CString(exportAttributes));
-  LOG("   Skeleton  : " + CSTring(exportSkeletons));
+  LOG("   Skeleton  : " + CString(exportSkeletons));
   if (exportAttributes) {
     for (size_t i = 0; i < exportAttributesList.GetCount(); ++i) {
       LOG("     |___" + exportAttributesList[i]);

@@ -1,13 +1,9 @@
 #pragma once
 
 #include "common.h"
+#include "utils.h"
 #include "prim.h"
 #include "xform.h"
-#include "mesh.h"
-#include "curve.h"
-#include "points.h"
-#include "instancer.h"
-#include "camera.h"
 
 struct X2UPrototype {
   ULONG     ID;
