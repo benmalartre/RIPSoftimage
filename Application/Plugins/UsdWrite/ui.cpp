@@ -21,6 +21,7 @@ SICALLBACK UsdWriteUI_Define(CRef& in_ctxt)
   prop.AddParameter(kExportCurves, CValue::siBool, siPersistable, "", "", true, CValue(), CValue(), CValue(), CValue(), param);
   prop.AddParameter(kExportCameras, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
   prop.AddParameter(kExportLights, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
+  prop.AddParameter(kExportSkeleton, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
   prop.AddParameter(kExportAttributes, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
   prop.AddParameter(kExportAttributesList, CValue::siString, siPersistable, L"Attributes", L"ICE Attributes to Export", L"", param );
   prop.AddParameter(kStartFrame, CValue::siFloat, siPersistable, "", "", 1l, -10000l, 10000l, -10000l, 10000l, param);
@@ -61,6 +62,7 @@ SICALLBACK UsdWriteUI_DefineLayout(CRef& in_ctxt)
   layout.AddItem(kExportCurves, "Curves");
   layout.AddItem(kExportCameras, "Cameras");
   layout.AddItem(kExportLights, "Lights");
+  layout.AddItem(kExportSkeletons, "Skeletons");
   layout.AddItem(kExportAttributes, "Attributes");
   layout.AddItem(kExportAttributesList, "Names");
   layout.EndGroup();
@@ -163,6 +165,7 @@ SICALLBACK UsdWriteUI_PPGEvent(const CRef& in_ctxt)
           args.Add(params.GetValue(kExportCurves));
           args.Add(params.GetValue(kExportPoints));
           args.Add(params.GetValue(kExportCameras));
+          args.Add(params.GetValue(kExportSkeletons));
           args.Add(params.GetValue(kExportAttributes));
           args.Add(params.GetValue(kExportAttributesList));
 

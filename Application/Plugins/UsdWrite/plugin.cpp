@@ -53,6 +53,7 @@ SICALLBACK UsdWrite_Init( CRef& in_ctxt )
   args.Add(kExportCurves, true);
   args.Add(kExportPoints, true);
   args.Add(kExportCameras, true);
+  args.Add(kExportSkeleton, true);
   args.Add(kExportAttributes, false);
   args.Add(kExportAttributesList, CValue());
 
@@ -81,6 +82,7 @@ SICALLBACK UsdWrite_Execute( CRef& in_ctxt )
   bool exportPoints = args.GetItem(kExportPoints).GetValue();
   bool exportCurves = args.GetItem(kExportCurves).GetValue();
   bool exportCameras = args.GetItem(kExportCameras).GetValue();
+  bool exportSkeletons = args.GetItem(kExportSkeletons).GetValue();
   bool exportAttributes = args.GetItem(kExportAttributes).GetValue();
 
   CString exportAttributesListStr = args.GetItem(kExportAttributesList).GetValue();
@@ -93,6 +95,7 @@ SICALLBACK UsdWrite_Execute( CRef& in_ctxt )
   LOG("   Points    : " + CString(exportPoints));
   LOG("   Curves    : " + CString(exportCurves));
   LOG("   Attribute : " + CString(exportAttributes));
+  LOG("   Skeleton  : " + CSTring(exportSkeletons));
   if (exportAttributes) {
     for (size_t i = 0; i < exportAttributesList.GetCount(); ++i) {
       LOG("     |___" + exportAttributesList[i]);
@@ -105,6 +108,7 @@ SICALLBACK UsdWrite_Execute( CRef& in_ctxt )
   if (exportUVs) options += X2U_EXPORT_UVS;
   if (exportColors) options += X2U_EXPORT_COLORS;
   if (exportCameras) options += X2U_EXPORT_CAMERAS;
+  if (exportSkeletons) options += X2U_EXPORT_SKELETONS;
   if (exportAttributes) options += X2U_EXPORT_ATTRIBUTES;
 
   Application app;

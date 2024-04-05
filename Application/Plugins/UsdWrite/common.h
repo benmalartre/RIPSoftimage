@@ -83,6 +83,7 @@ const CString kExportPoints = "ExportPoints";
 const CString kExportCurves = "ExportCurves";
 const CString kExportCameras = "ExportCameras";
 const CString kExportLights = "ExportLights";
+const CString kExportSkeletons = "ExportSkeletons";
 const CString kExportAttributes = "ExportAttributes";
 const CString kExportAttributesList = "ExportAttributesList";
 const CString kStartFrame = "StartFrame";
@@ -103,7 +104,8 @@ enum X2UExportOptions {
   X2U_EXPORT_CAMERAS    = 1 << 6,
   X2U_EXPORT_LIGHTS     = 1 << 7,
   X2U_EXPORT_ATTRIBUTES = 1 << 8,
-  X2U_EXPORT_CUSTOM     = 1 << 9
+  X2U_EXPORT_SKELETONS  = 1 << 9,
+  X2U_EXPORT_CUSTOM     = 1 << 10
 };
 
 enum X2UDataType {

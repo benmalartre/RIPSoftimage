@@ -146,12 +146,22 @@ void X2UModel::_Recurse(const CRef& ref, const std::string& parentPath, size_t o
           //point->Init(_stage);
           //_prims.push_back(X2UPointSharedPtr(point));
         }
+        else if (type == L"chainroot" && (options & X2U_EXPORT_SKELETON))
+        {
+          LOG("WE HAVE A  SKEL ROOT HURRAY !!");
+
+          X2USkeleton* skeleton = new X2USkeleton(objPath, ref);
+          skeleton->Init(_stage);
+          _prims.push_back(X2USketonSharedPtr(skeleton));
+          _xObjPathMap[skeleton->GetID()] = sketeton->GetPath();
+          continue;
+        }
       }
 
       CRefArray children = obj.GetChildren();
       for (int j = 0; j < children.GetCount(); ++j)
       {
-        _Recurse(children[j], objPath, options);
+        Options(children[j], objPath, options);
       }
       
     }

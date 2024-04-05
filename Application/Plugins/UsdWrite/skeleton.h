@@ -6,10 +6,7 @@
 // Points 
 class X2USkeleton final : public X2UPrim {
 public:
-  struct _Child {
-    CRef      _child;
-    CRefArray _children;
-  };
+
   X2USkeleton(std::string path, const CRef& ref);
   ~X2USkeleton();
 
@@ -17,8 +14,8 @@ public:
   void WriteSample(double t) override;
 
 private:
-  CRef                    _skelRoot;
-  std::vector<_Child>     _children;
+  CRef                        _skelRoot;
+  std::vector<pxr::TfToken>   _skelTopology;
 };
 
 typedef std::shared_ptr<X2USkeleton> X2USkeletonSharedPtr;

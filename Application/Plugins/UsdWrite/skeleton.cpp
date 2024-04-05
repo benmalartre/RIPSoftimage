@@ -1,16 +1,35 @@
 #include "skeleton.h"
 #include "utils.h"
 
+
+void _RecurseSkeletonTopology(CRef& ref, std::vector<pxr::TfToken>& topology)
+{
+  X3DObject obj(ref);
+  topology.push_back(pxr::TfToken(obj.GetFullName().GetAsciiString()));
+  LOG(obj.GetFullName());
+  CRefArray childrens = obj.GetChildren();
+  if(!childrens.GetCount())return;
+
+  for(size_t c = 0; c < childrens.GetCount(); ++c)
+    _RecurseSkeletonTopology(childrens[c], topology);
+}
+
 X2USkeleton::X2USkeleton(std::string path, const CRef& ref)
   : X2UPrim(path, ref)
+  , _skelRoot(ref)
 {
   /*
   _xObj = X3DObject(ref);
   _xPrim = _xObj.GetActivePrimitive();
   _xID = _xObj.GetObjectID();
   */
- std::cout << "X2U SKELETON yuhuuu :)" << std::endl;
- std::cout << _xID << std::endl;
+  X3DObject root(_skelRoot);
+  _skelTopology.clear();
+
+  CRefArray childrens = root.GetChildren();
+  for(size_t c = 0; c < childrens.GetCount(); ++c) {
+    _RecurseSkeletonTopology(childrens[c], _skelTopology);
+  }
 }
 
 X2USkeleton::~X2USkeleton()
@@ -19,6 +38,7 @@ X2USkeleton::~X2USkeleton()
 
 void X2USkeleton::Init(UsdStageRefPtr& stage)
 {
+  // walk 
   /*
   UsdGeomPoints points = UsdGeomPoints::Define(stage, SdfPath(_fullname));
   _prim = points.GetPrim();
@@ -88,69 +108,5 @@ void X2USkeleton::WriteSample(double t)
   // visibility attribute
   WriteVisibilitySample(t);
   */
-}
-
-bool X2USkeleton::_GetNumPoints(const Geometry& geom)
-{
-  ICEAttribute nbPointsAttr = geom.GetICEAttributeFromName(L"NbPoints");
-
-  CICEAttributeDataArrayLong nbPoints;
-  nbPointsAttr.GetDataArray(nbPoints);
-  bool topoChanged = false;
-  if (nbPoints[0] != _numPoints)topoChanged = true;
-  _numPoints = nbPoints[0];
-  return topoChanged;
-}
-
-void X2USkeleton::_ComputeBoundingBox(const Geometry& geom)
-{
-  if (_numPoints)
-  {
-
-    ICEAttribute pointPositionAttr = geom.GetICEAttributeFromName(L"PointPosition");
-    CICEAttributeDataArrayVector3f pointPositions;
-    pointPositionAttr.GetDataArray(pointPositions);
-
-    _bbox = X2UComputeBoundingBox<float>(&pointPositions[0][0], _numPoints);
-  }
-  else
-    _bbox = GfBBox3d(GfRange3d(GfVec3d(0), GfVec3d(0)));
-}
-
-
-void X2USkeleton::InitColorAttribute(const Geometry& geom)
-{
-
-
-  CRefArray attributes = geom.GetICEAttributes();
-  int iceAttrIndex;
-  ICEAttribute iceAttr = X2UGetICEAttributeFromArray(attributes, L"Color", iceAttrIndex);
-
-  if (iceAttrIndex >= 0)
-  {
-    ICEAttribute pointColorAttr = geom.GetICEAttributeFromName(L"Color");
-    UsdGeomPrimvar displayColorPrimvar =
-      UsdGeomGprim(_prim).CreateDisplayColorPrimvar(UsdGeomTokens->vertex);
-
-    UsdAttribute displayColorAttr = displayColorPrimvar.GetAttr();
-
-    _attributes["colors"] =
-      X2UAttribute(
-        displayColorAttr,
-        iceAttrIndex
-      );
-
-
-    // set default value
-    if (_numPoints && pointColorAttr.IsDefined())
-    {
-      CICEAttributeDataArrayColor4f colors;
-      pointColorAttr.GetDataArray(colors);
-      size_t numElements = colors.GetCount();
-      _attributes["colors"].WriteSample((const void*)&colors[0], numElements, UsdTimeCode::Default());
-    }
-    _haveColors = true;
-  }
-
 }
 
