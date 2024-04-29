@@ -1,35 +1,33 @@
 #include "skeleton.h"
 #include "utils.h"
 
-
-void _RecurseSkeletonTopology(CRef& ref, std::vector<pxr::TfToken>& topology)
+void X2USkeleton::_RecurseSkeletonTopology(UsdStageRefPtr& stage, CRef& ref,  const pxr::TfToken& parentPath)
 {
   X3DObject obj(ref);
-  topology.push_back(pxr::TfToken(obj.GetFullName().GetAsciiString()));
-  LOG(obj.GetFullName());
+  LOG(CString("obj : ")+obj.GetName());
+  CString type = obj.GetType();
+
+  if(type == "bone" || type == "root" || /*type == "eff" ||*/ type == "null") {
+    pxr::TfToken name(parentPath.GetString() + obj.GetName().GetAsciiString());
+    pxr::UsdGeomXform xform = pxr::UsdGeomXform::Define(stage, pxr::SdfPath(pxr::TfToken("/"+name.GetString())));
+    _skelTopology.push_back(name);
+  }
+
   CRefArray childrens = obj.GetChildren();
   if(!childrens.GetCount())return;
 
-  for(size_t c = 0; c < childrens.GetCount(); ++c)
-    _RecurseSkeletonTopology(childrens[c], topology);
+  for(size_t i = 0; i < childrens.GetCount(); ++i) {
+    _RecurseSkeletonTopology(
+      stage, childrens[i], 
+      pxr::TfToken(parentPath.GetString() + obj.GetName().GetAsciiString() + "/")
+    );
+  }
+    
 }
 
 X2USkeleton::X2USkeleton(std::string path, const CRef& ref)
   : X2UPrim(path, ref)
-  , _skelRoot(ref)
 {
-  /*
-  _xObj = X3DObject(ref);
-  _xPrim = _xObj.GetActivePrimitive();
-  _xID = _xObj.GetObjectID();
-  */
-  X3DObject root(_skelRoot);
-  _skelTopology.clear();
-
-  CRefArray childrens = root.GetChildren();
-  for(size_t c = 0; c < childrens.GetCount(); ++c) {
-    _RecurseSkeletonTopology(childrens[c], _skelTopology);
-  }
 }
 
 X2USkeleton::~X2USkeleton()
@@ -38,9 +36,16 @@ X2USkeleton::~X2USkeleton()
 
 void X2USkeleton::Init(UsdStageRefPtr& stage)
 {
-  // walk 
+  pxr::SdfPath path(_fullname);
+  pxr::UsdSkelRoot root = pxr::UsdSkelRoot::Define(stage, path);
+
+  _RecurseSkeletonTopology(stage, _xObj, pxr::TfToken(""));
+
+  pxr::UsdSkelSkeleton skeleton = pxr::UsdSkelSkeleton(root.GetPrim());
+  skeleton.CreateJointsAttr(pxr::VtValue(_skelTopology));
+
+  LOG("INIT FCKING SKELTON :p");
   /*
-  UsdGeomPoints points = UsdGeomPoints::Define(stage, SdfPath(_fullname));
   _prim = points.GetPrim();
 
 

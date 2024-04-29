@@ -21,7 +21,7 @@ SICALLBACK UsdWriteUI_Define(CRef& in_ctxt)
   prop.AddParameter(kExportCurves, CValue::siBool, siPersistable, "", "", true, CValue(), CValue(), CValue(), CValue(), param);
   prop.AddParameter(kExportCameras, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
   prop.AddParameter(kExportLights, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
-  prop.AddParameter(kExportSkeletons, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
+  prop.AddParameter(kExportSkeletons, CValue::siBool, siPersistable, "", "", true, CValue(), CValue(), CValue(), CValue(), param);
   prop.AddParameter(kExportAttributes, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
   prop.AddParameter(kExportAttributesList, CValue::siString, siPersistable, L"Attributes", L"ICE Attributes to Export", L"", param );
   prop.AddParameter(kStartFrame, CValue::siFloat, siPersistable, "", "", 1l, -10000l, 10000l, -10000l, 10000l, param);

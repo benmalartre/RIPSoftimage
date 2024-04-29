@@ -15,6 +15,9 @@
 #include <xsi_kinematics.h>
 #include <xsi_primitive.h>
 #include <xsi_polygonmesh.h>
+#include <xsi_chainbone.h>
+#include <xsi_chainroot.h>
+#include <xsi_chaineffector.h>
 #include <xsi_geometryaccessor.h>
 #include <xsi_cluster.h>
 #include <xsi_nurbscurvelist.h>
@@ -43,6 +46,10 @@
 #include <pxr/usd/usdGeom/mesh.h>
 #include <pxr/usd/usdGeom/pointInstancer.h>
 #include <pxr/usd/usdGeom/primvarsAPI.h>
+
+#include <pxr/usd/usdSkel/root.h>
+#include <pxr/usd/usdSkel/skeleton.h>
+#include <pxr/usd/usdSkel/animation.h>
 
 #include <pxr/base/gf/vec2i.h>
 #include <pxr/base/gf/vec2f.h>

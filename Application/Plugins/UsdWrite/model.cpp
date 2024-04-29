@@ -8,12 +8,13 @@
 #include "scene.h"
 
 X2UModel::X2UModel(const std::string& folder, const std::string& filename,
-  const CRef& root, X2UModel* parent)
+  const CRef& root, X2UModel* parent, bool isSkelRoot)
   : _folder(folder)
   , _filename(filename)
   , _root(root)
   , _parent(parent)
   , _selected(false)
+  , _isSkelRoot(isSkelRoot)
 {
   _rootName = "/";
   _rootName += X3DObject(root).GetName().GetAsciiString();
@@ -36,12 +37,15 @@ void X2UModel::Save()
 
 void X2UModel::Init()
 {
-  LOG("INIT MODEL !!!")
   // Create Usd stage for writing
   _stage = UsdStage::CreateNew(_folder + "/" + _filename);
-  _rootXform = X2UXformSharedPtr(new X2UXform(_rootName, _root));
+  if(_isSkelRoot) {
+    _rootXform = X2UPrimSharedPtr(new X2USkeleton(_rootName, _root));
+  } else {
+    _rootXform = X2UPrimSharedPtr(new X2UXform(_rootName, _root));
+  }
+ 
   _rootXform->Init(_stage);
-  LOG("MODEL INITIALIZD...");
 }
 
 X2UScene* X2UModel::GetScene()
@@ -64,26 +68,18 @@ void X2UModel::_Recurse(const CRef& ref, const std::string& parentPath, size_t o
     X3DObject obj(ref);
 
     CString type = obj.GetType();
-    LOG(type);
-    LOG("Parent Path : "+CString(parentPath.c_str()));
 
     if (type == L"#model")
     {
-      LOG("We have a model");
-      LOG("Scene : " + CString(GetScene()));
-
       if (GetScene()->IsSelected(ref)) _selected = true;
-      LOG("Selected : "+CString(_selected));
 
       if (!(options & X2U_EXPORT_SELECTION) || _selected) {
         std::string modelFileName = ref.GetAsText().GetAsciiString();
         modelFileName += ".usda";
-        LOG(modelFileName.c_str());
-        X2UModel childModel(_folder, modelFileName, ref, this);
+        X2UModel childModel(_folder, modelFileName, ref, this, options & X2U_EXPORT_SKELETONS);
         childModel.Init();
 
         std::string modelPath = childModel._GetRootName();
-        LOG(modelPath.c_str());
 
         CRefArray children = X3DObject(ref).GetChildren();
         for (int j = 0; j < children.GetCount(); ++j)
@@ -102,9 +98,7 @@ void X2UModel::_Recurse(const CRef& ref, const std::string& parentPath, size_t o
     else 
     {
       std::string objPath = parentPath + "/" + obj.GetName().GetAsciiString();
-      LOG(objPath.c_str());
       _selected = _selected || GetScene()->IsSelected(ref);
-      LOG("Selected ? " + CString(_selected));
 
       if (!(options & X2U_EXPORT_SELECTION) || _selected) {
         if (type == L"null")
@@ -152,21 +146,20 @@ void X2UModel::_Recurse(const CRef& ref, const std::string& parentPath, size_t o
             _xObjPathMap[curve->GetID()] = curve->GetPath();
           }
           else {
+            X2UPoints* points = new X2UPoints(objPath, ref);
+            points->Init(_stage);
+            _prims.push_back(X2UPointsSharedPtr(points));
+            _xObjPathMap[points->GetID()] = points->GetPath();
+            /*
             X2UInstancer* instancer = new X2UInstancer(objPath, ref);
             instancer->Init(_stage);
             _prims.push_back(X2UInstancerSharedPtr(instancer));
             _xObjPathMap[instancer->GetID()] = instancer->GetPath();
+            */
           }
-
-          //X2UPointCloudContainsInstances(X3DObject(ref));
-          //X2UPoints* point = new X2UPoints(objPath, ref);;
-          //point->Init(_stage);
-          //_prims.push_back(X2UPointSharedPtr(point));
         }
         else if (type == L"root" && (options & X2U_EXPORT_SKELETONS))
         {
-          LOG("WE HAVE A  SKEL ROOT HURRAY !!");
-
           X2USkeleton* skeleton = new X2USkeleton(objPath, ref);
           skeleton->Init(_stage);
           _prims.push_back(X2USkeletonSharedPtr(skeleton));

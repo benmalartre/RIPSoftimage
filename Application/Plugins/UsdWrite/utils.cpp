@@ -84,9 +84,11 @@ bool X2UIsStrandPointCloud(const X3DObject& obj)
 {
   ICEAttribute attr = obj.GetActivePrimitive().GetICEAttributeFromName("StrandPosition");
   if (attr.IsValid() && attr.GetElementCount()) {
+    LOG("THIS IS A STRAND POINT CLOUD :O");
     return true;
   }
-  else return false;
+  LOG("THIS IS NOT A STRAND POINT CLOUD :'");
+  return false;
 }
 
 bool X2UGetObjectVisibility(const X3DObject& obj, double t)

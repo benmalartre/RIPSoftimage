@@ -26,4 +26,4 @@ private:
 
 };
 
-typedef std::shared_ptr<X2UPoints> X2UPointSharedPtr;
+typedef std::shared_ptr<X2UPoints> X2UPointsSharedPtr;

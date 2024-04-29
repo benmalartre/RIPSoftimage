@@ -15,7 +15,7 @@ class X2UScene;
 class X2UModel {
   public:
     X2UModel(const std::string& folder, const std::string& filename, 
-      const CRef& root, X2UModel* parent=NULL);
+      const CRef& root, X2UModel* parent=NULL, bool isSkelRoot=false);
     ~X2UModel();
     virtual void Init();
     virtual void Save();
@@ -37,7 +37,7 @@ class X2UModel {
     X3DObject                 _root;
     SdfPath                   _path;
     std::string               _rootName;
-    X2UXformSharedPtr         _rootXform;
+    X2UPrimSharedPtr          _rootXform;
     X2UPrimSharedPtrList      _prims;
     UsdStageRefPtr            _stage;
     std::string               _folder;
@@ -46,6 +46,7 @@ class X2UModel {
     X2UObjectPathMap          _xObjPathMap;
     std::vector<X2UPrototype> _prototypes;
     bool                      _selected;
+    bool                      _isSkelRoot;
 
 };
 

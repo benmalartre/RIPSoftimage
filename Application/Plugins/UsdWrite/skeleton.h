@@ -13,9 +13,13 @@ public:
   void Init(UsdStageRefPtr& stage) override;
   void WriteSample(double t) override;
 
+protected:
+  void _RecurseSkeletonTopology(UsdStageRefPtr& stage, CRef& ref, const pxr::TfToken& parentPath);
+
 private:
-  CRef                        _skelRoot;
-  std::vector<pxr::TfToken>   _skelTopology;
+  X2UPrim*                    _skelRoot;
+  X2UPrimSharedPtrList        _skelPrims;
+  pxr::VtArray<pxr::TfToken>  _skelTopology;
 };
 
 typedef std::shared_ptr<X2USkeleton> X2USkeletonSharedPtr;

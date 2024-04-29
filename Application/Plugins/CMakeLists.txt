@@ -49,6 +49,7 @@ list(APPEND USD_LIB_NAMES
   usd_hf
   usd_hio
   usd_usdGeom
+  usd_usdSkel
   usd_usdLux
   usd_usdShade
   usd_usdUI
