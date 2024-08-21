@@ -1,5 +1,8 @@
 #include <assert.h>
 #include <xsi_decl.h>
+#include <xsi_color.h>
+#include <xsi_light.h>
+#include <xsi_ogllight.h>
 #include <xsi_status.h>
 #include <xsi_application.h>
 #include <xsi_selection.h>
@@ -17,19 +20,40 @@ U2XEngine* HYDRA_ENGINE = NULL;
 extern U2XScene* U2X_SCENE;
 U2XScene* LAST_U2X_SCENE = NULL;
 
+
+static void _GetLightsFromScene(pxr::GlfSimpleLightVector& lights) 
+{
+  lights.clear();
+  Model root = Application().GetActiveSceneRoot();
+  XSI::CSIObjectRefArray xsiLights = root.FindObjects( siLightID );
+ 
+  for ( LONG i=0; i<xsiLights.GetCount(); i++ )
+  {
+    XSI::OGLLight glLight(XSI::Light(xsiLights[i]).GetOGLLight());
+    XSI::siLightType lightType = glLight.GetType();
+    XSI::MATH::CVector3 lightPosition = glLight.GetLightPosition();
+    XSI::CColor lightColor = glLight.GetColor();
+
+    pxr::GlfSimpleLight light;
+    if(lightType == XSI::siLightInfinite)light.SetIsDomeLight(false);
+    else light.SetPosition(pxr::GfVec4f(lightPosition[0], lightPosition[1], lightPosition[2], 1));
+
+    light.SetDiffuse(pxr::GfVec4f(lightColor.r,lightColor.g, lightColor.b, 1.0));
+    
+    lights.push_back(light);
+  }
+
+}
+
 static void _InitializeHydraEngine() {
   if (!HYDRA_ENGINE) {
     pxr::SdfPathVector excludedPaths;
     HYDRA_ENGINE = new U2XEngine(pxr::SdfPath("/"), excludedPaths);
     
-    
-    pxr::GlfSimpleMaterial material;
-    pxr::GlfSimpleLight light;
-    light.SetAmbient(pxr::GfVec4f(0.25, 0.25, 0.25, 1.0));
-    light.SetPosition(pxr::GfVec4f(24, 32, 8, 1));
     pxr::GlfSimpleLightVector lights;
-    lights.push_back(light);
+    _GetLightsFromScene(lights); 
 
+    pxr::GlfSimpleMaterial material;
     material.SetAmbient(pxr::GfVec4f(0.2, 0.2, 0.2, 1.0));
     
     HYDRA_ENGINE->SetLightingState(lights,
@@ -122,6 +146,17 @@ if (U2X_SCENE->IsEmpty())return;
     pxr::GfVec4f(x, y, width, height)
   );
 
+  pxr::GlfSimpleMaterial material;
+  material.SetDiffuse(pxr::GfVec4f(1.0, 1.0, 1.0, 1.0));
+  material.SetAmbient(pxr::GfVec4f(0.2, 0.2, 0.2, 1.0));
+
+  pxr::GlfSimpleLightVector lights;
+  _GetLightsFromScene(lights); 
+
+  HYDRA_ENGINE->SetLightingState(lights,
+    material,
+    pxr::GfVec4f(0.5, 0.5, 0.5, 1.0));
+
   double currentTime = CTime().GetTime();
   pxr::UsdImagingGLRenderParams renderParams;
   renderParams.frame = pxr::UsdTimeCode(currentTime);
@@ -135,7 +170,7 @@ if (U2X_SCENE->IsEmpty())return;
   renderParams.gammaCorrectColors = false;
   renderParams.enableIdRender = false;
   renderParams.enableSampleAlphaToCoverage = true;
-  renderParams.highlight = true;
+  renderParams.enableLighting = true;
   renderParams.enableSceneMaterials = true;
   //_renderParams.colorCorrectionMode = ???
   renderParams.clearColor = pxr::GfVec4f(0.0, 0.0, 0.0, 1.0);

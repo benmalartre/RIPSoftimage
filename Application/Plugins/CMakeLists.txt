@@ -67,7 +67,7 @@ foreach(USD_LIB_NAME IN LISTS USD_LIB_NAMES)
 endforeach()
 
 # python
-find_package(Python2 COMPONENTS Interpreter Development)
+find_package(Python3 COMPONENTS Interpreter Development)
 
 # boost
 if(UNIX)
@@ -77,7 +77,7 @@ if(UNIX)
 
   endif()
 else()
-	set(BOOST_INCLUDE_DIR "${USD_INCLUDE_DIR}/boost-1_76")
+	set(BOOST_INCLUDE_DIR "${USD_INCLUDE_DIR}/boost-1_78")
 endif()
 
 set(BOOST_LIBRARY_DIR "{USD_LIBRARY_DIR}")
@@ -89,7 +89,7 @@ list(APPEND BOOST_LIB_NAMES
 set(BOOST_LIBRARIES "")
 set(BOOST_VERSION "")
 if(NOT UNIX)
-	set(BOOST_VERSION "-vc142-mt-x64-1_76")
+	set(BOOST_VERSION "-vc142-mt-x64-1_78")
 endif()
 foreach(BOOST_LIB_NAME IN LISTS BOOST_LIB_NAMES)
   set(BOOST_LIBRARIES 

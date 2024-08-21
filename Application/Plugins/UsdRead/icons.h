@@ -8,8 +8,8 @@
 #include "pxr/usd/ar/asset.h"
 #include "pxr/usd/ar/resolver.h"
 #include <pxr/imaging/hio/image.h>
-#include <pxr/imaging/hio/stb_image.h>
-#include <pxr/imaging/hio/stb_image_resize.h>
+#include "stb/stb_image.h"
+#include "stb/stb_image_resize.h"
 
 enum ICON_SIZE {
   ICON_LOW = 16,

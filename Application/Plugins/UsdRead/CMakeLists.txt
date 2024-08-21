@@ -24,7 +24,6 @@ add_library(${TARGET} SHARED
   scene.cpp
   shader.cpp
   stage.cpp
-  topology.cpp
   utils.cpp
   window.cpp
   engine.cpp

@@ -20,42 +20,6 @@ void U2XMesh::Init()
   pxr::UsdTimeCode timeCode(pxr::UsdTimeCode::Default());
   GetVisibility(timeCode, true);
   GetXform(timeCode);
-
-  pxr::UsdGeomMesh mesh(_prim);
-  pxr::UsdAttribute pointsAttr = mesh.GetPointsAttr();
-  pxr::UsdAttribute faceVertexCountsAttr = mesh.GetFaceVertexCountsAttr();
-  pxr::UsdAttribute faceVertexIndicesAttr = mesh.GetFaceVertexIndicesAttr();
-
-  _pointsVarying = false;
-  if (pointsAttr.GetNumTimeSamples() > 1)_pointsVarying = true;
-  _topoVarying = false;
-  if (faceVertexIndicesAttr.GetNumTimeSamples() > 1)_topoVarying = true;
-
-  pointsAttr.Get(&_points, timeCode);
-  if(!_points.size()) pointsAttr.Get(&_points, pxr::UsdTimeCode::EarliestTime());
-  faceVertexCountsAttr.Get(&_counts, timeCode);
-  faceVertexIndicesAttr.Get(&_indices, timeCode);
-
-  U2XTriangulateMesh(_counts, _indices, _samples);
-
-  _topology.numElements = _samples.size();
-  _topology.type = U2XTopology::Type::TRIANGLES;
-  _topology.samples = (const int*)&_samples[0][0];
-
-  // normals
-  U2XComputeVertexNormals(_points, _counts, _indices, _samples, _normals);
-
-
-  // colors
-  pxr::TfToken colorAttrName("displayColor");
-  U2XAttributeType attrType = HasAttribute(colorAttrName);
-  
-  if (attrType == ATTR_PRIMVAR)
-  {
-    U2XAttribute colorAttribute = CreateAttribute(colorAttrName, attrType);
-    const pxr::UsdAttribute& attr = colorAttribute.Get();
-    attr.Get<pxr::VtArray<pxr::GfVec3f>>(&_colors, pxr::UsdTimeCode::Default());
-  }
 }
 
 void U2XMesh::Term()
@@ -81,11 +45,6 @@ void U2XMesh::Update(double t, bool forceUpdate)
     faceVertexCountsAttr.Get(&_counts, timeCode);
     faceVertexIndicesAttr.Get(&_indices, timeCode);
 
-    U2XTriangulateMesh(_counts, _indices, _samples);
-
-    _topology.numElements = _samples.size();
-    _topology.samples = (const int*)&_samples[0][0];
-
     pointsPositionUpdated = true;
     topoUpdated = true;
   }
@@ -96,12 +55,6 @@ void U2XMesh::Update(double t, bool forceUpdate)
     pxr::UsdAttribute pointsAttr = mesh.GetPointsAttr();
     
     pointsAttr.Get(&_points, timeCode);
-
-      // normals
-      U2XComputeVertexNormals(_points, _counts, _indices, _samples, _normals);
-
-      // colors
-      U2XComputeVertexColors(_points, _colors);
 
   }
  
