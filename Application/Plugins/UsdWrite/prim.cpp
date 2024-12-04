@@ -105,10 +105,7 @@ void X2UPrim::BuildGeomSubsetsDescs(const CStringArray& names)
   } /*else {*/
     for(size_t clusterIdx = 0; clusterIdx < clusters.GetCount(); ++clusterIdx) {
       Cluster cluster(clusters[clusterIdx]);
-
-      LOG(cluster.GetName());
-      LOG(cluster.GetType());
-      _subsets.push_back({cluster, SdfPath(_fullname).AppendChild(cluster.GetName())});
+      _subsets.push_back({clusters[clusterIdx], SdfPath(_fullname).AppendChild(TfToken(cluster.GetName().GetAsciiString()))});
     }
   //}
 

@@ -131,7 +131,7 @@ void X2UModel::_Recurse(const CRef& ref, const std::string& parentPath, size_t o
           if(options & X2U_EXPORT_SUBSETS) {
             mesh->BuildGeomSubsetsDescs(GetScene()->GetSubsetNames());
             for(const X2UGeomSubsetDesc& subsetDesc: mesh->GetSubsetDescs()) {
-              X2USubset* subset = new X2USubset(subsetDesc.path, subsetDesc.cluster);;
+              X2USubset* subset = new X2USubset(subsetDesc.path.GetString(), subsetDesc.cluster);
               subset->Init(_stage);
               _prims.push_back(X2USubsetSharedPtr(subset));
               _xObjPathMap[subset->GetID()] = subset->GetPath();

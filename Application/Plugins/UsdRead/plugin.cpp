@@ -34,13 +34,13 @@
 using namespace XSI::MATH; 
 using namespace XSI; 
 
-bool GL_EXTENSIONS_LOADED;
-U2XGLSLProgram* GLSL_PROGRAM;
+static bool GL_EXTENSIONS_LOADED = false;
 extern U2XScene* U2X_SCENE;
 
 static void _InitializeGL()
 {
-  GarchGLApiLoad();
+  if(!GL_EXTENSIONS_LOADED)
+    GarchGLApiLoad();
   
   GL_EXTENSIONS_LOADED = true;
   
@@ -48,14 +48,13 @@ static void _InitializeGL()
 
 SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
 {
-  in_reg.PutAuthor(L"Malartr0Animati0nStudi0");
+  in_reg.PutAuthor(L"benmalartre");
   in_reg.PutName(L"UsdRead");
   in_reg.PutVersion(1,0);
 
   in_reg.RegisterOperator(L"UsdMeshGenerator");
   in_reg.RegisterOperator(L"UsdMeshDeformer");
   in_reg.RegisterPrimitive(L"UsdPrimitive");
-  in_reg.RegisterProperty(L"UsdPrimitive");
 
   in_reg.RegisterEvent("UsdReadValueChange", siOnValueChange);
   in_reg.RegisterEvent("UsdReadObjectAdded", siOnObjectAdded);
@@ -67,7 +66,6 @@ SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
   in_reg.RegisterCustomDisplay(L"UsdExplorer");
   in_reg.RegisterDisplayCallback( L"UsdHydraDisplayCallback" );
 
-  GL_EXTENSIONS_LOADED = false;
   U2X_HIDDEN_WINDOW = NULL;
   _InitializeGL();
   pxr::UsdStageCacheContext context(U2X_USDSTAGE_CACHE);
@@ -80,9 +78,9 @@ SICALLBACK XSIUnloadPlugin( const PluginRegistrar& in_reg )
 {
   
   if (U2X_HIDDEN_WINDOW)delete U2X_HIDDEN_WINDOW;
-  delete GLSL_PROGRAM;
   delete U2X_SCENE;
-  GarchGLApiUnload();
+  if(GL_EXTENSIONS_LOADED)
+    GarchGLApiUnload();
   
   CString strPluginName;
   strPluginName = in_reg.GetName();
@@ -263,7 +261,6 @@ SICALLBACK UsdPrimitive_Draw( CRef& in_ctxt )
 
   if (stage->IsLoaded())
   {
-    GLint pgm = GLSL_PROGRAM->Get();
     glUseProgram(pgm);
 
     GLfloat view[16];

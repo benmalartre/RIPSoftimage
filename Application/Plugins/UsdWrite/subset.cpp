@@ -42,9 +42,9 @@ void X2USubset::Init(UsdStageRefPtr& stage)
 
   // indices attribute
   {
-    
     CLongArray indices = cluster.GetElements().GetArray();
     size_t numIndices = indices.GetCount();
+    LOG("CLUSTER NUM INDICES : "+indices.GetCount());
 
     _attributes["indices"] =
       X2UAttribute(
@@ -61,18 +61,13 @@ void X2USubset::Init(UsdStageRefPtr& stage)
 
 void X2USubset::WriteSample(double t)
 {
-
   UsdTimeCode timeCode(t);
 
   Cluster cluster(_ref);
   CLongArray indices = cluster.GetElements().GetArray();
   size_t numIndices = indices.GetCount();
 
-  bool visibility = X2UGetObjectVisibility(_xObj);
-  X2UAttribute& item = GetAttribute("type");
-  item.WriteSample(_elementType, UsdTimeCode(t));
-
-  item = GetAttribute("indices");
+  X2UAttribute& item = GetAttribute("indices");
   item.WriteSample((const void*)&indices[0], numIndices, UsdTimeCode::Default());
 
 }

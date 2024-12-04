@@ -71,7 +71,6 @@ class U2IGLSLProgram;
 
 extern bool GL_EXTENSIONS_LOADED;
 extern bool IMGUI_INITIALIZED;
-extern U2IGLSLProgram* GLSL_PROGRAM;
 
 // softimage log message
 #define LOG(msg) Application().LogMessage(msg);

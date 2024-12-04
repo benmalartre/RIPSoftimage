@@ -11,11 +11,10 @@ SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
   in_reg.PutAuthor(L"benmalartre");
   in_reg.PutName(L"UsdWrite");
   in_reg.PutVersion(1,0);
+  in_reg.RegisterMenu(siMenuMainFileExportID,L"UsdWrite_Menu",false,true);
   in_reg.RegisterProperty(L"UsdWriteUI");
   in_reg.RegisterCommand(L"UsdWrite",L"UsdWrite");
   in_reg.RegisterCommand(L"CreateUsdWriteUI", L"CreateUsdWriteUI");
-  
-  in_reg.RegisterMenu(siMenuMainFileExportID,L"UsdWrite_Menu",false,false);
 
   return CStatus::OK;
 }
@@ -27,7 +26,6 @@ SICALLBACK XSIUnloadPlugin( const PluginRegistrar& in_reg )
   Application().LogMessage(strPluginName + L" has been unloaded.",siVerboseMsg);
   return CStatus::OK;
 }
-
 
 SICALLBACK UsdWrite_Init( CRef& in_ctxt )
 {
