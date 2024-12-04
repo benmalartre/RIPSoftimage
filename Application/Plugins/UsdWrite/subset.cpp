@@ -26,7 +26,7 @@ void X2USubset::Init(UsdStageRefPtr& stage)
     _attributes["type"] =
       X2UAttribute(
         subset.CreateElementTypeAttr(VtValue(), true),
-        X2U_DATA_TOKEN,
+        0,
         false);
 
     // set default value
@@ -44,14 +44,16 @@ void X2USubset::Init(UsdStageRefPtr& stage)
   {
     CLongArray indices = cluster.GetElements().GetArray();
     size_t numIndices = indices.GetCount();
-    LOG("CLUSTER NUM INDICES : "+indices.GetCount());
+    LOG("CLUSTER NUM INDICES : "+ CString(indices.GetCount()));
 
     _attributes["indices"] =
       X2UAttribute(
         subset.CreateIndicesAttr(VtValue(), true),
         X2U_DATA_LONG,
-        true);
-
+        X2U_PRECISION_SINGLE,
+        true,
+        false,
+        X2U_INTERPOLATION_NONE);
 
     // set default value
     _attributes["indices"].WriteSample((const void*)&indices[0], 
