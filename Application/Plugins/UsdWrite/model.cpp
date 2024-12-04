@@ -3,6 +3,7 @@
 #include "curve.h"
 #include "points.h"
 #include "instancer.h"
+#include "subset.h"
 #include "skeleton.h"
 #include "camera.h"
 #include "scene.h"
@@ -59,7 +60,6 @@ X2UModel* X2UModel::GetParent()
 {
   return _parent;
 }
-
 
 void X2UModel::_Recurse(const CRef& ref, const std::string& parentPath, size_t options)
 {
@@ -128,6 +128,15 @@ void X2UModel::_Recurse(const CRef& ref, const std::string& parentPath, size_t o
           mesh->Init(_stage);
           _prims.push_back(X2UMeshSharedPtr(mesh));
           _xObjPathMap[mesh->GetID()] = mesh->GetPath();
+          if(options & X2U_EXPORT_SUBSETS) {
+            mesh->BuildGeomSubsetsDescs(GetScene()->GetSubsetNames());
+            for(const X2UGeomSubsetDesc& subsetDesc: mesh->GetSubsetDescs()) {
+              X2USubset* subset = new X2USubset(subsetDesc.path, subsetDesc.cluster);;
+              subset->Init(_stage);
+              _prims.push_back(X2USubsetSharedPtr(subset));
+              _xObjPathMap[subset->GetID()] = subset->GetPath();
+            }
+          }
         }
         else if (type == L"crvlist" && (options & X2U_EXPORT_CURVES))
         {

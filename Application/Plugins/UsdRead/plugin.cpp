@@ -48,7 +48,7 @@ static void _InitializeGL()
 
 SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
 {
-  in_reg.PutAuthor(L"benmalartre");
+  in_reg.PutAuthor(L"Malartr0Animati0nStudi0");
   in_reg.PutName(L"UsdRead");
   in_reg.PutVersion(1,0);
 

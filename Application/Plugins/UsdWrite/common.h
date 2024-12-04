@@ -46,6 +46,7 @@
 #include <pxr/usd/usdGeom/mesh.h>
 #include <pxr/usd/usdGeom/pointInstancer.h>
 #include <pxr/usd/usdGeom/primvarsAPI.h>
+#include <pxr/usd/usdGeom/subset.h>
 
 #include <pxr/usd/usdSkel/root.h>
 #include <pxr/usd/usdSkel/skeleton.h>
@@ -93,6 +94,11 @@ const CString kExportLights = "ExportLights";
 const CString kExportSkeletons = "ExportSkeletons";
 const CString kExportAttributes = "ExportAttributes";
 const CString kExportAttributesList = "ExportAttributesList";
+const CString kExportSubsets = "ExportSubsets";
+const CString kExportVertexSubsets = "ExportVertexSubsets";
+const CString kExportEdgeSubsets = "ExportEdgeSubsets";
+const CString kExportFaceSubsets = "ExportFaceSubsets";
+const CString kExportSubsetsList = "ExportSubsetsList";
 const CString kStartFrame = "StartFrame";
 const CString kEndFrame = "EndFrame";
 const CString kSampleRate = "SampleRate";
@@ -111,8 +117,9 @@ enum X2UExportOptions {
   X2U_EXPORT_CAMERAS    = 1 << 6,
   X2U_EXPORT_LIGHTS     = 1 << 7,
   X2U_EXPORT_ATTRIBUTES = 1 << 8,
-  X2U_EXPORT_SKELETONS  = 1 << 9,
-  X2U_EXPORT_CUSTOM     = 1 << 10
+  X2U_EXPORT_SUBSETS    = 1 << 9,
+  X2U_EXPORT_SKELETONS  = 1 << 10,
+  X2U_EXPORT_CUSTOM     = 1 << 11
 };
 
 enum X2UDataType {

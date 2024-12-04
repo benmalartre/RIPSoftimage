@@ -23,7 +23,7 @@ target_include_directories(${TARGET}
   PUBLIC
 	${SOFTIMAGE_INCLUDE_DIR}
     ${USD_INCLUDE_DIR}
-    ${Python2_INCLUDE_DIRS}
+    ${Python3_INCLUDE_DIRS}
     ${TBB_INCLUDE_DIR}
 	${BOOST_INCLUDE_DIR}
 )
@@ -31,7 +31,7 @@ target_include_directories(${TARGET}
 target_link_libraries(${TARGET}
   ${SOFTIMAGE_LIBRARIES}
   ${OPENGL_LIBRARY}
-  ${Python2_LIBRARIES}
+  ${Python3_LIBRARIES}
   ${BOOST_LIBRARIES}
   ${USD_LIBRARIES}
   ${TBB_LIBRARIES}

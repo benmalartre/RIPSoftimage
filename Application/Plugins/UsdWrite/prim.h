@@ -5,6 +5,13 @@
 
 typedef std::map<ULONG, SdfPath> X2UObjectPathMap;
 
+struct X2UGeomSubsetDesc {
+  CRef      cluster;
+  SdfPath   path;
+};
+
+typedef std::vector<X2UGeomSubsetDesc> X2UGeomSubsetDescs;
+
 // Prim base class
 class X2UPrim {
 public:
@@ -21,6 +28,9 @@ public:
   inline ULONG GetID() { return _xID; };
   inline UsdPrim GetPrim() { return _prim; };
   inline SdfPath GetPath() { return _prim.GetPath(); };
+
+  void BuildGeomSubsetsDescs(const CStringArray& names);
+  const X2UGeomSubsetDescs& GetSubsetDescs(){return _subsets;};
 
   void InitExtentAttribute();
   void InitTransformAttribute();
@@ -43,6 +53,7 @@ public:
 
 protected:
   X2UPrim *               _parent;
+  CRef                    _ref;
   X3DObject               _xObj;
   ULONG                   _xID;
   Primitive               _xPrim;
@@ -50,6 +61,7 @@ protected:
   std::string             _fullname;
   X2UAttributeMap         _attributes;
   X2UAttributePtrList     _extraAttributes;
+  X2UGeomSubsetDescs      _subsets;
   GfBBox3d                _bbox;
   UsdGeomXformOp          _xformOp;
 };

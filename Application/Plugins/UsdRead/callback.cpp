@@ -117,9 +117,7 @@ void UsdHydraDisplayCallback_Init( XSI::CRef context, LPVOID *data )
 }
 
 void UsdHydraDisplayCallback_Execute( XSI::CRef context, LPVOID *data )
-{
-LOG("Hydra Display Callback");
-  
+{  
   if (U2X_SCENE != LAST_U2X_SCENE) {
     _TerminateHydraEngine();
     _InitializeHydraEngine();
@@ -173,12 +171,12 @@ if (U2X_SCENE->IsEmpty())return;
   renderParams.enableLighting = true;
   renderParams.enableSceneMaterials = true;
   //_renderParams.colorCorrectionMode = ???
-  renderParams.clearColor = pxr::GfVec4f(0.0, 0.0, 0.0, 1.0);
+  renderParams.clearColor = pxr::GfVec4f(0.f, 0.f, 0.f, 1.f);
 
 
   glViewport(0, 0, width, height);
   // clear to black
-  glClearColor(0.25f, 0.25f, 0.25f, 1.0);
+  glClearColor(0.f, 0.f, 0.f, 1.f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   U2X_SCENE->Update();

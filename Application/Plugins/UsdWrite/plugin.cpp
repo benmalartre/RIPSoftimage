@@ -56,6 +56,8 @@ SICALLBACK UsdWrite_Init( CRef& in_ctxt )
   args.Add(kExportSkeletons, true);
   args.Add(kExportAttributes, false);
   args.Add(kExportAttributesList, CValue());
+  args.Add(kExportSubsets, false);
+  args.Add(kExportSubsetsList, CValue());
 
   return CStatus::OK;
 }
@@ -84,9 +86,11 @@ SICALLBACK UsdWrite_Execute( CRef& in_ctxt )
   bool exportCameras = args.GetItem(kExportCameras).GetValue();
   bool exportSkeletons = args.GetItem(kExportSkeletons).GetValue();
   bool exportAttributes = args.GetItem(kExportAttributes).GetValue();
-
   CString exportAttributesListStr = args.GetItem(kExportAttributesList).GetValue();
   CStringArray exportAttributesList = exportAttributesListStr.Split(";");
+  bool exportSubsets = args.GetItem(kExportSubsets).GetValue();
+  CString exportSubsetsListStr = args.GetItem(kExportSubsetsList).GetValue();
+  CStringArray exportSubsetsList = exportSubsetsListStr.Split(";");
   
   LOG("------------------------------------------------------------------------");
   LOG("Export Options :");
@@ -94,13 +98,20 @@ SICALLBACK UsdWrite_Execute( CRef& in_ctxt )
   LOG("   Cameras   : " + CString(exportCameras));
   LOG("   Points    : " + CString(exportPoints));
   LOG("   Curves    : " + CString(exportCurves));
-  LOG("   Attribute : " + CString(exportAttributes));
   LOG("   Skeleton  : " + CString(exportSkeletons));
+  LOG("   Attributes : " + CString(exportAttributes));
   if (exportAttributes) {
     for (size_t i = 0; i < exportAttributesList.GetCount(); ++i) {
       LOG("     |___" + exportAttributesList[i]);
     }
   }
+  LOG("   Subsets   : " + CString(exportSubsets));
+  if (exportSubsets) {
+    for (size_t i = 0; i < exportSubsetsList.GetCount(); ++i) {
+      LOG("     |___" + exportSubsetsList[i]);
+    }
+  }
+ 
   LOG("------------------------------------------------------------------------");
 
   if (exportSelection) options += X2U_EXPORT_SELECTION;
@@ -110,6 +121,7 @@ SICALLBACK UsdWrite_Execute( CRef& in_ctxt )
   if (exportCameras) options += X2U_EXPORT_CAMERAS;
   if (exportSkeletons) options += X2U_EXPORT_SKELETONS;
   if (exportAttributes) options += X2U_EXPORT_ATTRIBUTES;
+  if (exportSubsets) options += X2U_EXPORT_SUBSETS;
 
   Application app;
   Model root = app.GetActiveSceneRoot();
@@ -132,7 +144,8 @@ SICALLBACK UsdWrite_Execute( CRef& in_ctxt )
       exportScene.SetTimeInfos(startFrame, endFrame, sampleRate);
     }
     exportScene.SetOptions(options);
-    exportScene.SetAttributes(exportAttributesList);
+    exportScene.SetAttributeNames(exportAttributesList);
+    exportScene.SetSubsetNames(exportSubsetsList);
     exportScene.Process();
     exportScene.Save();
   }

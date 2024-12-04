@@ -22,7 +22,7 @@ if(NOT DEFINED USD_DIR)
 endif()
 
 
-#set(USD_DIR "/Users/benmalartre/Documents/RnD/USD_BUILD")
+set(USD_DIR "C:/Users/graph/Documents/bmal/src/USD_BUILD")
 set(USD_INCLUDE_DIR "${USD_DIR}/include")
 set(USD_LIBRARY_DIR "${USD_DIR}/lib")
 list(APPEND USD_LIB_NAMES 
@@ -55,7 +55,7 @@ list(APPEND USD_LIB_NAMES
   usd_usdUI
   usd_usdImaging
   usd_usdImagingGL
-  usd_usdAnimX
+  usd_python
 )
 
 set(USD_LIBRARIES "")
@@ -77,7 +77,7 @@ if(UNIX)
 
   endif()
 else()
-	set(BOOST_INCLUDE_DIR "${USD_INCLUDE_DIR}/boost-1_78")
+	set(BOOST_INCLUDE_DIR "${USD_INCLUDE_DIR}/boost-1_76")
 endif()
 
 set(BOOST_LIBRARY_DIR "{USD_LIBRARY_DIR}")
@@ -89,7 +89,7 @@ list(APPEND BOOST_LIB_NAMES
 set(BOOST_LIBRARIES "")
 set(BOOST_VERSION "")
 if(NOT UNIX)
-	set(BOOST_VERSION "-vc142-mt-x64-1_78")
+	set(BOOST_VERSION "-vc142-mt-x64-1_76")
 endif()
 foreach(BOOST_LIB_NAME IN LISTS BOOST_LIB_NAMES)
   set(BOOST_LIBRARIES 
@@ -147,7 +147,7 @@ set (ADDITIONAL_LIBRARIES Comctl32)
 
 add_subdirectory (UsdRead)
 add_subdirectory (UsdWrite)
-add_subdirectory (UsdIce)
+#add_subdirectory (UsdIce)
 add_subdirectory (IceRig)
 add_subdirectory (SynthNode)
 add_subdirectory (Triangulate)

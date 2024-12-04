@@ -3,7 +3,8 @@
 #include "scene.h"
 
 X2UPrim::X2UPrim(std::string path, const CRef& ref)
-  : _fullname(path)
+  : _ref(ref)
+  , _fullname(path)
 {
   _xObj = X3DObject(ref);
   _xPrim = _xObj.GetActivePrimitive();
@@ -77,7 +78,7 @@ void X2UPrim::InitExtraAttributes()
     LOG("ICE : " + attr.GetName());
   }
   */
-  const CStringArray& attributes = GetCurrentScene()->GetAttributes();
+  const CStringArray& attributes = GetCurrentScene()->GetAttributeNames();
   for (size_t i = 0; i < attributes.GetCount(); ++i) {
     
     ICEAttribute attribute = geometry.GetICEAttributeFromName(attributes[i]);
@@ -89,6 +90,28 @@ void X2UPrim::InitExtraAttributes()
   }
 
   LOG("NUM EXTRA ATTRIBUTES : " + _extraAttributes.size());
+}
+
+void X2UPrim::BuildGeomSubsetsDescs(const CStringArray& names)
+{
+  Geometry geometry = _xPrim.GetGeometry();
+  CRefArray clusters = geometry.GetClusters();
+
+  LOG("Init Geom Subsets for " + CString(_fullname.c_str()));
+  LOG("Num Clusters " + CString(clusters.GetCount()));
+
+  if(!names.GetCount()) {
+   LOG("Filtered Export Geom Subsets By Names NOT implemented!!")
+  } /*else {*/
+    for(size_t clusterIdx = 0; clusterIdx < clusters.GetCount(); ++clusterIdx) {
+      Cluster cluster(clusters[clusterIdx]);
+
+      LOG(cluster.GetName());
+      LOG(cluster.GetType());
+      _subsets.push_back({cluster, SdfPath(_fullname).AppendChild(cluster.GetName())});
+    }
+  //}
+
 }
 
 void X2UPrim::WriteExtentSample(double t)

@@ -23,7 +23,14 @@ SICALLBACK UsdWriteUI_Define(CRef& in_ctxt)
   prop.AddParameter(kExportLights, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
   prop.AddParameter(kExportSkeletons, CValue::siBool, siPersistable, "", "", true, CValue(), CValue(), CValue(), CValue(), param);
   prop.AddParameter(kExportAttributes, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
-  prop.AddParameter(kExportAttributesList, CValue::siString, siPersistable, L"Attributes", L"ICE Attributes to Export", L"", param );
+  prop.AddParameter(kExportAttributesList, CValue::siString, siPersistable, L"AttributeNames", L"ICE Attributes to Export", L"", param );
+
+  prop.AddParameter(kExportSubsets, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
+  prop.AddParameter(kExportVertexSubsets, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
+  prop.AddParameter(kExportEdgeSubsets, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
+  prop.AddParameter(kExportFaceSubsets, CValue::siBool, siPersistable, "", "", false, CValue(), CValue(), CValue(), CValue(), param);
+  prop.AddParameter(kExportSubsetsList, CValue::siString, siPersistable, L"SubsetNames", L"Subsets to Export", L"", param );
+
   prop.AddParameter(kStartFrame, CValue::siFloat, siPersistable, "", "", 1l, -10000l, 10000l, -10000l, 10000l, param);
   prop.AddParameter(kEndFrame, CValue::siFloat, siPersistable, "", "", 100l, -10000l, 10000l, -10000l, 10000l, param);
   prop.AddParameter(kSampleRate, CValue::siFloat, siPersistable, "", "", 1.f, 0.01f, 100.f, 0.01f, 100.f, param);
@@ -64,7 +71,9 @@ SICALLBACK UsdWriteUI_DefineLayout(CRef& in_ctxt)
   layout.AddItem(kExportLights, "Lights");
   layout.AddItem(kExportSkeletons, "Skeletons");
   layout.AddItem(kExportAttributes, "Attributes");
-  layout.AddItem(kExportAttributesList, "Names");
+  layout.AddItem(kExportAttributesList, "Attribute Names");
+  layout.AddItem(kExportSubsets, "Subsets (Clusters)");
+  layout.AddItem(kExportSubsetsList, "Subset Names");
   layout.EndGroup();
 
   layout.AddGroup("");
@@ -168,6 +177,8 @@ SICALLBACK UsdWriteUI_PPGEvent(const CRef& in_ctxt)
           args.Add(params.GetValue(kExportSkeletons));
           args.Add(params.GetValue(kExportAttributes));
           args.Add(params.GetValue(kExportAttributesList));
+          args.Add(params.GetValue(kExportSubsets));
+          args.Add(params.GetValue(kExportSubsetsList));
 
           app.ExecuteCommand("UsdWrite", args, CValue());
         }

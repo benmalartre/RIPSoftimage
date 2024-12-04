@@ -65,9 +65,14 @@ void X2UScene::SetOptions(size_t options)
   _options = options;
 }
 
-void X2UScene::SetAttributes(const CStringArray& attributes)
+void X2UScene::SetAttributeNames(const CStringArray& attributes)
 {
   _attributes = attributes;
+}
+
+void X2UScene::SetSubsetNames(const CStringArray& subsets)
+{
+  _subsets = subsets;
 }
 
 bool X2UScene::IsSelected(const CRef& ref)
@@ -115,7 +120,7 @@ void X2UScene::Process()
   Property playControl = project.GetProperties().GetItem(L"Play Control");
 
   ProgressBar progressBar = kit.GetProgressBar();
-  progressBar.PutMaximum((_timeInfos.endFrame - _timeInfos.startFrame)/_timeInfos.sampleRate);
+  progressBar.PutMaximum((_timeInfos.endFrame - _timeInfos.startFrame) / _timeInfos.sampleRate);
   progressBar.PutStep(1);
   progressBar.PutVisible(true);
   progressBar.PutCaption(L"Exporting to USD");

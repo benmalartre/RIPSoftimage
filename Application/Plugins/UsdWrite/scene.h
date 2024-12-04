@@ -16,10 +16,12 @@ class X2UScene : public X2UModel{
     void SetTimeInfosFromScene(double rate);
     void SetTimeInfos(double startTime, double endTime, double rate);
     void SetOptions(size_t options);
-    void SetAttributes(const CStringArray& attributes);
+    void SetAttributeNames(const CStringArray& attributes);
+    void SetSubsetNames(const CStringArray& subsets);
     void Process();
 
-    const CStringArray& GetAttributes(){return _attributes;};
+    const CStringArray& GetAttributeNames(){return _attributes;};
+    const CStringArray& GetSubsetNames(){return _subsets;};
     bool IsSelected(const CRef& ref);
 
   private:
@@ -28,6 +30,7 @@ class X2UScene : public X2UModel{
     size_t              _options;
     CRefArray           _selection;
     CStringArray        _attributes;
+    CStringArray        _subsets;
 };
 
 static X2UScene* X2U_CURRENT_SCENE = NULL;
