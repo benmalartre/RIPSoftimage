@@ -1,12 +1,4 @@
 // UsdPrimitive Plugin
-#include <xsi_application.h>
-#include <xsi_context.h>
-#include <xsi_pluginregistrar.h>
-#include <xsi_status.h>
-#ifndef linux
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h> // Needed for OpenGL on windows
-#endif
 
 #include <xsi_math.h>
 #include <xsi_argument.h>
@@ -22,28 +14,38 @@
 #include <map>
 #include <vector>
 
+#include "common.h"
 #include "utils.h"
 #include "shader.h"
 #include "prim.h"
 #include "stage.h"
 #include "scene.h"
 #include "window.h"
-#include "callback.h"
-
 
 using namespace XSI::MATH; 
 using namespace XSI; 
 
-static bool GL_EXTENSIONS_LOADED = false;
-extern U2XScene* U2X_SCENE;
+HINSTANCE __gInstance = NULL;
 
-static void _InitializeGL()
+BOOL APIENTRY DllMain(HANDLE hModule,
+  DWORD  ul_reason_for_call,
+  LPVOID lpReserved
+)
 {
-  if(!GL_EXTENSIONS_LOADED)
-    GarchGLApiLoad();
-  
-  GL_EXTENSIONS_LOADED = true;
-  
+  switch (ul_reason_for_call)
+  {
+  case DLL_PROCESS_ATTACH:
+  case DLL_THREAD_ATTACH:
+  case DLL_THREAD_DETACH:
+  case DLL_PROCESS_DETACH:
+    break;
+  }
+
+  __gInstance = (HINSTANCE)hModule;
+
+  InitCommonControls();
+
+  return TRUE;
 }
 
 SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
@@ -63,11 +65,9 @@ SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
   in_reg.RegisterEvent("UsdReadNewScene", siOnBeginNewScene);
   in_reg.RegisterEvent("UsdReadTimeChange", siOnTimeChange);
 
-  in_reg.RegisterCustomDisplay(L"UsdExplorer");
   in_reg.RegisterDisplayCallback( L"UsdHydraDisplayCallback" );
+  in_reg.RegisterCustomDisplay(L"UsdExplorer");
 
-  U2X_HIDDEN_WINDOW = NULL;
-  _InitializeGL();
   pxr::UsdStageCacheContext context(U2X_USDSTAGE_CACHE);
   U2X_SCENE = new U2XScene();
 
@@ -76,12 +76,9 @@ SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
 
 SICALLBACK XSIUnloadPlugin( const PluginRegistrar& in_reg )
 {
-  
   if (U2X_HIDDEN_WINDOW)delete U2X_HIDDEN_WINDOW;
-  delete U2X_SCENE;
-  if(GL_EXTENSIONS_LOADED)
-    GarchGLApiUnload();
-  
+  if (U2X_SCENE) delete U2X_SCENE;
+
   CString strPluginName;
   strPluginName = in_reg.GetName();
   Application().LogMessage(strPluginName + L" has been unloaded.", siVerboseMsg);

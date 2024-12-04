@@ -69,7 +69,6 @@ using namespace pxr;
 
 class U2IGLSLProgram;
 
-extern bool GL_EXTENSIONS_LOADED;
 extern bool IMGUI_INITIALIZED;
 
 // softimage log message

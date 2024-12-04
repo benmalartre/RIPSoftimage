@@ -19,8 +19,6 @@
 
 
 pxr::UsdStageRefPtr U2X_STAGE;
-extern U2XScene*    U2X_SCENE;
-
 
 void U2XSelection::AddPrim(const SdfPath& path)
 {

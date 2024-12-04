@@ -28,7 +28,7 @@ SICALLBACK UsdReadValueChange_OnEvent(const XSI::CRef& in_ref)
 
 SICALLBACK UsdReadSceneOpen_OnEvent(const XSI::CRef& in_ref)
 {
-  delete(U2X_SCENE);
+  if(U2X_SCENE)delete(U2X_SCENE);
   U2X_SCENE = new U2XScene();
   return CStatus::False;
 }

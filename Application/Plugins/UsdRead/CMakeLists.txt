@@ -5,6 +5,7 @@ add_definitions(
   -DNOMINMAX
   -DIMGUI_IMPL_OPENGL_LOADER_CUSTOM="${USD_INCLUDE_DIR}/pxr/imaging/garch/glApi.h"
   -DUSDHYDRACALLBACK_EXPORTS
+  -DUSDEXPLORER_EXPORTS
 )
 
 add_library(${TARGET} SHARED

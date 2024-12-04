@@ -11,10 +11,9 @@ SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
   in_reg.PutAuthor(L"benmalartre");
   in_reg.PutName(L"UsdWrite");
   in_reg.PutVersion(1,0);
-  in_reg.RegisterMenu(siMenuMainFileExportID,L"UsdWrite_Menu",false,true);
   in_reg.RegisterProperty(L"UsdWriteUI");
   in_reg.RegisterCommand(L"UsdWrite",L"UsdWrite");
-  in_reg.RegisterCommand(L"CreateUsdWriteUI", L"CreateUsdWriteUI");
+  in_reg.RegisterMenu(siMenuMainFileExportID,L"UsdWriteMenu",false,false);
 
   return CStatus::OK;
 }
@@ -155,20 +154,20 @@ SICALLBACK UsdWrite_Execute( CRef& in_ctxt )
   return CStatus::OK;
 }
 
-SICALLBACK CreateUsdWriteUI_Init(CRef& in_ctxt)
-{
-  Context ctxt(in_ctxt);
-  Command oCmd;
-  oCmd = ctxt.GetSource();
-  oCmd.PutDescription(L"");
-  oCmd.EnableReturnValue(false);
 
+SICALLBACK UsdWriteMenu_Init( CRef& in_ctxt )
+{
+  Context ctxt( in_ctxt );
+  Menu menu = ctxt.GetSource();
+  MenuItem item;
+  menu.AddCallbackItem(L"Usd Write",L"OnCreateUsdWriteUIClicked",item);
   return CStatus::OK;
+
 }
 
-SICALLBACK CreateUsdWriteUI_Execute(CRef& in_ctxt)
-{
-  Context ctxt(in_ctxt);
+XSIPLUGINCALLBACK XSI::CStatus OnCreateUsdWriteUIClicked( XSI::CRef& in_ctxt)
+{	
+	Context ctxt(in_ctxt);
   CValueArray args = ctxt.GetAttribute(L"Arguments");
 
   Application app;
@@ -180,16 +179,6 @@ SICALLBACK CreateUsdWriteUI_Execute(CRef& in_ctxt)
   CValueArray toInspect;
   toInspect.Add(CValue(prop));
   app.ExecuteCommand(L"InspectObj", toInspect, CValue());
-  return CStatus::OK;
-}
-
-SICALLBACK UsdWrite_Menu_Init( CRef& in_ctxt )
-{
-  Context ctxt( in_ctxt );
-  Menu oMenu;
-  oMenu = ctxt.GetSource();
-  MenuItem oNewItem;
-  oMenu.AddCommandItem(L"UsdWrite",L"CreateUsdWriteUI",oNewItem);
   return CStatus::OK;
 }
 

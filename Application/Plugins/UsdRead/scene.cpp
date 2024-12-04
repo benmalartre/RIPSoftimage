@@ -6,7 +6,7 @@
 #include <pxr/usd/usdGeom/xform.h>
 
 pxr::UsdStageCache  U2X_USDSTAGE_CACHE;
-U2XScene*           U2X_SCENE;
+U2XScene*           U2X_SCENE = NULL;
 ULONG               U2X_SCENE_ID = 0;
 
 U2XScene::U2XScene()

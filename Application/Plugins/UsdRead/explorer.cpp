@@ -6,8 +6,6 @@
 #include "explorer.h"
 #include "utils.h"
 
-extern ImFontAtlas* U2X_SHARED_ATLAS;
-extern U2XScene* U2X_SCENE;
 
 UsdExplorerWindow::UsdExplorerWindow() 
   : U2XWindow()
@@ -317,7 +315,7 @@ LRESULT UsdExplorerWindow::Notify ( XSI::CRef& in_ctxt)
 void UsdExplorerWindow::InitGL()
 {
   wglMakeCurrent(_hDC, _hRC);
-  GarchGLApiLoad();
+  //GarchGLApiLoad();
 
   _ctxt = ImGui::CreateContext(U2X_SHARED_ATLAS);
   ImGui::SetCurrentContext(_ctxt);
@@ -604,9 +602,9 @@ void UsdExplorerWindow::RecursePrim(UsdExplorerItem* currentItem)
 //
 // Softimage Plugin Callbacks
 //
-XSIPLUGINCALLBACK void	
-UsdExplorer_Init(XSI::CRef in_ctxt)
+XSIPLUGINCALLBACK void UsdExplorer_Init(XSI::CRef in_ctxt)
 {
+  LOG("UsdExplorer INIT!!!");
   assert(in_ctxt.IsA(XSI::siViewContextID));
   XSI::ViewContext viewContext = in_ctxt;
   assert(viewContext.IsValid());
@@ -619,8 +617,7 @@ UsdExplorer_Init(XSI::CRef in_ctxt)
   explorer->Init(in_ctxt);
 }
 
-XSIPLUGINCALLBACK void 
-UsdExplorer_Term(XSI::CRef in_ctxt)
+XSIPLUGINCALLBACK void UsdExplorer_Term(XSI::CRef in_ctxt)
 {
   XSI::ViewContext viewContext = in_ctxt;
   assert(viewContext.IsValid());
@@ -636,9 +633,9 @@ UsdExplorer_Term(XSI::CRef in_ctxt)
 }
 
 
-XSIPLUGINCALLBACK void 
-UsdExplorer_Notify(XSI::CRef in_ctxt)
+XSIPLUGINCALLBACK void UsdExplorer_Notify(XSI::CRef in_ctxt)
 {
+  LOG("UsdExplorer INIT!!!");
   XSI::ViewContext viewContext = in_ctxt;
   assert(viewContext.IsValid());
 
@@ -649,8 +646,7 @@ UsdExplorer_Notify(XSI::CRef in_ctxt)
   explorer->Notify(in_ctxt);
 }
 
-XSIPLUGINCALLBACK void 
-UsdExplorer_SetAttributeValue(XSI::CRef in_ctxt, XSI::CString name, XSI::CValue value)
+XSIPLUGINCALLBACK void UsdExplorer_SetAttributeValue(XSI::CRef in_ctxt, XSI::CString name, XSI::CValue value)
 {
   XSI::ViewContext viewContext = in_ctxt;
   assert(viewContext.IsValid());
@@ -662,10 +658,8 @@ UsdExplorer_SetAttributeValue(XSI::CRef in_ctxt, XSI::CString name, XSI::CValue 
 
 }
 
-XSIPLUGINCALLBACK XSI::CValue	
-UsdExplorer_GetAttributeValue(XSI::CRef in_ctxt, XSI::CString name)
+XSIPLUGINCALLBACK XSI::CValue	UsdExplorer_GetAttributeValue(XSI::CRef in_ctxt, XSI::CString name)
 {
-
   XSI::ViewContext viewContext = in_ctxt;
   assert(viewContext.IsValid());
 

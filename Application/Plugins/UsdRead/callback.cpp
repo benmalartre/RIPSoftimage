@@ -9,15 +9,13 @@
 #include <xsi_graphicsequencer.h>
 #include <xsi_graphicsequencercontext.h>
 #include "utils.h"
-#include "callback.h"
 #include "engine.h"
 #include "scene.h"
 
 #include <GL/gl.h>
-#include <pxr/imaging/garch/glApi.h>
+//#include <pxr/imaging/garch/glApi.h>
 
 U2XEngine* HYDRA_ENGINE = NULL;
-extern U2XScene* U2X_SCENE;
 U2XScene* LAST_U2X_SCENE = NULL;
 
 
@@ -101,8 +99,9 @@ static pxr::GfMatrix4d _GetProjectionMatrix(const Camera& camera)
   }
 }
 
-void UsdHydraDisplayCallback_Init( XSI::CRef context, LPVOID *data )
+XSIPLUGINCALLBACK void UsdHydraDisplayCallback_Init( XSI::CRef context, LPVOID *data )
 {
+
   XSI::GraphicSequencerContext sequencerContext = context;
   assert ( sequencerContext.IsValid() );
   XSI::CGraphicSequencer sequencer = sequencerContext.GetGraphicSequencer ();
@@ -116,14 +115,16 @@ void UsdHydraDisplayCallback_Init( XSI::CRef context, LPVOID *data )
   LOG("Hydra Init Done");
 }
 
-void UsdHydraDisplayCallback_Execute( XSI::CRef context, LPVOID *data )
+XSIPLUGINCALLBACK void UsdHydraDisplayCallback_Execute( XSI::CRef context, LPVOID *data )
 {  
+  if (U2X_SCENE->IsEmpty())return;
+
   if (U2X_SCENE != LAST_U2X_SCENE) {
     _TerminateHydraEngine();
     _InitializeHydraEngine();
     LAST_U2X_SCENE = U2X_SCENE;
   }
-if (U2X_SCENE->IsEmpty())return;
+
   XSI::GraphicSequencerContext sequencerContext = context;
   assert(sequencerContext.IsValid());
   XSI::CGraphicSequencer sequencer = sequencerContext.GetGraphicSequencer();
@@ -185,16 +186,16 @@ if (U2X_SCENE->IsEmpty())return;
 
 }
 
-void UsdHydraDisplayCallback_Term( XSI::CRef sequencerContext, LPVOID *userData )
+XSIPLUGINCALLBACK void UsdHydraDisplayCallback_Term( XSI::CRef sequencerContext, LPVOID *userData )
 {
  
 }
 
-void UsdHydraDisplayCallback_InitInstance( XSI::CRef sequencerContext, LPVOID *userData )
+XSIPLUGINCALLBACK void UsdHydraDisplayCallback_InitInstance( XSI::CRef sequencerContext, LPVOID *userData )
 {
 }
 
-void UsdHydraDisplayCallback_TermInstance( XSI::CRef sequencerContext, LPVOID *userData )
+XSIPLUGINCALLBACK void UsdHydraDisplayCallback_TermInstance( XSI::CRef sequencerContext, LPVOID *userData )
 {
   _TerminateHydraEngine();
 }

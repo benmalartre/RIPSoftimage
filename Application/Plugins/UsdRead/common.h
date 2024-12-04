@@ -70,8 +70,7 @@ using namespace pxr;
 
 class U2XGLSLProgram;
 
-extern bool GL_EXTENSIONS_LOADED;
-extern bool IMGUI_INITIALIZED;
+extern HINSTANCE __gInstance;
 
 // softimage log message
 #define LOG(msg) Application().LogMessage(msg);

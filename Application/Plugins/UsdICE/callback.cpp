@@ -12,7 +12,6 @@
 
 #include <GL/gl.h>
 
-bool GL_EXTENSIONS_LOADED;
 
 U2IEngine* HYDRA_ENGINE = NULL;
 extern U2IScene* U2I_SCENE;
@@ -80,18 +79,8 @@ static pxr::GfMatrix4d _GetProjectionMatrix(const Camera& camera)
   }
 }
 
-static void _InitializeGL()
-{
-  GarchGLApiLoad();
-  GL_EXTENSIONS_LOADED = true;
-}
-
-
 void UsdHydra_Init ( XSI::CRef in_pSequencerContext, LPVOID *in_pUserData )
 {
-  GL_EXTENSIONS_LOADED = false;
-  _InitializeGL();
-
 	// Cast the CRef into a GraphicSequencerContext SDK object
 	XSI::GraphicSequencerContext l_vGraphicSequencerContext = in_pSequencerContext;
 	

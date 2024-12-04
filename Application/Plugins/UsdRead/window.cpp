@@ -1,32 +1,11 @@
 #include <pxr/imaging/garch/glApi.h>
+#include "common.h"
 #include "window.h"
 #include "utils.h"
 #include "icons.h"
 #include "imgui/imgui_impl_win32.h"
 #include "imgui/imgui_impl_opengl3.h"
 
-HINSTANCE __gInstance = NULL;
-
-BOOL APIENTRY DllMain(HANDLE hModule,
-  DWORD  ul_reason_for_call,
-  LPVOID lpReserved
-)
-{
-  switch (ul_reason_for_call)
-  {
-  case DLL_PROCESS_ATTACH:
-  case DLL_THREAD_ATTACH:
-  case DLL_THREAD_DETACH:
-  case DLL_PROCESS_DETACH:
-    break;
-  }
-
-  __gInstance = (HINSTANCE)hModule;
-
-  InitCommonControls();
-
-  return TRUE;
-}
 
 std::map<const char*, Icon> U2X_ICONS;
 std::vector<U2XWindow*> U2X_UIS;
@@ -137,8 +116,9 @@ void U2XSetWindowStyle()
 
 void U2XWindow::InitGL()
 {
+  std::cout << "U2X WINDOW INIT GL" << std::endl;
   wglMakeCurrent(_hDC, _hRC);
-  GarchGLApiLoad();
+  //GarchGLApiLoad();
   // Setup Dear ImGui binding
   IMGUI_CHECKVERSION();
 

@@ -3,9 +3,8 @@
 #include "window.h"
 #include <xsi_ref.h>
 #include <xsi_decl.h>
+#include <xsi_viewnotification.h>
 #include <vector>
-
-extern bool GL_EXTENSIONS_LOADED;
 
 static size_t U2X_EXPLORER_LINE_HEIGHT = 20;
 

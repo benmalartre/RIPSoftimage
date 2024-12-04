@@ -36,7 +36,6 @@ target_include_directories(${TARGET}
 
 target_link_libraries(${TARGET}
   ${SOFTIMAGE_LIBRARIES}
-  ${OPENGL_LIBRARY}
   ${Python3_LIBRARIES}
   ${BOOST_LIBRARIES}
   ${USD_LIBRARIES}
