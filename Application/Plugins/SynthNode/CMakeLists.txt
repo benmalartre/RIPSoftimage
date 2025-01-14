@@ -1,7 +1,7 @@
 set(TARGET SynthNode)
 
-set(STK_SOURCES_DIR "C:/Users/graph/Documents/bmal/src/stk/src")
-set(STK_INCLUDE_DIR "C:/Users/graph/Documents/bmal/src/stk/include")
+set(STK_SOURCES_DIR "C:/Users/graph/Documents/bmal/src/STK/stk/src")
+set(STK_INCLUDE_DIR "C:/Users/graph/Documents/bmal/src/STK/stk/include")
 
 add_definitions(
   -DNOMINMAX

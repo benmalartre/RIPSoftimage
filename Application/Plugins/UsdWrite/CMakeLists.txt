@@ -7,6 +7,7 @@ add_definitions(
 
 
 add_library(${TARGET} SHARED
+  filesystem.cpp
   attribute.cpp
   camera.cpp
   prim.cpp

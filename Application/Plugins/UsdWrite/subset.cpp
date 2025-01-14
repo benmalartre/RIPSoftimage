@@ -4,8 +4,6 @@
 X2USubset::X2USubset(std::string path, const CRef& ref)
   : X2UPrim(path, ref)
 {
-  Cluster cluster(_ref);
-  LOG("X2USubset constructor : "+ cluster.GetName());
 }
 
 X2USubset::~X2USubset()
@@ -18,8 +16,6 @@ void X2USubset::Init(UsdStageRefPtr& stage)
   _prim = subset.GetPrim();
 
   Cluster cluster(_ref);
-
-  LOG("Created subset : " + CString(_prim.GetPath().GetText()));
 
   // type attribute
   {
@@ -44,7 +40,6 @@ void X2USubset::Init(UsdStageRefPtr& stage)
   {
     CLongArray indices = cluster.GetElements().GetArray();
     size_t numIndices = indices.GetCount();
-    LOG("CLUSTER NUM INDICES : "+ CString(indices.GetCount()));
 
     _attributes["indices"] =
       X2UAttribute(

@@ -89,7 +89,7 @@ void X2UModel::_Recurse(const CRef& ref, const std::string& parentPath, size_t o
 
         // add reference to the file external model file
         childModel.SetPath(parentPath + childModel._GetRootName());
-        UsdPrim refPrim = _stage->OverridePrim(childModel.GetPath());
+        UsdPrim refPrim = _stage->DefinePrim(childModel.GetPath());
         refPrim.GetReferences().AddReference(_folder + "/" + modelFileName);
         _models.push_back(childModel);
         _xObjPathMap[childModel.GetID()] = childModel.GetPath();

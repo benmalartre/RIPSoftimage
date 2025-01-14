@@ -1,0 +1,125 @@
+#pragma once
+
+#include "string.h"
+#include <vector>
+#include <stdint.h>
+#include <fstream>
+#include <pxr/base/arch/fileSystem.h>
+#include <pxr/base/arch/systemInfo.h>
+
+#ifdef _WIN32
+  #define SEPARATOR "\\"
+  #include <windows.h>
+  typedef int mode_t;
+  #define stat _stat
+  #include "dirent.h"
+  #include <tchar.h>
+#else
+  #define SEPARATOR "/"
+  #include <dirent.h>
+#endif
+
+// entry info
+//-----------------------------------------------------
+struct EntryInfo
+{
+  enum Type {
+    FOLDER,
+    FILE
+  };
+
+  EntryInfo(const std::string& path, Type type, bool isHidden, size_t size, time_t time) 
+    : path(path)
+    , isHidden(isHidden)
+    , type(type)
+    , size(size)
+    , time(time)
+  {
+  }
+  std::string path;
+  bool isHidden;
+  Type type;
+  size_t size;
+  time_t time;
+  
+};
+
+// file exists
+//-----------------------------------------------------
+bool FileExists(const std::string& path);
+
+// directory exists
+//-----------------------------------------------------
+bool DirectoryExists(const std::string& path);
+
+// create directory
+//-----------------------------------------------------
+bool CreateDirectory(const std::string& path);
+
+// get file size
+//-----------------------------------------------------
+int GetFileSize(const std::string& filePath);
+
+// get file name
+//-----------------------------------------------------
+std::string GetFileName(const std::string& filePath);
+
+// get entries in directory
+//-----------------------------------------------------
+size_t GetVolumes(std::vector<EntryInfo>& entries);
+
+// get entries in directory
+//-----------------------------------------------------
+size_t GetEntriesInDirectory(const char* path, std::vector<EntryInfo>& entries,
+  bool ignoreCurrent=true, bool ignoreParent=false);
+
+// get installation folder
+//-----------------------------------------------------
+std::string GetInstallationFolder();
+
+//=====================================================
+// File class
+//=====================================================
+// mode
+//-----------------------------------------------------
+enum FILE_MODE
+{
+    FILE_READ,
+    FILE_WRITE
+};
+// header
+//-----------------------------------------------------
+#define SIZE_HEADER 66
+#define SIZE_BUFFER 256
+
+
+// class
+//-----------------------------------------------------
+class File
+{
+private:
+  std::string path;
+  std::fstream* file;
+  std::string content;
+  char* buffer;
+    
+public:
+  File(){};
+  File(const std::string& path);
+
+  bool Open(FILE_MODE mode);
+  bool Close();
+  uint64_t GetFileLength();
+  
+  void SetPath(const std::string& in_path){path = in_path;};
+  
+  void Write(const std::string& s);
+  std::string Read();
+  std::string ReadAll();
+
+  void _CreatePath(
+    const std::string& directory, 
+    const std::string& name, 
+    const std::string& extension
+  );
+};
