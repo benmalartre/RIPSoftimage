@@ -4,21 +4,17 @@
 to_replace = "the_original_invalid_path_part"
 replace_by = "the_new_valid_path_part"
 
-def FindAudioClipsUnderModel( in_model ) :
-	if  in_model.HasMixer()== 0 :
+
+def FindAudioClipsUnderModel(in_model):
+	if not in_model.HasMixer():
 		return []
 	mixer = in_model.Mixer
+	return [clip for clip in mixer.Clips if clip.Type == "mixeraudioclip"]
 
-	audioclips = []
-	if mixer.Clips.Count > 0 :
-		for clip in mixer.Clips :
-			if clip.Type == "mixeraudioclip":
-				audioclips.append(clip)
-	return audioclips
-	
-audioclips = FindAudioClipsUnderModel( Application.ActiveSceneRoot )
-for clip in audioclips:
-	source = clip.Source
+
+audio_clips = FindAudioClipsUnderModel(Application.ActiveSceneRoot)
+for audio_clip in audio_clips:
+	source = audio_clip.Source
 	old_value = source.FileName.Value
 	new_value = old_value.replace(to_replace, replace_by)
 	
