@@ -22,10 +22,21 @@ class IRControl(Element.IRElement):
 		self.chooser = 'ControlChooser'
 		self.size = 1.0
 		self.icon = RIG_CONTROL_ICON[icon]
+		self.sym_ctrl = None
+		self.sym_parent = None
+
 		if self.crv:
 			self.prop = self.crv.Properties(PROP_CONTROL)
 
 		self.root = self.model.FindChild('Controls', constants.siNullPrimType)
+		builder = self.GetBuilder()
+		self.color_r_ik = builder.Parameters("R_ColorG_IK").Value
+		self.color_g_ik = builder.Parameters("R_ColorG_IK").Value
+		self.color_b_ik = builder.Parameters("R_ColorB_IK").Value
+
+		self.color_r_fk = builder.Parameters("R_ColorR_FK").Value
+		self.color_g_fk = builder.Parameters("R_ColorG_FK").Value
+		self.color_b_fk = builder.Parameters("R_ColorB_FK").Value
 
 	def PickPosition(self):
 		self.position = Utils.PickPosition()
@@ -43,7 +54,7 @@ class IRControl(Element.IRElement):
 
 		self.crv = RIG_CONTROL_ICON[builder.Parameters("ControlIconType").Value]
 		self.GetControlColor()
-		color = [self.colorrik, self.colorgik, self.colorbik]
+		color = [self.color_r_ik, self.color_g_ik, self.color_b_ik]
 		self.size = builder.Parameters("GlobalSize").Value
 		self.crv = Icon.IRIcon(self.parent, self.fullname+"_Ctrl", t, color, self.icon, self.size, self.size, self.size)
 
@@ -76,13 +87,13 @@ class IRControl(Element.IRElement):
 		
 		axis = self.builder.Parameters("SymmetryAxis").Value
 		
-		self.symparent = self.model.FindChild(self.ctrl.Parent.Name.replace(self.prefix, self.symprefix))
-		if not self.symparent:
-			self.symparent = self.ctrl.Parent
+		self.sym_parent = self.model.FindChild(self.ctrl.Parent.Name.replace(self.prefix, self.symprefix))
+		if not self.sym_parent:
+			self.sym_parent = self.ctrl.Parent
 			
-		color = [self.colorrik, self.colorgik, self.colorbik]
-		self.symctrl = Icon.IRIcon(
-			self.symparent,
+		color = [self.color_r_ik, self.color_g_ik, self.color_b_ik]
+		self.sym_ctrl = Icon.IRIcon(
+			self.sym_parent,
 			self.symfullname+"_Ctrl",
 			XSIMath.CreateTransform(),
 			color,
@@ -91,7 +102,7 @@ class IRControl(Element.IRElement):
 			self.size,
 			self.size
 		)
-		Utils.SimpleSymmetry(self.symctrl, self.ctrl, axis)
+		Utils.SimpleSymmetry(self.sym_ctrl, self.ctrl, axis)
 		'''
 		self.symguidepoints = XSIFactory.CreateActiveXObject("XSI.Collection")
 		self.parent = self.model.FindChild(self.guidepoints[0].Parent.Name.replace(self.prefix,self.symprefix))
@@ -123,87 +134,83 @@ class IRControl(Element.IRElement):
 	def ConnectSymmetry(self, elem):
 		pass
 
-	def AddToRig(self):
+	@staticmethod
+	def AddToRig():
 		XSI.LogMessage("[RigControl] : Add to Rig called...")
 
-	def RemoveFromRig(self):
+	@staticmethod
+	def RemoveFromRig():
 		XSI.LogMessage("[RigControl] : Remove Control Element Called...")
 
 	def GetControlColor(self):
 		builder = self.GetBuilder()
 		if self.side == RIGHT:
-			self.colorrik = builder.Parameters("R_ColorR_IK").Value
-			self.colorgik = builder.Parameters("R_ColorG_IK").Value
-			self.colorbik = builder.Parameters("R_ColorB_IK").Value
+			self.color_r_ik = builder.Parameters("R_ColorR_IK").Value
+			self.color_g_ik = builder.Parameters("R_ColorG_IK").Value
+			self.color_b_ik = builder.Parameters("R_ColorB_IK").Value
 			
-			self.colorrfk = builder.Parameters("R_ColorR_FK").Value
-			self.colorgfk = builder.Parameters("R_ColorG_FK").Value
-			self.colorbfk = builder.Parameters("R_ColorB_FK").Value
+			self.color_r_fk = builder.Parameters("R_ColorR_FK").Value
+			self.color_g_fk = builder.Parameters("R_ColorG_FK").Value
+			self.color_b_fk = builder.Parameters("R_ColorB_FK").Value
 			
 		elif self.side == LEFT:
-			self.colorrik = builder.Parameters("L_ColorR_IK").Value
-			self.colorgik = builder.Parameters("L_ColorG_IK").Value
-			self.colorbik = builder.Parameters("L_ColorB_IK").Value
+			self.color_r_ik = builder.Parameters("L_ColorR_IK").Value
+			self.color_g_ik = builder.Parameters("L_ColorG_IK").Value
+			self.color_b_ik = builder.Parameters("L_ColorB_IK").Value
 			
-			self.colorrfk = builder.Parameters("L_ColorR_FK").Value
-			self.colorgfk = builder.Parameters("L_ColorG_FK").Value
-			self.colorbfk = builder.Parameters("L_ColorB_FK").Value
+			self.color_r_fk = builder.Parameters("L_ColorR_FK").Value
+			self.color_g_fk = builder.Parameters("L_ColorG_FK").Value
+			self.color_b_fk = builder.Parameters("L_ColorB_FK").Value
 			
 		else:
-			self.colorrik = builder.Parameters("M_ColorR_IK").Value
-			self.colorgik = builder.Parameters("M_ColorG_IK").Value
-			self.colorbik = builder.Parameters("M_ColorB_IK").Value
+			self.color_r_ik = builder.Parameters("M_ColorR_IK").Value
+			self.color_g_ik = builder.Parameters("M_ColorG_IK").Value
+			self.color_b_ik = builder.Parameters("M_ColorB_IK").Value
 			
-			self.colorrfk = builder.Parameters("M_ColorR_FK").Value
-			self.colorgfk = builder.Parameters("M_ColorG_FK").Value
-			self.colorbfk = builder.Parameters("M_ColorB_FK").Value
+			self.color_r_fk = builder.Parameters("M_ColorR_FK").Value
+			self.color_g_fk = builder.Parameters("M_ColorG_FK").Value
+			self.color_b_fk = builder.Parameters("M_ColorB_FK").Value
 
 	def SetControlColor(self):
 		if self.type == CTRL_FK:
-			Utils.SetWireColor(self.ctrl, self.colorrfk, self.colorgfk, self.colorbfk)
+			Utils.SetWireColor(self.ctrl, self.color_r_fk, self.color_g_fk, self.color_b_fk)
 		else:
-			Utils.SetWireColor(self.ctrl, self.colorrik, self.colorgik, self.colorbik)
+			Utils.SetWireColor(self.ctrl, self.color_r_ik, self.color_g_ik, self.color_b_ik)
 			
 
-# -------------------------------------------------------------------
-# Get Control Color
-# -------------------------------------------------------------------
-def GetControlColor(side, type, builder):
+def GetControlColor(side, control_type, builder):
 	color = [0, 0, 0]
 	if side == RIGHT:
-		if type == CTRL_IK:
+		if control_type == CTRL_IK:
 			color[0] = builder.Parameters("R_ColorR_IK").Value
 			color[1] = builder.Parameters("R_ColorG_IK").Value
 			color[2] = builder.Parameters("R_ColorB_IK").Value
-		elif type == CTRL_FK:
+		elif control_type == CTRL_FK:
 			color[0] = builder.Parameters("R_ColorR_FK").Value
 			color[1] = builder.Parameters("R_ColorG_FK").Value
 			color[2] = builder.Parameters("R_ColorB_FK").Value
 		
 	elif side == LEFT:
-		if type == CTRL_IK:
+		if control_type == CTRL_IK:
 			color[0] = builder.Parameters("L_ColorR_IK").Value
 			color[1] = builder.Parameters("L_ColorG_IK").Value
 			color[2] = builder.Parameters("L_ColorB_IK").Value
-		elif type == CTRL_FK:
+		elif control_type == CTRL_FK:
 			color[0] = builder.Parameters("L_ColorR_FK").Value
 			color[1] = builder.Parameters("L_ColorG_FK").Value
 			color[2] = builder.Parameters("L_ColorB_FK").Value
 		
 	else:
-		if type == CTRL_IK:
+		if control_type == CTRL_IK:
 			color[0] = builder.Parameters("M_ColorR_IK").Value
 			color[1] = builder.Parameters("M_ColorG_IK").Value
 			color[2] = builder.Parameters("M_ColorB_IK").Value
-		elif type == CTRL_FK:
+		elif control_type == CTRL_FK:
 			color[0] = builder.Parameters("M_ColorR_FK").Value
 			color[1] = builder.Parameters("M_ColorG_FK").Value
 			color[2] = builder.Parameters("M_ColorB_FK").Value
 
 
-# -------------------------------------------------------------------
-# build IK 2 Bones
-# -------------------------------------------------------------------
 def BuildIK2BonesRig(parent, crv, ppg):
 	name = crv.Name.replace("_Crv", "")
 	side = MIDDLE
@@ -224,19 +231,19 @@ def BuildIK2BonesRig(parent, crv, ppg):
 	g = ppg.Parameters(prefix+"ColorG_IK").Value
 	b = ppg.Parameters(prefix+"ColorB_IK").Value
 	
-	pnts = crv.ActivePrimitive.Geometry.Points
-	if pnts.Count == 3:
-		p0 = pnts[0].Position
-		p1 = pnts[1].Position
-		p2 = pnts[2].Position
+	points = crv.ActivePrimitive.Geometry.Points
+	if points.Count == 3:
+		p0 = points[0].Position
+		p1 = points[1].Position
+		p2 = points[2].Position
 	else:
-		last = pnts.Count-1
-		p0 = pnts[0].Position
+		last = points.Count-1
+		p0 = points[0].Position
 		pos = []
 		for i in range(1,last):
-			pos.append(pnts[i].Position)
+			pos.append(points[i].Position)
 		p1 = Utils.GetAveragePosition(pos)
-		p2 = pnts[last].Position
+		p2 = points[last].Position
 	
 	dir1 = XSIMath.CreateVector3()
 	dir1.Sub(p0, p1)
@@ -290,9 +297,6 @@ def BuildIK2BonesRig(parent, crv, ppg):
 	XSI.SetNeutralPose([root, knee, eff, upv], "siSRT", "")
 
 
-# -------------------------------------------------------------------
-# Build FK RiG
-# -------------------------------------------------------------------
 def BuildFKRig(parent, crv, ppg, side=MIDDLE, simple=False):
 	prefix = 'M_'
 	if side == LEFT:
@@ -315,7 +319,7 @@ def BuildFKRig(parent, crv, ppg, side=MIDDLE, simple=False):
 		XSI.LogMessage('[RigControl] Guide curve is not a rig element, aborted !')
 		return False
 		
-	ctrls = XSIFactory.CreateActiveXObject('XSI.Collection')
+	controls = XSIFactory.CreateActiveXObject('XSI.Collection')
 	
 	basename = crv.Name.replace('_Crv', '')
 	vertices = crv.ActivePrimitive.Geometry.Points
@@ -353,18 +357,15 @@ def BuildFKRig(parent, crv, ppg, side=MIDDLE, simple=False):
 				p0
 			)
 		parent = fk
-		ctrls.Add(fk) 
+		controls.Add(fk)
 		
-	Utils.ResetStaticKinematicState(ctrls)
-	XSI.SetNeutralPose(ctrls, 'siSRT', '')
-	Utils.GroupSetup(model, ctrls, inGroupName='FK_Rig')
+	Utils.ResetStaticKinematicState(controls)
+	XSI.SetNeutralPose(controls, 'siSRT', '')
+	Utils.GroupSetup(model, controls, group_name='FK_Rig')
 
 	return True
 
 
-# -------------------------------------------------------------------
-# Build SRT RiG (Points on Curve)
-# -------------------------------------------------------------------
 def BuildSRTRig(parent, crv, ppg, side=MIDDLE, simple=False):
 	prefix = 'M_'
 	if side == LEFT:
@@ -409,12 +410,9 @@ def BuildSRTRig(parent, crv, ppg, side=MIDDLE, simple=False):
 		
 	Utils.ResetStaticKinematicState(controls)
 	XSI.SetNeutralPose(controls, 'siSRT', '')
-	Utils.GroupSetup(model, controls, inGroupName='FK_Rig')
+	Utils.GroupSetup(model, controls, group_name='FK_Rig')
 
 
-# -------------------------------------------------------------------
-# Build FootRoll RiG
-# -------------------------------------------------------------------
 def BuildFootRollRig(parent, crv, ppg, side=MIDDLE, simple=False):
 	prefix = 'M_'
 	if side == LEFT:
@@ -473,7 +471,7 @@ def BuildFootRollRig(parent, crv, ppg, side=MIDDLE, simple=False):
 	parent = main
 	parents = []
 	
-	ctrls = []
+	controls = []
 	# build reverse structure
 	for i in range(0, last):
 		transform.SetTranslation(pos[last-i])
@@ -488,7 +486,7 @@ def BuildFootRollRig(parent, crv, ppg, side=MIDDLE, simple=False):
 			0.2*length
 		)
 		parents.append(parent)
-		ctrls.append(parent)
+		controls.append(parent)
 			
 	# build final control structure
 	fks = []
@@ -506,7 +504,7 @@ def BuildFootRollRig(parent, crv, ppg, side=MIDDLE, simple=False):
 				0.1*length
 			)
 			fks.append(icon)
-			ctrls.append(icon)
+			controls.append(icon)
 		else:
 			icon = Icon.IRIcon(
 				parents[i-1],
@@ -519,10 +517,10 @@ def BuildFootRollRig(parent, crv, ppg, side=MIDDLE, simple=False):
 				0.1*length
 			)
 			fks.append(icon)
-			ctrls.append(icon)
+			controls.append(icon)
 			
 	Utils.ResetStaticKinematicState(fks)
 	Utils.GroupSetup(parent.Model, fks, 'IK_Rig')
 	
-	XSI.SetNeutralPose(ctrls, 'siSRT', '')
-	Utils.GroupSetup(parent.Model, ctrls, 'Anim_Controls')
+	XSI.SetNeutralPose(controls, 'siSRT', '')
+	Utils.GroupSetup(parent.Model, controls, 'Anim_Controls')

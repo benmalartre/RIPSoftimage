@@ -1,6 +1,3 @@
-#---------------------------------------
-# 	Cloth_Control
-#---------------------------------------
 from Globals import XSI
 import Cloth as clo
 import Utils as uti
@@ -10,9 +7,6 @@ import Property as pro
 import os
 
 
-#---------------------------------------
-# Load Plugin
-#---------------------------------------
 def XSILoadPlugin( in_reg ):
 	in_reg.Author = "benmalartre"
 	in_reg.Name = "ClothControl"
@@ -21,87 +15,76 @@ def XSILoadPlugin( in_reg ):
 	in_reg.Minor = 0
 
 	in_reg.RegisterProperty("Cloth_Control")
-	in_reg.RegisterCommand("Cloth_CorrectiveShape","Cloth_CorrectiveShape")
-	in_reg.RegisterCommand("Cloth_CorrectiveSmooth","Cloth_CorrectiveSmooth")
-	in_reg.RegisterCommand("Cloth_CorrectivePush","Cloth_CorrectivePush")
+	in_reg.RegisterCommand("Cloth_CorrectiveShape", "Cloth_CorrectiveShape")
+	in_reg.RegisterCommand("Cloth_CorrectiveSmooth", "Cloth_CorrectiveSmooth")
+	in_reg.RegisterCommand("Cloth_CorrectivePush", "Cloth_CorrectivePush")
 		
 	return True
 	
-#---------------------------------------
-# Define
-#---------------------------------------
-def Cloth_Control_Define( in_ctxt ):
+
+def Cloth_Control_Define(in_ctxt):
 	prop = in_ctxt.Source
+
+	prop.AddParameter3("ClothObjects", constants.siString)
+	prop.AddParameter3("ClothObjectChooser", constants.siInt4, 0, 0, 100, False, False)
 	
-	# cloth objects
-	prop.AddParameter3("ClothObjects",constants.siString)
-	prop.AddParameter3("ClothObjectChooser",constants.siInt4,0,0,100,False,False)
-	
-	prop.AddParameter3("ClothObjectIconFolder",constants.siString)
-	prop.AddParameter3("ClothObjectIcon",constants.siString)
+	prop.AddParameter3("ClothObjectIconFolder", constants.siString)
+	prop.AddParameter3("ClothObjectIcon", constants.siString)
 	prop.AddParameter3("ClothControlBanner", constants.siString)
+
+	prop.AddParameter3("ClothActive", constants.siBool, True, False, True, False, False)
+	prop.AddParameter3("FirstFrame", constants.siInt4, 1, -10000, 10000, False, False)
+	prop.AddParameter3("PreRoll", constants.siInt4, 12, 1, 100, False, False)
+	prop.AddParameter3("Precision", constants.siFloat, 0.001, 0.0001, 1, False, False)
+	prop.AddParameter3("SubSampling", constants.siFloat, 0.0, 0.0, 1.0, False, False)
+
+	prop.AddParameter3("Density", constants.siFloat, 0.5, 0.01, 6, False, False)
+	prop.AddParameter3("Rescale", constants.siFloat, 1, 0.1, 10.0, False, False)
+	prop.AddParameter3("StretchStiffness", constants.siFloat, 1, 0.01, 100, False, False)
+	prop.AddParameter3("ShearStiffness", constants.siFloat, 0.2, 0.01, 100, False, False)
+	prop.AddParameter3("BendStiffness", constants.siFloat, 0.1, 0.01, 100, False, False)
+	prop.AddParameter3("StretchDamping", constants.siFloat, 0.1, 0.0001, 1, False, False)
+	prop.AddParameter3("ShearDamping", constants.siFloat, 0.02, 0.0001, 1, False, False)
+	prop.AddParameter3("BendDamping", constants.siFloat, 0.01, 0.0001, 1, False, False)
+
+	prop.AddParameter3("GravityActive", constants.siBool, True, False, True, False, False)
+	prop.AddParameter3("GravityX", constants.siFloat, 0.0)
+	prop.AddParameter3("GravityY", constants.siFloat, -0.1)
+	prop.AddParameter3("GravityZ", constants.siFloat, 0.0)
+	prop.AddParameter3("GravityFactor", constants.siFloat, 1.0, 0.0, 10.0, False, False)
 	
-	#common parameters
-	prop.AddParameter3("ClothActive",constants.siBool,True,False,True,False,False)
-	prop.AddParameter3("FirstFrame",constants.siInt4,1,-10000,10000,False,False)
-	prop.AddParameter3("PreRoll",constants.siInt4,12,1,100,False,False)
-	prop.AddParameter3("Precision",constants.siFloat,0.001,0.0001,1,False,False)
-	prop.AddParameter3("SubSampling",constants.siFloat,0.0,0.0,1.0,False,False)
-	
-	#properties
-	prop.AddParameter3("Density",constants.siFloat,0.5,0.01,6,False,False)
-	prop.AddParameter3("Rescale",constants.siFloat,1,0.1,10.0,False,False)
-	prop.AddParameter3("StretchStiffness",constants.siFloat,1,0.01,100,False,False)
-	prop.AddParameter3("ShearStiffness",constants.siFloat,0.2,0.01,100,False,False)
-	prop.AddParameter3("BendStiffness",constants.siFloat,0.1,0.01,100,False,False)
-	prop.AddParameter3("StretchDamping",constants.siFloat,0.1,0.0001,1,False,False)
-	prop.AddParameter3("ShearDamping",constants.siFloat,0.02,0.0001,1,False,False)
-	prop.AddParameter3("BendDamping",constants.siFloat,0.01,0.0001,1,False,False)
-	
-	#gravity: we should connect it to icon and multiply by factor
-	prop.AddParameter3("GravityActive",constants.siBool,True,False,True,False,False)
-	prop.AddParameter3("GravityX",constants.siFloat,0.0)
-	prop.AddParameter3("GravityY",constants.siFloat,-0.1)
-	prop.AddParameter3("GravityZ",constants.siFloat,0.0)
-	prop.AddParameter3("GravityFactor",constants.siFloat,1.0,0.0,10.0,False,False)
-	
-	#wind: we should connect it to icon and multiply by factor
-	prop.AddParameter3("WindActive",constants.siBool,False,False,True,False,False)
-	prop.AddParameter3("WindX",constants.siFloat,1.0,0.0,10.0,False,False)
-	prop.AddParameter3("WindY",constants.siFloat,0.0,0.0,10.0,False,False)
-	prop.AddParameter3("WindZ",constants.siFloat,0.0,0.0,10.0,False,False)
-	prop.AddParameter3("WindPerturbX",constants.siFloat,0.0,0.0,10.0,False,False)
-	prop.AddParameter3("WindPerturbY",constants.siFloat,0.0,0.0,10.0,False,False)
-	prop.AddParameter3("WindPerturbZ",constants.siFloat,0.0,0.0,10.0,False,False)
-	prop.AddParameter3("WindIntensity",constants.siFloat,0.1,0.0,10.0,False,False)
-	prop.AddParameter3("WindTime",constants.siFloat,10.0,0.0,10.0,False,False)
-	prop.AddParameter3("WindFactor",constants.siFloat,1.0,0.0,10.0,False,False)
-	prop.AddParameter3("WindOneSide",constants.siBool,False,False,True,False,False)
-	
-	#air
-	prop.AddParameter3("AirActive",constants.siBool,True,False,True,False,False)
-	prop.AddParameter3("AirDamping",constants.siFloat,0.05,0.0,1.0,False,False)
-	
-	#mimic
-	prop.AddParameter3("RigidMimicActive",constants.siBool,True,False,True,False,False)
-	prop.AddParameter3("SoftMimicActive",constants.siBool,True,False,True,False,False)
-	prop.AddParameter3("SoftMimicDistance",constants.siFloat,0.001,0.0,1.0,False,False)
-	prop.AddParameter3("SoftMimicStiffness",constants.siFloat,0.05,0.0,1.0,False,False)
-	prop.AddParameter3("SoftMimicDamping",constants.siFloat,0.01,0.0,1.0,False,False)
-	
-	#self collide
-	prop.AddParameter3("SelfCollideActive",constants.siBool,True,False,True,False,False)
-	prop.AddParameter3("SelfCollideEnvelope",constants.siFloat,0.05,0.0,1.0,False,False)
-	
-	#collide
-	prop.AddParameter3("CollideObjects",constants.siString)
-	prop.AddParameter3("CollideObjectChooser",constants.siInt4,0,0,100,False,False)
-	prop.AddParameter3("CollideActive",constants.siBool,True,False,True,False,False)
-	prop.AddParameter3("CollideFriction",constants.siFloat,0.2,0.0,1.0,False,False)
-	prop.AddParameter3("CollideDamping",constants.siFloat,0.01,0.0,1.0,False,False)
-	prop.AddParameter3("CollideBounce",constants.siFloat,0.0,0.0,1.0,False,False)
-	prop.AddParameter3("CollideExtEnvelope",constants.siFloat,0.05,0.0,1.0,False,False)
-	prop.AddParameter3("CollideIntEnvelope",constants.siFloat,-0.05,-1.0,0.0,False,False)
+	prop.AddParameter3("WindActive", constants.siBool, False, False, True, False, False)
+	prop.AddParameter3("WindX", constants.siFloat, 1.0, 0.0, 10.0, False, False)
+	prop.AddParameter3("WindY", constants.siFloat, 0.0, 0.0, 10.0, False, False)
+	prop.AddParameter3("WindZ", constants.siFloat, 0.0, 0.0, 10.0, False, False)
+	prop.AddParameter3("WindPerturbX", constants.siFloat, 0.0, 0.0, 10.0, False, False)
+	prop.AddParameter3("WindPerturbY", constants.siFloat, 0.0, 0.0, 10.0, False, False)
+	prop.AddParameter3("WindPerturbZ", constants.siFloat, 0.0, 0.0, 10.0, False, False)
+	prop.AddParameter3("WindIntensity", constants.siFloat, 0.1, 0.0, 10.0, False, False)
+	prop.AddParameter3("WindTime", constants.siFloat, 10.0, 0.0, 10.0, False, False)
+	prop.AddParameter3("WindFactor", constants.siFloat, 1.0, 0.0, 10.0, False, False)
+	prop.AddParameter3("WindOneSide", constants.siBool, False, False, True, False, False)
+
+	prop.AddParameter3("AirActive", constants.siBool, True, False, True, False, False)
+	prop.AddParameter3("AirDamping", constants.siFloat, 0.05, 0.0, 1.0, False, False)
+
+	prop.AddParameter3("RigidMimicActive", constants.siBool, True, False, True, False, False)
+	prop.AddParameter3("SoftMimicActive", constants.siBool, True, False, True, False, False)
+	prop.AddParameter3("SoftMimicDistance", constants.siFloat, 0.001, 0.0, 1.0, False, False)
+	prop.AddParameter3("SoftMimicStiffness", constants.siFloat, 0.05, 0.0, 1.0, False, False)
+	prop.AddParameter3("SoftMimicDamping", constants.siFloat, 0.01, 0.0, 1.0, False, False)
+
+	prop.AddParameter3("SelfCollideActive", constants.siBool, True, False, True, False, False)
+	prop.AddParameter3("SelfCollideEnvelope", constants.siFloat, 0.05, 0.0, 1.0, False, False)
+
+	prop.AddParameter3("CollideObjects", constants.siString)
+	prop.AddParameter3("CollideObjectChooser", constants.siInt4, 0, 0, 100, False, False)
+	prop.AddParameter3("CollideActive", constants.siBool,True,False,True,False,False)
+	prop.AddParameter3("CollideFriction", constants.siFloat,0.2,0.0,1.0,False,False)
+	prop.AddParameter3("CollideDamping", constants.siFloat,0.01,0.0,1.0,False,False)
+	prop.AddParameter3("CollideBounce", constants.siFloat,0.0,0.0,1.0,False,False)
+	prop.AddParameter3("CollideExtEnvelope", constants.siFloat,0.05,0.0,1.0,False,False)
+	prop.AddParameter3("CollideIntEnvelope", constants.siFloat,-0.05,-1.0,0.0,False,False)
 	
 	# correction lists
 	prop.AddParameter3("CorrectiveShapeList", constants.siString);
@@ -109,9 +92,9 @@ def Cloth_Control_Define( in_ctxt ):
 	prop.AddParameter3("CorrectivePushList", constants.siString);
 	
 	# Output Cache
-	prop.AddParameter("ScenePath",constants.siString);
-	prop.AddParameter("OutputFolder",constants.siString);
-	prop.AddParameter3("OutputFolderSelection",constants.siInt4,0,0,2,False,False);
+	prop.AddParameter("ScenePath", constants.siString);
+	prop.AddParameter("OutputFolder", constants.siString);
+	prop.AddParameter3("OutputFolderSelection", constants.siInt4,0,0,2,False,False);
 
 
 def Cloth_Control_OnInit():
@@ -197,7 +180,8 @@ def Cloth_Control_RebuildLayout(prop):
 	Cloth_Control_AddCollideTab(prop)
 	Cloth_Control_AddCorrectionTab(prop)
 	Cloth_Control_AddCacheTab(prop)
-	
+
+
 def Cloth_Control_AddCollideTab(prop):
 	layout = prop.PPGLayout
 	layout.AddTab("Collide")
@@ -217,7 +201,8 @@ def Cloth_Control_AddCollideTab(prop):
 	layout.AddItem("SelfCollideActive","Active")
 	layout.AddItem("SelfCollideEnvelope","Envelope")
 	layout.EndGroup()
-	
+
+
 def Cloth_Control_AddCorrectionTab(prop):
 	layout = prop.PPGLayout
 	layout.AddTab("Correct")
@@ -250,7 +235,7 @@ def Cloth_Control_AddCorrectionTab(prop):
 		
 		layout.AddGroup()
 		smoothlist = Cloth_Control_GetCorrectiveList(prop,"Smooth")
-		item = layout.AddEnumControl("CorrectiveSmoothList",smoothlist,"",constants.siControlListBox)
+		item = layout.AddEnumControl("CorrectiveSmoothList",smoothlist,"", constants.siControlListBox)
 		item.SetAttribute(constants.siUINoLabel,True)
 		item.SetAttribute(constants.siUICY,88)
 		layout.EndGroup()
@@ -278,7 +263,7 @@ def Cloth_Control_AddCorrectionTab(prop):
 		
 		layout.AddGroup()
 		pushlist = Cloth_Control_GetCorrectiveList(prop,"Push")
-		item = layout.AddEnumControl("CorrectivePushList",pushlist,"",constants.siControlListBox)
+		item = layout.AddEnumControl("CorrectivePushList",pushlist,"", constants.siControlListBox)
 		item.SetAttribute(constants.siUINoLabel,true)
 		item.SetAttribute(constants.siUICY,88)
 		layout.EndGroup()
@@ -306,7 +291,7 @@ def Cloth_Control_AddCorrectionTab(prop):
 		
 		layout.AddGroup()
 		shapelist = Cloth_Control_GetCorrectiveList(prop,"Shape")
-		item = layout.AddEnumControl("CorrectiveShapeList",shapelist,"",constants.siControlListBox)
+		item = layout.AddEnumControl("CorrectiveShapeList",shapelist,"", constants.siControlListBox)
 		item.SetAttribute(constants.siUINoLabel,True)
 		item.SetAttribute(constants.siUICY,88)
 		layout.EndGroup()
@@ -325,38 +310,37 @@ def Cloth_Control_AddCacheTab(prop):
 	layout.AddTab("Cache")
 	Cloth_Control_AddClothObjectChooser(prop)
 	layout.AddGroup("Syflex Cache")
-	btn = layout.AddButton("SetSyflexCache","Set Path")
-	btn.SetAttribute(constants.siUICX,280)
-	btn = layout.AddButton("ClearSyflexCache","Clear")
-	btn.SetAttribute(constants.siUICX,280)
+	btn = layout.AddButton("SetSyflexCache", "Set Path")
+	btn.SetAttribute(constants.siUICX, 280)
+	btn = layout.AddButton("ClearSyflexCache", "Clear")
+	btn.SetAttribute(constants.siUICX, 280)
 	layout.EndGroup()
 	layout.AddGroup("Mode")
-	readcachearray = ["Simulate",0,"Read Cache",1]
-	item = layout.AddEnumControl("ReadCache",readcachearray,"Mode",constants.siControlCombo)
-	item.SetAttribute(constants.siUINoLabel,true)
+	readcachearray = ["Simulate", 0, "Read Cache", 1]
+	item = layout.AddEnumControl("ReadCache", readcachearray, "Mode", constants.siControlCombo)
+	item.SetAttribute(constants.siUINoLabel, true)
 	layout.EndGroup()
 
 	layout.AddGroup(" Point Cache")
 	
 	layout.AddGroup()
-	outputfolderselection = ["Track",0,"Alternative Folder",1]
-	item = layout.AddEnumControl("OutputFolderSelection",outputfolderselection,"Output Folder",constants.siControlCombo)
-	item.SetAttribute(constants.siUINoLabel,True)
+	outputfolderselection = ["Track", 0, "Alternative Folder", 1]
+	item = layout.AddEnumControl(
+		"OutputFolderSelection", outputfolderselection, "Output Folder", constants.siControlCombo)
+	item.SetAttribute(constants.siUINoLabel, True)
 	outputfolder = prop.Parameters("OutputFolderSelection").Value
 	
-	layout.AddEnumControl("ScenePath",[],"Scene Path",constants.siControlCombo);
-
-	''' Track'''
+	layout.AddEnumControl("ScenePath", [], "Scene Path", constants.siControlCombo)
 	
-	layout.AddItem( "OutputFolder","Folder", constants.siControlFolder)
+	layout.AddItem( "OutputFolder", "Folder", constants.siControlFolder)
 	
 	if outputfolder == 0:
-		prop.OutputFolder.SetCapabilityFlag(constants.siNotInspectable,True)
-		prop.ScenePath.SetCapabilityFlag(constants.siNotInspectable,False)
+		prop.OutputFolder.SetCapabilityFlag(constants.siNotInspectable, True)
+		prop.ScenePath.SetCapabilityFlag(constants.siNotInspectable, False)
 	
 	else:
-		prop.OutputFolder.SetCapabilityFlag(constants.siNotInspectable,False);
-		prop.ScenePath.SetCapabilityFlag(constants.siNotInspectable,True);
+		prop.OutputFolder.SetCapabilityFlag(constants.siNotInspectable, False)
+		prop.ScenePath.SetCapabilityFlag(constants.siNotInspectable, True)
 	
 	layout.EndGroup()
 	layout.AddRow()
@@ -375,13 +359,13 @@ def Cloth_Control_AddClothObjectChooser(prop):
 	layout.AddRow()
 	items = Cloth_Control_GetClothObjectsList(prop)
 	if items:
-		item = layout.AddEnumControl( "ClothObjectChooser", items, "ClothObjectChooser", constants.siControlCombo)
+		item = layout.AddEnumControl("ClothObjectChooser", items, "ClothObjectChooser", constants.siControlCombo)
 		item.SetAttribute(constants.siUINoLabel, True)
-		item.SetAttribute(constants.siUIWidthPercentage,90)
-		item.SetAttribute(constants.siUICY,64)
+		item.SetAttribute(constants.siUIWidthPercentage, 90)
+		item.SetAttribute(constants.siUICY, 64)
 		
-		item = layout.AddItem("ClothObjectIcon","",constants.siControlBitmap)
-		item.SetAttribute(constants.siUIFilePath,PPG.ClothObjectIcon.Value)
+		item = layout.AddItem("ClothObjectIcon", "", constants.siControlBitmap)
+		item.SetAttribute(constants.siUIFilePath, PPG.ClothObjectIcon.Value)
 		item.SetAttribute(constants.siUINoLabel, True)
 		
 	else:
@@ -405,22 +389,13 @@ def Cloth_Control_AddColliderObjectChooser(prop):
 		item.SetAttribute(constants.siUINoLabel, True)
 	layout.EndGroup()
 	
-	'''
-	if items and len(items)>2:
-		collider = model.FindChild(layout.Item("CollideObjectChooser").UIItems[prop.Parameters("CollideObjectChooser").Value * 2])
-		return collider
-	else:
-		return None
-	'''
-	
 
 def Cloth_Control_GetClothObjectsList(prop):
 	model = prop.Parent3DObject
 	cloth = clo.FindSyflexMeshes(model)
 	
-	items = ["All Cloth Objects",0]
+	items = ["All Cloth Objects", 0]
 	for c in range(len(cloth)):
-		#items.append(cloth(c).Name.replace("_Cloth",""))
 		items.append(cloth[c].Name)
 		items.append(c+1)
 	
@@ -434,10 +409,10 @@ def Cloth_Control_GetColliderObjectsList(prop):
 	model = prop.Parent3DObject
 	prop = PPG.Inspected(0)
 	uiitems = PPG.PPGLayout.Item("ClothObjectChooser").UIItems
-	items = ["All Collider Objects",0]
+	items = ["All Collider Objects", 0]
 	value = PPG.ClothObjectChooser.Value
 	
-	if value>0:
+	if value > 0:
 		selected = uiitems[value*2]
 		
 		model = PPG.Inspected(0).Parent3DObject
@@ -474,7 +449,8 @@ def Cloth_Control_GetClothObjects(prop):
 			c = model.FindChild(items[i*2])
 			cloth.append(c)
 		return cloth
-		
+
+
 def Cloth_Control_GetTargetObjects(prop):
 	model = prop.Parent3DObject
 	clothes = Cloth_Control_GetClothObjects(prop)
@@ -491,6 +467,7 @@ def Cloth_Control_GetTargetObjects(prop):
 				
 	return targets
 
+
 def Cloth_Control_GetColliderObjects(prop):
 	model = prop.Parent3DObject
 	clothes = Cloth_Control_GetClothObjects(prop)
@@ -502,7 +479,8 @@ def Cloth_Control_GetColliderObjects(prop):
 			colliders.append(cc)
 
 	return colliders	
-	
+
+
 def Cloth_Control_GetOutObjects(prop):
 	model = prop.Parent3DObject
 	clothes = Cloth_Control_GetClothObjects(prop)
@@ -515,10 +493,7 @@ def Cloth_Control_GetOutObjects(prop):
 			outmeshes.append(c)
 	return outmeshes
 			
-			
-#-------------------------------------------------
-# Parameters changed callback
-#-------------------------------------------------
+
 def Cloth_Control_ClothObjectChooser_OnChanged():
 	prop = PPG.Inspected(0)
 	
@@ -540,34 +515,37 @@ def Cloth_Control_ClothObjectChooser_OnChanged():
 	PPG.ClothObjectIcon.Value = path
 	Cloth_Control_RebuildLayout(prop)
 	PPG.Refresh()
-		
+
+
 def Cloth_Control_CollideObjectChooser_OnChanged():
 	prop = PPG.Inspected(0)
 	Cloth_Control_CollideToProperty(prop)
 	PPG.Refresh()
-	
-def Cloth_Control_FindCollideOp(syflex,id):
+
+
+def Cloth_Control_FindCollideOp(syflex, id):
 	collides = []
 	for n in syflex.NestedObjects:
 		if n.Type == "syCollide":
 			collides.append(n)
 			XSI.LogMessage(n)
 	
-	if len(collides)>=id:
+	if len(collides) >= id:
 		return collides[id]
 	return None
-	
+
+
 def Cloth_Control_CollideToProperty(prop):
 	prop = PPG.Inspected(0)
 	items = prop.PPGLayout.Item("CollideObjectChooser").UIItems
 	clothes = Cloth_Control_GetClothObjects(prop)
-	if len(clothes)==1:
+	if len(clothes) == 1:
 		value = PPG.CollideObjectChooser.Value
 		
-		if value>0:
+		if value > 0:
 			model = PPG.Inspected(0).Parent3DObject
 			syflex = clothes[0].ActivePrimitive.ConstructionHistory.Find("syCloth")
-			op = Cloth_Control_FindCollideOp(syflex,value-1)
+			op = Cloth_Control_FindCollideOp(syflex, value-1)
 			if op:
 				XSI.LogMessage("We will treat Collide : " + op.FullName)
 				prop.Parameters("CollideActive").Value = op.Parameters("Active").Value
@@ -581,19 +559,18 @@ def Cloth_Control_CollideToProperty(prop):
 			XSI.LogMessage("You are actually driving ALL Collider Objects")
 	else:
 		XSI.LogMessage("You are actually driving ALL Cloth Objects")
-		
+
+
 def Cloth_Control_SyflexToProperty(prop,obj):
 	if not clo.IsSyflex(obj):
 		return None
-		
-	#Globals
+
 	syflex = obj.ActivePrimitive.ConstructionHistory.Find("syCloth")
 	prop.Parameters("ClothActive").Value = syflex.Parameters("Active").Value
 	prop.Parameters("FirstFrame").Value = syflex.Parameters("FirstFrame").Value
 	prop.Parameters("Precision").Value = syflex.Parameters("Precision").Value
 	prop.Parameters("SubSampling").Value = syflex.Parameters("SubSampling").Value
-	
-	#Properties
+
 	properties = XSI.Dictionary.GetObject(syflex.NestedObjects.Find("syProperties"))
 	prop.Parameters("Density").Value = properties.Parameters("Density").Value
 	prop.Parameters("ShearStiffness").Value = properties.Parameters("ShearStiffness").Value
@@ -604,50 +581,46 @@ def Cloth_Control_SyflexToProperty(prop,obj):
 	prop.Parameters("ShearDamping").Value = properties.Parameters("ShearDamping").Value
 	prop.Parameters("BendDamping").Value = properties.Parameters("BendDamping").Value
 	prop.Parameters("Rescale").Value = properties.Parameters("Rescale").Value
-	
-	#Gravity
+
 	gravity = XSI.Dictionary.GetObject(syflex.NestedObjects.Find("syGravity"))
 	prop.Parameters("GravityActive").Value = gravity.Parameters("Active").Value
 
-	#Wind
 	wind = XSI.Dictionary.GetObject(syflex.NestedObjects.Find("syWind"))
 	prop.Parameters("WindActive").Value = wind.Parameters("Active").Value
 	prop.Parameters("WindTime").Value = wind.Parameters("TimeInterval").Value
-	
-	#Air
+
 	air = XSI.Dictionary.GetObject(syflex.NestedObjects.Find("syAir"))
 	prop.Parameters("AirActive").Value = air.Parameters("Active").Value
 	prop.Parameters("AirDamping").Value = air.Parameters("Damp").Value
-	
-	#Rigid Mimic
+
 	rigid = XSI.Dictionary.GetObject(syflex.NestedObjects.Find("syMimic"))
 	prop.Parameters("RigidMimicActive").Value = rigid.Parameters("Active").Value
-	
-	#Soft Mimic
+
 	for n in syflex.NestedObjects:
 		if n.FullName.find("syMimic[1]")>-1:
 			prop.Parameters("SoftMimicActive").Value = n.Parameters("Active").Value
 			prop.Parameters("SoftMimicDistance").Value = n.Parameters("Distance").Value
 			prop.Parameters("SoftMimicStiffness").Value = n.Parameters("Stiff").Value
 			prop.Parameters("SoftMimicDamping").Value = n.Parameters("Damp").Value
-			
-	#Collide
+
 	Cloth_Control_CollideToProperty(prop)
-	
-	#Self Collide
-	selfcollide = XSI.Dictionary.GetObject(syflex.NestedObjects.Find("sySelfCollide"))
-	prop.Parameters("SelfCollideActive").Value = selfcollide.Parameters("Active").Value
-	prop.Parameters("SelfCollideEnvelope").Value = selfcollide.Parameters("Envelope").Value
-	
+
+	self_collide = XSI.Dictionary.GetObject(syflex.NestedObjects.Find("sySelfCollide"))
+	prop.Parameters("SelfCollideActive").Value = self_collide.Parameters("Active").Value
+	prop.Parameters("SelfCollideEnvelope").Value = self_collide.Parameters("Envelope").Value
+
+
 def Cloth_Control_FirstFrame_OnChanged():
 	prop = PPG.Inspected(0)
-	Cloth_Control_ParameterChanged(prop,"FirstFrame","","FirstFrame")
+	Cloth_Control_ParameterChanged(prop, "FirstFrame", "", "FirstFrame")
 	Cloth_Control_UpdatePreRoll(prop)
+
 
 def Cloth_Control_PreRoll_OnChanged():
 	prop = PPG.Inspected(0)
 	Cloth_Control_UpdatePreRoll(prop)	
-	
+
+
 def Cloth_Control_UpdatePreRoll(prop):
 	targets = Cloth_Control_GetTargetObjects(prop)
 	for t in targets:
@@ -670,136 +643,154 @@ def Cloth_Control_UpdatePreRoll(prop):
 				roll = prop.Parameters("PreRoll").Value
 				node.InputPorts("Start_Frame").Value = start
 				node.InputPorts("End_Frame").Value = start + roll
-		
+
+
 def Cloth_Control_ClothActive_OnChanged():
-	Cloth_Control_ParameterChanged(PPG.Inspected(0),"ClothActive","","Active")
-	
+	Cloth_Control_ParameterChanged(PPG.Inspected(0), "ClothActive", "", "Active")
+
+
 def Cloth_Control_Precision_OnChanged():
-	Cloth_Control_ParameterChanged(PPG.Inspected(0),"Precision","","Precision")
-	
+	Cloth_Control_ParameterChanged(PPG.Inspected(0), "Precision", "", "Precision")
+
+
 def Cloth_Control_SubSampling_OnChanged():
-	Cloth_Control_ParameterChanged(PPG.Inspected(0),"SubSampling","","SubSampling")
-	
+	Cloth_Control_ParameterChanged(PPG.Inspected(0), "SubSampling", "", "SubSampling")
+
+
 def Cloth_Control_Density_OnChanged():
-	Cloth_Control_ParameterChanged(PPG.Inspected(0),"Density","syProperties","Density")
+	Cloth_Control_ParameterChanged(PPG.Inspected(0), "Density", "syProperties", "Density")
+
 
 def Cloth_Control_Rescale_OnChanged():
-	Cloth_Control_ParameterChanged(PPG.Inspected(0),"Rescale","syProperties","Rescale")
-	
+	Cloth_Control_ParameterChanged(PPG.Inspected(0), "Rescale", "syProperties", "Rescale")
+
+
 def Cloth_Control_StretchStiffness_OnChanged():
-	Cloth_Control_ParameterChanged(PPG.Inspected(0),"StretchStiffness","syProperties","StretchStiffness")
-	
+	Cloth_Control_ParameterChanged(PPG.Inspected(0), "StretchStiffness", "syProperties", "StretchStiffness")
+
+
 def Cloth_Control_ShearStiffness_OnChanged():
-	Cloth_Control_ParameterChanged(PPG.Inspected(0),"ShearStiffness","syProperties","ShearStiffness")
-	
+	Cloth_Control_ParameterChanged(PPG.Inspected(0), "ShearStiffness", "syProperties", "ShearStiffness")
+
+
 def Cloth_Control_BendStiffness_OnChanged():
-	Cloth_Control_ParameterChanged(PPG.Inspected(0),"BendStiffness","syProperties","BendStiffness")
-	
+	Cloth_Control_ParameterChanged(PPG.Inspected(0), "BendStiffness", "syProperties", "BendStiffness")
+
+
 def Cloth_Control_StretchDamping_OnChanged():
-	Cloth_Control_ParameterChanged(PPG.Inspected(0),"StretchDamping","syProperties","StretchDamping")
-	
+	Cloth_Control_ParameterChanged(PPG.Inspected(0), "StretchDamping", "syProperties", "StretchDamping")
+
+
 def Cloth_Control_ShearDamping_OnChanged():
-	Cloth_Control_ParameterChanged(PPG.Inspected(0),"ShearDamping","syProperties","ShearDamping")
-	
+	Cloth_Control_ParameterChanged(PPG.Inspected(0), "ShearDamping", "syProperties", "ShearDamping")
+
+
 def Cloth_Control_BendDamping_OnChanged():
-	Cloth_Control_ParameterChanged(PPG.Inspected(0),"BendDamping","syProperties","BendDamping")
-	
+	Cloth_Control_ParameterChanged(PPG.Inspected(0), "BendDamping", "syProperties", "BendDamping")
+
+
 def Cloth_Control_GravityFactor_OnChanged():
 	XSI.LogMessage("Udpdate Parameter for ScriptedOp GravityIconOp")
 
+
 def Cloth_Control_GravityActive_OnChanged():
-	Cloth_Control_ParameterChanged(PPG.Inspected(0),"GravityActive","syGravity","Active")
-	
+	Cloth_Control_ParameterChanged(PPG.Inspected(0), "GravityActive", "syGravity", "Active")
+
+
 def Cloth_Control_WindFactor_OnChanged():
 	XSI.LogMessage("Udpdate Parameter for ScriptedOp WindIconOp")
 
+
 def Cloth_Control_WindActive_OnChanged():
-	Cloth_Control_ParameterChanged(PPG.Inspected(0),"WindActive","syWind","Active")
-	
+	Cloth_Control_ParameterChanged(PPG.Inspected(0), "WindActive", "syWind", "Active")
+
+
 def Cloth_Control_WindTime_OnChanged():
-	Cloth_Control_ParameterChanged(PPG.Inspected(0),"WindTime","syWind","TimeInterval")
-	
+	Cloth_Control_ParameterChanged(PPG.Inspected(0), "WindTime", "syWind", "TimeInterval")
+
+
 def Cloth_Control_WindOneSide_OnChanged():
-	Cloth_Control_ParameterChanged(PPG.Inspected(0),"WindOneSide","syWind","OneSide")
-	
+	Cloth_Control_ParameterChanged(PPG.Inspected(0), "WindOneSide", "syWind", "OneSide")
+
+
 def Cloth_Control_AirActive_OnChanged():
-	Cloth_Control_ParameterChanged(PPG.Inspected(0),"AirActive","syAir","Active")
+	Cloth_Control_ParameterChanged(PPG.Inspected(0), "AirActive", "syAir", "Active")
+
 
 def Cloth_Control_AirDamping_OnChanged():
-	Cloth_Control_ParameterChanged(PPG.Inspected(0),"AirDamping","syAir","Damp")
-	
+	Cloth_Control_ParameterChanged(PPG.Inspected(0), "AirDamping", "syAir", "Damp")
+
+
 def Cloth_Control_RigidMimicActive_OnChanged():
-	Cloth_Control_ParameterChanged(PPG.Inspected(0),"RigidMimicActive","syMimic","Active")
+	Cloth_Control_ParameterChanged(PPG.Inspected(0), "RigidMimicActive", "syMimic", "Active")
+
 
 def Cloth_Control_SoftMimicActive_OnChanged():
-	Cloth_Control_ParameterChanged(PPG.Inspected(0),"SoftMimicActive","syMimic[1]","Active")
+	Cloth_Control_ParameterChanged(PPG.Inspected(0), "SoftMimicActive", "syMimic[1]", "Active")
+
 
 def Cloth_Control_SoftMimicDistance_OnChanged():
-	Cloth_Control_ParameterChanged(PPG.Inspected(0),"SoftMimicDistance","syMimic[1]","Distance")
-	
-def Cloth_Control_SoftMimicStiffness_OnChanged():
-	Cloth_Control_ParameterChanged(PPG.Inspected(0),"SoftMimicStiffness","syMimic[1]","Stiff")
-	
-def Cloth_Control_SoftMimicDamping_OnChanged():
-	Cloth_Control_ParameterChanged(PPG.Inspected(0),"SoftMimicDamping","syMimic[1]","Damp")
+	Cloth_Control_ParameterChanged(PPG.Inspected(0), "SoftMimicDistance", "syMimic[1]", "Distance")
 
-'''	
-	#Rigid Mimic
-	rigid = xsi.Dictionary.GetObject(syflex.NestedObjects.Find("syMimic"))
-	prop.Parameters("RigidMimicActive").Value = rigid.Parameters("Active").Value
-	
-	#Soft Mimic
-	for n in syflex.NestedObjects:
-		if n.FullName.find("syMimic[1]")>-1:
-			prop.Parameters("SoftMimicActive").Value = n.Parameters("Active").Value
-			prop.Parameters("SoftMimicDistance").Value = n.Parameters("Distance").Value
-			prop.Parameters("SoftMimicStiffness").Value = n.Parameters("Stiff").Value
-			prop.Parameters("SoftMimicDamping").Value = n.Parameters("Damp").Value
-'''
+
+def Cloth_Control_SoftMimicStiffness_OnChanged():
+	Cloth_Control_ParameterChanged(PPG.Inspected(0), "SoftMimicStiffness", "syMimic[1]", "Stiff")
+
+
+def Cloth_Control_SoftMimicDamping_OnChanged():
+	Cloth_Control_ParameterChanged(PPG.Inspected(0), "SoftMimicDamping", "syMimic[1]", "Damp")
+
 
 def Cloth_Control_CollideActive_OnChanged():
 	prop = PPG.Inspected(0)
 	collideName = Cloth_Control_GetActiveCollideName(prop)
 	if collideName:
-		Cloth_Control_ParameterChanged(PPG.Inspected(0),"CollideActive",collideName,"Active")
-	
+		Cloth_Control_ParameterChanged(PPG.Inspected(0), "CollideActive", collideName, "Active")
+
+
 def Cloth_Control_CollideFriction_OnChanged():
 	prop = PPG.Inspected(0)
 	collideName = Cloth_Control_GetActiveCollideName(prop)
 	if collideName:
-		Cloth_Control_ParameterChanged(PPG.Inspected(0),"CollideFriction",collideName,"Friction")
-	
+		Cloth_Control_ParameterChanged(PPG.Inspected(0), "CollideFriction", collideName, "Friction")
+
+
 def Cloth_Control_CollideDamping_OnChanged():
 	prop = PPG.Inspected(0)
 	collideName = Cloth_Control_GetActiveCollideName(prop)
 	if collideName:
-		Cloth_Control_ParameterChanged(PPG.Inspected(0),"CollideDamping",collideName,"Damp")
+		Cloth_Control_ParameterChanged(PPG.Inspected(0), "CollideDamping", collideName, "Damp")
 	
 
 def Cloth_Control_CollideBounce_OnChanged():
 	prop = PPG.Inspected(0)
 	collideName = Cloth_Control_GetActiveCollideName(prop)
 	if collideName:
-		Cloth_Control_ParameterChanged(PPG.Inspected(0),"CollideBounce",collideName,"Bounce")
-	
+		Cloth_Control_ParameterChanged(PPG.Inspected(0), "CollideBounce", collideName, "Bounce")
+
+
 def Cloth_Control_CollideExtEnvelope_OnChanged():
 	prop = PPG.Inspected(0)
 	collideName = Cloth_Control_GetActiveCollideName(prop)
 	if collideName:
-		Cloth_Control_ParameterChanged(PPG.Inspected(0),"CollideExtEnvelope",collideName,"ExtEnvelope")
-	
+		Cloth_Control_ParameterChanged(PPG.Inspected(0), "CollideExtEnvelope", collideName, "ExtEnvelope")
+
+
 def Cloth_Control_CollideIntEnvelope_OnChanged():
 	prop = PPG.Inspected(0)
 	collideName = Cloth_Control_GetActiveCollideName(prop)
 	if collideName:
-		Cloth_Control_ParameterChanged(PPG.Inspected(0),"CollideIntEnvelope",collideName,"IntEnvelope")	
-	
+		Cloth_Control_ParameterChanged(PPG.Inspected(0), "CollideIntEnvelope", collideName, "IntEnvelope")
+
+
 def Cloth_Control_SelfCollideActive_OnChanged():
-	Cloth_Control_ParameterChanged(PPG.Inspected(0),"SelfCollideActive","sySelfCollide","Active")
-	
+	Cloth_Control_ParameterChanged(PPG.Inspected(0), "SelfCollideActive", "sySelfCollide", "Active")
+
+
 def Cloth_Control_SelfCollideEnvelope_OnChanged():
-	Cloth_Control_ParameterChanged(PPG.Inspected(0),"SelfCollideEnvelope","sySelfCollide","Envelope")
-	
+	Cloth_Control_ParameterChanged(PPG.Inspected(0), "SelfCollideEnvelope", "sySelfCollide", "Envelope")
+
+
 def Cloth_Control_GetActiveCollideName(prop):
 	id = prop.CollideObjectChooser.Value
 	if id == 0:
@@ -810,8 +801,9 @@ def Cloth_Control_GetActiveCollideName(prop):
 		collideName +="["+(str(id-1))+"]"
 	
 	return collideName
-		
-def Cloth_Control_ParameterChanged(prop,param,opname,opparam):
+
+
+def Cloth_Control_ParameterChanged(prop, param, opname, opparam):
 	cloth = Cloth_Control_GetClothObjects(prop)
 	indexed = False
 	search = ""
@@ -827,7 +819,6 @@ def Cloth_Control_ParameterChanged(prop,param,opname,opparam):
 		
 	XSI.LogMessage(all)
 	for c in cloth:
-		#xsi.LogMessage("Update Cloth Object ["+c.Name+"]"+opname+"."+opparam+" ---> "+str(PPG.Inspected(0).Parameters(param).Value))
 		syflex = c.ActivePrimitive.ConstructionHistory.Find("syCloth")
 		op = syflex
 		if opname:
@@ -846,11 +837,16 @@ def Cloth_Control_ParameterChanged(prop,param,opname,opparam):
 						try:
 							op.Parameters(opparam).Value = PPG.Inspected(0).Parameters(param).Value
 						except:
-							XSI.LogMessage("[Cloth_Control] Can't find Parameter " + opparam + " under " + op.FullName + " !", constants.siWarning)
+							XSI.LogMessage(
+								"[Cloth_Control] Can't find Parameter " + opparam + " under " +
+								op.FullName + " !", constants.siWarning)
 		try:
 			op.Parameters(opparam).Value = PPG.Inspected(0).Parameters(param).Value
 		except:
-			XSI.LogMessage("[Cloth_Control] Can't find Parameter " + opparam + " under " + op.FullName + " !", constants.siWarning)
+			XSI.LogMessage(
+				"[Cloth_Control] Can't find Parameter " + opparam + " under " +
+				op.FullName + " !", constants.siWarning)
+
 
 def Cloth_Control_OutputFolderSelection_OnChanged():
 	outputfolder = PPG.OutputFolderSelection.Value
@@ -861,23 +857,22 @@ def Cloth_Control_OutputFolderSelection_OnChanged():
 	else:
 		PPG.OutputFolder.SetCapabilityFlag(constants.siNotInspectable,False);
 		PPG.ScenePath.SetCapabilityFlag(constants.siNotInspectable,True);
-			
+
+
 def Cloth_Control_SelectGravityIcon_OnClicked():
 	model = PPG.Inspected(0).Parent3DObject
 	icon = model.FindChild("Cloth_Gravity")
 	if icon:
 		XSI.SelectObj(icon)
-		
+
+
 def Cloth_Control_SelectWindIcon_OnClicked():
 	model = PPG.Inspected(0).Parent3DObject
 	icon = model.FindChild("Cloth_Wind")
 	if icon:
 		XSI.SelectObj(icon)
 		
-		
-#----------------------------------------------------
-# Cache
-#--------------------------------------------
+
 def Cloth_Control_SetSyflexCache_OnClicked():
 	scene = XSI.ActiveProject2.ActiveScene
 	
@@ -897,13 +892,14 @@ def Cloth_Control_SetSyflexCache_OnClicked():
 		XSI.LogMessage("--------------------------------------------------")
 		XSI.LogMessage("[Cloth_Control] Set Syflex Cache Path done for " + c.FullName + " : ")
 		XSI.LogMessage(path)
-		
+
+
 def Cloth_Control_ClearSyflexCache_OnClicked():
 	scene = XSI.ActiveProject2.ActiveScene
 	
 	folder = XSI.InstallationPath(constants.siProjectPath)
 	scene = XSI.ActiveProject.ActiveScene
-	folder = XSIUtils.BuildPath(folder,"Caches",scene)
+	folder = XSIUtils.BuildPath(folder, "Caches", scene)
 	
 	prop = PPG.Inspected(0)
 	cloth = Cloth_Control_GetClothObjects(prop)
@@ -914,17 +910,14 @@ def Cloth_Control_ClearSyflexCache_OnClicked():
 	v = remote.Parameters("In").Value
 	remote.Parameters( "Current" ).Value = prop.Parameters("FirstFrame").Value
 	
-	#deactivate delta storing state
 	previousdelta = uti.DeactivateDelta(model)
 	
 	for c in cloth:
 		syflex = c.ActivePrimitive.ConstructionHistory.Find( "syCloth" )
-		#clear all cache.
 		XSI.LogMessage("{Cloth_Control] Delete All Syflex Cache File for " + c.FullName)
 		syflex.Parameters("ClearCache").Value = 2
 		syflex.Parameters("Cache").Value = ""
 
-	#reactivate delta
 	if previousdelta>-1:
 		uti.ReactivateDelta(model,previousdelta)
 	'''
@@ -966,12 +959,13 @@ def Cloth_Control_ClearSyflexCache_OnClicked():
 
 		oPPG.SyflexCacheFileName.Value = "";
 	'''
-	
+
+
 def Cloth_Control_SetDampingPercentage_OnClicked():
 	prop = PPG.Inspected(0)
 	
-	tmp = XSI.ActiveSceneRoot.AddProperty("CustomProperty", false, "Cloth_Control_SetDampingPercentage")
-	p = tmp.AddParameter3( "Value", constants.siFloat, 100, 1, 1000, False, False )
+	tmp = XSI.ActiveSceneRoot.AddProperty("CustomProperty", False, "Cloth_Control_SetDampingPercentage")
+	p = tmp.AddParameter3( "Value", constants.siFloat, 100, 1, 1000, False, False)
 	layout = tmp.PPGLayout
 	layout.Clear()
 	layout.AddGroup("Set Damping : Stiffness divided by ")
@@ -993,9 +987,7 @@ def Cloth_Control_SetDampingPercentage_OnClicked():
 		XSI.DeleteObj(tmp)
 		XSI.LogMessage("[Cloth_Control]Set Syflex Damping Aborted..")
 
-#----------------------------------------------------
-# Corrective Shape Callbacks
-#--------------------------------------------
+
 def Cloth_Control_StoreCorrectiveShape_OnClicked():
 	prop = PPG.Inspected(0)
 	layout = prop.PPGLayout
@@ -1003,8 +995,8 @@ def Cloth_Control_StoreCorrectiveShape_OnClicked():
 	if len(clothes) == 1:
 		XSI.Cloth_CorrectiveShape(clothes[0])
 		
-		smoothlist = Cloth_Control_GetCorrectiveList(prop ,"Shape")
-		pro.UpdateListItemsUI( layout.Item("CorrectiveShapeList"), prop.Parameters("CorrectiveShapeList"), smoothlist)
+		smooth_list = Cloth_Control_GetCorrectiveList(prop ,"Shape")
+		pro.UpdateListItemsUI( layout.Item("CorrectiveShapeList"), prop.Parameters("CorrectiveShapeList"), smooth_list)
 		PPG.Refresh()
 		
 	else:
@@ -1015,13 +1007,14 @@ def Cloth_Control_InspectCorrectiveShape_OnClicked():
 	prop = PPG.Inspected(0)
 	clothes = Cloth_Control_GetClothObjects(prop)
 	if len(clothes) == 1:
-		tree = clothes[0].ActivePrimitive.ICETrees("CorrectiveShape")
-		if(tree):
-			compound = tree.Nodes("CorrectiveShape");
-			if(compound):
+		ice_tree = clothes[0].ActivePrimitive.ICETrees("CorrectiveShape")
+		if ice_tree:
+			compound = ice_tree.Nodes("CorrectiveShape");
+			if compound:
 				XSI.InspectObj(compound)
 	else:
 		XSI.LogMessage("[Cloth_Control] Store CorrectiveShape only works in Single item Mode!!", constants.siError)
+
 
 def Cloth_Control_DeleteCorrectiveShape_OnClicked():
 	prop = PPG.Inspected(0)
@@ -1039,6 +1032,7 @@ def Cloth_Control_DeleteCorrectiveShape_OnClicked():
 		
 	else:
 		XSI.LogMessage("[Cloth_Control] Store CorrectiveShape only works in Single item Mode!!", constants.siError)
+
 
 def Cloth_Control_DeleteAllCorrectiveShape_OnClicked():
 	prop = PPG.Inspected(0)
@@ -1063,9 +1057,7 @@ def Cloth_Control_DeleteAllCorrectiveShape_OnClicked():
 	else:
 		XSI.LogMessage("[Cloth_Control] Store CorrectiveShape only works in Single item Mode!!", constants.siError)
 
-#--------------------------------------------
-# Corrective Smooth Callbacks
-#--------------------------------------------
+
 def Cloth_Control_StoreCorrectiveSmooth_OnClicked():
 	prop = PPG.Inspected(0)
 	layout = prop.PPGLayout
@@ -1080,6 +1072,7 @@ def Cloth_Control_StoreCorrectiveSmooth_OnClicked():
 	else:
 		XSI.LogMessage("[Cloth_Control] Store CorrectiveShape only works in Single item Mode!!", constants.siError)
 
+
 def Cloth_Control_InspectCorrectiveSmooth_OnClicked():
 	prop = PPG.Inspected(0)
 	clothes = Cloth_Control_GetClothObjects(prop)
@@ -1093,6 +1086,7 @@ def Cloth_Control_InspectCorrectiveSmooth_OnClicked():
 	else:
 		XSI.LogMessage("[Cloth_Control] Store CorrectiveShape only works in Single item Mode!!", constants.siError)
 
+
 def Cloth_Control_DeleteCorrectiveSmooth_OnClicked():
 	prop = PPG.Inspected(0)
 	layout = prop.PPGLayout
@@ -1102,20 +1096,23 @@ def Cloth_Control_DeleteCorrectiveSmooth_OnClicked():
 		selectedFrame = selectedSmooth.replace("Frame","")
 		Cloth_DeleteCorrectiveSmooth(clothes[0],selectedFrame)
 		
-		smoothlist = Cloth_Control_GetCorrectiveList(prop,"Smooth")
+		smoothlist = Cloth_Control_GetCorrectiveList(prop, "Smooth")
 		pro.UpdateListItemsUI( layout.Item("CorrectiveSmoothList"), prop.Parameters("CorrectiveSmoothList"), smoothlist)
 		PPG.Refresh()
 		
 	else:
 		XSI.LogMessage("[Cloth_Control] Store CorrectiveShape only works in Single item Mode!!", constants.siError)
 
+
 def Cloth_Control_DeleteAllCorrectiveSmooth_OnClicked():
 	prop = PPG.Inspected(0)
 	layout = prop.PPGLayout
 	clothes = Cloth_Control_GetClothObjects(prop)
-	if len(clothes)==1:
+	if len(clothes) == 1:
 		toolkit = Dispatch("XSI.UIToolkit")
-		delete = toolkit.Msgbox( "Do you realy want to delete ALL corrective smooth maps", constants.siMsgYesNo | constants.siMsgQuestion, "Delete Corrective Smooth" ) ;
+		delete = toolkit.Msgbox(
+			"Do you realy want to delete ALL corrective smooth maps",
+			constants.siMsgYesNo | constants.siMsgQuestion, "Delete Corrective Smooth")
 
 		if delete == constants.siMsgYes:
 			tree = clothes[0].ActivePrimitive.ICETrees("CorrectiveSmooth")
@@ -1126,11 +1123,12 @@ def Cloth_Control_DeleteAllCorrectiveSmooth_OnClicked():
 				XSI.DeleteObj(cls)
 				
 		smoothlist = []
-		pro.UpdateListItemsUI( layout.Item("CorrectiveSmoothList"), prop.Parameters("CorrectiveSmoothList"), smoothlist);
+		pro.UpdateListItemsUI( layout.Item("CorrectiveSmoothList"), prop.Parameters("CorrectiveSmoothList"), smoothlist)
 		PPG.Refresh()
 		
 	else:
 		XSI.LogMessage("[Cloth_Control] Store CorrectiveShape only works in Single item Mode!!", constants.siError)
+
 
 def Cloth_Control_PaintSmooth_OnClicked():
 	prop = PPG.Inspected(0)
@@ -1144,9 +1142,7 @@ def Cloth_Control_PaintSmooth_OnClicked():
 	else:
 		XSI.LogMessage("[Cloth_Control] Store CorrectiveShape only works in Single item Mode!!", constants.siError)
 
-#--------------------------------------------
-# Corrective Push Callbacks
-#--------------------------------------------
+
 def Cloth_Control_StoreCorrectivePush_OnClicked():
 	prop = PPG.Inspected(0)
 	layout = prop.PPGLayout
@@ -1162,6 +1158,7 @@ def Cloth_Control_StoreCorrectivePush_OnClicked():
 	else:
 		XSI.LogMessage("[Cloth_Control] Store CorrectiveShape only works in Single item Mode!!", constants.siError)
 
+
 def Cloth_Control_InspectCorrectivePush_OnClicked():
 	prop = PPG.Inspected(0)
 	clothes = Cloth_Control_GetClothObjects(prop)
@@ -1174,6 +1171,7 @@ def Cloth_Control_InspectCorrectivePush_OnClicked():
 				
 	else:
 		XSI.LogMessage("[Cloth_Control] Inspect Corrective Push only works in Single Item Mode!!", constants.siError)
+
 
 def Cloth_Control_DeleteCorrectivePush_OnClicked():
 	prop = PPG.Inspected(0)
@@ -1192,13 +1190,16 @@ def Cloth_Control_DeleteCorrectivePush_OnClicked():
 	else:
 		XSI.LogMessage("[Cloth_Control] Delete Corrective Push only works in Single Item Mode!!", constants.siError)
 
+
 def Cloth_Control_DeleteAllCorrectivePush_OnClicked():
 	prop = PPG.Inspected(0)
 	layout = prop.PPGLayout
 	clothes = Cloth_Control_GetClothObjects(prop)
 	
 	if len(clothes) == 1:
-		delete = XSIUIToolkit.Msgbox( "Do you realy want to delete ALL corrective push maps", constants.siMsgYesNo | constants.siMsgQuestion, "Delete Corrective Push" ) 
+		delete = XSIUIToolkit.Msgbox(
+			"Do you realy want to delete ALL corrective push maps",
+			constants.siMsgYesNo | constants.siMsgQuestion, "Delete Corrective Push")
 
 		if delete == constants.siMsgYes:
 			tree = clothes[0].ActivePrimitive.ICETrees("CorrectivePush")
@@ -1209,15 +1210,13 @@ def Cloth_Control_DeleteAllCorrectivePush_OnClicked():
 				XSI.DeleteObj(cls)
 		
 		pushlist = []
-		pro.UpdateListItemsUI( layout.Item("CorrectivePushList"), prop.Parameters("CorrectivePushList"), pushlist);
+		pro.UpdateListItemsUI( layout.Item("CorrectivePushList"), prop.Parameters("CorrectivePushList"), pushlist)
 		PPG.Refresh()
 		
 	else:
 		XSI.LogMessage("[Cloth_Control] Delete ALL Corrective Push only works in Single Item Mode!!", constants.siError)
 
-#--------------------------------------------
-# Paint Maps
-#--------------------------------------------
+
 def Cloth_Control_PaintPush_OnClicked():
 	prop = PPG.Inspected(0)
 	clothes = Cloth_Control_GetClothObjects(prop)
@@ -1229,12 +1228,13 @@ def Cloth_Control_PaintPush_OnClicked():
 	else:
 		XSI.LogMessage("[Cloth_Control] Paint Corrective Push only works in Single Item Mode!!", constants.siError)
 
+
 def Cloth_Control_PaintSoftMimic_OnClicked():
 	prop = PPG.Inspected(0)
 	model = prop.Parent3DObject
 	clothes = Cloth_Control_GetClothObjects(prop)
 	
-	if len(clothes)==1:
+	if len(clothes) == 1:
 		cls = clothes[0].ActivePrimitive.Geometry.Clusters("SoftMimicCls");
 		map = cls.Properties("SoftMimicMap")
 		
@@ -1261,17 +1261,18 @@ def Cloth_Control_PaintRestoreMap_OnClicked():
 		
 	else:
 		XSI.LogMessage("[Cloth_Control] Paint Restore Map only works in Single Item Mode!!", constants.siError)
-	
-def Cloth_Control_PaintMap(map):
-	object = map.Parent3DObject
-	object.Properties("Visibility").Parameters("ViewVis").Value = True
-	XSI.SelectObj(map)
+
+
+def Cloth_Control_PaintMap(weight_map):
+	parent = weight_map.Parent3DObject
+	parent.Properties("Visibility").Parameters("ViewVis").Value = True
+	XSI.SelectObj(weight_map)
 	view = XSI.OpenView("Object View", True)
-	view.SetAttributeValue("lockstatus",True)
+	view.SetAttributeValue("lockstatus", True)
 	XSI.PaintTool()
-	
+
+
 def Cloth_Control_InspectRestoreNode_OnClicked():
-	XSI.LogMessage("hey...")
 	prop = PPG.Inspected(0)
 	clothes = Cloth_Control_GetClothObjects(prop)
 	inspect = []
@@ -1283,9 +1284,8 @@ def Cloth_Control_InspectRestoreNode_OnClicked():
 				inspect.append(node)
 	XSI.InspectObj(inspect)
 
-# Get Corrective List
-#---------------------------------------------
-def Cloth_Control_GetCorrectiveList(prop,correctivetype):
+
+def Cloth_Control_GetCorrectiveList(prop, correctivetype):
 	clothes = Cloth_Control_GetClothObjects(prop)
 	if len(clothes) ==1:
 		outstr = ""
@@ -1305,7 +1305,7 @@ def Cloth_Control_GetCorrectiveList(prop,correctivetype):
 				props = cls.Properties
 				for p in props:
 					if p.Type == proptype:
-						outstr+=p.Name+";"
+						outstr += p.Name+";"
 						outlist.append(p.Name)
 						outlist.append(p.Name)
 
@@ -1316,52 +1316,52 @@ def Cloth_Control_GetCorrectiveList(prop,correctivetype):
 	else:
 		XSI.LogMessage("[Cloth_Control] Get Corrective List only works in Single Item Mode!!", constants.siError)
 		
-#	Cloth_CorrectivePush
-#------------------------------------------------
+
 def Cloth_CorrectivePush_Init(ctxt):
 	cmd = ctxt.Source
 	cmd.Description = "Create Secondary Animated Push"
 	
-	args = cmd.Arguments;
+	args = cmd.Arguments
 	args.Add("obj", constants.siArgumentInput)
 
 
 def Cloth_CorrectivePush_Execute(obj):
-	correct.Correct(obj,"Push")
+	correct.Correct(obj, "Push")
 
-def Cloth_DeleteCorrectivePush(obj,frame):
-	correct.Delete(obj,"Push",frame)
+
+def Cloth_DeleteCorrectivePush(obj, frame):
+	correct.Delete(obj, "Push", frame)
 	
-#	Cloth_CorrectiveSmooth
-#------------------------------------------------	
+
 def Cloth_CorrectiveSmooth_Init(ctxt):
 	cmd = ctxt.Source
 	cmd.Description = "Create Secondary Animated Smooth"
 	
-	args = cmd.Arguments;
+	args = cmd.Arguments
 	args.Add("obj", constants.siArgumentInput)
 
 
 def Cloth_CorrectiveSmooth_Execute(obj):
 	XSI.LogMessage("Cloth_CorrectiveSmooth called...")
-	correct.Correct(obj,"Smooth")
+	correct.Correct(obj, "Smooth")
+
+
+def Cloth_DeleteCorrectiveSmooth(obj, frame):
+	correct.Delete(obj, "Smooth", frame)
 	
-def Cloth_DeleteCorrectiveSmooth(obj,frame):
-	correct.Delete(obj,"Smooth",frame)
-	
-#	Cloth_CorrectiveShape
-#------------------------------------------------
+
 def Cloth_CorrectiveShape_Init(ctxt):
 	cmd = ctxt.Source
 	cmd.Description = "Create Secondary Shape"
 	
 	args = cmd.Arguments
 	args.Add("inObject", constants.siArgumentInput)
-	
+
+
 def Cloth_CorrectiveShape_Execute(obj):
 	XSI.LogMessage("Cloth_CorrectiveShape called...")
-	correct.Correct(obj,"Shape")
-	
-def Cloth_DeleteCorrectiveShape(obj,frame):
-	correct.Delete(obj,"Shape",frame)		
-	
+	correct.Correct(obj, "Shape")
+
+
+def Cloth_DeleteCorrectiveShape(obj, frame):
+	correct.Delete(obj, "Shape", frame)

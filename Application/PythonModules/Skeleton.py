@@ -18,9 +18,6 @@ class IRSkeleton(Element.IRElement):
 	:param bool mirror: mirror element (self-symmetry)
 	:param str suffix: suffix
 	"""
-	# ---------------------------------------------------------------
-	# Constructor
-	# ---------------------------------------------------------------
 	def __init__(self, crv, parent, name, mode=ID_CHAIN, side=MIDDLE, divisions=1, mirror=False, suffix='_Crv'):
 		super(IRSkeleton, self).__init__(crv, parent, name, side, mirror, suffix)
 
@@ -56,8 +53,7 @@ class IRSkeleton(Element.IRElement):
 
 	def CreateGuide(self):
 		if self.CheckElementExist():
-			XSI.LogMessage('[CreateSkeletonElement] {}_Crv already exist !'.format(self.fullname), constants.siWarning)
-			return False
+			XSI.DeleteObj(self.model.FindChild(self.fullname+self.suffix))
 
 		if self.mirror:
 			self.crv = Utils.BuildCurveOnSymmetrizedPositions(self.position)

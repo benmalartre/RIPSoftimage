@@ -1,16 +1,13 @@
-# -------------------------------------------------------------------
-# Utils
-# -------------------------------------------------------------------
+import math
+from win32com.client import constants
+import Constants
 from Globals import XSI
 from Globals import XSIMath
 from Globals import XSIFactory
-from win32com.client import constants
-from Constants import *
-import math
 
 
 def GetPluginPath(name):
-	""" Get plugin path gievn plugin name
+	""" Get plugin path given plugin name
 	"""
 	plugins = XSI.Plugins
 	for plugin in plugins:
@@ -23,9 +20,9 @@ def GetPrefixFromSide(side):
 	""" Get prefix from side
 	"""
 	prefix = 'M_'
-	if side == LEFT:
+	if side == Constants.LEFT:
 		prefix = 'L_'
-	elif side == RIGHT:
+	elif side == Constants.RIGHT:
 		prefix = 'R_'
 	return prefix
 
@@ -78,9 +75,6 @@ def CreateAlwaysCompleteCluster(obj, _type=constants.siVertexCluster, name='Alwa
 	return cls
 
 
-# ----------------------------------------------------
-# Create Complete But Not Always Cluster
-# ----------------------------------------------------
 def CreateCompleteButNotAlwaysCluster(obj, _type=constants.siVertexCluster, name='CompleteButNotAlwaysCls'):
 	geom = obj.ActivePrimitive.Geometry
 	if not geom:
@@ -109,9 +103,6 @@ def CreateCompleteButNotAlwaysCluster(obj, _type=constants.siVertexCluster, name
 			return None
 
 
-# ----------------------------------------------------
-# Update Cluster Component
-# ----------------------------------------------------
 def UpdateClusterComponent(cluster, subcomponent, method):
 	# methods
 	# 0 = Exclusive Add Selected Points
@@ -126,18 +117,14 @@ def UpdateClusterComponent(cluster, subcomponent, method):
 		XSI.SIRemoveFromCluster(cluster, subcomponent)
 
 
-# ----------------------------------------------------
-# Mirror Vertex Cluster
-# ----------------------------------------------------
-def MirrorVertexCluster(cluster, weightmap=False, name="WeightMap"):
+def MirrorVertexCluster(cluster, weight_map=False, name="WeightMap"):
 	parent_object = cluster.Parent3DObject
 	geometry = parent_object.ActivePrimitive.Geometry
 	
-	symmetry_weightmap = GetSymmetryMap(parent_object)
-	symmetry_elements = symmetry_weightmap.Elements.Array
+	symmetry_weight_map = GetSymmetryMap(parent_object)
+	symmetry_elements = symmetry_weight_map.Elements.Array
 	
 	cluster_name = cluster.Name
-	symmetry_cluster = None
 	self_symmetry = False
 	
 	if cluster_name.find('L_', 0, 2) > -1:
@@ -152,27 +139,23 @@ def MirrorVertexCluster(cluster, weightmap=False, name="WeightMap"):
 		symmetry_cluster = cluster
 		self_symmetry = True
 		
-	# symmetrize cluster on itself from left to right
 	if self_symmetry:
 		to_add = []
 		position = geometry.Points.PositionArray
 		for i in range(len(position[0])):
 			if not position[0][i] <= 0:
 				continue
-			# find symmetric point
 			symmetry_point = int(symmetry_elements[0][i])
 			
-			# check if symmetry point is in cluster
 			if cluster.Elements.FindIndex(symmetry_point) > -1:
 				to_add.append(i)
 			
 		sub_comp = geometry.CreateSubComponent(constants.siVertexCluster, to_add)
 		UpdateClusterComponent(cluster, sub_comp, 1)
-		if weightmap:
-			weightmap = GetWeightMap(parent_object, name, 1.0, 0.0, 1.0, cluster)
-			SymmetrizeWeights(weightmap, 0, False)
+		if weight_map:
+			weight_map = GetWeightMap(parent_object, name, 1.0, 0.0, 1.0, cluster)
+			SymmetrizeWeights(weight_map, 0, False)
 
-	# symmetrize on another cluster
 	else:
 		elements = cluster.Elements.Array
 		tmp = [0 for _ in elements]
@@ -181,49 +164,43 @@ def MirrorVertexCluster(cluster, weightmap=False, name="WeightMap"):
 		
 		sub_comp = geometry.CreateSubComponent(constants.siVertexCluster, tmp)
 		UpdateClusterComponent(symmetry_cluster, sub_comp, 0)
-		if weightmap:
-			weightmap = GetWeightMap(parent_object, name, 1.0, 0.0, 1.0, cluster)
-			symmetry_weightmap = GetWeightMap(parent_object, name, 1.0, 0.0, 1.0, symmetry_cluster)
-			if weightmap and symmetry_weightmap:
-				symmetry_weightmap.Elements.Array = weightmap.Elements.Array
+		if weight_map:
+			weight_map = GetWeightMap(parent_object, name, 1.0, 0.0, 1.0, cluster)
+			symmetry_weight_map = GetWeightMap(parent_object, name, 1.0, 0.0, 1.0, symmetry_cluster)
+			if weight_map and symmetry_weight_map:
+				symmetry_weight_map.Elements.Array = weight_map.Elements.Array
 			else:
-				SetWeightMap(symmetry_weightmap, 1.0, 0.0, 1.0)
+				SetWeightMap(symmetry_weight_map, 1.0, 0.0, 1.0)
 
 
-# ----------------------------------------------------
-# Static Kinematic State
-# ----------------------------------------------------
 def ResetStaticKinematicState(objs):
 	out_kinematic_state = []
 	for obj in objs:
-		static_kinestate = obj.Properties('Static_KineState')
-		if not static_kinestate:
-			static_kinestate = obj.AddProperty('Static Kinematic State Property')
-			static_kinestate.Name = 'Static_KineState'
+		static_kine_state = obj.Properties('Static_KineState')
+		if not static_kine_state:
+			static_kine_state = obj.AddProperty('Static Kinematic State Property')
+			static_kine_state.Name = 'Static_KineState'
 		
 		kine = obj.Kinematics.Global
-		static_kinestate.Parameters('PosX').Value = kine.Parameters('PosX').Value
-		static_kinestate.Parameters('PosY').Value = kine.Parameters('PosY').Value
-		static_kinestate.Parameters('PosZ').Value = kine.Parameters('PosZ').Value
-		static_kinestate.Parameters('OriX').Value = kine.Parameters('RotX').Value
-		static_kinestate.Parameters('OriY').Value = kine.Parameters('RotY').Value
-		static_kinestate.Parameters('OriZ').Value = kine.Parameters('RotZ').Value
-		static_kinestate.Parameters('SclX').Value = kine.Parameters('SclX').Value
-		static_kinestate.Parameters('SclY').Value = kine.Parameters('SclY').Value
-		static_kinestate.Parameters('SclZ').Value = kine.Parameters('SclZ').Value
-		out_kinematic_state.append(static_kinestate)
+		static_kine_state.Parameters('PosX').Value = kine.Parameters('PosX').Value
+		static_kine_state.Parameters('PosY').Value = kine.Parameters('PosY').Value
+		static_kine_state.Parameters('PosZ').Value = kine.Parameters('PosZ').Value
+		static_kine_state.Parameters('OriX').Value = kine.Parameters('RotX').Value
+		static_kine_state.Parameters('OriY').Value = kine.Parameters('RotY').Value
+		static_kine_state.Parameters('OriZ').Value = kine.Parameters('RotZ').Value
+		static_kine_state.Parameters('SclX').Value = kine.Parameters('SclX').Value
+		static_kine_state.Parameters('SclY').Value = kine.Parameters('SclY').Value
+		static_kine_state.Parameters('SclZ').Value = kine.Parameters('SclZ').Value
+		out_kinematic_state.append(static_kine_state)
 		
 	return out_kinematic_state
 
 
-# ----------------------------------------------------
-# Wirecolor
-# ----------------------------------------------------
-def SetWireColor(obj, R, G, B):
+def SetWireColor(obj, red, green, blue):
 	p = obj.AddProperty("Display Property")
-	p.Parameters("WireColorR").Value = R
-	p.Parameters("WireColorG").Value = G
-	p.Parameters("WireColorB").Value = B
+	p.Parameters("WireColorR").Value = red
+	p.Parameters("WireColorG").Value = green
+	p.Parameters("WireColorB").Value = blue
 
 
 def GetWireColor(obj):
@@ -242,227 +219,217 @@ def GetCustomColor(obj):
 	return outColor
 
 
-# ----------------------------------------------------
-# Match Transform
-# ----------------------------------------------------
-def MatchTransform(Obj, Target):
-	T = Target.Kinematics.Global.Transform
-	Obj.Kinematics.Global.Transform = T
+def MatchTransform(obj, target):
+	transform = target.Kinematics.Global.Transform
+	obj.Kinematics.Global.Transform = transform
 
 
-def MatchRotation(Obj,Target):
-    T = Target.Kinematics.Global.Transform
-    O = Obj.Kinematics.Global.Transform
-    R = XSIMath.CreateRotation()
-    T.GetRotation(R)
-    O.SetRotation(R)
-    Obj.Kinematics.Global.Transform = O
+def MatchTransformWithOffset(obj, target, offset):
+	transform = target.Kinematics.Global.Transform
+
+	offset_matrix = XSIMath.CreateMatrix4()
+	offset_transform = XSIMath.CreateTransform()
+	offset_matrix.Set(*offset)
+	offset_matrix.MulInPlace(transform.Matrix4)
+	offset_transform.SetMatrix4(offset_matrix)
+	obj.Kinematics.Global.Transform = offset_transform
 
 
-def MatchPosition(Obj,Target):
-    T = Target.Kinematics.Global.Transform
-    O = Obj.Kinematics.Global.Transform
-    O.SetTranslation(T.Translation)
-    Obj.Kinematics.Global.Transform = O
+def MatchRotation(obj, target):
+	transform = target.Kinematics.Global.Transform
+	other = obj.Kinematics.Global.Transform
+	rotation = XSIMath.CreateRotation()
+	transform.GetRotation(rotation)
+	other.SetRotation(rotation)
+	obj.Kinematics.Global.Transform = other
 
 
-# ----------------------------------------------------
-# Set Transform
-# ----------------------------------------------------
+def MatchPosition(obj, target):
+	transform = target.Kinematics.Global.Transform
+	other = obj.Kinematics.Global.Transform
+	other.SetTranslation(transform.Translation)
+	obj.Kinematics.Global.Transform = other
+
+
 def SetPosition(obj, pos):
-	T = obj.Kinematics.Global.GetTransform2(obj)
-	T.SetTranslation(pos)
-	obj.Kinematics.Global.PutTransform2(obj, T)
+	transform = obj.Kinematics.Global.GetTransform2(obj)
+	transform.SetTranslation(pos)
+	obj.Kinematics.Global.PutTransform2(obj, transform)
 
 
 def SetOrientation(obj, rot):
-	T = obj.Kinematics.Global.GetTransform2(obj)
-	T.SetRotation(rot)
-	obj.Kinematics.Global.PutTransform2(obj, T)
+	transform = obj.Kinematics.Global.GetTransform2(obj)
+	transform.SetRotation(rot)
+	obj.Kinematics.Global.PutTransform2(obj, transform)
 
 
 def SetScaling(obj, scl):
-	T = obj.Kinematics.Global.GetTransform2(obj)
-	T.SetScaling(scl)
-	obj.Kinematics.Global.PutTransform2(obj, T)
+	transform = obj.Kinematics.Global.GetTransform2(obj)
+	transform.SetScaling(scl)
+	obj.Kinematics.Global.PutTransform2(obj, transform)
 
 
-# ----------------------------------------------------
-# Simple Geometry
-# ----------------------------------------------------
 def SimpleSymmetry(obj, target, axis):
-	oG = obj.Kinematics.Global
-	tG = target.Kinematics.Global
+	obj_trs = obj.Kinematics.Global
+	tgt_trs = target.Kinematics.Global
 	
-	if axis == XY_AXIS:
-		x = "- "+str(tG.Parameters("posx"))
-		oG.Parameters("posx").AddExpression(x)
-		y = str(tG.Parameters("posy"))
-		oG.Parameters("posy").AddExpression(y)
-		z = str(tG.Parameters("posz"))
-		oG.Parameters("posz").AddExpression(z)
+	if axis == Constants.XY_AXIS:
+		x = "- "+str(tgt_trs.Parameters("posx"))
+		obj_trs.Parameters("posx").AddExpression(x)
+		y = str(tgt_trs.Parameters("posy"))
+		obj_trs.Parameters("posy").AddExpression(y)
+		z = str(tgt_trs.Parameters("posz"))
+		obj_trs.Parameters("posz").AddExpression(z)
 		
-		x = str(tG.Parameters("rotx"))
-		oG.Parameters("rotx").AddExpression(x)
-		y = "- "+str(tG.Parameters("roty"))
-		oG.Parameters("roty").AddExpression(y)
-		z = "- "+str(tG.Parameters("rotz"))
-		oG.Parameters("rotz").AddExpression(z)
+		x = str(tgt_trs.Parameters("rotx"))
+		obj_trs.Parameters("rotx").AddExpression(x)
+		y = "- "+str(tgt_trs.Parameters("roty"))
+		obj_trs.Parameters("roty").AddExpression(y)
+		z = "- "+str(tgt_trs.Parameters("rotz"))
+		obj_trs.Parameters("rotz").AddExpression(z)
 		
-		x = str(tG.Parameters("sclx"))
-		oG.Parameters("sclx").AddExpression(x)
-		y = str(tG.Parameters("scly"))
-		oG.Parameters("scly").AddExpression(y)
-		z = str(tG.Parameters("sclz"))
-		oG.Parameters("sclz").AddExpression(z)
+		x = str(tgt_trs.Parameters("sclx"))
+		obj_trs.Parameters("sclx").AddExpression(x)
+		y = str(tgt_trs.Parameters("scly"))
+		obj_trs.Parameters("scly").AddExpression(y)
+		z = str(tgt_trs.Parameters("sclz"))
+		obj_trs.Parameters("sclz").AddExpression(z)
 		
-	elif axis == YZ_AXIS:
-		x = str(tG.Parameters("posx"))
-		oG.Parameters("posx").AddExpression(x)
-		y = str(tG.Parameters("posy"))
-		oG.Parameters("posy").AddExpression(y)
-		z = "- "+str(tG.Parameters("posz"))
-		oG.Parameters("posz").AddExpression(z)
+	elif axis == Constants.YZ_AXIS:
+		x = str(tgt_trs.Parameters("posx"))
+		obj_trs.Parameters("posx").AddExpression(x)
+		y = str(tgt_trs.Parameters("posy"))
+		obj_trs.Parameters("posy").AddExpression(y)
+		z = "- "+str(tgt_trs.Parameters("posz"))
+		obj_trs.Parameters("posz").AddExpression(z)
 		
-		x = "- "+str(tG.Parameters("rotx"))
-		oG.Parameters("rotx").AddExpression(x)
-		y = "- "+str(tG.Parameters("roty"))
-		oG.Parameters("roty").AddExpression(y)
-		z = str(tG.Parameters("rotz"))
-		oG.Parameters("rotz").AddExpression(z)
+		x = "- "+str(tgt_trs.Parameters("rotx"))
+		obj_trs.Parameters("rotx").AddExpression(x)
+		y = "- "+str(tgt_trs.Parameters("roty"))
+		obj_trs.Parameters("roty").AddExpression(y)
+		z = str(tgt_trs.Parameters("rotz"))
+		obj_trs.Parameters("rotz").AddExpression(z)
 		
-		x = str(tG.Parameters("sclx"))
-		oG.Parameters("sclx").AddExpression(x)
-		y = str(tG.Parameters("scly"))
-		oG.Parameters("scly").AddExpression(y)
-		z = str(tG.Parameters("sclz"))
-		oG.Parameters("sclz").AddExpression(z)
+		x = str(tgt_trs.Parameters("sclx"))
+		obj_trs.Parameters("sclx").AddExpression(x)
+		y = str(tgt_trs.Parameters("scly"))
+		obj_trs.Parameters("scly").AddExpression(y)
+		z = str(tgt_trs.Parameters("sclz"))
+		obj_trs.Parameters("sclz").AddExpression(z)
 
-	elif axis == XZ_AXIS:
-		x = str(tG.Parameters("posx"))
-		oG.Parameters("posx").AddExpression(x)
-		y = "- "+str(tG.Parameters("posy"))
-		oG.Parameters("posy").AddExpression(y)
-		z = str(tG.Parameters("posz"))
-		oG.Parameters("posz").AddExpression(z)
+	elif axis == Constants.XZ_AXIS:
+		x = str(tgt_trs.Parameters("posx"))
+		obj_trs.Parameters("posx").AddExpression(x)
+		y = "- "+str(tgt_trs.Parameters("posy"))
+		obj_trs.Parameters("posy").AddExpression(y)
+		z = str(tgt_trs.Parameters("posz"))
+		obj_trs.Parameters("posz").AddExpression(z)
 		
-		x = "- "+str(tG.Parameters("rotx"))
-		oG.Parameters("rotx").AddExpression(x)
-		y = "- "+str(tG.Parameters("roty"))
-		oG.Parameters("roty").AddExpression(y)
-		z = str(tG.Parameters("rotz"))
-		oG.Parameters("rotz").AddExpression(z)
+		x = "- "+str(tgt_trs.Parameters("rotx"))
+		obj_trs.Parameters("rotx").AddExpression(x)
+		y = "- "+str(tgt_trs.Parameters("roty"))
+		obj_trs.Parameters("roty").AddExpression(y)
+		z = str(tgt_trs.Parameters("rotz"))
+		obj_trs.Parameters("rotz").AddExpression(z)
 		
-		x = str(tG.Parameters("sclx"))
-		oG.Parameters("sclx").AddExpression(x)
-		y = str(tG.Parameters("scly"))
-		oG.Parameters("scly").AddExpression(y)
-		z = str(tG.Parameters("sclz"))
-		oG.Parameters("sclz").AddExpression(z)
+		x = str(tgt_trs.Parameters("sclx"))
+		obj_trs.Parameters("sclx").AddExpression(x)
+		y = str(tgt_trs.Parameters("scly"))
+		obj_trs.Parameters("scly").AddExpression(y)
+		z = str(tgt_trs.Parameters("sclz"))
+		obj_trs.Parameters("sclz").AddExpression(z)
 
 
-# ----------------------------------------------------
-# Match Symmetry
-# ----------------------------------------------------
 def MatchSymmetry(obj, target, axis):
-	oG = obj.Kinematics.Global
-	tG = target.Kinematics.Global
+	obj_trs = obj.Kinematics.Global
+	tgt_trs = target.Kinematics.Global
 	
-	if axis == XY_AXIS:
-		x = - tG.Parameters("posx").Value
-		oG.Parameters("posx").Value = x
-		y = tG.Parameters("posy").Value
-		oG.Parameters("posy").Value = y
-		z = tG.Parameters("posz").Value
-		oG.Parameters("posz").Value = z
+	if axis == Constants.XY_AXIS:
+		x = - tgt_trs.Parameters("posx").Value
+		obj_trs.Parameters("posx").Value = x
+		y = tgt_trs.Parameters("posy").Value
+		obj_trs.Parameters("posy").Value = y
+		z = tgt_trs.Parameters("posz").Value
+		obj_trs.Parameters("posz").Value = z
 		
-		x = tG.Parameters("rotx").Value
-		oG.Parameters("rotx").Value = x
-		y = -tG.Parameters("roty").Value
-		oG.Parameters("roty").Value = y
-		z = -tG.Parameters("rotz").Value
-		oG.Parameters("rotz").Value = z
+		x = tgt_trs.Parameters("rotx").Value
+		obj_trs.Parameters("rotx").Value = x
+		y = -tgt_trs.Parameters("roty").Value
+		obj_trs.Parameters("roty").Value = y
+		z = -tgt_trs.Parameters("rotz").Value
+		obj_trs.Parameters("rotz").Value = z
 		
-		x = tG.Parameters("sclx").Value
-		oG.Parameters("sclx").Value = x
-		y = tG.Parameters("scly").Value
-		oG.Parameters("scly").Value = y
-		z = tG.Parameters("sclz").Value
-		oG.Parameters("sclz").Value = z
+		x = tgt_trs.Parameters("sclx").Value
+		obj_trs.Parameters("sclx").Value = x
+		y = tgt_trs.Parameters("scly").Value
+		obj_trs.Parameters("scly").Value = y
+		z = tgt_trs.Parameters("sclz").Value
+		obj_trs.Parameters("sclz").Value = z
 		
-	elif axis == YZ_AXIS:
-		x = tG.Parameters("posx").Value
-		oG.Parameters("posx").Value = x
-		y = tG.Parameters("posy").Value
-		oG.Parameters("posy").Value = y
-		z = -tG.Parameters("posz").Value
-		oG.Parameters("posz").Value = z
+	elif axis == Constants.YZ_AXIS:
+		x = tgt_trs.Parameters("posx").Value
+		obj_trs.Parameters("posx").Value = x
+		y = tgt_trs.Parameters("posy").Value
+		obj_trs.Parameters("posy").Value = y
+		z = -tgt_trs.Parameters("posz").Value
+		obj_trs.Parameters("posz").Value = z
 		
-		x = -tG.Parameters("rotx").Value
-		oG.Parameters("rotx").Value = x
-		y = -tG.Parameters("roty").Value
-		oG.Parameters("roty").Value = y
-		z = tG.Parameters("rotz").Value
-		oG.Parameters("rotz").Value = z
+		x = -tgt_trs.Parameters("rotx").Value
+		obj_trs.Parameters("rotx").Value = x
+		y = -tgt_trs.Parameters("roty").Value
+		obj_trs.Parameters("roty").Value = y
+		z = tgt_trs.Parameters("rotz").Value
+		obj_trs.Parameters("rotz").Value = z
 		
-		x = tG.Parameters("sclx").Value
-		oG.Parameters("sclx").Value = x
-		y = tG.Parameters("scly").Value
-		oG.Parameters("scly").Value = y
-		z = tG.Parameters("sclz").Value
-		oG.Parameters("sclz").Value = z
-	elif axis == XZ_AXIS:
-		x = tG.Parameters("posx").Value
-		oG.Parameters("posx").Value = x
-		y = - tG.Parameters("posy").Value
-		oG.Parameters("posy").Value = y
-		z = tG.Parameters("posz").Value
-		oG.Parameters("posz").Value = z
+		x = tgt_trs.Parameters("sclx").Value
+		obj_trs.Parameters("sclx").Value = x
+		y = tgt_trs.Parameters("scly").Value
+		obj_trs.Parameters("scly").Value = y
+		z = tgt_trs.Parameters("sclz").Value
+		obj_trs.Parameters("sclz").Value = z
+	elif axis == Constants.XZ_AXIS:
+		x = tgt_trs.Parameters("posx").Value
+		obj_trs.Parameters("posx").Value = x
+		y = - tgt_trs.Parameters("posy").Value
+		obj_trs.Parameters("posy").Value = y
+		z = tgt_trs.Parameters("posz").Value
+		obj_trs.Parameters("posz").Value = z
 		
-		x = -tG.Parameters("rotx").Value
-		oG.Parameters("rotx").Value = x
-		y = - tG.Parameters("roty").Value
-		oG.Parameters("roty").Value = y
-		z = tG.Parameters("rotz").Value
-		oG.Parameters("rotz").Value = z
+		x = -tgt_trs.Parameters("rotx").Value
+		obj_trs.Parameters("rotx").Value = x
+		y = - tgt_trs.Parameters("roty").Value
+		obj_trs.Parameters("roty").Value = y
+		z = tgt_trs.Parameters("rotz").Value
+		obj_trs.Parameters("rotz").Value = z
 		
-		x = tG.Parameters("sclx").Value
-		oG.Parameters("sclx").Value = x
-		y = tG.Parameters("scly").Value
-		oG.Parameters("scly").Value = y
-		z = tG.Parameters("sclz").Value
-		oG.Parameters("sclz").Value = z
+		x = tgt_trs.Parameters("sclx").Value
+		obj_trs.Parameters("sclx").Value = x
+		y = tgt_trs.Parameters("scly").Value
+		obj_trs.Parameters("scly").Value = y
+		z = tgt_trs.Parameters("sclz").Value
+		obj_trs.Parameters("sclz").Value = z
 
 
-# ----------------------------------------------------
-# Get Positions
-# ----------------------------------------------------
 def GetPositions(objects):
-	outPos = []
+	positions = []
 	for o in objects:
 		t = o.Kinematics.Global.Transform
 		p = XSIMath.CreateVector3()
 		t.GetTranslation(p)
-		outPos.append(p)
+		positions.append(p)
 		
-	return outPos
+	return positions
 
 
-# ----------------------------------------------------
-# Get Average Position
-# ----------------------------------------------------
 def GetAveragePosition(positions):
 	x = XSIMath.CreateVector3()
 	for p in positions:
 		x.AddInPlace(p)
 	
-	x.ScaleInPlace(1.0/len(positions))
+	x.ScaleInPlace(1.0 / len(positions))
 	return x
 
 
-# ----------------------------------------------------
-# Get Orientation from Picked Position
-# ----------------------------------------------------
 def GetOrientationFromPickPosition(pos):
 	if isinstance(pos, list) and len(pos) > 1:
 		rot = []
@@ -497,12 +464,12 @@ def GetOrientationFromPickPosition(pos):
 			delta = XSIMath.CreateVector3()
 			delta.Sub(end, start)
 			'''
-			n = AddNull(xsi.ActiveSceneRoot,4,1,"Start")
+			n = AddNull(XSI.ActiveSceneRoot,4,1,"Start")
 			t = n.Kinematics.Global.Transform
 			t.SetTranslation(start)
 			n.Kinematics.Global.Transform = t
 			
-			n = AddNull(xsi.ActiveSceneRoot,4,1,"End")
+			n = AddNull(XSI.ActiveSceneRoot,4,1,"End")
 			t = n.Kinematics.Global.Transform
 			t.SetTranslation(end)
 			n.Kinematics.Global.Transform = t
@@ -518,9 +485,6 @@ def GetOrientationFromPickPosition(pos):
 		return XSIMath.CreateRotation()
 
 
-# ----------------------------------------------------
-# Rotation From Two Vectors
-# ----------------------------------------------------
 def GetRotationFromTwoVectors(direction, up=XSIMath.CreateVector3(0, 1, 0)):
 	cross = XSIMath.CreateVector3()
 	side = XSIMath.CreateVector3()
@@ -540,38 +504,29 @@ def GetRotationFromTwoVectors(direction, up=XSIMath.CreateVector3(0, 1, 0)):
 	return r
 
 
-# ----------------------------------------------------
-# Project On Plane
-# ----------------------------------------------------
-def ProjectOnPlane(inPoint, inPlaneNormal):
+def ProjectOnPlane(point, normal):
 	vProjection = XSIMath.CreateVector3()
 	pProjection = XSIMath.CreateVector3()
 
-	dot = inPoint.Dot(inPlaneNormal)
-	scaleChange = (dot/math.pow(inPlaneNormal.Length(), 2))
-	vProjection.Scale(scaleChange, inPlaneNormal)
-	pProjection.Sub(inPoint, vProjection)
+	dot = point.Dot(normal)
+	scaleChange = (dot / math.pow(normal.Length(), 2))
+	vProjection.Scale(scaleChange, normal)
+	pProjection.Sub(point, vProjection)
 	return pProjection
 
 
-# ----------------------------------------------------
-# Selection
-# ----------------------------------------------------
-def SelectionToCollection(filter=None):
-	out = XSIFactory.CreateActiveXObject("XSI.Collection")
-	sel = XSI.Selection
-	for s in sel:
-		if filter:
-			if s.Type == filter:
-				out.Add(s)
+def SelectionToCollection(filtering=None):
+	result = XSIFactory.CreateActiveXObject("XSI.Collection")
+	selection = XSI.Selection
+	for selected in selection:
+		if filtering:
+			if selected.Type == filtering:
+				result.Add(selected)
 		else:
-			out.Add(s)
-	return out
+			result.Add(selected)
+	return result
 
 
-# ----------------------------------------------------
-# Get Distance
-# ----------------------------------------------------
 def DistanceBetweenTwoObjects(start, end):
 	if not start or not end:
 		XSI.LogMessage("[Distance between two objects] Invalid Inputs!!", constants.siWarning)
@@ -582,80 +537,65 @@ def DistanceBetweenTwoObjects(start, end):
 	return delta.Length()
 
 
-# ----------------------------------------------------
-# Visibility
-# ----------------------------------------------------
-def SetVisibility(objects, viewvis=True, rendvis=True, selectability=True):
+def SetVisibility(objects, view_vis=True, render_vis=True, selectable=True):
 	for o in objects:
 		if o.IsClassOf(constants.siX3DObjectID):
 			v = o.Properties("Visibility")
-			v.Parameters("viewvis").Value = viewvis
-			v.Parameters("rendvis").Value = rendvis
-			v.Parameters("selectability").Value = selectability
+			v.Parameters("viewvis").Value = view_vis
+			v.Parameters("rendvis").Value = render_vis
+			v.Parameters("selectability").Value = selectable
 
 
-# ----------------------------------------------------
-# Make Rig Null
-# ----------------------------------------------------
-def MakeRigNull(inParent=None, inType=0, inName="Null"):
-	if not inParent:
-		inParent = XSI.ActiveSceneRoot
-	n = inParent.AddNull(inName)
-	MatchTransform(n, inParent)
+def MakeRigNull(parent=None, null_type=0, name="Null"):
+	if not parent:
+		parent = XSI.ActiveSceneRoot
+	n = parent.AddNull(name)
+	MatchTransform(n, parent)
 	
 	# buffer null
-	if inType == 0:
+	if null_type == 0:
 		n.ActivePrimitive.Size = .1
 		n.ActivePrimitive.Primary_Icon = 0
 		
 	# control null
-	elif inType == 1:
+	elif null_type == 1:
 		n.ActivePrimitive.Size = .1
 		n.ActivePrimitive.Primary_Icon = 2
 		SetWireColor(n, 1, 0, 0)
 	
 	# deformer null
-	elif inType == 2:
+	elif null_type == 2:
 		n.ActivePrimitive.Size = .1
 		n.ActivePrimitive.Primary_Icon = 4
 		SetWireColor(n, 0.7, 1, 0.7)
 	return n
 
 
-# ----------------------------------------------------
-# Add Null
-# ----------------------------------------------------
-def AddNull(inParent=None, inType=0, inSize=1, inName="Null", inR=0, inG=0, inB=0):
-	if not inParent:
-		inParent = XSI.ActiveSceneRoot
+def AddNull(parent=None, null_type=0, null_size=1, name="Null", red_col=0, green_col=0, blue_col=0):
+	if not parent:
+		parent = XSI.ActiveSceneRoot
 		
-	n = inParent.AddNull(inName)
-	MatchTransform(n, inParent)
+	n = parent.AddNull(name)
+	MatchTransform(n, parent)
 	
-	n.ActivePrimitive.Size = inSize
-	n.ActivePrimitive.Primary_Icon = inType
+	n.ActivePrimitive.Size = null_size
+	n.ActivePrimitive.Primary_Icon = null_type
 		
-	SetWireColor(n, inR, inG, inB)
+	SetWireColor(n, red_col, green_col, blue_col)
 	return n
 
 
-# ----------------------------------------------------
-# Group Setup
-# ----------------------------------------------------
-def GroupSetup(inModel, inObjects=None, inGroupName="Group"):
-	group = inModel.Groups(inGroupName)
+def GroupSetup(model, objects=None, group_name="Group"):
+	group = model.Groups(group_name)
 	if not group:
-		group = inModel.AddGroup()
-		group.Name = inGroupName
-	if inObjects:
-		for o in inObjects:
+		group = model.AddGroup()
+		group.Name = group_name
+	if objects:
+		for o in objects:
 			group.AddMember(o)
 	return group
 
 
-# ----------------------------------------------------
-# Object In Group
-# ----------------------------------------------------
 def ObjectInGroup(obj, group):
 	for m in group.Members:
 		if m.FullName == obj.FullName:
@@ -663,11 +603,8 @@ def ObjectInGroup(obj, group):
 	return False
 
 
-# ----------------------------------------------------
-# Pick Session
-# ----------------------------------------------------
-def PickElement(inFilter=constants.siGenericObjectFilter, inMessage="Pick Element"):
-	rtn = XSI.PickElement(inFilter, inMessage, inMessage)
+def PickElement(pick_filter=constants.siGenericObjectFilter, message="Pick Element"):
+	rtn = XSI.PickElement(pick_filter, message, message)
 	element = rtn.Value("PickedElement")
 	button = rtn.Value("ButtonPressed")
 
@@ -677,12 +614,12 @@ def PickElement(inFilter=constants.siGenericObjectFilter, inMessage="Pick Elemen
 	return None
 
 
-def PickMultiElement(inType=None, inMessage="Pick Multi Element"):
+def PickMultiElement(pick_type=None, message="Pick Multi Element"):
 	outObj = []
 	check = 0
 
 	while not check:
-		pickElement = PickElement(inType, inMessage)
+		pickElement = PickElement(pick_type, message)
 		if pickElement:
 			outObj.append(pickElement)
 		else:
@@ -691,10 +628,10 @@ def PickMultiElement(inType=None, inMessage="Pick Multi Element"):
 	return outObj
 
 
-def PickPosition(inMessage="Pick Position"):
-	if not inMessage:
-		inMessage = "Pick Position"
-	picked = XSI.PickPosition(inMessage, inMessage, None, None, None, None)
+def PickPosition(message="Pick Position"):
+	if not message:
+		message = "Pick Position"
+	picked = XSI.PickPosition(message, message, None, None, None, None)
 	button = picked("ButtonPressed")
 	if button:
 		x = picked("PosX")
@@ -706,15 +643,14 @@ def PickPosition(inMessage="Pick Position"):
 		return None
 
 
-def PickPositionInVolume(inMessage = "Pick Position"):
-	# enable snap option
+def PickPositionInVolume(message ="Pick Position"):
 	XSI.SetValue("preferences.SnapProperties.Enable2D", True, None)
 	XSI.SetValue("preferences.SnapProperties.Enable", True, None)
 	
-	if not inMessage:
-		inMessage = "Pick Position"
+	if not message:
+		message = "Pick Position"
 
-	picked = XSI.PickPosition(inMessage, inMessage, None, None, None, None)
+	picked = XSI.PickPosition(message, message, None, None, None, None)
 	
 	button = picked("ButtonPressed")
 	if button:
@@ -732,15 +668,12 @@ def PickPositionInVolume(inMessage = "Pick Position"):
 	return outVec
 
 
-# ----------------------------------------------------
-# Pick Multi Positions
-# ----------------------------------------------------
-def PickMultiPosition(inNb=-1, inBoundingVolume=False):
+def PickMultiPosition(number=-1, bounding_volume=False):
 	outPos = []
 	check = 0
 	while not check:
-		inNb -= 1
-		if inBoundingVolume:
+		number -= 1
+		if bounding_volume:
 			pickPosition = PickPositionInVolume("Pick Position")
 		else:
 			pickPosition = PickPosition("Pick Position")
@@ -749,143 +682,128 @@ def PickMultiPosition(inNb=-1, inBoundingVolume=False):
 		else:
 			check = 1
 			
-		if inNb == 0:
+		if number == 0:
 			check = True
 			
 	return outPos
 
 
-# ----------------------------------------------------
-# Cluster Center Target
-# ----------------------------------------------------
-def ClusterCenterTarget(inPntSubComponent=None, inTarget=None, inName="PntCls"):
-	if not inPntSubComponent:
+def ClusterCenterTarget(pnt_sub_component=None, target=None, name="PntCls"):
+	if not pnt_sub_component:
 		sel = XSI.Selection(0)
 		if not sel or not sel.Type == "pntSubComponent":
 			XSI.LogMessage("[ClusterCenterTarget] Invalid Selection : Need some points selected ---> Aborted!")
 			return
 		else:
-			inPntSubComponent = sel.SubComponent
-	if not inTarget:
+			pnt_sub_component = sel.SubComponent
+	if not target:
 		pick = PickElement(constants.siObjectFilter, "Pick Target Object")
 		if not pick:
 			XSI.LogMessage("[ClusterCenterTarget] Invalid Target : Need one target object ---> Aborted!")
 			return
 		else:
-			inTarget = pick
-	obj = inPntSubComponent.Parent3DObject
+			target = pick
+	obj = pnt_sub_component.Parent3DObject
 	geo = obj.ActivePrimitive.Geometry
-	elem = inPntSubComponent.ElementArray
-	cls = geo.AddCluster(constants.siVertexCluster, inName, elem)
-	XSI.ApplyOp("ClusterCenter", str(cls) + ";" + str(inTarget), 0, 0, None, 2)
+	elem = pnt_sub_component.ElementArray
+	cls = geo.AddCluster(constants.siVertexCluster, name, elem)
+	XSI.ApplyOp("ClusterCenter", str(cls) + ";" + str(target), 0, 0, None, 2)
 
 
-# ----------------------------------------------------
-# Build Curve On Objects Position
-# ----------------------------------------------------
-def BuildCurveOnObjectsPosition(inObjects, inDegree=0, inClose=0, inConstraint=1, inOffset=XSIMath.CreateVector3()):
-	if len(inObjects) < 2:
+def BuildCurveOnObjectsPosition(objects, degree=0, close=0, constraint=1, offset=XSIMath.CreateVector3()):
+	if len(objects) < 2:
 		XSI.LogMessage("BuildCurveOnPoints aborted :: Not enough input objects!!", constants.siError)
 		return
 		
-	if len(inObjects) < 4:
-		inDegree = 0
+	if len(objects) < 4:
+		degree = 0
 		
-	pPos = GetPositions(inObjects)
+	pPos = GetPositions(objects)
 
 	aPos = []
 	for p in pPos:
-		aPos.append(p.X+inOffset.X)
-		aPos.append(p.Y+inOffset.Y)
-		aPos.append(p.Z+inOffset.Z)
+		aPos.append(p.X + offset.X)
+		aPos.append(p.Y + offset.Y)
+		aPos.append(p.Z + offset.Z)
 		aPos.append(1)
 
-	if inDegree == 0:
-		outCrv = XSI.ActiveSceneRoot.AddNurbsCurve(aPos, None, inClose, 1)
+	if degree == 0:
+		outCrv = XSI.ActiveSceneRoot.AddNurbsCurve(aPos, None, close, 1)
 		
 	else:
-		outCrv = XSI.ActiveSceneRoot.AddNurbsCurve(aPos, None, inClose, 3)
+		outCrv = XSI.ActiveSceneRoot.AddNurbsCurve(aPos, None, close, 3)
 	
-	if inConstraint == 1:
+	if constraint == 1:
 		crvGeom = outCrv.ActivePrimitive.Geometry
 		for p in crvGeom.Points:
 			oCluster = crvGeom.AddCluster(constants.siVertexCluster, "Pnt"+str(p.Index+1), p.Index)
-			XSI.ApplyOp("ClusterCenter", str(oCluster) + ";" + str(inObjects[p.Index]), 0, 0, None, 2)
+			XSI.ApplyOp("ClusterCenter", str(oCluster) + ";" + str(objects[p.Index]), 0, 0, None, 2)
 
 	return outCrv
 
 
-# ----------------------------------------------------
-# Build Curve On Positions
-# ----------------------------------------------------
-def BuildCurveOnPositions(inPositions, inDegree=0, inClose=0, inOffset=XSIMath.CreateVector3()):
-	if len(inPositions) < 2:
+def BuildCurveOnPositions(positions, degree=0, close=0, offset=XSIMath.CreateVector3()):
+	if len(positions) < 2:
 		XSI.LogMessage("BuildCurveOnPosition aborted :: Not enough input positions!!", constants.siError)
 		return
 		
-	if len(inPositions) < 4:
-		inDegree = 0
+	if len(positions) < 4:
+		degree = 0
 		
 	aPos = []
-	for p in inPositions:
-		aPos.append(p.X+inOffset.X)
-		aPos.append(p.Y+inOffset.Y)
-		aPos.append(p.Z+inOffset.Z)
+	for p in positions:
+		aPos.append(p.X + offset.X)
+		aPos.append(p.Y + offset.Y)
+		aPos.append(p.Z + offset.Z)
 		aPos.append(1)
 	
-	if inDegree == 0:
-		outCrv = XSI.ActiveSceneRoot.AddNurbsCurve(aPos, None, inClose, 1)
+	if degree == 0:
+		outCrv = XSI.ActiveSceneRoot.AddNurbsCurve(aPos, None, close, 1)
 	else:
-		outCrv = XSI.ActiveSceneRoot.AddNurbsCurve(aPos, None, inClose, 3)
+		outCrv = XSI.ActiveSceneRoot.AddNurbsCurve(aPos, None, close, 3)
 
 	return outCrv
 
 
-# ----------------------------------------------------
-# Build Curve On Symmetrized Positions
-# ----------------------------------------------------
-def BuildCurveOnSymmetrizedPositions(inPositions, inAxis = 0, inDegree=0, inClose=0):
+def BuildCurveOnSymmetrizedPositions(positions, axis=0, degree=0, close=0):
 
-	if len(inPositions) < 1:
+	if len(positions) < 1:
 		XSI.LogMessage("BuildCurveOnSymmetrizedPosition aborted :: Not enough input positions!!", constants.siError)
 		return
 	axis = XSIMath.CreateVector3(-1, 1, 1)
-	if inAxis == 1:
+	if axis == 1:
 		axis.Set(1, -1, 1)
-	elif inAxis == 2:
+	elif axis == 2:
 		axis.Set(1, 1, -1)
 	newPos = []
-	last = len(inPositions)-1
-	for i in range(len(inPositions)):
-		p = inPositions[last-i]
+	last = len(positions) - 1
+	for i in range(len(positions)):
+		p = positions[last - i]
 		newPos.append(p.X*axis.X)
 		newPos.append(p.Y*axis.Y)
 		newPos.append(p.Z*axis.Z)
 		newPos.append(1)
-	# middle pos
+
 	newPos.append(0)
-	newPos.append(inPositions[0].Y)
-	newPos.append(inPositions[0].Z)
+	newPos.append(positions[0].Y)
+	newPos.append(positions[0].Z)
 	newPos.append(1)
 	
-	for p in inPositions:
+	for p in positions:
 		newPos.append(p.X)
 		newPos.append(p.Y)
 		newPos.append(p.Z)
 		newPos.append(1)
 		
-	if inDegree == 0:
-		outCrv = XSI.ActiveSceneRoot.AddNurbsCurve(newPos, None, inClose, 1)
+	if degree == 0:
+		outCrv = XSI.ActiveSceneRoot.AddNurbsCurve(newPos, None, close, 1)
 		
 	else:
-		outCrv = XSI.ActiveSceneRoot.AddNurbsCurve(newPos, None, inClose, 3)
+		outCrv = XSI.ActiveSceneRoot.AddNurbsCurve(newPos, None, close, 3)
 		
 	return outCrv
 
 
-# ----------------------------------------------------
-# Replace Curve Geometry
-# ----------------------------------------------------
 def ReplaceCurveGeometry(dst, src):
 	if src and src.Type == "crvlist" and dst and dst.Type == "crvlist":
 		datas = src.ActivePrimitive.Geometry.Get2()
@@ -893,40 +811,30 @@ def ReplaceCurveGeometry(dst, src):
 		dst.ActivePrimitive.Geometry.Set(datas[0], datas[1], datas[2], datas[3], datas[4], datas[5], datas[6], datas[7])
 
 
-# ----------------------------------------------------
-# Get Curve Length
-# ----------------------------------------------------
 def GetCurveLength(crv):	
 	if crv and crv.Type == "crvlist":
 		return crv.ActivePrimitive.Geometry.Length
 
 
-# ----------------------------------------------------
-# Get Symmetry Map
-# ----------------------------------------------------
-def GetSymmetryMap(inObject):
-	symmetrymaps = XSI.FindObjects(None, "{2EBA6DE4-B7EA-4877-80FE-FC768F32729F}")
+def GetSymmetryMap(target):
+	symmetry_maps = XSI.FindObjects(None, "{2EBA6DE4-B7EA-4877-80FE-FC768F32729F}")
 
-	for symap in symmetrymaps:
-		if symap.Parent3DObject.IsEqualTo(inObject):
-			return symap
+	for symmetry_map in symmetry_maps:
+		if symmetry_map.Parent3DObject.IsEqualTo(target):
+			return symmetry_map
 				
 	# create cluster if not exist
-	cluster = inObject.ActivePrimitive.Geometry.Clusters("SymmetryMapCls")
+	cluster = target.ActivePrimitive.Geometry.Clusters("SymmetryMapCls")
 	if not cluster:
-		cluster = inObject.ActivePrimitive.Geometry.AddCluster(constants.siVertexCluster, "SymmetryMapCls")
+		cluster = target.ActivePrimitive.Geometry.AddCluster(constants.siVertexCluster, "SymmetryMapCls")
 
-	symap = XSI.CreateSymmetryMap("SymmetryMap", cluster, "SymmetryMap")(0)
-	return symap
+	symmetry_map = XSI.CreateSymmetryMap("SymmetryMap", cluster, "SymmetryMap")(0)
+	return symmetry_map
 
 
-# ----------------------------------------------------
-# Get Weight Map
-# ----------------------------------------------------
-def GetWeightMap(inObject, name="WeightMap", value=0, inMin=0, inMax=1, cls=None):
+def GetWeightMap(target, name="WeightMap", value=0, minimum=0, maximum=1, cls=None):
 	cluster = None
-	
-	# if cls provided check only it
+
 	if cls:
 		cluster = cls
 		for w in cls.LocalProperties.Filter("wtmap"):
@@ -934,10 +842,10 @@ def GetWeightMap(inObject, name="WeightMap", value=0, inMin=0, inMax=1, cls=None
 				return w
 	
 	else:
-		XSI.LogMessage(inObject)
-		if inObject.ActivePrimitive.Geometry.Clusters:
+		XSI.LogMessage(target)
+		if target.ActivePrimitive.Geometry.Clusters:
 			# check all cluster for weightmap already exists
-			for cls in inObject.ActivePrimitive.Geometry.Clusters.Filter("pnt"):
+			for cls in target.ActivePrimitive.Geometry.Clusters.Filter("pnt"):
 				if cls.Name == "WeightMapCls":
 					cluster = cls
 				for w in cls.LocalProperties.Filter("wtmap"):
@@ -946,23 +854,23 @@ def GetWeightMap(inObject, name="WeightMap", value=0, inMin=0, inMax=1, cls=None
 	
 	# create cluster if not exist
 	if not cluster:
-		cluster = inObject.ActivePrimitive.Geometry.AddCluster(constants.siVertexCluster, "WeightMapCls")
+		cluster = target.ActivePrimitive.Geometry.AddCluster(constants.siVertexCluster, "WeightMapCls")
 	
 	# create and set weight map 
 	wm = cluster.AddProperty("Weight Map Property", False, name)
 
 	# clamp between -1 and 1  (maximum possible values)
-	if inMin < -1:
-		inMin = -1
-	elif inMin > 0:
-		inMin = 0
-	if inMax > 1:
-		inMax = 1
-	elif inMax < 0:
-		inMax = 0
+	if minimum < -1:
+		minimum = -1
+	elif minimum > 0:
+		minimum = 0
+	if maximum > 1:
+		maximum = 1
+	elif maximum < 0:
+		maximum = 0
 
-	wm.Parameters("wmin").Value = inMin
-	wm.Parameters("wmax").Value = inMax
+	wm.Parameters("wmin").Value = minimum
+	wm.Parameters("wmax").Value = maximum
 
 	elems_tuple = wm.Elements.Array
 	elems = [value for _ in range(len(elems_tuple[0])) for _ in range(len(elems_tuple))]
@@ -971,21 +879,21 @@ def GetWeightMap(inObject, name="WeightMap", value=0, inMin=0, inMax=1, cls=None
 	XSI.FreezeObj(wm)
 	
 	return wm
-	
-# ----------------------------------------------------
-# Copy Weight Map
-# ----------------------------------------------------
-def CopyWeightMap(src, dst, wmName):
+
+
+def CopyWeightMap(src, dst, name):
 	# first check geometry input
-	snbp = src.ActivePrimitive.Geometry.Points.Count
-	dnbp = dst.ActivePrimitive.Geometry.Points.Count
+	src_n = src.ActivePrimitive.Geometry.Points.Count
+	dst_n = dst.ActivePrimitive.Geometry.Points.Count
 	
-	if not snbp == dnbp:
-		XSI.LogMessage("[Utils.py] Copy Weight Map Aborted!!!(Objects doesn't have same number of points)", constants.siWarning)
+	if not src_n == dst_n:
+		XSI.LogMessage(
+			"[Utils.py] Copy Weight Map Aborted!!!(Objects doesn't have same number of points)",
+			constants.siWarning)
 		return False
 	
-	swm = GetWeightMap(src, wmName)
-	dwm = GetWeightMap(dst, wmName)
+	swm = GetWeightMap(src, name)
+	dwm = GetWeightMap(dst, name)
 	
 	if swm and dwm:
 		XSI.LogMessage(swm)
@@ -995,45 +903,39 @@ def CopyWeightMap(src, dst, wmName):
 		XSI.LogMessage(dwm.Elements.Array)
 	
 
-# ----------------------------------------------------
-# Set Weight Map
-# ----------------------------------------------------
-def SetWeightMap(weightmap, value=1.0, inMin=0.0, inMax=1.0):
+def SetWeightMap(weight_map, value=1.0, minimum=0.0, maximum=1.0):
 	# create and set weight map 
-	weightmap.Parameters("wmin").Value = inMin
-	weightmap.Parameters("wmax").Value = inMax
-	elems_tuple = weightmap.Elements.Array
-	elems = [value for _ in range(len(elems_tuple[0])) for _ in range(len(elems_tuple))]
-	weightmap.Elements.Array = elems
+	weight_map.Parameters("wmin").Value = minimum
+	weight_map.Parameters("wmax").Value = maximum
+	elements_tuple = weight_map.Elements.Array
+	elements = [value for _ in range(len(elements_tuple[0])) for _ in range(len(elements_tuple))]
+	weight_map.Elements.Array = elements
 	
-	XSI.FreezeObj(weightmap)
+	XSI.FreezeObj(weight_map)
 	
-	return weightmap
+	return weight_map
 
 
-# ----------------------------------------------------
-# Set Weight Map Value on selected points
-# ----------------------------------------------------
-def SetWeightOnSelectedPoints(weightmap, weight=0, pntsubcomponent=None):
-	if not weightmap or not weightmap.Type == "wtmap":
+def SetWeightOnSelectedPoints(weight_map, weight=0, pnt_sub_component=None):
+	if not weight_map or not weight_map.Type == "wtmap":
 		XSI.LogMessage("[SetWeightOnSelectedPoints] Invalid Weight Map ---> Aborted!")
 		return
 			
-	if not pntsubcomponent:
-		sel = XSI.Selection(0)
-		if not sel or not sel.Type == "pntSubComponent":
+	if not pnt_sub_component:
+		selection = XSI.Selection(0)
+		if not selection or not selection.Type == "pntSubComponent":
 			XSI.LogMessage("[SetWeightOnSelectedPoints] Invalid Selection : Need some points selected ---> Aborted!")
 			return
 		else:
-			pntsubcomponent = sel.SubComponent
+			pnt_sub_component = selection.SubComponent
 		
-	weights = [w for w in weightmap.Elements.Array[0]]
+	weights = [w for w in weight_map.Elements.Array[0]]
 
 	# process
-	for i in pntsubcomponent.ComponentCollection.IndexArray:
+	for i in pnt_sub_component.ComponentCollection.IndexArray:
 		weights[i] = weight
 
-	weightmap.Elements.Array = weights
+	weight_map.Elements.Array = weights
 
 
 # ----------------------------------------------------
@@ -1043,94 +945,94 @@ def SetWeightOnSelectedPoints(weightmap, weight=0, pntsubcomponent=None):
 # Side = 1 : RightToLeft
 # Side = 2 : BothSide (Mirror)
 # ----------------------------------------------------
-def SymmetrizeWeights(weightmap, side=0, invert=False, axis=0):
-	if not weightmap.Type == "wtmap":
+def SymmetrizeWeights(weight_map, side=0, invert=False, axis=0):
+	if not weight_map.Type == "wtmap":
 		XSI.LogMessage("[Symmetrize Weights] ERROR :  Input NOT a Weight Map", constants.siError)
 		return
 		
 	# get symmetry map
-	obj = weightmap.Parent3DObject
-	symap = GetSymmetryMap(obj)
+	obj = weight_map.Parent3DObject
+	sym_map = GetSymmetryMap(obj)
 	
 	geom = obj.ActivePrimitive.Geometry
 	pos = geom.Points.PositionArray
 	
-	cls = weightmap.Parent
-	elems = cls.Elements.Array
+	cluster = weight_map.Parent
+	elements = cluster.Elements.Array
 	
 	factor = 1
 	if invert:
 		factor = -1
 	
 	# Get Arrays
-	weights = [w for w in weightmap.Elements.Array[0]]
-	tmp = [w for w in weightmap.Elements.Array[0]]
-	sym = symap.Elements.Array
+	weights = [w for w in weight_map.Elements.Array[0]]
+	tmp = [w for w in weight_map.Elements.Array[0]]
+	sym = sym_map.Elements.Array
 	
 	# Process
 	for i in range(len(weights)):
 		if side == 0:
-			if pos[axis][elems[i]] > 0:
-				idx = int(sym[0][elems[i]])
-				idx = cls.FindIndex(idx)
+			if pos[axis][elements[i]] > 0:
+				idx = int(sym[0][elements[i]])
+				idx = cluster.FindIndex(idx)
 				tmp[idx] = weights[i]*factor
 				
 		elif side == 1:
-			if pos[axis][elems[i]] < 0:
-				idx = int(sym[0][elems[i]])
-				idx = cls.FindIndex(idx)
+			if pos[axis][elements[i]] < 0:
+				idx = int(sym[0][elements[i]])
+				idx = cluster.FindIndex(idx)
 				tmp[idx] = weights[i]*factor
 						
 		else:
-			tmp[int(sym[0][elems[i]])] = weights[i]*factor
+			tmp[int(sym[0][elements[i]])] = weights[i]*factor
 
-	weightmap.Elements.Array = tmp
+	weight_map.Elements.Array = tmp
 
 
 # ----------------------------------------------------
 # Mirror Copy Weights
 # ----------------------------------------------------
-def MirrorCopyWeights(sourcemap, targetmap):
+def MirrorCopyWeights(source_map, target_map):
 	# get symmetry map
-	symap = GetSymmetryMap(sourcemap.Parent3DObject)
+	sym_map = GetSymmetryMap(source_map.Parent3DObject)
 	
 	# Get Arrays
-	weights = [w for w in sourcemap.Elements.Array[0]]
-	sym = symap.Elements.Array
-	tmp = [0 for w in weights]
+	weights = [w for w in source_map.Elements.Array[0]]
+	sym_elements = sym_map.Elements.Array
+	tmp = [0 for _ in weights]
 	
 	# Process
 	for i in range(len(weights)):
-		tmp[int(sym[0][i])] = weights[i]
+		tmp[int(sym_elements[0][i])] = weights[i]
 
-	targetmap.Elements.Array = tmp
+	target_map.Elements.Array = tmp
 
 
 # ----------------------------------------------------
 # Get Color Map
 # ----------------------------------------------------
-def GetColorMap(inObject, name="ColorMap", R=1, G=1, B=1):
-	polymsh = inObject.ActivePrimitive.Geometry
+def GetColorMap(obj, name="ColorMap", red_c=1, green_c=1, blue_c=1):
+	polymesh = obj.ActivePrimitive.Geometry
 	
 	# check if colormap already exists
-	for col in polymsh.VertexColors:
-		if col.Name == name:
-			return col
+	for vertex_color_prop in polymesh.VertexColors:
+		if vertex_color_prop.Name == name:
+			return vertex_color_prop
 	
 	# create and set color map if not exists
-	col = polymsh.AddVertexColor(name)
-	polymsh.CurrentVertexColor = col
-	color_tupple = col.Elements.Array
+	vertex_color_prop = polymesh.AddVertexColor(name)
+	polymesh.CurrentVertexColor = vertex_color_prop
+	vertex_colors = vertex_color_prop.Elements.Array
 
 	colors = []
-	for i in range(len(color_tupple[0])):
-		colors.append(R)
-		colors.append(G)
-		colors.append(B)
+	for i in range(len(vertex_colors[0])):
+		colors.append(red_c)
+		colors.append(green_c)
+		colors.append(blue_c)
 		colors.append(1)
 		
-	col.Elements.Array = colors
-	return col 
+	vertex_color_prop.Elements.Array = colors
+	return vertex_color_prop
 
 
 # ----------------------------------------------------

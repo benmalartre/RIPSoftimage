@@ -6,6 +6,11 @@ import ICETree
 
 
 class Collider:
+	""" Collider class
+	:param X3DObject obj: the cloth mesh
+	:param X3DObject collider: the collider mesh
+	:param bool extra: setup an extra (in-shot) collision
+	"""
 	def __init__(self, obj, collider, extra=False):
 		self.object = obj
 		self.collider = collider
@@ -21,6 +26,8 @@ class Collider:
 			self.polyClusterName = 'Collide_{}'.format(obj.Name)
 		
 	def GetPntCluster(self):
+		""" Get or create collision vertex cluster on cloth mesh
+		"""
 		self.pntCluster = self.object.ActivePrimitive.Geometry.Clusters.Find(self.pntClusterName)
 		if not self.pntCluster:
 			self.pntCluster = Utils.CreateCompleteButNotAlwaysCluster(
@@ -30,6 +37,8 @@ class Collider:
 			)
 		
 	def GetPolyCluster(self):
+		""" Get or create collision polygon cluster on collider mesh
+		"""
 		self.polyCluster = self.collider.ActivePrimitive.Geometry.Clusters(self.polyClusterName)
 		if not self.polyCluster:
 			if self.extra:
@@ -45,6 +54,8 @@ class Collider:
 					self.polyClusterName)
 		
 	def Rig(self):
+		""" Build collide operator
+		"""
 		cloth_op = GetClothOperator(self.object)
 		if not cloth_op:
 			XSIUIToolKit.MsgBox(
@@ -85,10 +96,12 @@ class Collider:
 				XSI.ConnectICENodes('{}.port1'.format(tree), '{}.Execute'.format(compound))
 
 
-# --------------------------------------------
-# Nail Class
-# --------------------------------------------
 class Nail:
+	""" Nail class
+	:param X3DObject obj: the cloth mesh
+	:param X3DObject nail: the nail mesh
+	:param Cluster cluster: the nail c
+	"""
 	def __init__(self, obj, nail, cluster=None, idx=0):
 		self.object = obj
 		self.nail = nail
@@ -106,9 +119,6 @@ class Nail:
 		return self.cluster
 
 
-# --------------------------------------------
-# Get Cloth Operator
-# --------------------------------------------
 def GetClothOperator(obj):
 	op_stack = obj.ActivePrimitive.ConstructionHistory
 	for op in op_stack:
@@ -118,9 +128,6 @@ def GetClothOperator(obj):
 	return None
 
 
-# --------------------------------------------
-# Is Syflex
-# --------------------------------------------
 def IsSyflex(obj):
 	hist = obj.ActivePrimitive.ConstructionHistory
 	for h in hist:
@@ -129,9 +136,6 @@ def IsSyflex(obj):
 	return None
 
 
-# --------------------------------------------
-# Find Syflex Meshes
-# --------------------------------------------
 def FindSyflexMeshes(model=None):
 	all_syflex = XSI.FindObjects(None, '{513A555C-13F2-4D77-82E7-C35D14B789C1}')
 	if model:
@@ -141,9 +145,6 @@ def FindSyflexMeshes(model=None):
 		return [syflex.OutputPorts(0).Target2.Parent for syflex in all_syflex]
 
 
-# --------------------------------------------
-# Find Collider Meshes
-# --------------------------------------------
 def FindColliderMeshes(cloth):
 	if not IsSyflex(cloth):
 		return None
@@ -156,9 +157,6 @@ def FindColliderMeshes(cloth):
 	return colliders
 
 
-# --------------------------------------------
-# Find Pattern Meshes
-# --------------------------------------------
 def FindPatternMeshes(model):	
 	objects = model.FindChildren('', '', constants.si3DObjectFamily, True)
 	return [obj for obj in objects if obj.Properties('Cloth_Rigger')]

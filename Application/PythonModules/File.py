@@ -33,15 +33,15 @@ def IsFileValid(filename):
 	return os.path.getsize(filename) > 0
 
 
-def CopyFiles(sourcePath, targetPath, checkExist=False):
+def CopyFiles(source_path, target_path, check_exist=False):
 	""" Copy files from source path to target path
-	:param str sourcePath: source directory
-	:param str targetPath: target directory
-	:param bool checkExist: check for existing file and ask for overwrite
+	:param str source_path: source directory
+	:param str target_path: target directory
+	:param bool check_exist: check for existing file and ask for overwrite
 	"""
-	for root, dirs, files in os.walk(sourcePath):
+	for root, dirs, files in os.walk(source_path):
 		# figure out where we're going
-		destination = '{}{}'.format(targetPath, root.replace(sourcePath, ''))
+		destination = '{}{}'.format(target_path, root.replace(source_path, ''))
 
 		# loop through all files in the directory
 		for _file in files:
@@ -49,7 +49,7 @@ def CopyFiles(sourcePath, targetPath, checkExist=False):
 			old_location = os.path.join(root, _file)
 			new_location = os.path.join(destination, _file)
 			
-			if checkExist and FileExists(new_location):
+			if check_exist and FileExists(new_location):
 				response = XSIUIToolKit.Msgbox(
 					'File "{}" already exists, Overwrite?'.format(_file),
 					constants.siMsgYesNo | constants.siMsgQuestion,
@@ -64,13 +64,13 @@ def CopyFiles(sourcePath, targetPath, checkExist=False):
 				XSI.LogMessage('Error copying file "{}"'.format(_file), constants.siError)
 
 
-def CopyOneFile(source, target, checkExist=False):
+def CopyOneFile(source, target, check_exist=False):
 	""" Copy one file from source path to target path
 	:param str source: source filename
 	:param str target: target filename
-	:param bool checkExist: check for existing file and ask for overwrite
+	:param bool check_exist: check for existing file and ask for overwrite
 	"""
-	if checkExist and FileExists(target):
+	if check_exist and FileExists(target):
 		response = XSIUIToolKit.Msgbox(
 			'File "{}" already exists, Overwrite?'.format(target),
 			constants.siMsgYesNo | constants.siMsgQuestion,

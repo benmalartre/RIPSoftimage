@@ -1,6 +1,7 @@
 #ifndef _STL_Register_
 #define _STL_Register_
 
+#include <math.h>
 #include <xsi_application.h>
 #include <xsi_context.h>
 #include <xsi_pluginregistrar.h>

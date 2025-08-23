@@ -20,7 +20,7 @@ RIG_CONTROLS_ITEM_ARRAY = [
 	'FootRoll', 6
 ]
 
-RIG_UPVECTOR_ITEM_ARRAY = [
+RIG_UP_VECTOR_ITEM_ARRAY = [
 	'None', 0,
 	'Collider Normal', 1,
 	'External Object', 2
@@ -148,4 +148,13 @@ RIG_CONTROL_ICON_ITEM_ARRAY = [
 	'rectanglecube', 22,
 	'man', 23,
 	'null', 24
+]
+
+RIG_UPVECTOR_ITEM_ARRAY = [
+	'X',  0,
+	'-X', 1,
+	'Y',  2,
+	'-Y', 3,
+	'Z',  4,
+	'-Z', 5
 ]

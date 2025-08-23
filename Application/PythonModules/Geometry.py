@@ -1,6 +1,3 @@
-# -------------------------------------------------------------------
-# Geometry
-# -------------------------------------------------------------------
 from win32com.client import constants
 from Globals import XSI
 from Globals import XSIFactory
@@ -10,34 +7,32 @@ import Utils
 import ICETree
 
 
-# -------------------------------------------------------------------
-# Geometry Element Class
-# -------------------------------------------------------------------
 class IRGeometry(Element.IRElement):
 	def __init__(self, prop, parent, name):
 		super(IRGeometry, self).__init__(prop, parent, name)
 		self.builder = prop
 		
 	def AddToRig(self):
-		sel = XSI.Selection
+		selection = XSI.Selection
 		self.list = 'GeometryList'
 		self.chooser = 'GeometryChooser'
 		
-		sList = self.builder.Parameters(self.list).Value
+		elements = self.builder.Parameters(self.list).Value
 		
-		if sel.Count > 0:
-			for s in sel:
-				if s.Type == "polymsh" or s.Type == "crvlist":
-					sList = self.UpdateGeometryList(s)
+		if selection.Count > 0:
+			for selected in selection:
+				if selected.Type == "polymsh" or selected.Type == "crvlist":
+					elements = self.UpdateGeometryList(selected)
 				else:
-					XSI.LogMessage("[RigBuilder] Accepts only POLYMESH or CRVLIST ---> " + str(s) + " : Skipped!!")
+					XSI.LogMessage(
+						"[RigBuilder] Accepts only POLYMESH or CRVLIST ---> " + str(selected) + " : Skipped!!")
 					
 		else:
-			objs = Utils.PickMultiElement(constants.siPolyMeshFilter, 'Pick Geometries To Deform')
-			for o in objs:
-				sList = self.UpdateGeometryList(o)
+			objects = Utils.PickMultiElement(constants.siPolyMeshFilter, 'Pick Geometries To Deform')
+			for obj in objects:
+				elements = self.UpdateGeometryList(obj)
 		
-		ui_items = Element.BuildListFromString(sList)
+		ui_items = Element.BuildListFromString(elements)
 		layout = self.builder.PPGLayout
 		cnt = layout.Count
 		for i in range(cnt):
@@ -48,17 +43,16 @@ class IRGeometry(Element.IRElement):
 		self.list = 'GeometryList'
 		self.chooser = 'GeometryChooser'
 		
-		ID = self.builder.Parameters(self.chooser).Value
-		geoname = self.builder.Parameters(self.chooser).value
+		geometry_name = self.builder.Parameters(self.chooser).value
 		
-		sList = self.RemoveFromList(geoname)
+		elements = self.RemoveFromList(geometry_name)
 		
-		aUIItems = Element.BuildListFromString(sList)
+		ui_items = Element.BuildListFromString(elements)
 		layout = self.builder.PPGLayout
 		cnt = layout.Count
 		for i in range(cnt):
 			if layout.Item(i).Name == self.chooser:
-				layout.Item(i).UIItems = aUIItems 
+				layout.Item(i).UIItems = ui_items
 		
 	def UpdateGeometryList(self, geo):
 		sList = self.builder.Parameters(self.list).Value
@@ -73,10 +67,16 @@ class IRGeometry(Element.IRElement):
 		self.builder.Parameters(self.list).Value = sList
 		return sList
 
+	def ConnectSymmetry(self, elem):
+		pass
 
-# -------------------------------------------------------------------
-# Bind Skin To Skeleton
-# -------------------------------------------------------------------
+	def Symmetrize(self):
+		pass
+
+	def CreateGuide(self):
+		pass
+
+
 def BindSkinToSkeleton(model, skin):
 	# prepare mesh
 	Utils.GetWeightMap(skin, 'SmoothWeightMap', 1, 0, 1)
@@ -99,9 +99,7 @@ def BindSkinToSkeleton(model, skin):
 	xsi.ConnectICENodes(str(tree)+".port1", str(deform)+".execute")
 	'''
 
-# -------------------------------------------------------------------
-# Create Envelope Duplicate
-# -------------------------------------------------------------------
+
 def CreateEnvelopeDuplicate(model, skin):
 	# check ICE skeleton
 	skeleton = model.FindChild('ICE_Skeleton')

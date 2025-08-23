@@ -107,7 +107,7 @@ class IRElement(object):
 		return self.model.Properties('RigBuilder')
 
 	def CheckElementExist(self):
-		child = self.model.FindChild(self.fullname)
+		child = self.model.FindChild(self.fullname+self.suffix)
 		if not child:
 			return False
 		return True

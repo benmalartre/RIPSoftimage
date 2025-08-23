@@ -1,15 +1,10 @@
 # -------------------------------------------------------------------
 # Globals
 # -------------------------------------------------------------------
-import win32com as win
-import win32com.server as winServer
+from win32com.client import Dispatch
 
-from win32com.client import constants
-from win32com.client.dynamic import Dispatch as Dispatch
-from win32com.client import Dispatch as ComObject
-from win32com.server.util import wrap
 
-XSI = Dispatch('XSI.Application').Application
+XSI = Dispatch('XSI.Application')
 XSIFactory = Dispatch('XSI.Factory')
 XSIMath = Dispatch('XSI.Math')
 XSIUIToolKit = Dispatch('XSI.UIToolKit')

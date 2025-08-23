@@ -167,7 +167,7 @@ XSIPLUGINCALLBACK void UsdHydraDisplayCallback_Execute( XSI::CRef context, LPVOI
   renderParams.forceRefresh = false;
   renderParams.cullStyle = pxr::UsdImagingGLCullStyle::CULL_STYLE_NOTHING;
   renderParams.gammaCorrectColors = false;
-  renderParams.enableIdRender = false;
+  //renderParams.enableIdRender = false;
   renderParams.enableSampleAlphaToCoverage = true;
   renderParams.enableLighting = true;
   renderParams.enableSceneMaterials = true;

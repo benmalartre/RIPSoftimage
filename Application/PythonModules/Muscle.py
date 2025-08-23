@@ -1,17 +1,11 @@
-# -------------------------------------------------------------------
-# Muscle
-# -------------------------------------------------------------------
 from Globals import XSI
-from win32com.client import constants as siConstants
+from win32com.client import constants
 from Constants import *
 import Element as ele
 import Utils as uti
 import ICETree as tre
 
 
-# -------------------------------------------------------------------
-# Muscle Element Class
-# -------------------------------------------------------------------
 class IRMuscle(ele.IRElement):
 	def __init__(self, crv, parent, name, side=MIDDLE, mirror=False, suffix="_Crv"):
 		super(IRMuscle, self).__init__(crv, parent, name, side, mirror, suffix)
@@ -22,25 +16,23 @@ class IRMuscle(ele.IRElement):
 		if self.crv:
 			self.prop = self.crv.Properties(PROP_MUSCLE)
 
-		self.datacls = None
-		self.widthmap = None
-		self.depthmap = None
-		self.twistmap = None
-		self.collidemap = None
-		self.stickmap = None
-		self.offsetshape = None
+		self.data_cluster = None
+		self.width_map = None
+		self.depth_map = None
+		self.twist_map = None
+		self.collide_map = None
+		self.stick_map = None
+		self.offset_shape = None
 		self.nbp = 0
 
 		self.root = self.model.FindChild("Muscles")
 
-	# ---------------------------------------------------------------
-	# Override Pick Position
-	# ---------------------------------------------------------------
 	def PickPosition(self):
 		self.position = uti.PickMultiPosition(-1, False)
 		if len(self.position) < 2:
-			XSI.LogMessage("[Create Element] : You need to pick at least TWO points ---> aborted...!",
-                           siConstants.siWarning)
+			XSI.LogMessage(
+				"[Create Element] : You need to pick at least TWO points ---> aborted...!",
+				constants.siWarning)
 			return False
 			self.rotation = uti.GetOrientationFromPickPosition(self.position)
 		return True
@@ -56,13 +48,13 @@ class IRMuscle(ele.IRElement):
 		self.nbp = len(self.position) + 2
 		self.crv = uti.BuildCurveOnPositions(self.position)
 
-		self.datacls = uti.CreateAlwaysCompleteCluster(self.crv, siConstants.siVertexCluster, "ElementData")
-		self.widthmap = uti.GetWeightMap(self.crv, "WidthMap", 0.01, 0, 1, self.datacls)
-		self.depthmap = uti.GetWeightMap(self.crv, "DepthMap", 0.01, 0, 1, self.datacls)
-		self.twistmap = uti.GetWeightMap(self.crv, "TwistMap", 0.01, -1, 1, self.datacls)
-		self.collidemap = uti.GetWeightMap(self.crv, "CollideMap", 1, 0, 1, self.datacls)
-		self.stickmap = uti.GetWeightMap(self.crv, "StickMap", 1, 0, 1, self.datacls)
-		self.offsetshape = self.datacls.AddProperty("SimpleDeformShape", 0, "Offset")
+		self.data_cluster = uti.CreateAlwaysCompleteCluster(self.crv, constants.siVertexCluster, "ElementData")
+		self.width_map = uti.GetWeightMap(self.crv, "WidthMap", 0.01, 0, 1, self.data_cluster)
+		self.depth_map = uti.GetWeightMap(self.crv, "DepthMap", 0.01, 0, 1, self.data_cluster)
+		self.twist_map = uti.GetWeightMap(self.crv, "TwistMap", 0.01, -1, 1, self.data_cluster)
+		self.collide_map = uti.GetWeightMap(self.crv, "CollideMap", 1, 0, 1, self.data_cluster)
+		self.stick_map = uti.GetWeightMap(self.crv, "StickMap", 1, 0, 1, self.data_cluster)
+		self.offset_shape = self.data_cluster.AddProperty("SimpleDeformShape", 0, "Offset")
 
 		self.crv.Name = self.fullname+self.suffix
 		uti.SetWireColor(self.crv, COLOR_MUSCLE_R, COLOR_MUSCLE_G, COLOR_MUSCLE_B)
@@ -73,15 +65,9 @@ class IRMuscle(ele.IRElement):
 		uti.GroupSetup(self.model, [self.crv], "Muscle_Curves")
 		return True
 
-	# ---------------------------------------------------------------
-	# Get Existing Muscle Element
-	# -------------------------------------------------------------------
 	def GetFromGuide(self, crv):
 		pass
 
-	# ---------------------------------------------------------------
-	# Symmetrize Muscle
-	# ---------------------------------------------------------------
 	def Symmetrize(self):
 		if self.side == MIDDLE:
 			XSI.LogMessage("[ICERig] : Can't symmetrize middle elements ---> aborted...!")
@@ -103,7 +89,6 @@ class IRMuscle(ele.IRElement):
 
 		sibling.CreateGuide()
 
-		# add symmetrize element data ICE Tree
 		t = tre.CreateICETree(sibling.crv, "SymmetrizeMuscleGuide", 2)
 		n = XSI.AddICECompoundNode("IRSymetrizeMuscleDatas", str(t))
 
@@ -114,13 +99,9 @@ class IRMuscle(ele.IRElement):
 		return sibling
 			
 	def AddToRig(self):
-		CreateMuscleCloud(self.model,False)
-		#CreateMuscleMesh(self.model,False)
+		CreateMuscleCloud(self.model, False)
 
 
-# -------------------------------------------------------------------
-# Create Muscle Cloud
-# -------------------------------------------------------------------
 def CreateMuscleCloud(model, deform=False):
 	cloud = model.FindChild("ICE_Muscles")
 	if cloud:
@@ -139,7 +120,8 @@ def CreateMuscleCloud(model, deform=False):
 	XSI.ConnectICENodes(str(tree) + ".port1", str(bind) + ".Execute")
 	
 	return cloud
-	
+
+
 def CreateMuscleMesh(model, deform=True):
 	root = model.FindChild("Muscles")
 	if not root:

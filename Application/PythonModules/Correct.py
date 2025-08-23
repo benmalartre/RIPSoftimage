@@ -22,35 +22,35 @@ def Correct(obj, mode):
 	cls = Utils.CreateAlwaysCompleteCluster(obj, constants.siVertexCluster, clsName)
 	
 	# freeze all weight painter op for performance reasons
-	props = cls.Properties
-	for p in props:
-		if (mode == "Smooth" or mode == "Push") and p.Type == "wtmap":
-			XSI.FreezeObj(p)
-		elif mode == "Shape" and p.Type == "clskey":
-			XSI.FreezeObj(p)
+	properties = cls.Properties
+	for property in properties:
+		if (mode == "Smooth" or mode == "Push") and property.Type == "wtmap":
+			XSI.FreezeObj(property)
+		elif mode == "Shape" and property.Type == "clskey":
+			XSI.FreezeObj(property)
 
 	# check if a weight map already exists for this frame
 	exist = False
-	wmap = None
+	weight_map = None
 	if not mode == "Shape":
 		if cls.Properties("Frame"+str(current)):
 			exist = True
 			toolkit = Dispatch("XSI.UIToolkit")
-			buttonPressed = toolkit.MsgBox("A corrective weight map already exists for this frame...",
-										   constants.siMsgOkOnly, cmdName )
+			buttonPressed = toolkit.MsgBox(
+				"A corrective weight map already exists for this frame...", constants.siMsgOkOnly, cmdName )
 
 			if buttonPressed == constants.siMsgCancel:
 				XSI.LogMessage("Store Corrective Map cancelled by you !", constants.siInfo)
 				return
 
 		else:
-			wmap = cls.AddProperty("Weight Map Property", False, "Frame"+str(current))
+			weight_map = cls.AddProperty("Weight Map Property", False, "Frame"+str(current))
 	
 	if mode == "Push":
-		CorrectPush(obj, wmap, current, exist)
+		CorrectPush(obj, weight_map, current, exist)
 		
 	elif mode == "Smooth":
-		CorrectSmooth(obj, wmap, current, exist)
+		CorrectSmooth(obj, weight_map, current, exist)
 		
 	elif mode == "Shape":
 		CorrectShape(obj, cls, current)
@@ -58,8 +58,7 @@ def Correct(obj, mode):
 	XSI.Preferences.SetPreferenceValue("scripting.cmdlog", cmdLog)
 
 
-def CorrectPush(obj, wmap, frame, exist):
-	# check if tree exists
+def CorrectPush(obj, weight_map, frame, exist):
 	prim = obj.ActivePrimitive
 	tree = prim.ICETrees.Find("CorrectivePush")
 	if not tree:
@@ -121,7 +120,7 @@ def CorrectPush(obj, wmap, frame, exist):
 			XSI.AddPortToICENode(str(add) + ".value" + str(index), constants.siNodePortDataInsertionLocationAfter)
 			XSI.ConnectICENodes (str(add) + ".value" + str(index + 1), str(mult) + ".result")
 		
-		pushStr = "Self.cls.CorrectivePushCls."+wmap.Name+".Weights"
+		pushStr = "Self.cls.CorrectivePushCls." + weight_map.Name + ".Weights"
 		getPushMap = XSI.AddIceNode("GetDataNode", str(tree))
 		getPushMap.Parameters("Reference").Value = pushStr
 
@@ -139,7 +138,7 @@ def CorrectPush(obj, wmap, frame, exist):
 		XSI.ConnectICENodes(str(compound) + ".Push" + str(frame), str(getPushMap) + ".Value")
 		
 		XSI.InspectObj(compound, None, None, constants.siLock)
-		XSI.SelectObj(wmap)
+		XSI.SelectObj(weight_map)
 		XSI.PaintTool()
 
 
@@ -259,8 +258,6 @@ def CorrectShape(obj, cls, frame):
 	prim = obj.ActivePrimitive
 	tree = prim.ICETrees.Find("CorrectiveShape")
 	exist = False
-	basePos = None
-	secondPos = None
 	
 	if tree:
 		if cls.Properties("Frame"+str(frame)):

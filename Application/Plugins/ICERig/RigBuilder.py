@@ -2,16 +2,14 @@ from win32com.client import constants
 from Globals import XSI
 from Globals import XSIFactory
 from Globals import Dispatch
-from Constants import *
+import Constants
 import Utils
 import Element
 import Skeleton
 import Geometry
 import Muscle
-import Icon
 import ICETree
 import Control
-import Property
 
 
 def XSILoadPlugin(in_reg):
@@ -66,7 +64,7 @@ def GetRigBuilder_Execute():
 	rig = Utils.AddNull(model, 2, .2, "ICE_Rig", 0, 0, 0)
 	Utils.SetWireColor(rig, 1.0, 0.25, 0.5)
 	
-	tree = ICETree.CreateICETree(rig, "Init", constructionhistory=2)
+	tree = ICETree.CreateICETree(rig, "Init", construction_history=2)
 	init = XSI.AddICECompoundNode("IRRigInit", tree)
 	XSI.ConnectICENodes(str(tree) + ".port1", str(init) + ".Execute")
 	
@@ -80,7 +78,7 @@ def GetRigBuilder_Execute():
 # -----------------------------------------------
 def RigBuilder_Define(in_ctxt):
 	prop = in_ctxt.Source
-	prop.AddParameter2("ElementType", constants.siInt4, ID_GEOMETRY, 0, ID_GEOMETRY, 0, ID_GEOMETRY)
+	prop.AddParameter2("ElementType", constants.siInt4, Constants.ID_GEOMETRY, 0, Constants.ID_GEOMETRY, 0, Constants.ID_GEOMETRY)
 	prop.AddParameter2("ElementName", constants.siString, "Hip")
 	prop.AddParameter2("Divisions", constants.siInt4, 1, 1, 1000, 1, 12)
 	prop.AddParameter2("Side", constants.siInt4, 2, 0, 2, 0, 2)
@@ -157,7 +155,7 @@ def RigBuilder_RebuildLayout( PPG ):
 	layout.AddTab("Globals")
 	
 	layout.AddGroup("Geometry To Deform")
-	Element.CheckRigElementList(PPG, ID_GEOMETRY)
+	Element.CheckRigElementList(PPG, Constants.ID_GEOMETRY)
 	items = Element.BuildListFromString(PPG.Parameters("GeometryList").Value)
 	item = layout.AddEnumControl("GeometryChooser", items, "", constants.siControlListBox)
 	item.SetAttribute(constants.siUINoLabel, True)
@@ -193,12 +191,12 @@ def RigBuilder_RebuildLayout( PPG ):
 
 	# skeleton
 	layout.AddTab("Skeleton")
-	Element.CheckRigElementList(PPG, ID_SKELETON)
+	Element.CheckRigElementList(PPG, Constants.ID_SKELETON)
 	layout.AddGroup("New Element")
 	layout.AddItem("ElementName", "Name")
-	layout.AddEnumControl("Side", RIG_SIDE_ITEM_ARRAY, "Side", constants.siControlCombo)
-	layout.AddEnumControl("SkeletonType", RIG_SKELETON_ITEM_ARRAY, "Type", constants.siControlCombo)
-	layout.AddEnumControl("SkeletonControlType", RIG_CONTROLS_ITEM_ARRAY, "Control", constants.siControlCombo)
+	layout.AddEnumControl("Side", Constants.RIG_SIDE_ITEM_ARRAY, "Side", constants.siControlCombo)
+	layout.AddEnumControl("SkeletonType", Constants.RIG_SKELETON_ITEM_ARRAY, "Type", constants.siControlCombo)
+	layout.AddEnumControl("SkeletonControlType", Constants.RIG_CONTROLS_ITEM_ARRAY, "Control", constants.siControlCombo)
 	layout.AddItem("Divisions", "Division")
 	layout.AddItem("Symmetrize", "Symetrize")
 	layout.AddItem("SelfSymmetrize", "Self Symetrize")
@@ -247,10 +245,10 @@ def RigBuilder_RebuildLayout( PPG ):
 
 	# muscles
 	layout.AddTab("Muscles")
-	Element.CheckRigElementList(PPG, ID_MUSCLE)
+	Element.CheckRigElementList(PPG, Constants.ID_MUSCLE)
 	layout.AddGroup("New Element")
 	layout.AddItem("ElementName", "Name")
-	layout.AddEnumControl("Side", RIG_SIDE_ITEM_ARRAY, "Side", constants.siControlCombo)
+	layout.AddEnumControl("Side", Constants.RIG_SIDE_ITEM_ARRAY, "Side", constants.siControlCombo)
 	layout.AddItem("Divisions", "Division")
 	layout.AddItem("Symmetrize")
 	item = layout.AddButton("CreateNewElement", "Create")
@@ -294,12 +292,12 @@ def RigBuilder_RebuildLayout( PPG ):
 
 	# controls
 	layout.AddTab("Controls")
-	Element.CheckRigElementList(PPG, ID_CONTROL)
+	Element.CheckRigElementList(PPG, Constants.ID_CONTROL)
 	layout.AddGroup("New Element")
 	layout.AddItem("ElementName", "Name")
-	layout.AddEnumControl("Side", RIG_SIDE_ITEM_ARRAY, "Side", constants.siControlCombo)
-	layout.AddEnumControl("ControlIconType", RIG_CONTROL_ICON_ITEM_ARRAY, "Icon", constants.siControlCombo)
-	layout.AddEnumControl("ControlType", RIG_CONTROLS_ITEM_ARRAY, "Type", constants.siControlCombo)
+	layout.AddEnumControl("Side", Constants.RIG_SIDE_ITEM_ARRAY, "Side", constants.siControlCombo)
+	layout.AddEnumControl("ControlIconType", Constants.RIG_CONTROL_ICON_ITEM_ARRAY, "Icon", constants.siControlCombo)
+	layout.AddEnumControl("ControlType", Constants.RIG_CONTROLS_ITEM_ARRAY, "Type", constants.siControlCombo)
 
 	layout.AddItem("Symmetrize")
 
@@ -542,7 +540,7 @@ def RigBuilder_SymmetrizeElement_OnClicked():
 			if not cls:
 				continue
 
-			skeleton = Skeleton.IRSkeleton(src.Properties("RigElement"), src)
+			skeleton = Skeleton.IRSkeleton(src, src.Parent3DObject, prop.Parameters("ElementName").Value)
 			skeleton.GetFromGuide(src)
 			skeleton.Symmetrize()
 			'''
@@ -805,7 +803,7 @@ def RigBuilder_RebuildSkeleton_OnClicked():
 	print model.FindChildren2("", "", None, True)
 	Skeleton.DeleteSkeletonCloud(model)
 	if model.Groups("Guide_Curves").Members.Count > 1:
-		Element.ReorderCurveGroup(model, ID_SKELETON)
+		Element.ReorderCurveGroup(model, Constants.ID_SKELETON)
 	Skeleton.CreateSkeletonCloud(model)
 
 
@@ -955,7 +953,7 @@ def RigBuilder_GetSelectedSkeletonElements(PPG):
 # rebuild muscle
 def RigBuilder_RebuildMuscles_OnClicked():
 	model = PPG.Inspected(0).Parent3DObject
-	Element.ReorderCurveGroup(model, ID_MUSCLE)
+	Element.ReorderCurveGroup(model, Constants.ID_MUSCLE)
 	Muscle.CreateMuscleMesh(model, True)
 
 
@@ -1012,8 +1010,8 @@ def RigBuilder_GetElementFromType(prop, elemtype, parent):
 	side = prop.Parameters("Side").Value
 
 	# skeleton element
-	if elemtype == ID_SKELETON:
-		if prop.Name == PROP_BUILDER:
+	if elemtype == Constants.ID_SKELETON:
+		if prop.Name == Constants.PROP_BUILDER:
 			mode = prop.Parameters("SkeletonType").Value
 			crv = None
 		else:
@@ -1022,16 +1020,16 @@ def RigBuilder_GetElementFromType(prop, elemtype, parent):
 		elem = Skeleton.IRSkeleton(crv, parent, name, mode, side, division, selfsymmetrize)
 
 	# muscle element
-	elif elemtype == ID_MUSCLE:
-		if prop.Name == PROP_BUILDER:
+	elif elemtype == Constants.ID_MUSCLE:
+		if prop.Name == Constants.PROP_BUILDER:
 			crv = None
 		else:
 			crv = prop.Parent3DObject
 		elem = Muscle.IRMuscle(crv, parent, name, side, selfsymmetrize)
 
 	# control element
-	elif elemtype == ID_CONTROL:
-		if prop.Name == PROP_BUILDER:
+	elif elemtype == Constants.ID_CONTROL:
+		if prop.Name == Constants.PROP_BUILDER:
 			icon = prop.Parameters("ControlIconType").Value
 			mode = prop.Parameters("ControlType").Value
 			crv = None
@@ -1043,7 +1041,7 @@ def RigBuilder_GetElementFromType(prop, elemtype, parent):
 		elem = Control.IRControl(crv, parent, name, icon, mode, side)
 
 	# geometry element
-	elif elemtype == ID_GEOMETRY:
+	elif elemtype == Constants.ID_GEOMETRY:
 		elem = Geometry.IRGeometry(prop, parent)
 	
 	return elem
@@ -1053,13 +1051,13 @@ def RigBuilder_GetElementFromType(prop, elemtype, parent):
 def RigBuilder_GetSymmetrizedElement(elem):
 	parent = elem.GetSymParent(elem.parent)
 
-	if elem.type == ID_SKELETON:
+	if elem.type == Constants.ID_SKELETON:
 		symelem = elem.Symmetrize()
-	elif elem.type == ID_MUSCLE:
+	elif elem.type == Constants.ID_MUSCLE:
 		symelem = elem.Symmetrize()
-	elif elem.type == ID_CONTROL:
+	elif elem.type == Constants.ID_CONTROL:
 		symelem = elem.Symmetrize()
-	elif elem.type == ID_GEOMETRY:
+	elif elem.type == Constants.ID_GEOMETRY:
 		print "SYMMETRIZE GEOM NOT IMPLEMENTED"
 		return None
 	return symelem
@@ -1071,47 +1069,47 @@ def RigBuilder_GetElementTypeFromTab(PPG):
 	if tab == "Globals":
 		return -1
 	elif tab == "Skeleton":
-		return ID_SKELETON
+		return Constants.ID_SKELETON
 	elif tab == "Muscles":
-		return ID_MUSCLE
+		return Constants.ID_MUSCLE
 	elif tab == "Controls":
-		return ID_CONTROL
+		return Constants.ID_CONTROL
 	elif tab == "Geometry":
-		return ID_GEOMETRY
+		return Constants.ID_GEOMETRY
 
 
 # ---------------------------------------------------
 def RigBuilder_GetElementTypePrefix(elemtype):
-	if elemtype == ID_SKELETON:
+	if elemtype == Constants.ID_SKELETON:
 		return "Skeleton"
-	elif elemtype == ID_MUSCLE:
+	elif elemtype == Constants.ID_MUSCLE:
 		return "Muscle"
-	elif elemtype == ID_CONTROL:
+	elif elemtype == Constants.ID_CONTROL:
 		return "Control"
-	elif elemtype == ID_GEOMETRY:
+	elif elemtype == Constants.ID_GEOMETRY:
 		return "Geometry"
 
 
 # ---------------------------------------------------
 def RigBuilder_GetElementTypeSuffix(elemtype):
-	if elemtype == ID_SKELETON:
-		return SUFFIX_SKELETON
-	elif elemtype == ID_MUSCLE:
-		return SUFFIX_MUSCLE
-	elif elemtype == ID_CONTROL:
-		return SUFFIX_CONTROL
-	elif elemtype == ID_GEOMETRY:
-		return SUFFIX_GEOMETRY
+	if elemtype == Constants.ID_SKELETON:
+		return Constants.SUFFIX_SKELETON
+	elif elemtype == Constants.ID_MUSCLE:
+		return Constants.SUFFIX_MUSCLE
+	elif elemtype == Constants.ID_CONTROL:
+		return Constants.SUFFIX_CONTROL
+	elif elemtype == Constants.ID_GEOMETRY:
+		return Constants.SUFFIX_GEOMETRY
 
 
 # ---------------------------------------------------
 def RigBuilder_GetElementPropType(elemtype):
-	if elemtype == ID_SKELETON:
-		return PROP_SKELETON
-	elif elemtype == ID_MUSCLE:
-		return PROP_MUSCLE
-	elif elemtype == ID_CONTROL:
-		return PROP_CONTROL
+	if elemtype == Constants.ID_SKELETON:
+		return Constants.PROP_SKELETON
+	elif elemtype == Constants.ID_MUSCLE:
+		return Constants.PROP_MUSCLE
+	elif elemtype == Constants.ID_CONTROL:
+		return Constants.PROP_CONTROL
 
 
 # -----------------------------------------------
@@ -1231,10 +1229,10 @@ def RigElement_RebuildLayout(ppg):
 	layout.AddTab("Element")
 	layout.AddGroup("Element")
 	
-	layout.AddEnumControl("ElementType", RIG_SKELETON_ITEM_ARRAY, "Type", constants.siControlCombo)
+	layout.AddEnumControl("ElementType", Constants.RIG_SKELETON_ITEM_ARRAY, "Type", constants.siControlCombo)
 	layout.AddItem("ElementName", "Name")
 
-	layout.AddEnumControl("Side", RIG_SIDE_ITEM_ARRAY, "Side", constants.siControlCombo)
+	layout.AddEnumControl("Side", Constants.RIG_SIDE_ITEM_ARRAY, "Side", constants.siControlCombo)
 	layout.EndGroup()
 	
 	layout.AddGroup("Datas")
@@ -1260,11 +1258,11 @@ def RigElement_RebuildLayout(ppg):
 	
 	layout.AddTab("Control")
 	layout.AddGroup("")
-	layout.AddEnumControl("ControlType", RIG_CONTROLS_ITEM_ARRAY, "Type", constants.siControlCombo)
+	layout.AddEnumControl("ControlType", Constants.RIG_CONTROLS_ITEM_ARRAY, "Type", constants.siControlCombo)
 	v = ppg.ControlType.Value
-	if v == CTRL_IKFK:
+	if v == Constants.CTRL_IKFK:
 		layout.AddItem("IKFKBlend")
-	elif v == CTRL_SPRING:
+	elif v == Constants.CTRL_SPRING:
 		layout.AddItem("SpringActive")
 		layout.AddItem("SpringBlend")
 	layout.EndGroup()
@@ -1283,7 +1281,7 @@ def RigElement_RebuildLayout(ppg):
 	
 	layout.AddGroup("Collide")
 	layout.AddItem("Collide")
-	layout.AddEnumControl("UpVectorMode", RIG_UPVECTOR_ITEM_ARRAY, "Alignment", constants.siControlCombo)
+	layout.AddEnumControl("UpVectorMode", Constants.RIG_UPVECTOR_ITEM_ARRAY, "Alignment", constants.siControlCombo)
 	layout.AddItem("Stick")
 	layout.EndGroup()
 
@@ -1416,10 +1414,10 @@ def MuscleElement_RebuildLayout(ppg):
 	layout.AddTab("Element")
 	layout.AddGroup("Element")
 	
-	layout.AddEnumControl("ElementType", RIG_SKELETON_ITEM_ARRAY, "Type", constants.siControlCombo)
+	layout.AddEnumControl("ElementType", Constants.RIG_SKELETON_ITEM_ARRAY, "Type", constants.siControlCombo)
 	layout.AddItem("ElementName", "Name")
 
-	layout.AddEnumControl("Side", RIG_SIDE_ITEM_ARRAY, "Side", constants.siControlCombo)
+	layout.AddEnumControl("Side", Constants.RIG_SIDE_ITEM_ARRAY, "Side", constants.siControlCombo)
 	layout.EndGroup()
 	
 	layout.AddGroup("Datas")
@@ -1444,7 +1442,7 @@ def MuscleElement_RebuildLayout(ppg):
 	
 	layout.AddGroup("Collide")
 	layout.AddItem("Collide")
-	layout.AddEnumControl("UpVectorMode", RIG_UPVECTOR_ITEM_ARRAY, "Alignment", constants.siControlCombo)
+	layout.AddEnumControl("UpVectorMode", Constants.RIG_UPVECTOR_ITEM_ARRAY, "Alignment", constants.siControlCombo)
 	layout.AddItem("Stick")
 	layout.EndGroup()
 	return True
@@ -1506,19 +1504,19 @@ def RigElement_BuildRigControl_OnClicked():
 		if elem.Parameters("Divisions").Value>1:
 			simple = False
 
-		side = MIDDLE
+		side = Constants.MIDDLE
 		if crv.Name[:2] == "L_":
-			side = LEFT
+			side = Constants.LEFT
 		elif crv.Name[:2] == "R_":
-			side = RIGHT
+			side = Constants.RIGHT
 		
-		if _type == CTRL_IK or _type == CTRL_IKFK:
+		if _type == Constants.CTRL_IK or _type == Constants.CTRL_IKFK:
 			Control.BuildIK2BonesRig(parent, crv, ppg)
-		if _type == CTRL_FK or _type == CTRL_IKFK:
+		if _type == Constants.CTRL_FK or _type == Constants.CTRL_IKFK:
 			Control.BuildFKRig(parent, crv, ppg, side, simple)
-		if _type == CTRL_SRT:
+		if _type == Constants.CTRL_SRT:
 			Control.BuildSRTRig(parent, crv, ppg)
-		if _type == CTRL_FOOTROLL:
+		if _type == Constants.CTRL_FOOTROLL:
 			Control.BuildFootRollRig(parent, crv, ppg)
 
 

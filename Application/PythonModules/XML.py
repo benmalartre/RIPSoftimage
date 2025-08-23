@@ -38,7 +38,7 @@ def AddOperatorToXML(root, operator):
 
 
 def AddInputPortToXML(root, port):
-	data_type =port.DataType
+	data_type = port.DataType
 	
 	elem = xml.Element("port")
 	elem.attrib["datatype"] = str(data_type)
@@ -161,7 +161,7 @@ def WriteCompoundsXMLPreset(pth, compounds, title="Compound"):
 			AddInputPortToXML(compound, p)
 		root.append(compound)
 
-	f= open(pth, 'w')
+	f = open(pth, 'w')
 	xml.ElementTree(root).write(f)
 	f.close()
 
@@ -191,11 +191,11 @@ def ReadCompoundXMLPreset(pth, compound):
 	root = tree.getroot()
 	
 	# get list of port
-	portlist = root.findall("port")
-	if portlist != None:
-		for p in portlist:
+	port_list = root.findall("port")
+	if port_list:
+		for p in port_list:
 			dt = int(p.attrib["datatype"])
-			if(dt < 8):
+			if dt < 8:
 				value = None
 				portName = p.attrib["name"]
 				# boolean
@@ -232,23 +232,22 @@ def ReadCompoundsXMLPreset(pth, compounds):
 
 		compound = root.find(c.Name)
 		if compound:
-			#get list of port
-			portlist = compound.findall("port")
-			if portlist != None:
-				for p in portlist:
+			port_list = compound.findall("port")
+			if port_list:
+				for p in port_list:
 					dt = int(p.attrib["datatype"])
-					if(dt<8):
+					if dt < 8:
 						value = None
 						portName = p.attrib["name"]
-						#boolean
+						# boolean
 						if dt == 1:
 							value = False
-							if p.attrib["value"]=="True":
+							if p.attrib["value"] == "True":
 								value = True
-						#long
+						# long
 						elif dt == 2:
 							value = int(p.attrib["value"])
-						#float
+						# float
 						elif dt == 4:
 							value = float(p.attrib["value"])
 				

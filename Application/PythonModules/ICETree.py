@@ -1,11 +1,6 @@
-# -------------------------------------------------------------------
-# ICETree
-# -------------------------------------------------------------------
 from Globals import XSI
 
-# -------------------------------------------------------------------
-# Merged Rig Cloud
-# -------------------------------------------------------------------
+
 def MergeRigCloud(model, clouds, name):
 	cloud = model.AddPrimitive("PointCloud", name)
 	tree = XSI.ApplyOp("ICETree", cloud, "siNode", "", "", 2)
@@ -20,61 +15,47 @@ def MergeRigCloud(model, clouds, name):
 		idx += 1
 
 
-# -------------------------------------------------------------------
-# Replace Model Name by this_model
-# -------------------------------------------------------------------
-def ReplaceModelNameByThisModel(obj, inmodel=None):
-	if inmodel == None:
-		inmodel = XSI.ActiveSceneRoot
+def ReplaceModelNameByThisModel(obj, model=None):
 	fullname = obj.FullName
-	model = obj.Model
-	if model.FullName == inmodel.FullName:
+	if not model:
+		model = obj.Model
+
+	if model.FullName == model.FullName:
 		return fullname.replace(model.Name, "this_model", 1)
 	else:
 		return fullname
 
 
-# -------------------------------------------------------------------
-# Get ICE Tree By Name
-# -------------------------------------------------------------------
 def GetICETreeByName(obj, name):
 	tree = obj.ActivePrimitive.ICETrees.Find(name)
 	return tree
 
 
-# -------------------------------------------------------------------
-# Replace Object Name by this
-# -------------------------------------------------------------------
 def ReplaceObjectNameByThis(obj):
 	fullname = obj.FullName
-	parentobj = obj.Parent3DObject
-	return fullname.replace(parentobj.FullName, "this", 1)
+	parent_obj = obj.Parent3DObject
+	return fullname.replace(parent_obj.FullName, "this", 1)
 
 
-# -------------------------------------------------------------------
-# Get Object From Reference Value
-# -------------------------------------------------------------------
 def GetObjectFromReferenceValue(node):
-	targetname = node.Parameters("Reference").Value
+	target_name = node.Parameters("Reference").Value
 	model = node.Parent3DObject.Model
-	targetname = targetname.replace("this_model.", "")
-	targetname = targetname.replace(model.Name+".", "")
-	target = model.FindChild(targetname)
+	target_name = target_name.replace("this_model.", "")
+	target_name = target_name.replace(model.Name+".", "")
+	target = model.FindChild(target_name)
 	
 	return target
 
 
-# -------------------------------------------------------------------
-# Create Empty ICETree
-# -------------------------------------------------------------------
-def CreateICETree(cloud, name="ICETree", constructionhistory=0):
-	tree = XSI.ApplyOp("ICETree", cloud, "siNode", "", "", constructionhistory)
+def CreateICETree(cloud, name="ICETree", construction_history=0):
+	tree = XSI.ApplyOp("ICETree", cloud, "siNode", "", "", construction_history)
 	ICETree = XSI.Dictionary.GetObject(tree)
 	ICETree.Name = name
 	return ICETree
 
+
 def CreateSimulatedICETree(cloud, name="ICETree"):
-	tree = XSI.CreateSimulatedICETree(cloud);
+	tree = XSI.CreateSimulatedICETree(cloud)
 	ICETree = XSI.Dictionary.GetObject(tree)
 	ICETree.Name = name
 	return ICETree

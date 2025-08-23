@@ -46,18 +46,18 @@ def UpdateListItemsUI(item, param, elements):
 	return False
 
 
-def BuildListWeightMaps(obj, clusterName):
+def BuildListWeightMaps(obj, cluster_name):
 	""" Build weight maps list
 	:param X3DObject obj: SDK X3DObject
-	:param str clusterName: cluster name
+	:param str cluster_name: cluster name
 	:return list: weight maps list (name, value)
 	"""
 	geom = obj.ActivePrimitive.Geometry
 	all_weight_maps = []
 	idx = 0
 	
-	if clusterName:
-		cluster = geom.Clusters(clusterName)
+	if cluster_name:
+		cluster = geom.Clusters(cluster_name)
 		if cluster:
 			for weight_map in cluster.LocalProperties.Filter('wtmap'):
 				all_weight_maps.append(weight_map.Name)
@@ -228,13 +228,13 @@ def RemoveObjectFromList(prop, name):
 	prop.Parameters('{}List'.format(name)).Value = 0
 
 
-def CheckParameterExist(prop, paramName, paramType, mode):
-	if not prop.Parameters(paramName) and mode == 1:
-		item = prop.AddParameter3(paramName, paramType)
+def CheckParameterExist(prop, param_name, param_type, mode):
+	if not prop.Parameters(param_name) and mode == 1:
+		item = prop.AddParameter3(param_name, param_type)
 		item.Animatable = False
 
-	elif prop.Parameters(paramName) and not mode:
-		prop.RemoveParameter(prop.Parameters(paramName))
+	elif prop.Parameters(param_name) and not mode:
+		prop.RemoveParameter(prop.Parameters(param_name))
 
 
 def GetNbObjectsInList(prop, name):
