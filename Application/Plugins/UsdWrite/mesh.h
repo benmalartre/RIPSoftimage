@@ -12,17 +12,14 @@ public:
   void Init(UsdStageRefPtr& stage) override;
   void WriteSample(double t) override;
   void InitColorAttribute();
-  void InitNormalsAttribute();
   void InitUVsAttribute();
   void WriteColorSample(const PolygonMesh& mesh, double t);
 
   bool _GetNodesColors(const PolygonMesh& geom, VtArray<GfVec3f>& ioArray);
-  bool _GetNodesNormals(const PolygonMesh& geom, VtArray<GfVec3f>& ioArray);
   bool _GetNodesUVs(const PolygonMesh& geom, VtArray<GfVec2f>& ioArray);
 
 private:
   bool          _haveColors;
-  bool          _haveNormals;
   bool          _haveUVs;
 };
 

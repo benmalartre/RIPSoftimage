@@ -3,7 +3,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <iostream>
-#include <boost/functional/hash.hpp>
+#include <functional>
+
+inline void hash_combine(size_t& seed, size_t value) {
+  seed ^= value + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+}
 
 #include <pxr/imaging/garch/glApi.h>
 

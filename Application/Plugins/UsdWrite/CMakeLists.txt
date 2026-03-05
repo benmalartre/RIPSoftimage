@@ -32,13 +32,11 @@ target_include_directories(${TARGET}
     ${USD_INCLUDE_DIR}
     ${Python3_INCLUDE_DIRS}
     ${TBB_INCLUDE_DIR}
-	${BOOST_INCLUDE_DIR}
 )
 
 target_link_libraries(${TARGET}
   ${SOFTIMAGE_LIBRARIES}
   ${Python3_LIBRARIES}
-  ${BOOST_LIBRARIES}
   ${USD_LIBRARIES}
   ${TBB_LIBRARIES}
   #${GLEW_LIBRARY}

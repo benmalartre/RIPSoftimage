@@ -3,7 +3,6 @@
 
 X2UMesh::X2UMesh(std::string path, const CRef& ref)
   : X2UPrim(path, ref)
-  , _haveNormals(false)
   , _haveColors(false)
   , _haveUVs(false)
 {
@@ -102,9 +101,6 @@ void X2UMesh::Init(UsdStageRefPtr& stage)
   // display color
   InitColorAttribute();
 
-  // normals
-  InitNormalsAttribute();
-
   // uvs
   InitUVsAttribute();
 
@@ -163,16 +159,6 @@ void X2UMesh::WriteSample(double t)
 
   // displayColor
   WriteColorSample(mesh, t);
-
-  // normals
-  {
-    X2UAttribute& item = GetAttribute("normals");
-    VtArray<GfVec3f> normals;
-    if (_GetNodesNormals(mesh, normals))
-    {
-      item.WriteSample((void*)normals.data(), normals.size(), timeCode);
-    }
-  }
 
   // uvs
   {
@@ -269,36 +255,6 @@ void X2UMesh::InitColorAttribute()
   }
 }
 
-void X2UMesh::InitNormalsAttribute()
-{
-  _haveNormals = false;
-
-  VtArray<GfVec3f> dstNormals;
-  PolygonMesh xsiMesh = _xPrim.GetGeometry();
-  if (_GetNodesNormals(xsiMesh, dstNormals))
-  {
-    // create attribute
-    UsdAttribute dstNormalsAttr = 
-      UsdGeomMesh(_prim).CreateNormalsAttr(VtValue(), true);
-    UsdGeomMesh(_prim).SetNormalsInterpolation(UsdGeomTokens->faceVarying);
-    //UsdGeomPrimvar dstNormalPrimvar(dstNormalsAttr);
-    //dstNormalPrimvar.SetInterpolation(UsdGeomTokens->faceVarying);
-
-    // store in attribute map
-    _attributes["normals"] =
-      X2UAttribute(
-        dstNormalsAttr,
-        X2U_DATA_VECTOR3,
-        X2U_PRECISION_SINGLE,
-        true);
-
-    // set default value
-    _attributes["normals"].WriteSample((const void*)dstNormals.data(), dstNormals.size(), UsdTimeCode::Default());
-
-    _haveNormals = true;
-  }
-}
-
 void X2UMesh::InitUVsAttribute()
 {
   _haveUVs = false;
@@ -387,33 +343,6 @@ bool X2UMesh::_GetNodesColors(const PolygonMesh& mesh, VtArray<GfVec3f>& ioArray
     return true;
   }
   return false;
-}
-
-bool X2UMesh::_GetNodesNormals(const PolygonMesh& mesh, VtArray<GfVec3f>& ioArray)
-{
-  // geometry accessor
-  CGeometryAccessor accessor = mesh.GetGeometryAccessor();
-
-  // get the values
-  CFloatArray normals;
-  accessor.GetNodeNormals(normals);
-
-  CLongArray nodeIndices;
-  accessor.GetNodeIndices(nodeIndices);
-
-  size_t numNormals = normals.GetCount() / 3;
-  ioArray.resize(numNormals);
-  for (size_t i = 0; i < numNormals; i++)
-  {
-    size_t nodeIndex = nodeIndices[i];
-    ioArray[i] = GfVec3f(
-      normals[nodeIndex * 3],
-      normals[nodeIndex * 3 + 1],
-      normals[nodeIndex * 3 + 2]
-    );
-  }
-  
-  return true;
 }
 
 bool X2UMesh::_GetNodesUVs(const PolygonMesh& mesh, VtArray<GfVec2f>& ioArray)

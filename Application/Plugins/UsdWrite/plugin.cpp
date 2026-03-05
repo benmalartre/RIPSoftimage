@@ -166,19 +166,21 @@ SICALLBACK UsdWriteMenu_Init( CRef& in_ctxt )
 }
 
 XSIPLUGINCALLBACK XSI::CStatus OnCreateUsdWriteUIClicked( XSI::CRef& in_ctxt)
-{	
-	Context ctxt(in_ctxt);
-  CValueArray args = ctxt.GetAttribute(L"Arguments");
-
+{
   Application app;
   Model root = app.GetActiveSceneRoot();
   CustomProperty prop;
   root.GetPropertyFromName(L"UsdWriteUI", prop);
   if(!prop.IsValid())
     prop = root.AddProperty(L"UsdWriteUI", false);
-  CValueArray toInspect;
-  toInspect.Add(CValue(prop));
-  app.ExecuteCommand(L"InspectObj", toInspect, CValue());
+
+  CValueArray inspectArgs(5);
+  inspectArgs[0] = prop.GetFullName();
+  inspectArgs[1] = CValue();
+  inspectArgs[2] = L"USD Write";
+  inspectArgs[3] = (LONG)siFollow;
+  inspectArgs[4] = true;
+  app.ExecuteCommand(L"InspectObj", inspectArgs, CValue());
   return CStatus::OK;
 }
 

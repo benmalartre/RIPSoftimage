@@ -78,9 +78,9 @@ void U2XGLSLShader::Compile()
 void U2XGLSLProgram::_ComputeHash()
 {
   _hash = 0;
-  if(_vert)boost::hash_combine(_hash, _vert->Hash());
-  if(_geom)boost::hash_combine(_hash, _geom->Hash());
-  if(_frag)boost::hash_combine(_hash, _frag->Hash());
+  if(_vert)hash_combine(_hash, _vert->Hash());
+  if(_geom)hash_combine(_hash, _geom->Hash());
+  if(_frag)hash_combine(_hash, _frag->Hash());
 }
 
 void U2XGLSLProgram::_Build()
